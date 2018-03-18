@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.kiatnakinbank.com/services/HP/HPContractService" targetNamespace="http://www.kiatnakinbank.com/services/HP/HPContractService" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="InquiryContractByCANoRequest" nillable="true" type="tns:inquiryContractByCANoRequest" />
+  <xs:element name="InquiryContractByCANoResponse" nillable="true" type="tns:inquiryContractByCANoResponse" />
+  <xs:element name="InquiryContractByCarInformationRequest" nillable="true" type="tns:inquiryContractByCarInformationRequest" />
+  <xs:element name="InquiryContractByCarInformationResponse" nillable="true" type="tns:inquiryContractByCarInformationResponse" />
+  <xs:element name="InquiryContractCarByCardIdRequest" nillable="true" type="tns:inquiryContractCarByCardIdRequest" />
+  <xs:element name="InquiryContractCarByCardIdResponse" nillable="true" type="tns:inquiryContractCarByCardIdResponse" />
+  <xs:element name="InquiryContractCarByContractNoRequest" nillable="true" type="tns:inquiryContractCarByContractNoRequest" />
+  <xs:element name="InquiryContractCarByContractNoResponse" nillable="true" type="tns:inquiryContractCarByContractNoResponse" />
+  <xs:element name="InquiryContractDetailByTicketIdReponse" nillable="true" type="tns:inquiryContractDetailByTicketIdReponse" />
+  <xs:element name="InquiryContractDetailByTicketIdRequest" nillable="true" type="tns:inquiryContractDetailByTicketIdRequest" />
+  <xs:element name="InquiryContractForBarcodeRequest" nillable="true" type="tns:inquiryContractForBarcodeRequest" />
+  <xs:element name="InquiryContractForBarcodeResponse" nillable="true" type="tns:inquiryContractForBarcodeResponse" />
+  <xs:element name="InquiryContractReceiptInformationRequest" nillable="true" type="tns:inquiryContractReceiptInformationRequest" />
+  <xs:element name="InquiryContractReceiptInformationResponse" nillable="true" type="tns:inquiryContractReceiptInformationResponse" />
+  <xs:element name="InquiryCustomerContractListRequest" nillable="true" type="tns:inquiryCustomerContractListRequest" />
+  <xs:element name="InquiryCustomerContractListResponse" nillable="true" type="tns:inquiryCustomerContractListResponse" />
+  <xs:element name="LockCarRegisterBookRequest" nillable="true" type="tns:lockCarRegisterBookRequest" />
+  <xs:element name="LockCarRegisterBookResponse" nillable="true" type="tns:commonResponse" />
+  <xs:element name="SentTicketIdNotificationReponse" nillable="true" type="tns:sentTicketIdNotificationReponse" />
+  <xs:element name="SentTicketIdNotificationRequest" nillable="true" type="tns:sentTicketIdNotificationRequest" />
+  <xs:complexType name="sentTicketIdNotificationRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ticketIdNotificationRequest" nillable="true" type="tns:ticketIdNotificationRequest" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="commonRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="header" type="tns:header" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ticketIdNotificationRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="requestBy" type="xs:string" />
+      <xs:element minOccurs="0" name="requestDate" type="xs:string" />
+      <xs:element minOccurs="0" name="textType" type="xs:string" />
+      <xs:element minOccurs="0" name="ticketId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="header">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="channelId" type="xs:string" />
+      <xs:element minOccurs="0" name="referenceNo" type="xs:string" />
+      <xs:element minOccurs="0" name="serviceName" type="xs:string" />
+      <xs:element minOccurs="0" name="systemCode" type="xs:string" />
+      <xs:element minOccurs="0" name="transactionDateTime" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sentTicketIdNotificationReponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ticketIdNotificationResponse" nillable="true" type="tns:ticketIdNotificationResponse" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="commonResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="header" type="tns:header" />
+      <xs:element minOccurs="0" name="responseStatus" type="tns:responseStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ticketIdNotificationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="resultCode" type="xs:string" />
+      <xs:element minOccurs="0" name="resultDesc" type="xs:string" />
+      <xs:element minOccurs="0" name="textType" type="xs:string" />
+      <xs:element minOccurs="0" name="ticketId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="responseStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="responseCode" type="xs:string" />
+      <xs:element minOccurs="0" name="responseMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractByCarInformationRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="carChassisNo" type="xs:string" />
+          <xs:element minOccurs="0" name="carLicencePlate" type="xs:string" />
+          <xs:element minOccurs="0" name="carLicenceProvince" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractByCarInformationResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="borrowerCifID" type="xs:string" />
+          <xs:element minOccurs="0" name="carBrand" type="xs:string" />
+          <xs:element minOccurs="0" name="carCategory" type="xs:string" />
+          <xs:element minOccurs="0" name="carChassisNo" type="xs:string" />
+          <xs:element minOccurs="0" name="carColor" type="xs:string" />
+          <xs:element minOccurs="0" name="carEngineNo" type="xs:string" />
+          <xs:element minOccurs="0" name="carLicencePlate" type="xs:string" />
+          <xs:element minOccurs="0" name="carLicenceProvince" type="xs:string" />
+          <xs:element minOccurs="0" name="carModel" type="xs:string" />
+          <xs:element minOccurs="0" name="carYear" type="xs:string" />
+          <xs:element minOccurs="0" name="contractBranch" type="xs:string" />
+          <xs:element minOccurs="0" name="contractNo" type="xs:string" />
+          <xs:element minOccurs="0" name="contractStatusCode" type="xs:string" />
+          <xs:element minOccurs="0" name="contractStatusDate" type="xs:string" />
+          <xs:element minOccurs="0" name="contractStatusDesc" type="xs:string" />
+          <xs:element minOccurs="0" name="contractType" type="xs:string" />
+          <xs:element minOccurs="0" name="contractTypeDesc" type="xs:string" />
+          <xs:element minOccurs="0" name="firstDueDate" type="xs:string" />
+          <xs:element minOccurs="0" name="fullPaidTerm" type="xs:string" />
+          <xs:element minOccurs="0" name="investAmt" type="xs:string" />
+          <xs:element minOccurs="0" name="outstandingBalance" type="xs:string" />
+          <xs:element minOccurs="0" name="overdueTerm" type="xs:string" />
+          <xs:element minOccurs="0" name="principleBalance" type="xs:string" />
+          <xs:element minOccurs="0" name="settleType" type="xs:string" />
+          <xs:element minOccurs="0" name="settleTypeDesc" type="xs:string" />
+          <xs:element minOccurs="0" name="totalTerm" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractDetailByTicketIdRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ticketIdList" nillable="true" type="tns:contractDetailByTicketIdRequest" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="contractDetailByTicketIdRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ticketId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractDetailByTicketIdReponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="contractDetailByTicketIdReponseList" nillable="true" type="tns:contractDetailByTicketIdReponse" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="contractDetailByTicketIdReponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="contractDetailByTicketId" type="tns:contractDetailByTicketId" />
+      <xs:element minOccurs="0" name="responseCode" type="xs:string" />
+      <xs:element minOccurs="0" name="responseDesc" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="contractDetailByTicketId">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="caNo" type="xs:string" />
+      <xs:element minOccurs="0" name="carPrice" type="xs:string" />
+      <xs:element minOccurs="0" name="contPrnAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="contVatAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="contractNo" type="xs:string" />
+      <xs:element minOccurs="0" name="custCode" type="xs:string" />
+      <xs:element minOccurs="0" name="custName" type="xs:string" />
+      <xs:element minOccurs="0" name="hcPaymDate" type="xs:string" />
+      <xs:element minOccurs="0" name="status" type="xs:string" />
+      <xs:element minOccurs="0" name="statusDate" type="xs:string" />
+      <xs:element minOccurs="0" name="sumConPrn" type="xs:string" />
+      <xs:element minOccurs="0" name="sumPaymAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="sumTaxAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="sumVatAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="term" type="xs:string" />
+      <xs:element minOccurs="0" name="ticketId" type="xs:string" />
+      <xs:element minOccurs="0" name="uidAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="vatBranchId" type="xs:string" />
+      <xs:element minOccurs="0" name="vatCarPrice" type="xs:string" />
+      <xs:element minOccurs="0" name="vatFlag" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractByCANoRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="creditApproveNo" type="xs:string" />
+          <xs:element minOccurs="0" name="fleetFlag" type="xs:string" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="paging">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="pageNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="pageSize" type="xs:string" />
+      <xs:element minOccurs="0" name="sortColumn" type="xs:string" />
+      <xs:element minOccurs="0" name="sortDirection" type="xs:string" />
+      <xs:element minOccurs="0" name="totalRecord" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractByCANoResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="inquiryContractByCANo" type="tns:inquiryContractByCANo" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractByCANo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="contractByCANoList" nillable="true" type="tns:contractByCANo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="contractByCANo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="contractBalanceDetail" type="tns:contractBalance" />
+      <xs:element minOccurs="0" name="contractCarDetail" type="tns:contractCar" />
+      <xs:element minOccurs="0" name="contractInstalmentDetail" type="tns:contractInstalment" />
+      <xs:element minOccurs="0" name="contractMasterDetail" type="tns:contractMasterDetail" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="contractBalance">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="lastPDate" type="xs:string" />
+      <xs:element minOccurs="0" name="nextDueDate" type="xs:string" />
+      <xs:element minOccurs="0" name="outsBalance" type="xs:string" />
+      <xs:element minOccurs="0" name="overDueTerm" type="xs:string" />
+      <xs:element minOccurs="0" name="paidDate" type="xs:string" />
+      <xs:element minOccurs="0" name="paidTerm" type="xs:string" />
+      <xs:element minOccurs="0" name="paidVatDate" type="xs:string" />
+      <xs:element minOccurs="0" name="paidVatTerm" type="xs:string" />
+      <xs:element minOccurs="0" name="prnBalance" type="xs:string" />
+      <xs:element minOccurs="0" name="realizeDate" type="xs:string" />
+      <xs:element minOccurs="0" name="realizeTerm" type="xs:string" />
+      <xs:element minOccurs="0" name="stopUIDTerm" type="xs:string" />
+      <xs:element minOccurs="0" name="stopVatFlag" type="xs:string" />
+      <xs:element minOccurs="0" name="stopVatTerm" type="xs:string" />
+      <xs:element minOccurs="0" name="termNo" type="xs:string" />
+      <xs:element minOccurs="0" name="uidBalance" type="xs:string" />
+      <xs:element minOccurs="0" name="vatBalance" type="xs:string" />
+      <xs:element minOccurs="0" name="vatRun" type="xs:string" />
+      <xs:element minOccurs="0" name="vatRunDate" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="contractCar">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="accountCloseDate" type="xs:string" />
+      <xs:element minOccurs="0" name="brandCode" type="xs:string" />
+      <xs:element minOccurs="0" name="brandName" type="xs:string" />
+      <xs:element minOccurs="0" name="carLicenseNo" type="xs:string" />
+      <xs:element minOccurs="0" name="carType" type="xs:string" />
+      <xs:element minOccurs="0" name="chassisNo" type="xs:string" />
+      <xs:element minOccurs="0" name="colorCode" type="xs:string" />
+      <xs:element minOccurs="0" name="colorName" type="xs:string" />
+      <xs:element minOccurs="0" name="engineNo" type="xs:string" />
+      <xs:element minOccurs="0" name="mailDate" type="xs:string" />
+      <xs:element minOccurs="0" name="mailList" type="xs:string" />
+      <xs:element minOccurs="0" name="modelCode" type="xs:string" />
+      <xs:element minOccurs="0" name="modelName" type="xs:string" />
+      <xs:element minOccurs="0" name="modelYear" type="xs:string" />
+      <xs:element minOccurs="0" name="provinceCode" type="xs:string" />
+      <xs:element minOccurs="0" name="provinceName" type="xs:string" />
+      <xs:element minOccurs="0" name="taxDate" type="xs:string" />
+      <xs:element minOccurs="0" name="taxExpireDate" type="xs:string" />
+      <xs:element minOccurs="0" name="warrantyExpiryDate" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="contractInstalment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="accIADAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="actInstAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="actVatAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="iadAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="iadAmountSub" type="xs:string" />
+      <xs:element minOccurs="0" name="instAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="instVatAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="remainActAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="sumActAmount" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="contractMasterDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ballonCode" type="xs:string" />
+      <xs:element minOccurs="0" name="ballonDesc" type="xs:string" />
+      <xs:element minOccurs="0" name="closeAccReasonCode" type="xs:string" />
+      <xs:element minOccurs="0" name="closeAccReasonDesc" type="xs:string" />
+      <xs:element minOccurs="0" name="contPrnAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="contVatAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="contractDate" type="xs:string" />
+      <xs:element minOccurs="0" name="contractNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="contractStatusCode" type="xs:string" />
+      <xs:element minOccurs="0" name="contractStatusDesc" type="xs:string" />
+      <xs:element minOccurs="0" name="contractStatusDescEn" type="xs:string" />
+      <xs:element minOccurs="0" name="dueDate" type="xs:string" />
+      <xs:element minOccurs="0" name="effRate" type="xs:string" />
+      <xs:element minOccurs="0" name="firstDueDate" type="xs:string" />
+      <xs:element minOccurs="0" name="flatRate" type="xs:string" />
+      <xs:element minOccurs="0" name="paidTerm" type="xs:string" />
+      <xs:element minOccurs="0" name="payMDate" type="xs:string" />
+      <xs:element minOccurs="0" name="prnAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="term" type="xs:string" />
+      <xs:element minOccurs="0" name="uidAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="vatAmount" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractReceiptInformationRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="contractNo" type="xs:string" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+          <xs:element minOccurs="0" name="tranCode" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractReceiptInformationResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="inquiryContractReceiptInformationList" nillable="true" type="tns:inquiryContractReceiptInformationList" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractReceiptInformationList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="contractBranch" type="xs:string" />
+      <xs:element minOccurs="0" name="contractFirstDueDate" type="xs:string" />
+      <xs:element minOccurs="0" name="contractNo" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="inquiryContractReceiptInformationSubList" nillable="true" type="tns:inquiryContractReceiptInformationSubList" />
+      <xs:element minOccurs="0" name="receiptCreateDate" type="xs:string" />
+      <xs:element minOccurs="0" name="receiptEffectiveDate" type="xs:string" />
+      <xs:element minOccurs="0" name="receiptNo" type="xs:string" />
+      <xs:element minOccurs="0" name="receiptTotalAmt" type="xs:string" />
+      <xs:element minOccurs="0" name="receiptTranAmt" type="xs:string" />
+      <xs:element minOccurs="0" name="receiptVatAmt" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractReceiptInformationSubList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="receiptInstNo" type="xs:string" />
+      <xs:element minOccurs="0" name="receiptTotalAmt" type="xs:string" />
+      <xs:element minOccurs="0" name="receiptTranAmt" type="xs:string" />
+      <xs:element minOccurs="0" name="receiptTranCode" type="xs:string" />
+      <xs:element minOccurs="0" name="receiptTranCodeDescription" type="xs:string" />
+      <xs:element minOccurs="0" name="receiptVatAmt" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractCarByCardIdRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="cardId" type="xs:string" />
+          <xs:element minOccurs="0" name="cardType" type="xs:string" />
+          <xs:element minOccurs="0" name="fleetFlag" type="xs:string" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+          <xs:element minOccurs="0" name="phoneNumber" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractCarByCardIdResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="inquiryContractCarByCardId" type="tns:inquiryContractCarByCardId" />
+          <xs:element minOccurs="0" name="inquiryCustomerByCardId" type="tns:inquiryCustomerByCardId" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractCarByCardId">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="contractCarByCardId" nillable="true" type="tns:contractCarByCardId" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="contractCarByCardId">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="contractCar" type="tns:contractCar" />
+      <xs:element minOccurs="0" name="contractMaster" type="tns:contractMaster" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="contractMaster">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ballonCode" type="xs:string" />
+      <xs:element minOccurs="0" name="ballonDesc" type="xs:string" />
+      <xs:element minOccurs="0" name="closeAccReasonCode" type="xs:string" />
+      <xs:element minOccurs="0" name="closeAccReasonDesc" type="xs:string" />
+      <xs:element minOccurs="0" name="contPrnAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="contVatAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="contractNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="contractStatusCode" type="xs:string" />
+      <xs:element minOccurs="0" name="contractStatusDesc" type="xs:string" />
+      <xs:element minOccurs="0" name="contractStatusDescEn" type="xs:string" />
+      <xs:element minOccurs="0" name="dueDate" type="xs:string" />
+      <xs:element minOccurs="0" name="effRate" type="xs:string" />
+      <xs:element minOccurs="0" name="firstDueDate" type="xs:string" />
+      <xs:element minOccurs="0" name="flatRate" type="xs:string" />
+      <xs:element minOccurs="0" name="paidTerm" type="xs:string" />
+      <xs:element minOccurs="0" name="payMDate" type="xs:string" />
+      <xs:element minOccurs="0" name="prnAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="term" type="xs:string" />
+      <xs:element minOccurs="0" name="uidAmount" type="xs:string" />
+      <xs:element minOccurs="0" name="vatAmount" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inquiryCustomerByCardId">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="customerByCardId" nillable="true" type="tns:customerByCardId" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="customerByCardId">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="customer" type="tns:customer" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="customer">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="boiFlag" type="xs:string" />
+      <xs:element minOccurs="0" name="branchCode" type="xs:string" />
+      <xs:element minOccurs="0" name="cardId" type="xs:string" />
+      <xs:element minOccurs="0" name="cardType" type="xs:string" />
+      <xs:element minOccurs="0" name="customerCode" type="xs:string" />
+      <xs:element minOccurs="0" name="customerName" type="xs:string" />
+      <xs:element minOccurs="0" name="customerNameEn" type="xs:string" />
+      <xs:element minOccurs="0" name="customerSurName" type="xs:string" />
+      <xs:element minOccurs="0" name="customerSurNameEn" type="xs:string" />
+      <xs:element minOccurs="0" name="customerTitle" type="xs:string" />
+      <xs:element minOccurs="0" name="customerTitleEn" type="xs:string" />
+      <xs:element minOccurs="0" name="nickName" type="xs:string" />
+      <xs:element minOccurs="0" name="otherId" type="xs:string" />
+      <xs:element minOccurs="0" name="otherIdType" type="xs:string" />
+      <xs:element minOccurs="0" name="passportNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="phoneNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="status" type="xs:string" />
+      <xs:element minOccurs="0" name="swiftCode" type="xs:string" />
+      <xs:element minOccurs="0" name="taxId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractForBarcodeRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="contractNumber" type="xs:string" />
+          <xs:element minOccurs="0" name="fleetFlag" type="xs:string" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractForBarcodeResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="inquiryContractForBarcode" type="tns:inquiryContractForBarcode" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractForBarcode">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="barcode" type="xs:string" />
+      <xs:element minOccurs="0" name="compulsary" type="tns:viewCompulsary" />
+      <xs:element minOccurs="0" name="contractCar" type="tns:contractCar" />
+      <xs:element minOccurs="0" name="contractMaster" type="tns:contractMaster" />
+      <xs:element minOccurs="0" name="customer" type="tns:customer" />
+      <xs:element minOccurs="0" name="reference1" type="xs:string" />
+      <xs:element minOccurs="0" name="reference2" type="xs:string" />
+      <xs:element minOccurs="0" name="voluntary" type="tns:viewVoluntary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewCompulsary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="compExpiryDate" type="xs:string" />
+      <xs:element minOccurs="0" name="compulsaryYear" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewVoluntary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="volExpiryDate" type="xs:string" />
+      <xs:element minOccurs="0" name="voluntaryYear" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inquiryCustomerContractListRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="carLicensePlate" type="xs:string" />
+          <xs:element minOccurs="0" name="cardID" type="xs:string" />
+          <xs:element minOccurs="0" name="contractName" type="xs:string" />
+          <xs:element minOccurs="0" name="contractNo" type="xs:string" />
+          <xs:element minOccurs="0" name="custName" type="xs:string" />
+          <xs:element minOccurs="0" name="custType" type="xs:string" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryCustomerContractListResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="inquiryCustomerContractListResponse" nillable="true" type="tns:inquiryCustomerContractList" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryCustomerContractList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cifId" type="xs:string" />
+      <xs:element minOccurs="0" name="contractBranch" type="xs:string" />
+      <xs:element minOccurs="0" name="contractFlag" type="xs:string" />
+      <xs:element minOccurs="0" name="contractName" type="xs:string" />
+      <xs:element minOccurs="0" name="contractNo" type="xs:string" />
+      <xs:element minOccurs="0" name="contractStatus" type="xs:string" />
+      <xs:element minOccurs="0" name="contractStatusDescription" type="xs:string" />
+      <xs:element minOccurs="0" name="customerCardCountryIssue" type="xs:string" />
+      <xs:element minOccurs="0" name="customerCardType" type="xs:string" />
+      <xs:element minOccurs="0" name="customerCardTypeDescription" type="xs:string" />
+      <xs:element minOccurs="0" name="customerIdNo" type="xs:string" />
+      <xs:element minOccurs="0" name="customerType" type="xs:string" />
+      <xs:element minOccurs="0" name="description" type="xs:string" />
+      <xs:element minOccurs="0" name="dueDate" type="xs:string" />
+      <xs:element minOccurs="0" name="firstName" type="xs:string" />
+      <xs:element minOccurs="0" name="lastName" type="xs:string" />
+      <xs:element minOccurs="0" name="licenseNo" type="xs:string" />
+      <xs:element minOccurs="0" name="licenseProvince" type="xs:string" />
+      <xs:element minOccurs="0" name="payByBillFlag" type="xs:string" />
+      <xs:element minOccurs="0" name="payOffFlag" type="xs:string" />
+      <xs:element minOccurs="0" name="payOtherFlag" type="xs:string" />
+      <xs:element minOccurs="0" name="productCode" type="xs:string" />
+      <xs:element minOccurs="0" name="productName" type="xs:string" />
+      <xs:element minOccurs="0" name="titleName" type="xs:string" />
+      <xs:element minOccurs="0" name="viewBillDetailFlag" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="lockCarRegisterBookRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="carChassisNo" type="xs:string" />
+          <xs:element minOccurs="0" name="carLicencePlate" type="xs:string" />
+          <xs:element minOccurs="0" name="carLicenceProvince" type="xs:string" />
+          <xs:element minOccurs="0" name="lockRegisterBookFlag" type="xs:string" />
+          <xs:element minOccurs="0" name="requestDigitNo" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractCarByContractNoRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="contractNumber" type="xs:string" />
+          <xs:element minOccurs="0" name="fleetFlag" type="xs:string" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractCarByContractNoResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:commonResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="inquiryContractCar" type="tns:inquiryContractCarByContractNo" />
+          <xs:element minOccurs="0" name="paging" type="tns:paging" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="inquiryContractCarByContractNo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="contractCarByContractNo" nillable="true" type="tns:contractCarByContractNo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="contractCarByContractNo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="contractCar" type="tns:contractCar" />
+      <xs:element minOccurs="0" name="customer" type="tns:customer" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,1237 @@
+﻿@model CSM.Web.Models.ExportNcbViewModel
+@using CSM.Common.Resources
+@{
+    ViewBag.Title = Resource.Lbl_Report_NCB;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Report })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_Reports, "List", "Report", null, new { @class = "font-blue" })</strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_Report_NCB</strong>
+}
+
+<div id="dvForm" class="form-box">
+    <h5 class="form-title">@Resource.Lbl_Report_NCB</h5>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        ชื่อ - นามสกุลลูกค้า
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    <div class="clear"></div>
+                    <div class="pull-left">
+                        @Html.TextBoxFor(model => model.SearchFilter.FirstName, new
+                        {
+                            @class = "form-control input-sm",
+                            @id = "txtFirstName",
+                            @style = "width:178px!important;display:block"
+                        })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.FirstName)
+                    </div>
+                    <div class="pull-left margin-left-5">
+                        @Html.TextBoxFor(model => model.SearchFilter.LastName, new
+                        {
+                            @class = "form-control input-sm",
+                            @id = "txtLastName",
+                            @style = "width:178px!important;display:block"
+                        })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.LastName)
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                        Subscription ID
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.CardId, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtCardId",
+                        @maxlength = CSM.Common.Utilities.Constants.MaxLength.CardNo,
+                        @style = "width:250px!important;"
+                    })
+                    @Html.ValidationMessageFor(model => model.SearchFilter.CardId)
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Product Group
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.ProductGroup, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtProductGroup",
+                        
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Date of Birth/<br />วันที่จดทะเบียน
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker3'>
+                                @Html.TextBoxFor(model => model.SearchFilter.BirthDate, new { @class = "form-control input-sm", @id = "txtBirthDate", @style = "width:123px!important", @onchange = "validateDateValue($jq(this));" })
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SearchFilter.BirthDate)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Product
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.Product, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtProduct",
+                        
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        SLA
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.DropDownListFor(m => m.SearchFilter.Sla, new SelectList(ViewBag.sla, "Value", "Text"),
+                        Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @style = "width:250px!important;", @id = "ddlSla" })
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Campaign/Service
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.Campaign, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtCampaign",                        
+                    })
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        SR Status
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.DropDownListFor(m => m.SearchFilter.SRStatus, new SelectList(ViewBag.srstatus, "Value", "Text"),
+                        Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @style = "width:250px!important;", @id = "ddlSRStatus" })
+                </div>
+            </div>
+        </div>
+
+        @*<div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        ประเภทลูกค้า
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.DropDownListFor(m => m.SearchFilter.CustomerType, new SelectList(ViewBag.customertype, "Value", "Text"),
+                        Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @style = "width:250px!important;", @id = "ddlCustomerType" })
+                </div>
+            </div>
+        </div>*@
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Type
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.Type, new
+                    {
+                        @class = "form-control input-sm ",
+                        @id = "txtType",
+
+                    })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Area
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.Area, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtArea",
+
+                    })
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Sub Area
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.SubArea, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtSubArea",
+
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Marketing Branch
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.UpperBranch, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtUpperBranch",
+
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Owner Branch
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.OwnerBranch, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtOwnerBranch",
+
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Owner SR
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.OwnerSR, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtOwnerSR",
+
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Creator Branch
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.CreatorBranch, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtCreatorBranch",
+
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Creator SR
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.CreatorSR, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtCreatorSR",
+
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Delegate Branch
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.DelegateBranch, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtDelegateBranch",
+
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Deletegate SR
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.DelegateSR, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtDelegateSR",
+
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        SR ID
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.SRId, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtSRId",
+
+                    })
+                    @Html.ValidationMessageFor(model => model.SearchFilter.SRId)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-group-static">
+                        SR Created Date
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    <div class="clear"></div>
+                    <div class="pull-left form-inline">
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker1'>
+                                @Html.TextBoxFor(model => model.SearchFilter.SRDateFrom, new { @class = "form-control input-sm", @id = "txtSRDateFrom", @style = "width:123px!important", @onchange = "validateDateValue($jq(this));" })
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SearchFilter.SRDateFrom)
+                        </div>
+                    </div>
+                    <div class="pull-left padding-left-10 padding-right-10 padding-top-5">
+                        To.
+                    </div>
+                    <div class="pull-left form-inline">
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker2'>
+                                @Html.TextBoxFor(model => model.SearchFilter.SRDateTo, new { @class = "form-control input-sm", @id = "txtSRDateTo", @style = "width:123px!important", @onchange = "validateDateValue($jq(this));" })
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SearchFilter.SRDateTo)
+                        </div>
+                    </div>
+                    <div class="dvDateRange clear"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-group-static">
+                        SR Created Time
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    <div class="clear"></div>
+                    <div class="pull-left form-inline">
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.SearchFilter.SRTimeFrom,
+                            new
+                            {
+                                @class = "form-control input-sm",
+                                @style = "width:160px!important",
+                                @id = "txtSRTimeFrom",
+                                @onchange = "formatTime($jq(this));",
+                                @onpaste = "return validatePaste('Digit');",
+                                @onkeypress = " return validateNumber(event);",
+                                @placeholder = "กรอกเวลาในรูปแบบ HHmm"
+                            })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.SRTimeFrom)
+                        </div>
+                    </div>
+                    <div class="pull-left padding-left-10 padding-right-10 padding-top-5">
+                        To.
+                    </div>
+                    <div class="pull-left form-inline">
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.SearchFilter.SRTimeTo,
+                            new
+                            {
+                                @class = "form-control input-sm",
+                                @style = "width:160px!important",
+                                @id = "txtSRTimeTo",
+                                @onchange = "formatTime($jq(this));",
+                                @onpaste = "return validatePaste('Digit');",
+                                @onkeypress = " return validateNumber(event);",
+                                @placeholder = "กรอกเวลาในรูปแบบ HHmm"
+                            })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.SRTimeTo)
+                        </div>
+                    </div>
+                    <div class="dvTimeRange clear"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</div>
+<div class="clear"></div>
+<div class="panel-actions">
+    <div class="pull-right">
+        <div class="form-inline">
+            <div class="form-group">
+                <button id="btnExport" class="btn btn-blue btn-sm btn-xsmall">
+                    <i class="fa fa-file-excel-o"></i>&nbsp;Export
+                </button>
+            </div>
+            <div class="form-group">
+                <button id="btnReset" class="btn btn-gray btn-sm btn-xsmall">
+                    Clear
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        var searchFilter;
+        var successFilter;
+        var pageSize = 20;
+
+        $jq(document).ready(function () {
+            initializeSearchFilter();
+            initDisabledSR(); // waiting remove
+
+            $jq("#dvForm").keypress(function (e) {
+                var kCode = e.keyCode || e.charCode; //for cross browser
+                if (kCode == 13) {
+                    $jq("#btnExport").focus();
+                    $jq("#btnExport").click();
+                    return false;
+                }
+            });
+
+            $jq("#btnExport").click(function (e) {
+                e.preventDefault();
+                clearServerErrors();
+
+                searchFilter.FirstName = $jq("#txtFirstName").val().trim(),
+                    searchFilter.LastName = $jq("#txtLastName").val().trim(),
+                    searchFilter.CardId = $jq("#txtCardId").val().trim(),
+                    searchFilter.BirthDate = $jq("#txtBirthDate").val(),
+                    searchFilter.ProductGroup = $jq("#txtProductGroup").val(),
+                    searchFilter.Product = $jq("#txtProduct").val(),
+                    searchFilter.Campaign = $jq("#txtCampaign").val(),
+                    searchFilter.Type = $jq("#txtType").val(),
+                    searchFilter.Area = $jq("#txtArea").val(),
+                    searchFilter.SubArea = $jq("#txtSubArea").val(),
+                    searchFilter.OwnerSR = $jq("#txtOwnerSR").val(),
+                    searchFilter.OwnerBranch = $jq("#txtOwnerBranch").val(),
+                    //searchFilter.CustomerType = $jq("#ddlCustomerType").val(),
+                    searchFilter.Sla = $jq("#ddlSla").val(),
+                    searchFilter.UpperBranch = $jq("#txtUpperBranch").val(),
+                    searchFilter.CreatorBranch = $jq("#txtCreatorBranch").val(),
+                    searchFilter.CreatorSR = $jq("#txtCreatorSR").val(),
+                    searchFilter.DelegateBranch = $jq("#txtDelegateBranch").val(),
+                    searchFilter.DelegateSR = $jq("#txtDelegateSR").val(),
+                    searchFilter.SRStatus = $jq("#ddlSRStatus").val(),
+                    searchFilter.SRId = $jq("#txtSRId").val().trim(),
+                    searchFilter.SRDateFrom = $jq("#txtSRDateFrom").val(),
+                    searchFilter.SRDateTo = $jq("#txtSRDateTo").val(),
+                    searchFilter.SRTimeFrom = $jq("#txtSRTimeFrom").val(),
+                    searchFilter.SRTimeTo = $jq("#txtSRTimeTo").val(),
+                    searchFilter.ProductGroupName = $jq("#hiddenProductGroupName").val(),
+                    searchFilter.ProductName = $jq("#hiddenProductName").val(),
+                    searchFilter.SlaName = $jq("#ddlSla option:selected").text(),
+                    searchFilter.CampaignName = $jq("#hiddenCampaignName").val(),
+                    searchFilter.SRStatusName = $jq("#ddlSRStatus option:selected").text(),
+                    searchFilter.TypeName = $jq("#hiddenTypeName").val(),
+                    searchFilter.AreaName = $jq("#hiddenAreaName").val(),
+                    searchFilter.SubAreaName = $jq("#hiddenSubAreaName").val(),
+                    searchFilter.UpperBranchName = $jq("#hiddenUpperBranchName").val(),
+                    searchFilter.OwnerBranchName = $jq("#hiddenOwnerBranchName").val(),
+                    searchFilter.OwnerSRName = $jq("#hiddenOwnerSRName").val(),
+                    searchFilter.CreatorBranchName = $jq("#hiddenCreatorBranchName").val(),
+                    searchFilter.CreatorSRName = $jq("#hiddenCreatorSRName").val(),
+                    searchFilter.DelegateBranchName = $jq("#hiddenDelegateBranchName").val(),
+                    searchFilter.DelegateSRName = $jq("#hiddenDelegateSRName").val(),
+                    searchFilter.PageNo = 1;
+                loadExportNcb();
+                return false;
+            });
+
+            $jq("#btnReset").click(function (e) {
+                e.preventDefault();
+                //$jq('[id^=datetimepicker]').datepicker("setDate", new Date());
+                $jq('#datetimepicker1').datepicker("setDate", (new Date()).toDateString());
+                $jq('#datetimepicker2').datepicker("setDate", (new Date()).toDateString());
+                $jq('#datetimepicker3').datepicker("setDate", (new Date()).toDateString());
+                $jq("#dvForm input[type='text'],#dvForm select").val('');
+                $jq('#datetimepicker1').datepicker("update");
+                $jq('#datetimepicker2').datepicker("update");
+                $jq('#datetimepicker3').datepicker("update");
+
+                $jq("#txtProductGroup").select2("val", "");
+                $jq("#txtProduct").select2("val", "");
+                $jq("#txtCampaign").select2("val", "");
+                $jq("#txtType").select2("val", "");
+                $jq("#txtArea").select2("val", "");
+                $jq("#txtSubArea").select2("val", "");
+                $jq("#txtOwnerSR").select2("val", "");
+                $jq("#txtOwnerBranch").select2("val", "");
+                $jq("#txtUpperBranch").select2("val", "");
+                $jq("#txtCreatorBranch").select2("val", "");
+                $jq("#txtCreatorSR").select2("val", "");
+                $jq("#txtDelegateBranch").select2("val", "");
+                $jq("#txtDelegateSR").select2("val", "");
+
+                initDisabledSR(); // waiting remove
+
+                initializeSearchFilter();
+
+                $jq("#dvSearchResult").html('');
+                clearServerErrors();
+                return false;
+            });
+
+            //AutoComplete
+            $jq("#txtProductGroup").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByProductGroupName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            productId: $jq("#txtProduct").val(),
+                            campaignId: $jq("#txtCampaign").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+
+            $jq("#txtProduct").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByProductName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            productGroupId: $jq("#txtProductGroup").val(),
+                            campaignId: $jq("#txtCampaign").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+
+            $jq("#txtCampaign").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByCampaignName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            productGroupId: $jq("#txtProductGroup").val(),
+                            productId: $jq("#txtProduct").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+
+            $jq("#txtType").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByTypeName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+
+            $jq("#txtArea").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByAreaName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            subAreaId: $jq("#txtSubArea").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+
+            $jq("#txtSubArea").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchBySubAreaName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            areaId: $jq("#txtArea").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+
+            $jq("#txtOwnerBranch").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByBranchName", "Report")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            userId: $jq("#txtOwnerSR").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+
+            bindOwnerSR();
+            bindCreatorSR();
+            bindDelegateSR();
+
+            $jq("#txtCreatorBranch").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByBranchName", "Report")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            userId: $jq("#txtCreatorSR").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+
+
+            $jq("#txtDelegateBranch").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByBranchName", "Report")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            userId: $jq("#txtDelegateSR").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+
+            $jq("#txtUpperBranch").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByBranchName", "Report")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+            //AutoComplete
+
+            var dateFormat = 'dd/mm/yyyy';
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker1').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker To Date
+            $jq('#datetimepicker2').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker BirthDate
+            $jq('#datetimepicker3').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+        });
+
+        function initializeSearchFilter() {
+            searchFilter = {
+                FirstName: $jq("#txtFirstName").val(),
+                LastName: $jq("#txtLastName").val(),
+                CardId: $jq("#txtCardId").val(),
+                BirthDate: $jq("#txtBirthDate").val(),
+                ProductGroup: $jq("#txtProductGroup").val(),
+                Product: $jq("#txtProduct").val(),
+                Campaign: $jq("#txtCampaign").val(),
+                Type: $jq("#txtType").val(),
+                Area: $jq("#txtArea").val(),
+                SubArea: $jq("#txtSubArea").val(),
+                OwnerSR: $jq("#txtOwnerSR").val(),
+                OwnerBranch: $jq("#txtOwnerBranch").val(),
+                //CustomerType: $jq("#ddlCustomerType").val(),
+                Sla: $jq("#ddlSla").val(),
+                UpperBranch: $jq("#txtUpperBranch").val(),
+                CreatorBranch: $jq("#txtCreatorBranch").val(),
+                CreatorSR: $jq("#txtCreatorSR").val(),
+                DelegateBranch: $jq("#txtDelegateBranch").val(),
+                DelegateSR: $jq("#txtDelegateSR").val(),
+                SRStatus: $jq("#ddlSRStatus").val(),
+                SRId: $jq("#txtSRId").val(),
+                SRDateFrom: $jq("#txtSRDateFrom").val(),
+                SRDateTo: $jq("#txtSRDateTo").val(),
+                SRTimeFrom: $jq("#txtSRTimeFrom").val(),
+                SRTimeTo: $jq("#txtSRTimeTo").val(),
+                PageNo: '@Model.SearchFilter.PageNo',
+                PageSize: '@Model.SearchFilter.PageSize',
+                SortField: '@Model.SearchFilter.SortField',
+                SortOrder: '@Model.SearchFilter.SortOrder'
+            };
+            successFilter = searchFilter;
+        };
+
+        function loadExportNcb() {
+            if (searchFilter.FirstName == "" &&
+                searchFilter.LastName == "" &&
+                searchFilter.CardId == "" &&
+                searchFilter.BirthDate == "" &&
+                searchFilter.ProductGroup == "" &&
+                searchFilter.Product == "" &&
+                searchFilter.Campaign == "" &&
+                searchFilter.Type == "" &&
+                searchFilter.Area == "" &&
+                searchFilter.SubArea == "" &&
+                searchFilter.OwnerSR == "" &&
+                searchFilter.OwnerBranch == "" &&
+                //searchFilter.CustomerType == "" &&
+                searchFilter.Sla == "" &&
+                searchFilter.UpperBranch == "" &&
+                searchFilter.CreatorBranch == "" &&
+                searchFilter.CreatorSR == "" &&
+                searchFilter.DelegateBranch == "" &&
+                searchFilter.DelegateSR == "" &&
+                searchFilter.SRStatus == "" &&
+                searchFilter.SRId == "" &&
+                searchFilter.SRDateFrom == "" &&
+                searchFilter.SRDateTo == "" &&
+                searchFilter.SRTimeFrom == "" &&
+                searchFilter.SRTimeTo == "" 
+                ) {
+                var warningMsg = '@Resource.Msg_EnteredAtLeastOneCriteria';
+                doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+                return false;
+            }
+
+            $jq.ajax({
+                url: '@Url.Action("LoadNcbExcel", "Report")',
+                type: "POST",
+                data: addAntiForgeryToken(searchFilter),
+                dataType: "json",
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == true) {
+                        var url = '@Url.Action("PrintNcbExcel", "Report")';
+                        $jq('#dvTarget').html('');
+                        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+                        $jq('#dvTarget').append('<form action="' + url + '" method="POST" class="hidden"></form>');
+                        $jq('#dvTarget form').append($jq(inputToken));
+                        $jq('#dvTarget form').submit();
+                        return;
+                    } else {
+                        if (result.Error != "") {
+                            var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', result.Error);
+                            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                        }
+                        else {
+                            showServerErrors(result);
+                        }
+                    }
+                    scrollToTop();
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function bindOwnerSR() {
+            $jq("#txtOwnerSR").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByActionName", "Report")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            branchId: $jq("#txtOwnerBranch").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function bindCreatorSR() {
+            $jq("#txtCreatorSR").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByActionName", "Report")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            branchId: $jq("#txtCreatorBranch").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function bindDelegateSR() {
+            $jq("#txtDelegateSR").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByActionName", "Report")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            branchId: $jq("#txtDelegateBranch").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        // ======== waiting remove =======
+        function initDisabledSR() {
+
+            $jq("#txtOwnerSR").prop('disabled', true);
+            $jq("#txtCreatorSR").prop('disabled', true);
+            $jq("#txtDelegateSR").prop('disabled', true);
+            bindOwnerSR();
+            bindCreatorSR();
+            bindDelegateSR();
+
+            $jq("#txtOwnerBranch").change(function (event) {
+                if ($jq(this).val() != '') {
+                    $jq("#txtOwnerSR").select2("val", "");
+                    $jq("#txtOwnerSR").prop("disabled", false);
+                    bindOwnerSR();
+                }
+                else {
+                    $jq("#txtOwnerSR").select2("val", "");
+                    $jq("#txtOwnerSR").prop("disabled", true);
+                    bindOwnerSR();
+                }
+                return false;
+            });
+
+            $jq("#txtCreatorBranch").change(function (event) {
+                if ($jq(this).val() != '') {
+                    $jq("#txtCreatorSR").select2("val", "");
+                    $jq("#txtCreatorSR").prop("disabled", false);
+                    bindCreatorSR();
+                }
+                else {
+                    $jq("#txtCreatorSR").select2("val", "");
+                    $jq("#txtCreatorSR").prop("disabled", true);
+                    bindCreatorSR();
+                }
+                return false;
+            });
+
+            $jq("#txtDelegateBranch").change(function (event) {
+                if ($jq(this).val() != '') {
+                    $jq("#txtDelegateSR").select2("val", "");
+                    $jq("#txtDelegateSR").prop("disabled", false);
+                    bindDelegateSR();
+                }
+                else {
+                    $jq("#txtDelegateSR").select2("val", "");
+                    $jq("#txtDelegateSR").prop("disabled", true);
+                    bindDelegateSR();
+                }
+                return false;
+            });
+
+        }
+        // ======== end waiting remove =======
+
+    </script>
+}

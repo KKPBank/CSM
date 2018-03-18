@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CSM.Service.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="CSM_Service_CBSCustomerService_CBSCustomerService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://10.202.211.166:8088/ws/CBSCustomerService</Value>
+    </Setting>
+    <Setting Name="CSM_Service_CBSAccountService_CBSAccountService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://10.202.211.166:8088/ws/CBSAccountService</Value>
+    </Setting>
+    <Setting Name="CSM_Service_CBSLoanService_CBSLoanService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://10.202.211.166:8088/ws/CBSLoanService</Value>
+    </Setting>
+    <Setting Name="CSM_Service_CBSTermDepositService_CBSTermDepositService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://10.202.211.166:8088/ws/CBSTermDepositService</Value>
+    </Setting>
+    <Setting Name="CSM_Service_HPContractService_HPContractService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://10.202.104.111:9081/HPWS/HPContractService</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

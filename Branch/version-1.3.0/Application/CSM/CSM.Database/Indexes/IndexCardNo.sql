@@ -1,0 +1,11 @@
+﻿--for local development
+--CREATE UNIQUE INDEX idx_cardno
+--ON TB_M_CUSTOMER (CARD_NO);
+
+CREATE INDEX idx_cardno ON TB_M_CUSTOMER (CARD_NO);
+
+ALTER INDEX idx_cardno ON TB_M_CUSTOMER REORGANIZE ;
+GO
+
+ALTER INDEX idx_cardno ON TB_M_CUSTOMER REBUILD;
+GO

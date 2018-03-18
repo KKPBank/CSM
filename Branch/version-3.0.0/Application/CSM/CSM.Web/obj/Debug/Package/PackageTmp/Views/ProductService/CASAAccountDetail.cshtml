@@ -1,0 +1,305 @@
+﻿@using CSM.Entity
+@using CSM.Common.Resources
+@model CSM.Web.Models.CASAAccountDetailViewModel
+@{
+    ViewBag.Title = Resource.Lbl_CASAAccountDetail;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink(Resource.Lbl_SearchCustomer, "Search", "Customer", new { @skip = "1" }, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_CASAAccountDetail </strong>
+}
+
+@if (Model != null)
+{
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">@Resource.Lbl_CASAAccountDetail</h5>
+
+            <div id ="pnlCustomerInfo">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-control">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    CIF ID:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.CIF_ID)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-control">
+                            <div class="col-md-4">
+                                <p class="form-control-static" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                                    ประเภทลูกค้า :
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.CustomerType)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-control">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    วันเกิด:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.BirthDate)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-control">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    รหัสบัตรประชาชน / นิติบุคคล :
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.IDNumber)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-control">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    สัญชาติ :
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.CountryOfCitizenship)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-control">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    เบอร์โทรศัพท์ :
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.AccountAddress.PhoneNo)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-control">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    ชื่อลูกค้า :
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.CustomerFirstName)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-control">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    นามสกุลลูกค้า :
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.CustomerLastName)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-control">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    Email :
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.AccountAddress.EMail)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-group-control">
+                            <div class="col-md-1" style="width:11.11%">
+                                <p class="form-control-static">
+                                    ที่อยู่ :
+                                </p>
+                            </div>
+                            <div class="col-md-11" style="width:88.89%;padding-left:10px">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.AccountAddress.AddressDisplay)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div id="pnlAccountInfo">
+                <div class="row">
+                    <div class="col-lg-2">
+                    </div>
+                    <div class="col-lg-8">
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">เลขที่บัญชี</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.AccountNumber)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">ชื่อบัญชี</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.AccountName)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">ผลิตภัณฑ์(ประเภทบัญชีเงินฝาก)</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.LocalDescription)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Available Balance(ยอดเงินที่สามารถทำรายการได้)</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.AvailableBalance)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">วันที่เปิดบัญชี</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.DateOpenedDisplay)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">RM (ชื่อผู้ดูแลบัญชี)</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.Officer)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">สถานะบัญชี</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.AccountStatus)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">ประเภทสมุดบัญชี</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.PassbookFlag)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">เงื่อนไขการสั่งจ่าย</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.SignatureConditionDisplay)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">สาขา</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.BranchNumber)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-2">
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content">
+                <div id="dvSearchResult">
+                    @{
+                        Html.RenderPartial("~/Views/ProductService/_CASAAccountDetailList.cshtml", Model);
+                    }
+                </div>
+            </div>
+        
+        
+    </div>
+}
+

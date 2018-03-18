@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ticket id="">
+  <cid></cid>
+  <firstname></firstname>
+  <lastname></lastname>
+  <status></status>
+  <productGroupId></productGroupId>
+  <productId></productId>
+  <campaign></campaign>
+  <channelId></channelId>
+  <ownerLead></ownerLead>
+  <delegateLead></delegateLead>
+  <createdUser></createdUser>
+  <createdDateFrom></createdDateFrom>
+  <createdDateTo></createdDateTo>
+  <assignedDateFrom></assignedDateFrom>
+  <assignedDateTo></assignedDateTo>
+  <ownerBranch></ownerBranch>
+  <createdBranch></createdBranch>
+  <maxRecord></maxRecord>
+</ticket>

@@ -1,0 +1,11 @@
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\bin\Release\MvcPaging.dll
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\bin\Release\MvcPaging.pdb
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\bin\Release\System.Web.Mvc.dll
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\bin\Release\System.Web.WebPages.dll
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\bin\Release\System.Web.WebPages.Deployment.dll
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\bin\Release\System.Web.Mvc.xml
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\bin\Release\System.Web.WebPages.xml
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\bin\Release\System.Web.WebPages.Deployment.xml
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\obj\Release\MvcPaging.csprojResolveAssemblyReference.cache
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\obj\Release\MvcPaging.dll
+D:\MyProject\KiatnakinBank\CSM3_Corebank\SourceCode\Branch\version-3.1.0\Application\CSM\MvcPaging\obj\Release\MvcPaging.pdb

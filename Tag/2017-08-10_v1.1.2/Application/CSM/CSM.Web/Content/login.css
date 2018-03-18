@@ -1,0 +1,117 @@
+﻿html,body {
+background:#FFF
+}
+
+#logo {
+background:#fff url(../Images/kkb_logo.png) no-repeat;
+height:61px;
+width:100%;
+left:0;
+z-index:100;
+margin-bottom:30px!important
+}
+
+.login-panel {
+background:#FFF url(../Images/login_bg.png) no-repeat;
+width:100%!important;
+height:399px
+}
+
+.input-mini,.btn-mini {
+width:45px!important
+}
+
+.input-xsmall,.btn-xsmall {
+width:80px!important
+}
+
+.input-small,.btn-small {
+width:125px!important
+}
+
+.input-medium,.btn-medium {
+width:250px!important
+}
+
+.input-large,.btn-large {
+width:320px!important
+}
+
+.input-xlarge,.btn-xlarge {
+width:550px!important
+}
+
+.inner-addon {
+position:relative
+}
+
+.inner-addon .fa {
+position:absolute;
+padding:10px;
+pointer-events:none
+}
+
+.left-addon .fa {
+left:0
+}
+
+.right-addon .fa {
+right:0
+}
+
+.left-addon input {
+padding-left:30px
+}
+
+.right-addon input {
+padding-right:30px
+}
+
+.btn-blue {
+color:#FFF;
+background:#578ebe;
+border-color:#578ebe
+}
+
+.btn-blue:hover,.btn-blue.hover,.btn-blue:focus,.btn-blue.focus {
+color:#FFF!important;
+background:#3598dc!important;
+border-color:#3598dc!important
+}
+
+.btn-gray {
+color:#000;
+background:#EDEDED;
+border-color:#EDEDED
+}
+
+.btn-gray:hover,.btn-gray.hover,.btn-gray:focus,.btn-white.focus {
+color:#000!important;
+background:#F2F2F2!important;
+border-color:#F2F2F2!important
+}
+
+.form-group {
+margin-bottom:10px!important
+}
+
+.login-form {
+float:left;
+margin-left:750px;
+padding-top:70px;
+width:30%
+}
+
+ul,ol {
+padding-left:15px;
+padding-right:15px
+}
+
+.padding-top-10 {
+padding-top:10px!important
+}
+
+ul.remarks {
+font-size:12px!important;
+color:#D91E18!important
+}

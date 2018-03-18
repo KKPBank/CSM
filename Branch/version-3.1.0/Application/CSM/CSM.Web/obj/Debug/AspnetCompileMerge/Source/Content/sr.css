@@ -1,0 +1,305 @@
+﻿.collapse_container {
+    border: 1px solid #000000;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.collapse_header {
+    color: #008000;
+    cursor: pointer;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.sr textarea.input-sm {
+    padding: 5px 6px;
+}
+
+.sr-title {width:1150px}
+.srno.label {font-size: 12px;float:right; }
+
+.sr .input-sm .select2-chosen, .input-group-sm .select2-chosen,
+.sr .input-sm .select2-choice > span:first-child,
+.sr .input-group-sm .select2-choice > span:first-child,
+.sr .input-sm .select2-choices .select2-search-field input,
+.sr .input-group-sm .select2-choices .select2-search-field input {
+    padding: 5px 6px;
+}
+
+.form td {
+    padding: 3px;
+    vertical-align: middle;
+}
+
+    .form td.text {
+        padding-right: 10px;
+    }
+
+    .form td.input {
+        width: 200px;
+    }
+
+.form input[type=text],
+.form select {
+    width: 170px;
+    padding: 3px;
+}
+
+.form .text span {
+    color: red;
+    font-weight: bold;
+}
+
+.delete-active,
+.view {
+    cursor: pointer;
+}
+
+textarea {
+    border: 1px solid #999;
+    padding: 3px;
+}
+
+td.vtop {
+    vertical-align: top;
+}
+
+.qv_group {
+    font-weight: bold;
+    color: #008000;
+    border-bottom: 1px solid #008000;
+    margin: 10px 20px 0;
+    padding-bottom: 5px;
+}
+
+.qv_list {
+    padding-left: 40px;
+}
+
+    .qv_list table {
+        width: 900px;
+    }
+
+    .qv_list .result {
+        width: 80px;
+    }
+
+    .qv_list td {
+        padding: 3px;
+        border-bottom: 1px solid #ddd;
+    }
+
+img, a {
+    vertical-align: top;
+}
+
+.table > thead > tr > th {
+    vertical-align: middle;
+}
+
+.col_check {
+    width: 80px;
+}
+
+.col_status {
+    width: 80px;
+}
+
+.col_user {
+    width: 200px;
+}
+
+.col_datetime {
+    width: 150px;
+}
+
+.require {
+    color: red;
+}
+
+.note-editor.note-frame.panel {
+    margin: 0 !important;
+    min-height: 0 !important;
+}
+
+.sr .table .sortable {
+    color: mediumblue !important;
+}
+
+.form-horizontal .form-group label {
+    line-height: 12px;
+}
+
+.sr span.value {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #999999;
+    background: #eee;
+    display: inline-block;
+    width: 170px;
+    min-height: 28px;
+    padding: 5px;
+    vertical-align: top;
+}
+
+    .sr span.value.w80 {
+        width: 80px;
+    }
+    .sr span.value.w100 {
+        width: 100px;
+    }
+
+td.text {
+    font: 13px/13px Tahoma;
+    padding-top:10px;
+}
+
+td.text,
+td.input {
+    vertical-align: top;
+}
+
+.view {
+    vertical-align: top;
+    margin-top: 3px;
+}
+
+.fixed-table-container tbody td,
+.fixed-table-container tbody tr:first-child td {
+    white-space: nowrap;
+}
+
+    .fixed-table-container tbody td .th-inner,
+    .fixed-table-container thead th .th-inner {
+        padding: 0 3px;
+        line-height: 1.3em;
+    }
+
+.table > caption + thead > tr:first-child > td,
+.table > caption + thead > tr:first-child > th,
+.table > colgroup + thead > tr:first-child > td,
+.table > colgroup + thead > tr:first-child > th,
+.table > thead:first-child > tr:first-child > td,
+.table > thead:first-child > tr:first-child > th {
+    vertical-align: top;
+}
+
+.datatable tr {
+    border: none;
+}
+
+.fixed-table-container thead th:first-child {
+    border-top-left-radius: 0;
+}
+
+.modal-body {
+    padding: 10px 15px 0;
+}
+
+.input-sr {
+    width: 170px;
+}
+
+.input-sr-long {
+    width: 800px !important;
+}
+
+.is-verify-pass {
+    width: 100px;
+    display: inline-block;
+}
+
+.sr .modal-lg {
+    width: 1100px;
+}
+
+.sr .alert {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 5px 10px;
+}
+
+    .sr .alert .close {
+        font-size: 14px;
+    }
+
+    .address-for-send-doc {
+        width: 520px;
+        vertical-align: top;
+        display:inline-block;
+    }
+
+.sr .datatable > tbody > tr > td,
+.sr .datatable > tbody > tr > th,
+.sr .datatable > tfoot > tr > td,
+.sr .datatable > tfoot > tr > th,
+.sr .datatable > thead > tr > td,
+.sr .datatable > thead > tr > th {
+    white-space: nowrap;
+}
+
+.datepicker .table > tbody > tr > td,
+.datepicker .table > tbody > tr > th,
+.datepicker .table > tfoot > tr > td,
+.datepicker .table > tfoot > tr > th,
+.datepicker .table > thead > tr > td,
+.datepicker .table > thead > tr > th {
+    border-top:none;
+}
+
+.view-sr {
+    color:blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.view-sr:hover {
+    text-decoration: underline;
+}
+
+.sr .col_status {
+    width:80px;
+}
+.sr .col_status.sm {
+    font:bold 12px/12px Tahoma;
+}
+.sr .col_status.xs {
+    font:bold 11px/11px Tahoma;
+}
+.sr .form-long span.value {
+    width: 300px;
+}
+.pagination .input-page {
+    vertical-align: top;
+}
+.datepicker{z-index:10000 !important;}
+.activity_detail {
+    width: 100%;
+    margin: 5px;
+}
+.activity_detail td{
+    border:0 solid #fff;
+    vertical-align: top;
+}
+
+.doc_link {
+    color:mediumblue;
+    text-decoration: none;
+    cursor: pointer;
+}
+.doc_link:hover {
+    text-decoration: underline;
+}
+
+#addAttachmentModal .checkboxlist label,
+#editAttachmentModal .checkboxlist label {
+    font-weight: normal;
+}
+.pagination-label {
+    display: inline-block;
+    margin-top: 6px;
+}
+.activity_detail_container h5 {
+    border-bottom: 1px solid #999;
+    padding: 5px;
+}

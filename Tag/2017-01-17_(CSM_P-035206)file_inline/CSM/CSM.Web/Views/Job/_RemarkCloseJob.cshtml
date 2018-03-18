@@ -1,0 +1,120 @@
+﻿@model CSM.Web.Models.JobViewModel
+
+<div class="modal-dialog modal-sm" style="min-width:800px;">
+    <div id="dvRemarkForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">ระบุ Remark เพื่อ Close Job</h5>
+            @Html.HiddenFor(model => model.JobId, new { @id = "hddJobId" })
+            @Html.HiddenFor(model => model.JobStatus, new { @id = "hddJobStatus" })
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 left-label">Remark<span class="require">*</span> :</label>
+                        <div class="col-md-9 nopadding">
+                            @Html.TextAreaFor(model => model.Remark, new
+                            {
+                                @id = "txtRemark",
+                                @class = "form-control input-sm",
+                                @style = "min-width:550px;min-height: 150px;"
+                            })
+                            @Html.ValidationMessageFor(model => model.Remark)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="modal-footer">
+                <div class="col-md-4 text-left">
+                </div>
+                <div class="col-md-8">
+                    <button type="button" class="btn btn-blue btn-sm btn-xsmall" onclick="" id="btnConfirmCloseJob">
+                        <i class="fa fa-save"></i>&nbsp;Confirm
+                    </button>
+                    @*<button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" aria-hidden="true">Cancel</button>*@
+                    <button type="button" class="btn btn-gray btn-sm btn-xsmall" onclick="" id="btnCancelCloseJob">
+                        Cancel
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $jq(function () {
+
+        $jq('#btnConfirmCloseJob').click(function (e) {
+            e.preventDefault();
+            confirmCloseJob();
+            return false;
+        });
+
+        $jq("#btnCancelCloseJob").click(function (e) {
+            e.preventDefault();
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'doCancelCloseJob()', 'Confirm');
+            }
+            return false;
+        });
+
+    });
+
+    function doCancelCloseJob() {
+        hideModal('modalWindow');
+        $jq('#remarkCloseJobModal').modal('hide');
+        return false;
+    }
+
+    function confirmCloseJob() {
+        clearServerErrors();
+        var objJob = $jq("#form2").serialize();
+
+        $jq.ajax({
+            url: '@Url.Action("SaveRemarkCloseJob", "Job")',
+            type: "POST",
+            data: objJob,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid === true) {
+                    $jq('#remarkCloseJobModal').modal('hide');
+                    initSearch();
+                }
+                else if (result.Error != '') {
+                    $jq('#remarkCloseJobModal').modal('hide');
+                    reloadCommPoolEditWithMessage();
+                }
+                 else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+
+    function reloadCommPoolEditWithMessage() {
+        
+        var actionUrl = '@Url.Action("ReloadCommPoolEditWithMessage", "Job")';
+        $jq('#dvTarget').html('');
+        var inputJobId = $jq("<input>").attr("type", "hidden").attr("name", "jobId").val($jq('#hddJobId').val());
+        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+        $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+        $jq('#dvTarget form').append($jq(inputJobId));
+        $jq('#dvTarget form').append($jq(inputToken));
+        $jq('#dvTarget form').submit();
+    }
+    
+</script>

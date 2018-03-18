@@ -1,0 +1,212 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities;
+@model CSM.Web.Models.ContactViewModel
+@{
+    ViewBag.Title = (Model.RelationshipId != null && Model.RelationshipId > 0) ? Resource.Lbl_EditContactRelationship : Resource.Lbl_NewContactRelationship;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" })</strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink(Resource.Lbl_SearchContactRelationship, "Search", "Contact", null, new { @class = "font-blue" })
+    </strong>
+    @if (Model.RelationshipId != null && Model.RelationshipId > 0)
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_EditContactRelationship </strong>
+    }
+    else
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_NewContactRelationship </strong>
+    }
+}
+
+@using (Html.BeginForm("Edit", "Contact", FormMethod.Post, new { @class = "form-horizontal", @id = "form1" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.RelationshipId, new { @id = "hddRelationshipId" })
+    <input id="btnSubmitTrigger" type="submit" class="hidden" />
+    <div id="dvForm" class="form-box">
+        @if (Model.RelationshipId != null && Model.RelationshipId > 0)
+        {
+            <h5 class="form-title">@Resource.Lbl_EditContactRelationship</h5>            
+        }
+        else
+        {
+            <h5 class="form-title">@Resource.Lbl_NewContactRelationship</h5>            
+        }
+        @*<h5 class="form-title">บันทึก Contact Relationship</h5>*@
+        <div class="row margin-top-15">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            สถานะ&nbsp;<span class="required-field-block">*</span>:
+                        </p>
+                    </div>
+                    <div class="col-md-2 nopadding">    
+                        @Html.DropDownListFor(model => model.Status, Model.StatusList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @style = "width:165px!important;display:block" })
+                        @Html.ValidationMessageFor(model => model.Status)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            ชื่อความสัมพันธ์&nbsp;<span class="required-field-block">*</span>:
+                        </p>
+                    </div>
+                    <div class="col-md-5 nopadding">
+                        @Html.TextBoxFor(model => model.RelationshipName, new
+                        {
+                            @class = "form-control input-xlarge input-sm",
+                            @id = "txtRelationshipName",
+                            @maxLength = Constants.MaxLength.RelationshipName
+                        })
+                        @Html.ValidationMessageFor(model => model.RelationshipName)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            รายละเอียดความสัมพันธ์:
+                        </p>
+                    </div>
+                    <div class="col-md-10 nopadding">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                @Html.TextAreaFor(model => model.RelationshipDesc, new
+                                {
+                                    @class = "form-control input-xlarge input-sm",
+                                    @id = "txtRelationshipDesc"
+                                })
+                                @Html.ValidationMessageFor(model => model.RelationshipDesc)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            สร้างโดย:
+                        </p>
+                    </div>
+                    <div class="col-md-10 nopadding">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.CreateUser, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                            </div>
+                            <div class="form-group padding-left-20 padding-right-35">
+                                <p class="form-control-static">
+                                    วันที่สร้าง:&nbsp;
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            แก้ไขโดย:
+                        </p>
+                    </div>
+                    <div class="col-md-10 nopadding">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.UpdateUser, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                            </div>
+                            <div class="form-group padding-left-20 padding-right-35">
+                                <p class="form-control-static">
+                                    วันที่แก้ไข:
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.UpdateDate, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="panel-actions noborder">
+        <div class="pull-right">
+            <div class="form-inline">
+                <div class="form-group">
+                    <button id="btnSave" type="button" class="btn btn-blue btn-sm btn-xsmall">
+                        <i class="fa fa-save"></i>&nbsp;Save
+                    </button>
+                </div>
+                <div class="form-group">
+                    <button id="btnReset" type="button" class="btn btn-gray btn-sm btn-xsmall">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+}
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        $jq(function () {
+            $jq('#btnSave').click(function () {
+                $jq('#btnSubmitTrigger').click();
+            });
+
+            $jq('#form1').submit(function () {
+                $jq("#dvLoading").show();
+            });
+
+            $jq("#btnReset").click(function (e) {
+                e.preventDefault();
+                var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+                if ($jq.trim(msg) != '') {
+                    doModal('dvAlertMsg', 'Message Dialog', msg, 'initSearch()', 'Confirm');
+                }
+
+                return false;
+            });
+
+            var errorMsg = '@ViewBag.ErrorMessage';
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+
+        function initSearch() {
+            $jq("#dvLoading").show();
+            var actionUrl = '@Url.Action("Search", "Contact")';
+            $jq('#dvTarget').html('');
+            var input = $jq("<input>").attr("type", "hidden");
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+            $jq('#dvTarget form').append($jq(input));
+            $jq('#dvTarget form').submit();
+        }
+    </script>
+}

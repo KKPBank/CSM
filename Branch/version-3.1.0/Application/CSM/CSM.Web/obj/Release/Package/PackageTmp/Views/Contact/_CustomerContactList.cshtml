@@ -1,0 +1,171 @@
+﻿@model CSM.Web.Models.CustomerContactViewModel
+@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using MvcPaging;
+@helper LabelForSort(string headerText, string fieldName, string sortField, string sortOrder)
+{
+    <a href="javascript:;" onclick="sortField('@fieldName');return false;">
+        @headerText
+        @if (fieldName.ToLower().Equals(sortField.ToLower()))
+        {
+            if (sortOrder.Equals("ASC"))
+            {<i class="fa fa-sort-asc"></i>}
+            else
+            {<i class="fa fa-sort-desc"></i> }
+        }
+        else
+        {<i class="fa fa-sort"></i>}
+    </a>
+}
+
+@if (Model.ContactList == null || Model.SearchFilter.TotalRecords == 0)
+{
+    string sortField = Model.SearchFilter.SortField;
+    string sortOrder = Model.SearchFilter.SortOrder;
+    <div class="table-responsive margin-top-5">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th class="text-nowrap" style="width:8%!important;">Action</th>
+                    <th style="width:10%!important;" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">ID Number</th>
+                    <th style="width:10%!important;">ชื่อผู้ติดต่อ</th>
+                    <th style="width:10%!important;">นามสกุลผู้ติดต่อ</th>
+                    <th style="width:10%!important;">ความสัมพันธ์</th>
+                    <th style="width:10%!important;">เลขที่บัญชี/สัญญา/เลขที่กรมธรรม์</th>
+                    <th style="width:10%!important;">Product Group</th>
+                    <th style="width:10%!important;">Product</th>
+                    @*<th style="width:10%!important;">Grade/สถานะ</th>*@ 
+                    <th style="width:10%!important;">สถานะบัญชี/สัญญา</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="9" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string sortField = Model.SearchFilter.SortField;
+    string sortOrder = Model.SearchFilter.SortOrder;
+
+    <div class="form-inline nopadding">
+        <div class="form-group">
+            @Html.Raw(Html.Pager(
+                new Options
+                {
+                    PageSize = Model.SearchFilter.PageSize,
+                    TotalItemCount = Model.SearchFilter.TotalRecords,
+                    CurrentPage = Model.SearchFilter.PageNo,
+                    ItemTexts = new ItemTexts
+                    {
+                        First = "<i class='fa fa-step-backward' style='font-size: 0.8em'></i>",
+                        Previous = "<i class='fa fa-caret-left'></i>",
+                        Next = "<i class='fa fa-caret-right'></i>",
+                        Last = "<i class='fa fa-step-forward' style='font-size: 0.8em'></i>"
+                    },
+                    IsShowFirstLast = true,
+                    CssClass = "pager",
+                    IsShowInputPage = true
+                },
+                new { PageSize = ViewBag.PageSize }))
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("PageSize", new SelectList(ViewBag.PageSizeList, "Key", "Value"), new { @class = "form-control input-xs", id = "pagesizelist" })
+        </div>
+        <div class="form-group text-nowrap margin-left-8">
+            <strong>
+                @MvcHtmlString.Create(string.Format(Resource.Lbl_Paging, @Model.SearchFilter.FirstPageIndex, @Model.SearchFilter.LastPageIndex, @Model.SearchFilter.TotalRecordsDisplay))
+            </strong>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table id="tblContactList" class="table datatable" style="width:1500px!important;">
+            <thead>
+                <tr>
+                    <th class="center text-nowrap" style="width:5%!important;">Action</th>
+                    <th class="center text-nowrap" style="width:10%!important;" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">@LabelForSort("ID Number", "CardNo", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("ชื่อผู้ติดต่อ", "FirstNameThai", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("นามสกุลผู้ติดต่อ", "LastNameThai", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("ความสัมพันธ์", "RelationshipName", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("เลขที่บัญชี/สัญญา/เลขที่กรมธรรม์", "AccountNo", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("Product Group", "ProductGroup", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:13%!important;">@LabelForSort("Product", "Product", sortField, sortOrder)</th>
+                    @*<th class="center text-nowrap" style="width:10%!important;">@LabelForSort("Grade/สถานะ", "Grade", sortField, sortOrder)</th>*@
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("สถานะบัญชี/สัญญา", "Status", sortField, sortOrder)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ContactList)
+                {
+                    var accountEntity = item.Account ?? new CSM.Entity.AccountEntity();
+                    var relationShipEntity = item.Relationship ?? new CSM.Entity.RelationshipEntity();
+
+                    string addSrClick = string.Format("initNewSR('{0}','{1}','{2}');", item.CustomerId, item.AccountId, item.CustomerContactId);
+                    if ((item.CustomerNumber ?? 0) > 0)
+                    {
+                        var custNo = item.CustomerNumber ?? 0;
+                        var cbsCardTypeCode = (Model.CustomerInfo.CbsCardType == null ? "" : Model.CustomerInfo.CbsCardType.CardTypeCode);
+                        var cbsCardTypeName = (Model.CustomerInfo.CbsCardType == null ? "" : Model.CustomerInfo.CbsCardType.CardTypeName);
+                        var titleTh = (Model.CustomerInfo.TitleThai == null ? "" : Model.CustomerInfo.TitleThai.TitleName);
+                        var titleEn = (Model.CustomerInfo.TitleEnglish == null ? "" : Model.CustomerInfo.TitleEnglish.TitleName);
+                        var cardNo = Model.CustomerInfo.CardNo ?? "";
+                        var custFNameTh = Model.CustomerInfo.FirstNameThai ?? "";
+                        var custLNameTh = Model.CustomerInfo.LastNameThai ?? "";
+                        var custFNameEn = Model.CustomerInfo.FirstNameEnglish ?? "";
+                        var custLNameEn = Model.CustomerInfo.LastNameEnglish ?? "";
+                        var empCode = Model.CustomerInfo.EmployeeCode;
+                        var custType = Model.CustomerInfo.CustomerType.ToString();
+                        var phone = "";
+                        var fax = Model.CustomerInfo.Fax;
+                        var email = Model.CustomerInfo.Email;
+                        var birthDate = Model.CustomerInfo.BirthDateDisplay;
+                        var accId = item.AccountId ?? 0;
+                        var accStat = accountEntity.StatusDisplay;
+                        var accStatId = accountEntity.AccountStatus;
+                        var actionUrl = Url.Action("Create", "ServiceRequest");
+
+                        //initNewSRWithDefaData() ==> sr.js
+                        addSrClick = string.Format("initNewSRWithDefaData('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}'"
+                                                + ",'{9}','{10}','{11}','{12}','{13}','{14}'"
+                                                + ",'{15}','{16}', '{17}', '{18}'"
+                                                + ", '{19}', '{20}', '{21}', '{22}', '{23}', '{24}', '{25}', '{26}')"
+                                    , actionUrl, item.CustomerId ?? 0, custNo, cardNo, cbsCardTypeCode, cbsCardTypeName,  custType, birthDate
+                                    , titleTh, custFNameTh, custLNameTh, titleEn, custFNameEn, custLNameEn
+                                    , phone, fax, email, empCode
+                                    , accId, item.AccountNo, accStat, accStatId, accountEntity.AccountTypeDescription, accountEntity.Product,  accountEntity.BranchName, accountEntity.CarNo
+                                    , item.ContactId);
+                    }
+
+                    <tr>
+                        <td class="center text-nowrap">
+                            <a href="javascript:;" class="add" title="New SR" onclick="@addSrClick"></a>
+                            <span class="line-space"></span>
+                            <a href="javascript:;" class="edit-active" title="edit" onclick="editCustomerContact('@item.ContactId');"></a>
+                            <span class="line-space"></span>
+                            @if (item.IsEdit == true)
+                            {
+                                <a href="javascript:;" class="delete-active" title="delete" onclick="deleteCustomerContact('@item.CustomerContactId');"></a>
+                            }
+                            else
+                            {
+                                <a href="javascript:;" class="delete-disable" title="delete" onclick="return false;"></a>
+                            }
+                        </td>
+                        <td class="center text-nowrap">@item.CardNo</td>
+                        <td>@item.FirstNameThaiEng</td>
+                        <td>@item.LastNameThaiEng</td>
+                        <td>@item.RelationshipNameDisplay</td>
+                        <td class="center text-nowrap">@accountEntity.AccountDescDisplay</td>
+                        <td>@accountEntity.AccountTypeDescription</td>
+                        <td class="left text-nowrap" >@accountEntity.Product</td>
+                        @*<td>@accountEntity.Grade</td>*@
+                        <td>@accountEntity.StatusDisplay</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

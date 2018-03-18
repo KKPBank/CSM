@@ -1,0 +1,77 @@
+﻿@using CSM.Common.Resources
+@using MvcPaging
+@model CSM.Web.Models.TableViewModel
+
+<hr class="dashed-line clear"/>
+
+@if (Model.QuestionGroupTableList == null)
+{
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th class="center" style="width: 200px !important;"></th>
+                    <th>กลุ่มคำถาม</th>
+                    <th style="width: 200px !important;">จำนวนคำถาม</th>
+                    <th style="width: 200px !important;">จำนวนที่ผ่าน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="4" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="form-inline nopadding">
+    </div>
+    <div class="clearfix"></div>
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th class="center" style="width: 200px !important;"></th>
+                    <th>กลุ่มคำถาม</th>
+                    <th style="width: 200px !important;">จำนวนคำถาม</th>
+                    <th style="width: 200px !important;">จำนวนที่ผ่าน</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var tempSeq = 1;
+                    foreach (var item in Model.QuestionGroupTableList)
+                    {
+                        var itemSeq = "seq_" + tempSeq;
+                        <tr id="@tempSeq">
+                            <td class="center">
+                                <input type="hidden" class="hiddenQuestionGroupId" value="@item.QuestionGroupId" question_name="@item.QuestionGroupName" question_no="@item.QuestionGroupNo" seq="@tempSeq" />
+                                <a href='javascript:;' id="@itemSeq" onclick='onMoveRowClick("@itemSeq", "up") '>Up</a> |
+                                <a href='javascript:;' id="@itemSeq" onclick='onMoveRowClick("@itemSeq", "down") '>Down</a> |
+                                <a href='javascript:;' onclick='onCreateDeleteRowClick(@item.QuestionGroupId) '>Delete</a> |
+                                <a href='javascript:;' onclick='onViewRowClick(@item.QuestionGroupId) '>View</a>
+                            </td>
+                            <td>@item.QuestionGroupName</td>
+                            <td class="center">
+                                @item.QuestionGroupNo
+                            </td>
+                            <td>
+                                @if (item.QuestionGroupPassAmount.HasValue)
+                                {
+                                    <input type="text" class="form-control input-sm pass_amount money" data-m-dec="0" data-a-sep="" value="@item.QuestionGroupPassAmount.Value" />
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control input-sm pass_amount money" data-m-dec="0" data-a-sep="" />
+                                }
+                            </td>
+                        </tr>
+                                tempSeq++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}

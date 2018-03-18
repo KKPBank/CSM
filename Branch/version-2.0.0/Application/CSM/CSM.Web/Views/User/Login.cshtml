@@ -1,0 +1,129 @@
+﻿@using CSM.Common.Utilities
+@model CSM.Web.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Log in";
+    Layout = null;
+    var errorMessage = Model != null ? Html.Raw(Model.ErrorMessage) : null;
+    var ldapDomain = WebConfig.GetLdapDomainName();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href='@Url.Content("~/Images/favicon.ico")' />
+    <title>CSM - @ViewBag.Title</title>
+    @Styles.Render("~/Content/bootstrap/base")
+    @Styles.Render("~/Content/font-awesome")
+    @Styles.Render("~/Content/login.css")
+    @Styles.Render("~/Content/css")
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        @Scripts.Render("~/Scripts/html5shiv.js")
+        @Scripts.Render("~/Scripts/respond.min.js")
+    <![endif]-->
+</head>
+<body>
+    <div id="logo"></div>
+    <div class="container">
+        @{
+            ViewContext.ClientValidationEnabled = false;
+            using (Html.BeginForm("Login", "User", new { ReturnUrl = ViewBag.ReturnUrl },
+                FormMethod.Post, new { @class = "form-horizontal", @id = "frmLogin", @DefaultButton = "btn-login" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="login-panel">
+                    <div class="login-form">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @if (!string.IsNullOrWhiteSpace(ldapDomain))
+                                {
+                                    <select id="ddl" class="form-control">
+                                        <option selected="selected">@ldapDomain</option>
+                                    </select>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="inner-addon right-addon">
+                                    <i class="fa fa fa-user"></i>
+                                    @Html.TextBoxFor(u => u.UserName, new
+                                    {
+                                        @id = "login-username",
+                                        @class = "form-control",
+                                        @placeholder = "Enter Username Here",
+                                        @maxlength = @Constants.MaxLength.Username
+                                    })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="inner-addon right-addon">
+                                    <i class="fa fa fa-lock"></i>
+                                    @Html.PasswordFor(u => u.Password, new
+                                   {
+                                       @id = "login-password",
+                                       @class = "form-control ",
+                                       @placeholder = "Enter Password Here",
+                                       @maxlength = @Constants.MaxLength.Password
+                                   })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button type="submit" id="btn-login" class="btn btn-blue btn-sm">เข้าสู่ระบบ</button>
+                            </div>
+                        </div>
+                        <div class="form-group padding-top-10">
+                            <div class="col-md-12">
+                                <ul class="remarks">
+                                    <li>
+                                        คุณสามารถเข้าระบบได้ด้วย Account Windows ของคุณและห้ามกรอกรหัสผ่านเกิน 3 ครั้ง
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            }
+        }
+        <!-- Footer -->
+        <div id="footer">
+            @Html.Raw(ApplicationHelpers.GetCopyright())<text> | CSM Version </text>@ApplicationHelpers.GetDisplayDllLastUpdatedDate()<text> | </text>@ApplicationHelpers.GetDisplayMinimunRequirement()
+        </div>
+    </div>
+    <div id="dvAlertMsg"></div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/login.js")
+    <script type="text/javascript">
+        $jq(document).ready(function () {
+            var errorMsg = '@errorMessage';
+
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+
+            $jq("#frmLogin").keypress(function (e) {
+                var kCode = e.keyCode || e.charCode; //for cross browser
+                if (kCode == 13) {
+                    var defaultbtn = $jq(this).attr("DefaultButton");
+                    $jq("#" + defaultbtn).click();
+                    return false;
+                }
+            });
+
+            $jq("#login-username").focus();
+        });
+    </script>
+</body>
+</html>

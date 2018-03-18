@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<services>
+  <service name="CampaignByCustomer">
+    <service_name>CMT</service_name>
+    <username>CMT</username>
+    <password>CMT</password>
+    <reference_no></reference_no>
+    <system_code>CMT</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command>CampaignByCustomer</command>
+  </service>
+  <service name="UpdateCustomerFlags">
+    <service_name>CMT</service_name>
+    <username>CMT</username>
+    <password>CMT</password>
+    <reference_no></reference_no>
+    <system_code>CMT</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command>UpdateCustomerFlags</command>
+  </service>
+  <service name="InsertLead">
+    <service_name>SLM</service_name>
+    <username>slm_user5</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code></system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command></command>
+  </service>
+  <service name="SearchLead">
+    <service_name>COC</service_name>
+    <username>coc_user5</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>CallCenter</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command></command>
+  </service>
+  <service name="CreateActivityLog">
+    <service_name>CreateActivityLog</service_name>
+    <username>CSM</username>
+    <password>12345</password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command></command>
+  </service>
+  <service name="InquiryActivityLog">
+    <service_name>InquiryActivityLog</service_name>
+    <username>CSM</username>
+    <password>12345</password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command></command>
+  </service>
+  <service name="CreateProductMaster">
+    <service_name>CreateProductMaster</service_name>
+    <username>CMT</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>CMT</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command></command>
+  </service>
+  <service name="ImportSubscription">
+    <service_name>ImportSubscription</service_name>
+    <username>CIS</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>CIS</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command></command>
+  </service>
+  <service name="InsertOrUpdateBranch">
+    <service_name>CSMBranchService</service_name>
+    <username>SLM</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>SLM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id></channel_id>
+    <command>InsertOrUpdateBranch</command>
+  </service>
+  <service name="UpdateBranchCalendar">
+    <service_name>CSMBranchService</service_name>
+    <username>SLM</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>SLM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id></channel_id>
+    <command>UpdateBranchCalendar</command>
+  </service>
+  <service name="InsertOrUpdateUser">
+    <service_name>CSMUserServiceProxy</service_name>
+    <username>SLM</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>SLM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id></channel_id>
+    <command>InsertOrUpdateUser</command>
+  </service>
+  <service name="SearchSR">
+    <service_name>SearchSR</service_name>
+    <username>SLM</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>SLM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id></channel_id>
+    <command></command>
+  </service>
+  <service name="GetSR">
+    <service_name>GetSR</service_name>
+    <username>SLM</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>SLM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id></channel_id>
+    <command></command>
+  </service>
+  <service name="CreateSR">
+    <service_name>CreateSR</service_name>
+    <username>SLM</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>SLM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id></channel_id>
+    <command></command>
+  </service>
+  <service name="UpdateSR">
+    <service_name>UpdateSR</service_name>
+    <username>SLM</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>SLM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id></channel_id>
+    <command></command>
+  </service>
+  <service name="InquiryCustomerByInformation">
+    <service_name>InquiryCustomerByInformation</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryCustomerByInformation</command>
+  </service>
+  <service name="InquiryCustomerByAccount">
+    <service_name>InquiryCustomerByAccount</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryCustomerByAccount</command>
+  </service>
+  <service name="InquiryInstructionWithBank">
+    <service_name>InquiryInstructionWithBank</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryInstructionWithBank</command>
+  </service>
+  <service name="InquiryCustomerAddress">
+    <service_name>InquiryCustomerAddress</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryCustomerAddress</command>
+  </service>
+  <service name="InquiryCustomerContact">
+    <service_name>InquiryCustomerContact</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryCustomerContact</command>
+  </service>
+  <service name="InquiryServiceWithBank">
+    <service_name>InquiryServiceWithBank</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryServiceWithBank</command>
+  </service>
+  <service name="InquiryCustomerAccountSummary">
+    <service_name>InquiryCustomerAccountSummary</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryCustomerAccountSummary</command>
+  </service>
+  <service name="InquiryAccountAddress">
+    <service_name>InquiryAccountAddress</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryAccountAddress</command>
+  </service>
+  <service name="InquiryCASAAccountDetail">
+    <service_name>InquiryCASAAccountDetail</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryCASAAccountDetail</command>
+  </service>
+  <service name="InquiryCASAStatementHistory">
+    <service_name>InquiryCASAStatementHistory</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryCASAStatementHistory</command>
+  </service>
+  <service name="InquiryTDAccountByGroup">
+    <service_name>InquiryTDAccountByGroup</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryTDAccountByGroup</command>
+  </service>
+  <service name="InquiryTDAccountDetail">
+    <service_name>InquiryTDAccountDetail</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryTDAccountDetail</command>
+  </service>
+  <service name="InquiryLoanAccountOverview">
+    <service_name>InquiryLoanAccountOverview</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CSM</channel_id>
+    <command>InquiryLoanAccountOverview</command>
+  </service>
+  <service name="InquiryCustomerContractList">
+    <service_name>InquiryCustomerContractList</service_name>
+    <username></username>
+    <password></password>
+    <reference_no></reference_no>
+    <system_code>BPS</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>BPS</channel_id>
+    <command>InquiryCustomerContractList</command>
+  </service>
+</services>

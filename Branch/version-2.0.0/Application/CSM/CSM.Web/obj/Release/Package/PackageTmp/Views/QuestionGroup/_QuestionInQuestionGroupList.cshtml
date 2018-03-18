@@ -1,0 +1,60 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.QuestionGroupEditViewModel
+<hr class="dashed-line clear" />
+@if (Model.QuestionGroupInQuestionList == null)
+{
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th class="center" style="width: 200px !important;"></th>
+                    <th style="width: 150px !important;">ลำดับที่</th>
+                    <th>คำถาม</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="3" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="form-inline nopadding">
+    </div>
+    <div class="clearfix"></div>
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th class="center" style="width: 200px !important;"></th>
+                    <th style="width: 150px !important;">ลำดับที่</th>
+                    <th>คำถาม</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var seq = 1;
+                    foreach (var item in Model.QuestionGroupInQuestionList)
+                    {
+                        var itemSeq = "seq_" + seq;
+                        <tr>
+                            <td class="center">
+                                <input type="hidden" class="hiddenQuestionId" value="@item.QuestionId" question_name="@item.QuestionName"/>
+                                <a href='javascript:;' id="@itemSeq" onclick='onMoveRowClick("@itemSeq", "up")'>Up</a> |
+                                <a href='javascript:;' id="@itemSeq" onclick='onMoveRowClick("@itemSeq", "down")'>Down</a> |
+                                <a href='javascript:;' onclick='onDeleteRowClick(@item.QuestionId) '>Delete</a>
+                            </td>
+                            <td class="center td_seq">@item.SeqNo</td>
+                            <td>@item.QuestionName</td>
+                        </tr>
+                        seq++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+

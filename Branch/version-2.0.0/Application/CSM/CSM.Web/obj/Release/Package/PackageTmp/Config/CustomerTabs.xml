@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menus>
+  <menu>
+    <menu_code>01</menu_code>
+    <menu_name>Notes</menu_name>
+    <action_name>CustomerNote</action_name>
+    <controller_name>Customer</controller_name>
+    <tab_content>#tabNote</tab_content>
+    <css_class></css_class>
+  </menu>
+  <menu>
+    <menu_code>02</menu_code>
+    <menu_name>Contact</menu_name>
+    <action_name>List</action_name>
+    <controller_name>Contact</controller_name>
+    <tab_content>#tabContact</tab_content>
+    <css_class></css_class>
+  </menu>
+  <menu>
+    <menu_code>03</menu_code>
+    <menu_name>Existing Product</menu_name>
+    <action_name>List</action_name>
+    <controller_name>ExistingProduct</controller_name>
+    <tab_content>#tabExistingProduct</tab_content>
+    <css_class></css_class>
+  </menu>
+  <menu>
+    <menu_code>04</menu_code>
+    <menu_name>SR#</menu_name>
+    <action_name>List</action_name>
+    <controller_name>SR</controller_name>
+    <tab_content>#tabSR</tab_content>
+    <css_class></css_class>
+  </menu>
+  <menu>
+    <menu_code>05</menu_code>
+    <menu_name>Activity</menu_name>
+    <action_name>List</action_name>
+    <controller_name>Activity</controller_name>
+    <tab_content>#tabActivity</tab_content>
+    <css_class></css_class>
+  </menu>
+  <menu>
+    <menu_code>06</menu_code>
+    <menu_name>Existing Lead</menu_name>
+    <action_name>List</action_name>
+    <controller_name>ExistingLead</controller_name>
+    <tab_content>#tabExistingLead</tab_content>
+    <css_class></css_class>
+  </menu>
+  <menu>
+    <menu_code>07</menu_code>
+    <menu_name>Recommended Campaign</menu_name>
+    <action_name>List</action_name>
+    <controller_name>Campaign</controller_name>
+    <tab_content>#tabCampaign</tab_content>
+    <css_class></css_class>
+  </menu>
+  <menu>
+    <menu_code>08</menu_code>
+    <menu_name>Document</menu_name>
+    <action_name>List</action_name>
+    <controller_name>Document</controller_name>
+    <tab_content>#tabDocument</tab_content>
+    <css_class></css_class>
+  </menu>
+  <menu>
+    <menu_code>09</menu_code>
+    <menu_name>Logging</menu_name>
+    <action_name>List</action_name>
+    <controller_name>CustomerLog</controller_name>
+    <tab_content>#tabLogging</tab_content>
+    <css_class></css_class>
+  </menu>
+</menus>

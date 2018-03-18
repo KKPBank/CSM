@@ -1,0 +1,532 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@model CSM.Web.Models.CreateServiceRequestViewModel
+@{
+    ViewBag.Title = "New Service Request";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.ServiceRequest })
+}
+@section Breadcrumb {
+    <strong class="font-blue">Service Request &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink("Search Service Request", "Index", "ServiceRequest", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; New Service Request (Verify Question) </strong>
+}
+<style type="text/css">
+    .modal-lg {
+        width: 1100px;
+    }
+</style>
+
+<h5 class="form-title">New Service Request</h5>
+<hr class="dotted-line" />
+
+@using (Html.BeginForm("Create", "ServiceRequest", FormMethod.Post, new { @id = "frmCreateSr", @class = "sr" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div style="overflow: auto">
+        <div style="width: 1150px;">
+            @Html.Partial("_ViewCreateStep1", Model)
+
+            <div class="collapse_container">
+                <div class="collapse_header"><span class="collapse_sign">[&mdash;]</span> Verify Question</div>
+                <div class="collapse_body">
+
+                    @if (Model.MappingProduct != null && Model.MappingProduct.MappingProductQuestionGroups.Count > 0)
+                    {
+                        foreach (var group in Model.MappingProduct.MappingProductQuestionGroups)
+                        {
+                            <div class="qv">
+                                <div class="qv_group">@group.QuestionGroupName (ตอบถูกอย่างน้อย @group.RequireAmountPass ข้อ)</div>
+                                <div class="qv_list">
+                                    <table>
+                                        <tbody>
+                                            @for (int i = 0; i < group.Questions.Count; i++)
+                                            {
+                                                var question = group.Questions[i];
+                                                var seqNo = (i + 1);
+                                                var checkBoxName = "answer_" + @group.QuestionGroupId + "_" + @question.QuestionId;
+
+                                                var checkBoxCssClass = "answer_" + @group.QuestionGroupId;
+
+                                                var result = Request.Form[checkBoxName] ?? string.Empty;
+                                                var checkSkip = (string.IsNullOrEmpty(result) || result.ToUpper() == "SKIP") ? "checked='checked'" : string.Empty;
+                                                var checkPass = result.ToUpper() == "PASS" ? "checked='checked'" : string.Empty;
+                                                var checkFail = result.ToUpper() == "FAIL" ? "checked='checked'" : string.Empty;
+
+                                                <tr>
+                                                    <td>คำถามที่ @seqNo: @Html.Raw(question.QuestionName)</td>
+                                                    <td class="result"><label><input type="radio" class="answer @checkBoxCssClass" name="@checkBoxName" value="SKIP" @checkSkip> ข้าม</label></td>
+                                                    <td class="result"><label><input type="radio" class="answer @checkBoxCssClass" name="@checkBoxName" value="PASS" @checkPass> ถูก</label></td>
+                                                    <td class="result"><label><input type="radio" class="answer @checkBoxCssClass" name="@checkBoxName" value="FAIL" @checkFail> ผิด</label></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <table style="margin: 20px 0 5px" class="form">
+                        <tbody>
+                            <tr>
+                                <td style="width:200px" class="text">Verify Result <span>*</span>:</td>
+                                <td class="input">
+                                    <table width="1000">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" name="MappingProductId" value="@((Model.MappingProductId ?? 0).ToString())" />
+                                                    <input type="hidden" name="IsVerify" value="@Model.IsVerify.ToString()" />
+                                                    @Html.TextBoxFor(model => model.IsVerifyPass, new { @id = "txtIsVerifyPass", @class = "form-control input-sm is-verify-pass", @readonly = "readonly" })
+                                                    <span id="btnVerify" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Verify</span>
+                                                    @Html.ValidationMessageFor(model => model.IsVerifyPass)
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            @if (Model.MappingProduct.IsVerifyOTP)
+                            {
+                                <tr>
+                                    <td style="width:200px" class="text">สถานะ Generate/Verify OTP :</td>
+                                    <td class="input">
+                                        <table width="1000">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width: 450px">
+                                                        @Html.TextBox("VerifyOTPStatus", "-", new { @id = "txtVerifyOTPStatus", @class = "form-control input-sm is-verify-pass", @readonly = "readonly", @style= "width: 300px !important;" })
+                                                        <span id="btnVerifyOTP" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Generate OTP</span>
+                                                        @Html.HiddenFor(m => m.OTPRefNo, new { @id = "hdfOTPRefNo" })
+                                                    </td>
+                                                    <td>
+                                                        <span id="btnOTPHistory" class="btn btn-sm" title="Show OTP History"><img src="~/Images/History_icon.jpg" />History</span>
+                                                        <span id="btnOTPRefresh" class="btn btn-sm" title="Refresh OTP Status"><img src="~/Images/refresh.png" />ดูผลการ Verify</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:200px" class="text">เหตุผล :</td>
+                                    <td class="input">
+                                        <table width="1000">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width: 450px">
+                                                        @Html.TextBox("VerifyOTPStatusDesc", "-", new { @id = "txtVerifyOTPStatusDesc", @class = "form-control input-sm is-verify-pass", @readonly = "readonly", @style = "width: 300px !important;" })
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <td class="text">Subject <span>*</span>: </td>
+                                <td class="input">
+                                    @Html.TextBoxFor(model => model.Subject, new { @id = "txtSubject", @class = "form-control input-sm input-sr-long" })
+                                    @Html.ValidationMessageFor(model => model.Subject)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text vtop">Remark: </td>
+                                <td class="input">
+                                    @Html.TextAreaFor(model => model.Remark, new { @id = "txtRemark", @class = "summernote" })
+                                    @Html.HiddenFor(model => model.RemarkOriginal, new { @id = "RemarkOriginal" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <button id="btnBack" name="CommandButton" class="btn btn-sm btn-default cancel" value="BackOnStep2"><i class="fa fa-arrow-left"></i> Back</button>
+                <button id="btnNext" name="CommandButton" class="btn btn-sm btn-primary" value="NextOnStep2" onclick="return btnNextClick()">Next <i class="fa fa-arrow-right"></i></button>
+                <a href="@Url.Action("Index")" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</a>
+            </div>
+        </div>
+    </div>
+    <div id="modalRemark" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="overflow-y:auto;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body" id="modalRemarkBody">
+                    <br />
+                    @Html.Raw(Model.RemarkOriginal)
+                </div>
+                <div class="modal-footer">
+                    <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalOTPHis" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="overflow: scroll;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                    <h4 class="modal-title">Send OTP History</h4>
+                </div>
+                <div class="modal-body" id="modalOTPHisBody"></div>
+                <div class="modal-footer">
+                    <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.SrId)
+
+    @Html.HiddenFor(model => model.PhoneNo)
+    @Html.HiddenFor(model => model.CallId)
+
+    <input type="hidden" name="SrPageId" value="@Model.SrPageId" />
+    <input type="hidden" name="SrPageCode" value="@Model.SrPageCode" />
+
+    @Html.HiddenFor(model => model.CreatorBranchId)
+    @Html.HiddenFor(model => model.CreatorBranchCode)
+    @Html.HiddenFor(model => model.CreatorBranchName)
+    @Html.HiddenFor(model => model.CreatorUserId)
+    @Html.HiddenFor(model => model.CreatorUserFullName)
+
+    <input type="hidden" name="DefaultOwnerUserId" value="@Model.DefaultOwnerUserId" />
+    <input type="hidden" name="DefaultOwnerUserFullName" value="@Model.DefaultOwnerUserFullName" />
+    <input type="hidden" name="DefaultOwnerBranchId" value="@Model.DefaultOwnerBranchId" />
+    <input type="hidden" name="DefaultOwnerBranchName" value="@Model.DefaultOwnerBranchName" />
+
+    @Html.HiddenFor(model => model.AddressSendDocId)
+    @Html.HiddenFor(model => model.AddressSendDocText)
+
+    @Html.HiddenFor(model => model.AfsAssetId, new { @id = "hiddenAfsAssetId" })
+    @Html.HiddenFor(model => model.AfsAssetNo)
+    @Html.HiddenFor(model => model.AfsAssetDesc)
+
+    @Html.HiddenFor(model => model.NCBBirthDate, new { @id = "hiddenNCBBirthDate" })
+    @Html.HiddenFor(model => model.NCBCheckStatus, new { @id = "hiddenNCBCheckStatus" })
+    <input type="hidden" name="NCBMarketingUserId" value="@Model.NCBMarketingUserId" />
+    <input type="hidden" name="NCBMarketingName" value="@Model.NCBMarketingName" />
+    <input type="hidden" name="NCBMarketingBranchId" value="@Model.NCBMarketingBranchId" />
+    <input type="hidden" name="NCBMarketingBranchName" value="@Model.NCBMarketingBranchName" />
+    <input type="hidden" name="NCBMarketingBranchUpper1Id" value="@Model.NCBMarketingBranchUpper1Id" />
+    <input type="hidden" name="NCBMarketingBranchUpper1Name" value="@Model.NCBMarketingBranchUpper1Name" />
+    <input type="hidden" name="NCBMarketingBranchUpper2Id" value="@Model.NCBMarketingBranchUpper2Id" />
+    <input type="hidden" name="NCBMarketingBranchUpper2Name" value="@Model.NCBMarketingBranchUpper2Name" />
+
+    @Html.HiddenFor(model => model.OwnerBranchId, new { @id = "hiddenOwnerBranchId" })
+    @Html.HiddenFor(model => model.OwnerBranchName)
+    @Html.HiddenFor(model => model.OwnerUserId, new { @id = "hiddenOwnerUserId" })
+    @Html.HiddenFor(model => model.OwnerUserFullName)
+    @Html.HiddenFor(model => model.DelegateBranchId)
+    @Html.HiddenFor(model => model.DelegateBranchName)
+    @Html.HiddenFor(model => model.DelegateUserId)
+    @Html.HiddenFor(model => model.DelegateUserFullName)
+
+    <input type="hidden" name="IsEmailDelegate" value="@Model.IsEmailDelegate.ToString()" />
+    <input type="hidden" name="IsClose" value="@Model.IsClose.ToString()" />
+
+    @Html.HiddenFor(model => model.SrEmailTemplateId, new { @id = "hiddenSrEmailTemplateId" })
+    @Html.HiddenFor(model => model.ActivityTypeId, new { @id = "hiddenActivityTypeId" })
+
+    @Html.HiddenFor(model => model.ActivityDescription, new { @id = "hiddenActivityDescription" })
+
+    @Html.HiddenFor(model => model.SendMailSender, new { @id = "hiddenSendMailSender" })
+    @Html.HiddenFor(model => model.SendMailTo, new { @id = "hiddenSendMailTo" })
+    @Html.HiddenFor(model => model.SendMailCc)
+    @Html.HiddenFor(model => model.SendMailSubject, new { @id = "hiddenSendMailSubject" })
+    <div style="display: none">
+        @Html.TextAreaFor(model => model.SendMailBody, new { @id = "txtSendMailBody" })
+    </div>
+    <input type="hidden" name="AttachmentJson" value="@Model.AttachmentJson" />
+}
+
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+    <script type="text/javascript">
+
+        // To Validate Hidden Fields
+        $jq.validator.setDefaults({ ignore: null });
+
+        $jq(function () {
+
+            $jq('.summernote').summernote({
+                height: 200,
+                codemirror: {
+                    theme: 'monokai'
+                }
+            });
+
+            if ($jq("#txtIsVerifyPass").val().toUpperCase() == "NOT VERIFY") {
+                $jq("#txtIsVerifyPass").val("");
+            }
+            else {
+                onBtnVerifyClick();
+            }
+
+            $jq("#btnVerify").click(onBtnVerifyClick);
+
+            $jq(".answer").change(onAnswerChange);
+
+            var srEmailTemplateId = $jq("#hiddenSrEmailTemplateId").val();
+            if (srEmailTemplateId != null && srEmailTemplateId.length > 0) {
+                $jq("#txtSendMailBody").summernote({ height: 300 });
+            }
+
+            //ไม่มี Call Id ห้ามกด
+            @*if (('@Model.CallId').trim().length == 0) {
+                $jq("#btnVerifyOTP").addClass('disabled');
+                $jq("#btnOTPHis").addClass('disabled');
+            }*@
+
+            $jq("#btnVerifyOTP").on("click", function (e) {
+                e.preventDefault();
+                if ($jq("#btnVerifyOTP").hasClass('disabled')) {
+                    return;
+                }
+
+                var reqData = {
+                    __RequestVerificationToken: getAntiForgeryToken(),
+                    CallId: '@Model.CallId',
+                    CardNo: '@Model.CustomerCardNo',
+                    CardType: 'I',
+                    ProductDesc: '@Model.ProductName',
+                    ReserveField1: '@Model.ChannelName'
+                };
+
+                $jq.ajax({
+                    type: "POST",
+                    url: '@Url.Action("RequestSendOTP", "ServiceRequest")',
+                    data: reqData,
+                    timeout: @WebConfig.GetOTPMaxWait() * 1000,
+                    beforeSend: function () {
+                        $jq("#dvLoading").show();
+                        setEnabledOTP(false);
+                    }
+                }).done(function (result) {
+                    setEnabledOTP(true);
+                    $jq("#txtVerifyOTPStatusDesc").val('');
+                    if (result.OTPStatus) {
+                        $jq("#txtVerifyOTPStatus").val(result.OTPStatus);
+                        $jq("#hdfOTPRefNo").val(result.RefNoOut);
+                        $jq("#txtVerifyOTPStatusDesc").val(result.ErrorMessage);
+                    }
+                    else if (result.IsSuccess || result.RefNoOut) {
+                        $jq("#txtVerifyOTPStatus").val(`${result.RefNoOut} : waiting for result...`);
+                        $jq("#hdfOTPRefNo").val(result.RefNoOut);
+                    }
+                    else {
+                        if (result.ErrorMessage != undefined) {
+                            $jq("#txtVerifyOTPStatusDesc").val(result.ErrorMessage);
+                        }
+                    }
+                }).fail(function (xhr, status, errorThrown) {
+                    setEnabledOTP(true);
+                    $jq("#txtVerifyOTPStatus").val(`RequestSendOTP failure: ${errorThrown}`);
+                    $jq("#dvLoading").hide();
+                }).always(function (xhr, status) {
+                    setEnabledOTP(true);
+                    $jq("#dvLoading").hide();
+                });
+            });
+
+            $jq("#btnOTPHistory").on("click", function (e) {
+                e.preventDefault();
+                if ($jq("#btnOTPHistory").hasClass('disabled')) {
+                    return;
+                }
+                var reqData = {
+                    __RequestVerificationToken: getAntiForgeryToken(),
+                    callId: '@Model.CallId',
+                    cardNo: '@Model.CustomerCardNo'
+                };
+                $jq.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetSendOTPHistory", "ServiceRequest")',
+                    data: reqData,
+                    beforeSend: function () {
+                        $jq("#dvLoading").show();
+                    }
+                }).done(function (result) {
+                    $jq("#dvLoading").hide();
+                    if (result.RedirectUrl) {
+                        topLocation(result.RedirectUrl);
+                    } else {
+                        $jq("#modalOTPHisBody").html('');
+                        $jq("#modalOTPHisBody").html(result);
+                        $jq("#modalOTPHis").modal("show");
+                    }
+                }).fail(function (xhr, status, errorThrown) {
+                    $jq("#dvLoading").hide();
+                }).always(function (xhr, status) {
+                    $jq("#dvLoading").hide();
+                });
+            });
+
+            $jq("#btnOTPRefresh").on("click", function (e) {
+                e.preventDefault();
+                if ($jq("#btnOTPRefresh").hasClass('disabled')) {
+                    return;
+                }
+                var reqData = {
+                    __RequestVerificationToken: getAntiForgeryToken(),
+                    refNo: $jq("#hdfOTPRefNo").val()
+                };
+
+                $jq.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetOTPResult", "ServiceRequest")',
+                    data: reqData,
+                    beforeSend: function () {
+                        $jq("#dvLoading").show();
+                    }
+                }).done(function (result) {
+                    $jq("#dvLoading").hide();
+                    if (result.IsSuccess) {
+                        $jq("#txtVerifyOTPStatus").val(result.Status);
+                        $jq("#txtVerifyOTPStatusDesc").val(`${result.ErrorCode} - ${result.ErrorDesc}`);
+                    }
+                }).fail(function (xhr, status, errorThrown) {
+                    $jq("#dvLoading").hide();
+                }).always(function (xhr, status) {
+                    $jq("#dvLoading").hide();
+                });
+            });
+
+            checkAccountNoIsMatch();
+            resetValidation();
+        });
+
+        function setEnabledOTP(enabled) {
+            if (enabled) {
+                $jq("#btnVerifyOTP").removeClass('disabled');
+                $jq("#btnOTPHistory").removeClass('disabled');
+                $jq("#btnOTPRefresh").removeClass('disabled');
+            }
+            else {
+                $jq("#btnVerifyOTP").addClass('disabled');
+                $jq("#btnOTPHistory").addClass('disabled');
+                $jq("#btnOTPRefresh").addClass('disabled');
+            }
+        }
+
+        function btnNextClick() {
+
+            var verifyResult = $jq("#txtIsVerifyPass").val();
+
+            if (verifyResult == "SKIP") {
+                if (!confirm("ผลการตอบคำถามเป็น SKIP จะดำเนินการต่อหรือไม่"))
+                    return false;
+            }
+
+            if (verifyResult == "FAIL") {
+                if (!confirm("ผลการตอบคำถามเป็น FAIL จะดำเนินการต่อหรือไม่"))
+                    return false;
+            }
+
+            clearRequiredField();
+
+            return true;
+        }
+
+        function clearRequiredField() {
+
+            if ($jq("#hiddenOwnerBranchId").val().length == 0) {
+                $jq("#hiddenOwnerBranchId").val("-1");
+            }
+
+            if ($jq("#hiddenOwnerUserId").val().length == 0) {
+                $jq("#hiddenOwnerUserId").val("-1");
+            }
+
+            if ($jq("#hiddenActivityTypeId").val().length == 0) {
+                $jq("#hiddenActivityTypeId").val("-1");
+            }
+
+            if ($jq("#hiddenAfsAssetId").val().length == 0) {
+                $jq("#hiddenAfsAssetId").val("-1");
+            }
+
+            if ($jq("#hiddenNCBBirthDate").val().length == 0) {
+                $jq("#hiddenNCBBirthDate").val("-1");
+            }
+
+            if ($jq("#hiddenNCBCheckStatus").val().length == 0) {
+                $jq("#hiddenNCBCheckStatus").val("-1");
+            }
+
+            if ($jq("#hiddenActivityDescription").val().length == 0) {
+                $jq("#hiddenActivityDescription").val("-1");
+            }
+
+            if ($jq("#hiddenSendMailSender").val().length == 0) {
+                $jq("#hiddenSendMailSender").val("-1");
+            }
+
+            if ($jq("#hiddenSendMailTo").val().length == 0) {
+                $jq("#hiddenSendMailTo").val("-1");
+            }
+
+            if ($jq("#hiddenSendMailSubject").val().length == 0) {
+                $jq("#hiddenSendMailSubject").val("-1");
+            }
+
+            if ($jq("#txtSendMailBody").val().length == 0) {
+                $jq("#txtSendMailBody").val("-1");
+            }
+        }
+
+        function onAnswerChange() {
+            $jq("#txtIsVerifyPass").val("");
+            $jq("#txtIsVerifyPass").css("color", "#000000");
+            $jq("#txtIsVerifyPass").css("background-color", "#eeeeee");
+        }
+
+        function onBtnVerifyClick() {
+
+            if ($jq(".answer[value!='SKIP']:checked").length == 0) {
+                $jq("#txtIsVerifyPass").val("Skipped");
+                $jq("#txtIsVerifyPass").css("color", "#000000");
+                $jq("#txtIsVerifyPass").css("background-color", "#eeeeee");
+                return;
+            }
+
+            var arr = $jq.parseJSON("@Html.Raw(Model.JsonQuestionGroups)");
+
+            for (var i = 0; i < arr.length; i++) {
+                var item = arr[i];
+
+                if ($jq(".answer_" + item.QuestionGroupId + "[value='PASS']:checked").length < item.RequireAmountPass)
+                {
+                    $jq("#txtIsVerifyPass").val("Failed");
+                    $jq("#txtIsVerifyPass").css("color", "#a94442");
+                    $jq("#txtIsVerifyPass").css("background-color", "#f2dede");
+                    return;
+                }
+            }
+
+            $jq("#txtIsVerifyPass").val("Passed");
+            $jq("#txtIsVerifyPass").css("color", "#008000");
+            $jq("#txtIsVerifyPass").css("background-color", "#dff0d8");
+
+            $jq("#frmCreateSr").valid();
+        }
+
+        function onlinkRemarkClick() {
+            $jq("#modalRemark").modal("show");
+        }
+
+    </script>
+}

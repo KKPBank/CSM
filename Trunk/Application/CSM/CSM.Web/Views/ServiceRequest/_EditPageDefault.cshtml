@@ -1,0 +1,71 @@
+﻿@model CSM.Web.Models.CreateServiceRequestViewModel
+
+<tr>
+    <td class="text">ที่อยู่ในการจัดส่งเอกสาร :</td>
+    <td class="input" colspan="4" style="white-space:nowrap">
+        @if (Model.CanEdit)
+        {
+            <input type="hidden" id="AddressSendDocId" name="AddressSendDocId" value="@Model.AddressSendDocId" />
+            <textarea id="AddressSendDocText" name="AddressSendDocText" readonly="readonly" rows="2" class="form-control input-sm address-for-send-doc" style="width:620px">@Model.AddressSendDocText</textarea>
+            <span style="display:inline-block;" >
+                <span title="View" class="view" id="btnShippingAddress"></span>
+                <span title="Clear" class="delete-active" id="btnClearShippingAddress"></span>
+            </span>
+            <span style="color: red;display:inline-block">หากไม่พบที่อยู่ในรายการ<br>ให้กรอกที่อยู่ลงใน <br>Remark</span>
+            @Html.ValidationMessageFor(model => model.AddressSendDocId)
+        }
+        else
+        {
+            <span class="value input-sr-long" style="min-height:80px">@Model.AddressSendDocText</span>
+        }
+    </td>
+</tr>
+
+<div id="modalSearchAccountAddress" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" style="width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title">เลือกที่อยู่ในการจัดส่งเอกสาร</h4>
+            </div>
+            <div class="modal-body" id="modalSearchAccountAddressBody">
+            </div>
+            <div class="modal-footer">
+                <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" name="NCBMarketingName" value="@Model.NCBMarketingName" id="hiddenNCBMarketingName" />
+
+<script type="text/javascript">
+
+    $jq(function () {
+        $jq("#btnShippingAddress").click(onBtnShippingAddressClick);
+        $jq("#btnClearShippingAddress").click(onBtnClearShippingAddressClick);
+    });
+
+    function onBtnShippingAddressClick() {
+        $jq("#modalSearchAccountAddressBody")
+                .load("@Url.Action("SearchAccountAddress", "ServiceRequest", new {@CustomerId = @Model.CustomerId})", function (response, status, xhr) {
+                    if (status == "error") {
+                        alert("Cannot Load Search Customer Page. Please check your network connection");
+                    }
+                });
+
+        $jq("#modalSearchAccountAddress").modal("show");
+    }
+
+    function onSelectAddressClick(id, address) {
+        $jq("#AddressSendDocText").html(address);
+        $jq("#AddressSendDocId").val(id);
+
+        $jq("#modalSearchAccountAddress").modal("hide");
+    }
+
+    function onBtnClearShippingAddressClick() {
+        $jq("#AddressSendDocText").html('');
+        $jq("#AddressSendDocId").val('');
+    }
+</script>

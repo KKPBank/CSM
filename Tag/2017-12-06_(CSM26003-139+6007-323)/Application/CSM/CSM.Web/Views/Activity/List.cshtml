@@ -1,0 +1,177 @@
+﻿@using CSM.Common.Resources
+@using CSM.Entity
+@model CSM.Web.Models.ActivityViewModel
+@{
+    ViewBag.Title = Resource.Lbl_CustomerInformation;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink(Resource.Lbl_SearchCustomer, "Search", "Customer", new { @skip = "1" }, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_CustomerInformation </strong>
+}
+
+@if (Model != null)
+{
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">@Resource.Lbl_CustomerInformation</h5>
+        @Html.HiddenFor(model => model.CustomerInfo.CustomerId, new { @id = "hddCustomerId" })
+        @if (Model.CustomerInfo != null)
+        {
+            Html.RenderPartial("~/Views/Customer/_CustomerInfo.cshtml", Model.CustomerInfo);
+        }
+        <div class="clearfix"></div>
+
+        @Html.Action("CustomerTab", "MenuNavigator", new { selectedTab = CustomerTabCode.Activity, customerId = @Model.CustomerInfo.CustomerId })
+        @*<div class="clearfix"></div>
+            <div class="pull-left padding-top-5">
+                <button id="btnNewActivity" type="button" class="btn btn-green btn-sm">
+                    <i class="fa fa-plus"></i>&nbsp;New Activity
+                </button>
+            </div>*@
+        <div class="clearfix"></div>
+        <div class="tab-content">
+            <div id="tabActivity" class="tab-pane fade in active">
+                <div class="pull-right" id="dvServiceMsg"></div>
+                <div class="clear"></div>
+                <div id="dvSearchResult">
+                    @{ Html.RenderPartial("~/Views/Activity/_ActivityList.cshtml", Model); }
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <input type="hidden" id="hiddenSubscriptionTypeId" value="@(Model.CustomerInfo != null && Model.CustomerInfo.SubscriptType != null && Model.CustomerInfo.SubscriptType.SubscriptTypeId.HasValue ? (Model.CustomerInfo.SubscriptType.SubscriptTypeId.Value + "") : "")" />
+    <input type="hidden" id="hiddenSubscriptionId" value="@(Model.CustomerInfo != null ? Model.CustomerInfo.CardNo : "")" />
+}
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        var searchFilter;
+        var successFilter;
+
+        $jq(document).ready(function () {
+            initializeSearchFilter();
+            initializePaging();
+            loadData();
+        });
+
+        function initializeSearchFilter() {
+            searchFilter = {
+                JsonActivities: '',
+                ActivityStartDateTime: '@Model.SearchFilter.ActivityStartDateTime',
+                ActivityEndDateTime: '@Model.SearchFilter.ActivityEndDateTime',
+                CardNo: '@Model.SearchFilter.CardNo',
+                SubsTypeCode: '@Model.SearchFilter.SubsTypeCode',
+                IsConnect: $jq('#hddIsConnect').val(),
+                CustomerId: $jq('#hddCustomerId').val(),
+                SrOnly: 'false',
+                PageNo: '@Model.SearchFilter.PageNo',
+                PageSize: '@Model.SearchFilter.PageSize',
+                SortField: '@Model.SearchFilter.SortField',
+                SortOrder: '@Model.SearchFilter.SortOrder'
+            };
+            successFilter = searchFilter;
+        };
+
+        function initializePaging() {
+            $jq("#dvSearchResult .input-page").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = $jq(this).val();
+                loadData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchResult #pagesizelist").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadData();
+                return false;
+            });
+
+            $jq('#dvSearchResult .pagination ul li a').on('click', function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadData();
+                return false;
+            });
+
+            //$jq("#tblActivityList").tableHeadFixer({ "head": false, "left": 3 });
+        };
+
+        function loadData() {
+            var isConnect = $jq('#hddIsConnect').val();
+            var subscriptionTypeId = $jq("#hiddenSubscriptionTypeId").val();
+            var subscriptionId = $jq("#hiddenSubscriptionId").val();
+            var searchUrl = '@Url.Action("ActivityList", "Activity")';
+
+            if (isConnect == '0' || subscriptionTypeId == "" || subscriptionId == "") {
+                searchUrl = '@Url.Action("SRActivityList", "Activity")';
+            }
+
+            searchFilter.JsonActivities = $jq('#hddJsonActivities').val();
+            searchFilter.IsConnect = isConnect;
+
+            $jq.ajax({
+                url: searchUrl,
+                type: "POST",
+                data: addAntiForgeryToken(searchFilter),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq('#dvServiceMsg').html('');
+                        $jq("#dvSearchResult").html('');
+                        successFilter = searchFilter;
+                        $jq("#dvSearchResult").html(result);
+
+                        isConnect = $jq('#hddIsConnect').val();
+
+                        if (isConnect == '0' || subscriptionTypeId == "" || subscriptionId == "") {
+                            var errorMsg = '@Resource.Msg_CannotConnectCARService';
+                            var message = "<span class='badge badge-warning'>" + errorMsg + '</span>';
+                            $jq('#dvServiceMsg').html(message);
+                        }
+                        initializePaging();
+                    } else {
+                        showServiceErrors(result);
+
+                        if (isConnect == '1') {
+                            $jq('#hddIsConnect').val('0');
+                            loadData();
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function sortField(selectedSortField) {
+            if (selectedSortField == searchFilter.SortField)
+                searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            loadData();
+        }
+    </script>
+}

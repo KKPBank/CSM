@@ -1,0 +1,32 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.PoolViewModel
+<div class="table-responsive margin-top-10">
+    <table class="table table-hover datatable">
+        <thead>
+            <tr>
+                <th style="width:10%!important;">Action</th>
+                <th style="width:85%!important;">Branch Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.PoolBranchList == null || Model.PoolBranchList.Count == 0)
+            {
+                <tr>
+                    <td colspan="2" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model.PoolBranchList)
+                {
+                    <tr>
+                        <td class="center">
+                            <a href="javascript:;" onclick="deleteBranch('@item.BranchId')" class="delete-active" title="Delete"></a>
+                        </td>
+                        <td>@item.BranchName</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

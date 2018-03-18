@@ -1,0 +1,336 @@
+﻿@model CSM.Web.Models.LookupContractViewModel
+@using CSM.Common.Resources
+
+@{Layout = null;}
+<div class="form-horizontal">
+    <div id="divPopSearchAccount">
+        <div style="color:red;padding:0 0 10px;">
+            * หากต้องการค้นหาบางส่วนของคำ ให้ใส่ * ไว้ด้านหน้าหรือด้านหลังของคำค้นหาที่ Field
+            <strong class="text-primary">ตัวอักษรสี น้ำเงิน</strong>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static">
+                            Product
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.DropDownListFor(m => m.ContactSearchFilter.Product, Model.CustomerProductList,
+                                                        Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm  input-medium", id = "ddlSearchAccountCustomerProduct" })
+                        @Html.ValidationMessageFor(m => m.ContactSearchFilter.Product)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static">
+                            เลขที่บัญชี/สัญญา
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(m => m.ContactSearchFilter.AccountNo, new
+                        {
+                            @class = "form-control input-sm input-medium",
+                            @id = "txtSearchAccountAccountNo",
+                            @maxlength = 100,
+                            @disabled = true
+                        })
+                        @Html.ValidationMessageFor(m => m.ContactSearchFilter.AccountNo)
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static">
+                            Customer Type
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.DropDownListFor(m => m.ContactSearchFilter.CustomerType, Model.CustomerTypeList,
+                                              Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm  input-medium", id = "ddlSearchAccountCustomerType" })
+                        @Html.ValidationMessageFor(m => m.ContactSearchFilter.CustomerType)
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static ">
+                            ทะเบียนรถยนต์
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(m => m.ContactSearchFilter.CarNo, new
+                        {
+                            @class = "form-control input-sm input-medium",
+                            @id = "txtSearchAccountCarNo",
+                            @maxlength = 50
+                        })
+                        @Html.ValidationMessageFor(m => m.ContactSearchFilter.CarNo)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static ">
+                            ชื่อผู้ค้ำ
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(model => model.ContactSearchFilter.CustomerDeptFirstName, new
+                        {
+                            @class = "form-control input-sm input-medium",
+                            @id = "txtSearchAccountCustomerDeptFirstName",
+                            @maxlength = 50
+                        })
+                        @Html.ValidationMessageFor(model => model.ContactSearchFilter.CustomerDeptFirstName)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static ">
+                            นามสกุลผู้ค้ำ
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(model => model.ContactSearchFilter.CustomerDeptLastName, new
+                        {
+                            @class = "form-control input-sm input-medium",
+                            @id = "txtSearchAccountCustomerDeptLastName",
+                            @maxlength = 50
+                        })
+                        @Html.ValidationMessageFor(model => model.ContactSearchFilter.CustomerDeptLastName)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-12 text-right">
+                    <span class="btn btn-sm btn-primary" id="btnSearchAccountSearch"><i class="fa fa-search"></i> Search</span>
+                    <span class="btn btn-sm btn-default" id="btnSearchAccountClear"><i class="fa fa-file-o"></i> Clear</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive" id="divSearchAccount" style="display: none">
+    <div id="dvSearchContractTable"></div>
+</div>
+
+
+
+<script type="text/javascript">
+    var contactSearchFilter;
+    var contactSuccessFilter;
+
+    $jq(function () {
+        initializeSearchFilter();
+        initializePaging();
+
+        $jq("#btnSearchAccountSearch").click(onBtnSearchAccountSearchClick);
+        $jq("#btnSearchAccountClear").click(onBtnSearchAccountClearClick);
+
+        $jq(".searchAccountInput").keypress(onSearchAccountKeyPressEnter);
+
+        $jq("#ddlSearchAccountCustomerProduct").change(function (event) {
+            if ($jq(this).val() != '') {
+                $jq("#txtSearchAccountAccountNo").prop("disabled", false);
+            }
+            else {
+                $jq("#txtSearchAccountAccountNo").prop("disabled", true);
+                $jq("#txtSearchAccountAccountNo").val('');
+            }
+            return false;
+        });
+
+        onBtnSearchAccountSearchClick();
+    });
+
+    function onSearchAccountKeyPressEnter(e) { if (e.which == 13) onBtnSearchAccountSearchClick(); }
+
+
+    function onBtnSearchAccountSearchClick() {
+        if ($jq("#hiddenCustomerId").val().trim().length === 0 && $jq("#hiddenCustomerNumber").val().trim().length === 0)
+        {
+            doModal('dvAlertMsg', 'Message Dialog', 'โปรดเลือกลูกค้าก่อน', '', '');
+            return;
+        }
+        $jq("#divSearchAccount").show();
+        loadContactTable();
+    }
+
+    //data table
+    function loadContactTable() {
+        //get criteria
+        getSearchFilterCriteria();
+        clearServerErrors();
+
+        $jq.ajax({
+                url: "@Url.Action("SearchAccount", "ServiceRequest")",
+                method: "POST",
+                data: contactSearchFilter,
+                beforeSend: function() { $jq("#dvLoading").show(); },
+                complete: function() { $jq("#dvLoading").hide(); }
+            })
+            .done(function(result) {
+                if (result.Valid == null) {
+                    $jq("#dvSearchContractTable").html('');
+                    contactSuccessFilter = contactSearchFilter;
+                    $jq("#dvSearchContractTable").html(result);
+                    initializePaging();
+                } else {
+                    localShowServerErrors(result);
+                }
+            })
+            .fail(function() {
+                if (xhr.status === 401) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                } else {
+                    var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+    }
+
+    function getSearchFilterCriteria() {
+        contactSearchFilter.CustomerId = $jq("#hiddenCustomerId").val();
+        contactSearchFilter.CustomerNo = $jq("#hiddenCustomerNumber").val();
+
+        contactSearchFilter.Product = $jq("#ddlSearchAccountCustomerProduct").val();
+        contactSearchFilter.AccountNo = $jq("#txtSearchAccountAccountNo").val();
+        contactSearchFilter.CustomerType = $jq("#ddlSearchAccountCustomerType").val();
+        contactSearchFilter.CarNo = $jq("#txtSearchAccountCarNo").val();
+        contactSearchFilter.CustomerDeptFirstName = $jq("#txtSearchAccountCustomerDeptFirstName").val();
+        contactSearchFilter.CustomerDeptLastName = $jq("#txtSearchAccountCustomerDeptLastName").val();
+    }
+
+    function initializeSearchFilter() {
+        contactSearchFilter = {
+            CustomerId: $jq("#hiddenCustomerId").val(),
+            CustomerNo: $jq("#hiddenCustomerNumber").val(),
+            Product: $jq("#ddlSearchAccountCustomerProduct").val(),
+            AccountNo: $jq("#txtSearchAccountAccountNo").val(),
+            CustomerType: $jq("#ddlSearchAccountCustomerType").val(),
+            CarNo: $jq("#txtSearchAccountCarNo").val(),
+            CustomerDeptFirstName: $jq("#txtSearchAccountCustomerDeptFirstName").val(),
+            CustomerDeptLastName: $jq("#txtSearchAccountCustomerDeptLastName").val(),
+            PageNo: '@Model.ContactSearchFilter.PageNo',
+            PageSize: '@Model.ContactSearchFilter.PageSize',
+            SortField: '@Model.ContactSearchFilter.SortField',
+            SortOrder: '@Model.ContactSearchFilter.SortOrder',
+            __RequestVerificationToken: getAntiForgeryToken()
+        };
+        contactSuccessFilter = contactSearchFilter;
+    }
+
+    function initializePaging() {
+        $jq("#dvSearchContractTable .input-page").change(function (event) {
+            contactSearchFilter = contactSuccessFilter;
+            contactSearchFilter.PageNo = $jq(this).val();
+            loadContactTable();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchContractTable #pagesizelist").change(function (event) {
+            contactSearchFilter = contactSuccessFilter;
+            contactSearchFilter.PageNo = "1";
+            contactSearchFilter.PageSize = $jq(this).val();
+            loadContactTable();
+            return false;
+        });
+
+        $jq('#dvSearchContractTable .pagination ul li a').on('click', function (event) {
+            contactSearchFilter = contactSuccessFilter;
+            contactSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadContactTable();
+            return false;
+        });
+    }
+
+    function onBtnSearchAccountClearClick() {
+        clearServerErrors();
+
+        $jq("#ddlSearchAccountCustomerProduct").val('');
+        $jq("#txtSearchAccountAccountNo").val('');
+        $jq("#txtSearchAccountAccountNo").attr("disabled", true);
+        $jq("#ddlSearchAccountCustomerType").val('');
+        $jq("#txtSearchAccountCarNo").val('');
+        $jq("#txtSearchAccountCustomerDeptFirstName").val('');
+        $jq("#txtSearchAccountCustomerDeptLastName").val('');
+
+        $jq("#txtSearchAccountAccountNo").focus();
+        loadContactTable();
+    }
+
+    function localShowServerErrors(result) {
+
+        if (result.RedirectUrl != undefined) {
+            topLocation(result.RedirectUrl);
+            return;
+        }
+
+        if (result.Error != '') {
+            var errorMsg = "<strong>Error:</strong>&nbsp;" + result.Error;
+            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            scrollToTop();
+        }
+        else {
+            var divCtrl;
+            var spanCtrl;
+            var inputCtrl;
+
+            $jq.each(result.Errors, function (key, val) {
+                var controlId = key.replace(/\./g, '_');
+
+                inputCtrl = $jq('#divPopSearchAccount [id$=' + controlId + ']');
+                if (inputCtrl.length !== 1) {
+                    var inputCtrl2 = $jq('#divPopSearchAccount [name$=".' + controlId + '"]');
+                    if (inputCtrl2.length !== 1) {
+                        var inputCtrl3 = $jq('#divPopSearchAccount [name=' + controlId + ']');
+                        if (inputCtrl3.length === 1) {
+                            inputCtrl = inputCtrl3;
+                        }
+                    }
+                    else {
+                        inputCtrl = inputCtrl2;
+                    }
+                }
+
+                if (inputCtrl.length > 0) {
+                    if (inputCtrl.parent().hasClass('date')) {
+                        spanCtrl = inputCtrl.parent().parent().find('span.field-validation-valid');
+                    } else {
+                        spanCtrl = inputCtrl.parent().find('span.field-validation-valid');
+                    }
+
+                    inputCtrl.addClass('input-validation-error');
+                    spanCtrl.html(val).removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+
+                divCtrl = $jq('.' + controlId);
+                if (divCtrl.length > 0) {
+                    divCtrl.parent().find('input').addClass('input-validation-error');
+                    divCtrl.html(val).removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        }
+    }
+</script>

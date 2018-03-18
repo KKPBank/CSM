@@ -1,0 +1,146 @@
+﻿@using CSM.Common.Resources;
+@using CSM.Common.Utilities;
+@using CSM.Entity;
+@using MvcPaging;
+@model CSM.Web.Models.SearchGroupAssignViewModel
+@helper LabelForSort(string headerText, string fieldName, string sortField, string sortOrder)
+{
+    <a href="javascript:;" onclick="sortField('@fieldName');return false;">
+        @headerText
+        @if (!string.IsNullOrEmpty(fieldName) && !string.IsNullOrEmpty(sortField) && fieldName.ToLower().Equals(sortField.ToLower()))
+        {
+            if (sortOrder.Equals("ASC"))
+            {<i class="fa fa-sort-asc"></i>}
+            else
+            {<i class="fa fa-sort-desc"></i> }
+        }
+        else
+        {<i class="fa fa-sort"></i>}
+    </a>
+}
+@{
+    List<SRStateEntity> stateList = ViewBag.SRStateList as List<SRStateEntity>;
+    int colCount = 4 + (stateList == null ? 0 : stateList.Count);
+}
+
+@if (Model.ResultList == null || Model.SearchFilter.TotalRecords == 0)
+{
+    string sortField = Model.SearchFilter.SortField;
+    string sortOrder = Model.SearchFilter.SortOrder;
+    <div class="table-responsive">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>รหัสสาขา/ทีม</th>
+                    <th>ชื่อสาขา/ทีม</th>
+                    <th>อีเมล์</th>
+                    @*<th class="col_status">Draft</th>
+                    <th class="col_status">Open</th>
+                    <th class="col_status sm">Waiting<br />Customer</th>
+                    <th class="col_status sm">In-Progress</th>
+                    <th class="col_status sm">Route Back</th>
+                    <th class="col_status sm">Summary<br />(Excluding Draft)</th>*@
+                    @foreach (var st in stateList)
+                    {
+                    <th class="col_status">@st.SRStateName</th>
+                    }
+                    <th class="col_status sm">Summary<br />(Excluding Draft)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="@colCount" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string sortField = Model.SearchFilter.SortField;
+    string sortOrder = Model.SearchFilter.SortOrder;
+
+    <div class="form-inline nopadding">
+        <div class="form-group">
+            @Html.Raw(Html.Pager(
+                new Options
+                {
+                    PageSize = Model.SearchFilter.PageSize,
+                    TotalItemCount = Model.SearchFilter.TotalRecords,
+                    CurrentPage = Model.SearchFilter.PageNo,
+                    ItemTexts = new ItemTexts
+                    {
+                        First = "<i class='fa fa-step-backward' style='font-size: 0.8em'></i>",
+                        Previous = "<i class='fa fa-caret-left'></i>",
+                        Next = "<i class='fa fa-caret-right'></i>",
+                        Last = "<i class='fa fa-step-forward' style='font-size: 0.8em'></i>"
+                    },
+                    IsShowFirstLast = true,
+                    CssClass = "pager",
+                    IsShowInputPage = true
+                },
+                new { PageSize = ViewBag.PageSize }))
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "15", 15 }, { "30", 30 } }, "Key", "Value"), new { @class = "form-control input-xs", id = "pagesizelist" })
+        </div>
+        <div class="form-group text-nowrap margin-left-8">
+            <strong>
+                @MvcHtmlString.Create(string.Format(Resource.Lbl_Paging, @Model.SearchFilter.FirstPageIndex, @Model.SearchFilter.LastPageIndex, @Model.SearchFilter.TotalRecords))
+            </strong>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="table-responsive">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>รหัสสาขา/ทีม</th>
+                    <th>ชื่อสาขา/ทีม</th>
+                    <th>อีเมล์</th>
+                    @*<th class="col_status">Draft</th>
+                    <th class="col_status">Open</th>
+                    <th class="col_status sm">Waiting<br />Customer</th>
+                    <th class="col_status sm">In-Progress</th>
+                    <th class="col_status sm">Route Back</th>*@
+                    @foreach (var st in stateList)
+                    {
+                        <th class="col_status">@Html.Raw(st.SRStateName.Replace(" ", "<br />"))</th>
+                    }
+                    <th class="col_status sm">Summary<br />(Excluding Draft)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ResultList)
+                {
+                    <tr>
+                        <td>@item.BranchCode</td>
+                        <td>@item.BranchName</td>
+                        <td>@item.Email</td>
+                        @*<td class="center">@item.CountDraft</td>
+                        <td class="center"><span class="view-sr" onclick="lookupServiceRequestByBranch('@item.BranchId', '@Constants.SRStatusCode.Draft')">@item.CountDraft</span></td>
+                        <td class="center"><span class="view-sr" onclick="lookupServiceRequestByBranch('@item.BranchId', '@Constants.SRStatusCode.Open')">@item.CountOpen</span></td>
+                        <td class="center"><span class="view-sr" onclick="lookupServiceRequestByBranch('@item.BranchId', '@Constants.SRStatusCode.WaitingCustomer')">@item.CountWaitingCustomer</span></td>
+                        <td class="center"><span class="view-sr" onclick="lookupServiceRequestByBranch('@item.BranchId', '@Constants.SRStatusCode.InProgress')">@item.CountInProgress</span></td>
+                        <td class="center"><span class="view-sr" onclick="lookupServiceRequestByBranch('@item.BranchId', '@Constants.SRStatusCode.RouteBack')">@item.CountRouteBack</span></td>*@
+                        @foreach (var st in stateList)
+                        {
+                            if (st.SRStateId == Constants.SRStateId.Draft)
+                            {
+                        <td class="center">@item.CountByState(st.SRStateId ?? 0)</td>
+                            }
+                            else
+                            {
+                        <td class="center"><span class="view-sr" onclick="lookupServiceRequestByBranch('@item.BranchId', '@st.SRStateId')">@item.CountByState(st.SRStateId ?? 0)</span></td>
+                            }
+                        }
+                        <td class="center"><span class="view-sr" onclick="lookupServiceRequestByBranch('@item.BranchId', '')">@item.CountSummary</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<script type="text/javascript">
+</script>

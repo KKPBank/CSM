@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="LeadService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd0" namespace="www.kiatnakinbank.com/services/SlmLeadService/InsertLead" />
+      <xsd:import schemaLocation="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SLS.Service" />
+      <xsd:import schemaLocation="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd3" namespace="www.kiatnakinbank.com/services/SlmLeadService/UpdateLead" />
+      <xsd:import schemaLocation="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd4" namespace="www.kiatnakinbank.com/services/SlmLeadService/SearchLead" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="InsertLeadRequest">
+    <wsdl:part xmlns:q1="www.kiatnakinbank.com/services/SlmLeadService/InsertLead" name="parameters" element="q1:InsertLeadRequest" />
+  </wsdl:message>
+  <wsdl:message name="InsertLeadRequest_Headers">
+    <wsdl:part xmlns:q2="www.kiatnakinbank.com/services/SlmLeadService/InsertLead" name="RequestHeader" element="q2:RequestHeader" />
+  </wsdl:message>
+  <wsdl:message name="InsertLeadResponse">
+    <wsdl:part xmlns:q3="www.kiatnakinbank.com/services/SlmLeadService/InsertLead" name="parameters" element="q3:InsertLeadResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertLeadResponse_Headers">
+    <wsdl:part xmlns:q4="www.kiatnakinbank.com/services/SlmLeadService/InsertLead" name="ResponseHeader" element="q4:ResponseHeader" />
+  </wsdl:message>
+  <wsdl:message name="UpdateLeadRequest">
+    <wsdl:part xmlns:q5="www.kiatnakinbank.com/services/SlmLeadService/UpdateLead" name="parameters" element="q5:UpdateLeadRequest" />
+  </wsdl:message>
+  <wsdl:message name="UpdateLeadRequest_Headers">
+    <wsdl:part xmlns:q6="www.kiatnakinbank.com/services/SlmLeadService/UpdateLead" name="RequestHeader" element="q6:RequestHeader" />
+  </wsdl:message>
+  <wsdl:message name="UpdateLeadResponse">
+    <wsdl:part xmlns:q7="www.kiatnakinbank.com/services/SlmLeadService/UpdateLead" name="parameters" element="q7:UpdateLeadResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateLeadResponse_Headers">
+    <wsdl:part xmlns:q8="www.kiatnakinbank.com/services/SlmLeadService/UpdateLead" name="ResponseHeader" element="q8:ResponseHeader" />
+  </wsdl:message>
+  <wsdl:message name="SearchLeadRequest">
+    <wsdl:part xmlns:q9="www.kiatnakinbank.com/services/SlmLeadService/SearchLead" name="parameters" element="q9:SearchLeadRequest" />
+  </wsdl:message>
+  <wsdl:message name="SearchLeadRequest_Headers">
+    <wsdl:part xmlns:q10="www.kiatnakinbank.com/services/SlmLeadService/SearchLead" name="RequestHeader" element="q10:RequestHeader" />
+  </wsdl:message>
+  <wsdl:message name="SearchLeadResponse">
+    <wsdl:part xmlns:q11="www.kiatnakinbank.com/services/SlmLeadService/SearchLead" name="parameters" element="q11:SearchLeadResponse" />
+  </wsdl:message>
+  <wsdl:message name="SearchLeadResponse_Headers">
+    <wsdl:part xmlns:q12="www.kiatnakinbank.com/services/SlmLeadService/SearchLead" name="ResponseHeader" element="q12:ResponseHeader" />
+  </wsdl:message>
+  <wsdl:portType name="ILeadService">
+    <wsdl:operation name="InsertLead">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILeadService/InsertLead" name="InsertLeadRequest" message="tns:InsertLeadRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILeadService/InsertLeadResponse" name="InsertLeadResponse" message="tns:InsertLeadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateLead">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILeadService/UpdateLead" name="UpdateLeadRequest" message="tns:UpdateLeadRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILeadService/UpdateLeadResponse" name="UpdateLeadResponse" message="tns:UpdateLeadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchLead">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILeadService/SearchLead" name="SearchLeadRequest" message="tns:SearchLeadRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILeadService/SearchLeadResponse" name="SearchLeadResponse" message="tns:SearchLeadResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ILeadService" type="tns:ILeadService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InsertLead">
+      <soap:operation soapAction="http://tempuri.org/ILeadService/InsertLead" style="document" />
+      <wsdl:input name="InsertLeadRequest">
+        <soap:header message="tns:InsertLeadRequest_Headers" part="RequestHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="InsertLeadResponse">
+        <soap:header message="tns:InsertLeadResponse_Headers" part="ResponseHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateLead">
+      <soap:operation soapAction="http://tempuri.org/ILeadService/UpdateLead" style="document" />
+      <wsdl:input name="UpdateLeadRequest">
+        <soap:header message="tns:UpdateLeadRequest_Headers" part="RequestHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="UpdateLeadResponse">
+        <soap:header message="tns:UpdateLeadResponse_Headers" part="ResponseHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchLead">
+      <soap:operation soapAction="http://tempuri.org/ILeadService/SearchLead" style="document" />
+      <wsdl:input name="SearchLeadRequest">
+        <soap:header message="tns:SearchLeadRequest_Headers" part="RequestHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="SearchLeadResponse">
+        <soap:header message="tns:SearchLeadResponse_Headers" part="ResponseHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LeadService">
+    <wsdl:port name="BasicHttpBinding_ILeadService" binding="tns:BasicHttpBinding_ILeadService">
+      <soap:address location="http://10.3.112.46/SaleLeadService/LeadService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

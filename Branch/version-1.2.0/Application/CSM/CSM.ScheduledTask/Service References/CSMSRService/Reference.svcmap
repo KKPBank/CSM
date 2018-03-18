@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="5ad521e9-5cf0-4b12-aabd-e50e15388124" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:5300/CSMSRService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CSMSRService4.xsd" MetadataType="Schema" ID="abe12cae-6de4-436d-b1ae-f8a2d78a9c9d" SourceId="1" SourceUrl="http://localhost:5300/CSMSRService.svc?xsd=xsd5" />
+    <MetadataFile FileName="CSMSRService.wsdl" MetadataType="Wsdl" ID="38f708c3-bd6c-43b2-81ef-f0a591262341" SourceId="1" SourceUrl="http://localhost:5300/CSMSRService.svc?wsdl" />
+    <MetadataFile FileName="CSMSRService2.xsd" MetadataType="Schema" ID="be4b2492-9a3c-4df2-8a34-e553c0283336" SourceId="1" SourceUrl="http://localhost:5300/CSMSRService.svc?xsd=xsd1" />
+    <MetadataFile FileName="CSMSRService3.xsd" MetadataType="Schema" ID="4f29d2b0-ebe6-4f7b-9350-9e4e3fd44902" SourceId="1" SourceUrl="http://localhost:5300/CSMSRService.svc?xsd=xsd4" />
+    <MetadataFile FileName="CSMSRService5.xsd" MetadataType="Schema" ID="1ffbf1e8-3819-4eeb-ad2c-1424960a271f" SourceId="1" SourceUrl="http://localhost:5300/CSMSRService.svc?xsd=xsd6" />
+    <MetadataFile FileName="CSMSRService1.wsdl" MetadataType="Wsdl" ID="71d3409f-5f56-4e37-88a3-6f0661535324" SourceId="1" SourceUrl="http://localhost:5300/CSMSRService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="CSMSRService31.xsd" MetadataType="Schema" ID="f4e7c1bf-dba3-426c-aeb6-a50dbf166b42" SourceId="1" SourceUrl="http://localhost:5300/CSMSRService.svc?xsd=xsd3" />
+    <MetadataFile FileName="CSMSRService.disco" MetadataType="Disco" ID="3efdaa0d-1102-4497-8f49-6936d7c70f55" SourceId="1" SourceUrl="http://localhost:5300/CSMSRService.svc?disco" />
+    <MetadataFile FileName="CSMSRService1.xsd" MetadataType="Schema" ID="cd678bd0-f89a-431c-9fad-12b1f052b023" SourceId="1" SourceUrl="http://localhost:5300/CSMSRService.svc?xsd=xsd0" />
+    <MetadataFile FileName="CSMSRService.xsd" MetadataType="Schema" ID="fb41909b-6d3c-4b24-9201-f2d9d605e007" SourceId="1" SourceUrl="http://localhost:5300/CSMSRService.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

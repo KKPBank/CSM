@@ -1,0 +1,135 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using MvcPaging
+@model CSM.Web.Models.LookupCustomerDuplicateViewModel
+
+@helper LabelForSort(string headerText, string fieldName, string sortField, string sortOrder)
+{
+    <a href="javascript:;" onclick="sortField('@fieldName');return false;">
+        @headerText
+        @if (fieldName.ToLower().Equals(sortField.ToLower()))
+        {
+            if (sortOrder.Equals("ASC"))
+            {<i class="fa fa-sort-asc"></i>}
+            else
+            {<i class="fa fa-sort-desc"></i> }
+        }
+        else
+        {<i class="fa fa-sort"></i>}
+    </a>
+}
+
+<hr class="dashed-line clear" />
+
+@if (Model.CustomerTableList == null || Model.CustomerSearchFilter.TotalRecords == 0)
+{
+    string sortField = Model.CustomerSearchFilter.SortField;
+    string sortOrder = Model.CustomerSearchFilter.SortOrder;
+
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Product</th>
+                    <th title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">Subscription ID</th>
+                    <th>ชื่อลูกค้า</th>
+                    <th>นามสกุล<br />ลูกค้า</th>
+                    <th>เลขที่บัญชี<br />/สัญญา</th>
+                    <th>ทะเบียน<br />รถยนต์</th>
+                    <th>เบอร์โทรศัพท์</th>
+                    <th>สถานะบัญชี<br />/สัญญา</th>
+                    <th>สาขา</th>
+                    <th>Customer<br />Type</th>
+                    <th>Subscription<br />Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="12" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string sortField = Model.CustomerSearchFilter.SortField;
+    string sortOrder = Model.CustomerSearchFilter.SortOrder;
+
+    <div class="form-inline nopadding">
+        @*<div class="form-group">
+                    @Html.Raw(Html.Pager(
+                        new Options
+                        {
+                            PageSize = Model.CustomerSearchFilter.PageSize,
+                            TotalItemCount = Model.CustomerSearchFilter.TotalRecords,
+                            CurrentPage = Model.CustomerSearchFilter.PageNo,
+                            ItemTexts = new ItemTexts
+                            {
+                                First = "<i class='fa fa-step-backward' style='font-size: 0.8em'></i>",
+                                Previous = "<i class='fa fa-caret-left'></i>",
+                                Next = "<i class='fa fa-caret-right'></i>",
+                                Last = "<i class='fa fa-step-forward' style='font-size: 0.8em'></i>"
+                            },
+                            IsShowFirstLast = true,
+                            CssClass = "pager",
+                            IsShowInputPage = true
+                        },
+                        new { PageSize = ViewBag.PageSize }))
+                </div>
+
+            <div class="form-group">
+                @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "15", 15 }, { "30", 30 } }, "Key", "Value"), new { @class = "form-control input-xs", id = "pagesizelist" })
+            </div>
+            <div class="form-group text-nowrap margin-left-8">
+                <strong>
+                    @MvcHtmlString.Create(string.Format(Resource.Lbl_Paging, @Model.CustomerSearchFilter.FirstPageIndex, @Model.CustomerSearchFilter.LastPageIndex, @Model.CustomerSearchFilter.TotalRecords))
+                </strong>
+            </div>*@
+    </div>
+    <div class="clearfix"></div>
+    <div class="table-responsive margin-top-10 sr">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Product</th>
+                    <th title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">Subscription ID</th>
+                    <th>ชื่อลูกค้า</th>
+                    <th>นามสกุล<br />ลูกค้า</th>
+                    <th>เลขที่บัญชี<br />/สัญญา</th>
+                    <th>ทะเบียน<br />รถยนต์</th>
+                    <th>เบอร์โทรศัพท์</th>
+                    <th>สถานะบัญชี<br />/สัญญา</th>
+                    <th>สาขา</th>
+                    <th>Customer<br />Type</th>
+                    <th>Subscription<br />Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CustomerTableList)
+                {
+                    var status = string.IsNullOrEmpty(item.AccountStatus) ? "Inactive" : item.AccountStatus == "A" ? "Active" : "Inactive";
+
+                    <tr>
+                        <td class="center">
+                            <a href='javascript:;' onclick='onSelectCustomerClick(@item.CustomerId, @item.AccountId)' class='btn btn-success btn-xs'>เลือก</a>
+                        </td>
+                        <td>@item.ProductName</td>
+                        <td>@item.CardNo</td>
+                        <td>@item.CustomerFirstName</td>
+                        <td>@item.CustomerLastName</td>
+                        <td>@item.AccountNo</td>
+                        <td>@item.CarNo</td>
+                        <td>@item.PhoneNo</td>
+                        <td>@status</td>
+                        <td>@item.BranchName</td>
+                        <td>@item.CustomerType</td>
+                        <td>@item.SubscriptionTypeName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

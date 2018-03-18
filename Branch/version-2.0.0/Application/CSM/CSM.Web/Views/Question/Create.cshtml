@@ -1,0 +1,161 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.QuestionViewModel
+
+@{
+    ViewBag.Title = "New Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    @*<strong class="font-blue">Question &rsaquo;&rsaquo;</strong>*@
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink("Search Question", "Index", "Question", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; New Question</strong>
+}
+
+<form id="form1">
+    <div class="form-horizontal">
+        @Html.AntiForgeryToken()
+        <h5 class="form-title">New Question</h5>
+        <hr class="dotted-line" />
+        <div class="bs-example">
+            <div class="row margin-top-15">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">Question <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        @*                    <textarea id="txtQuestionName" class="form-control input-sm" maxlength="8000"/></textarea>*@
+                        @Html.TextAreaFor(m => m.QuestionName, new { @class = "form-control input-sm", @maxlength = "8000", @id = "txtQuestionName" })
+                        @Html.ValidationMessageFor(m => m.QuestionName)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">สถานะ <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(model => model.Status, Model.QuestionIsActiveList, new { @class = "form-control input-sm", id = "selectStatus" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">สร้างโดย :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" value="@ViewBag.CreateUsername" disabled="disabled" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">วันที่สร้าง :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" value="@ViewBag.CreateDate" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">แก้ไขโดย :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" value="@ViewBag.UpdateUsername" disabled="disabled" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">วันที่แก้ไข :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" value="@ViewBag.UpdateDate" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-12 text-right">
+                        <span id="btnSave" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Save</span>
+                        <span id="btnBack" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+    <script type="text/javascript">
+        $jq(document).ready(function() {
+            $jq('#btnBack').click(function(event) {
+                event.preventDefault();
+                var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+                if ($jq.trim(msg) != '') {
+                    doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateQuestion()', 'Confirm');
+                }
+                return false;
+            });
+
+            $jq('#btnSave').click(onBtnSaveClick);
+        });
+
+        function closeCreateQuestion() {
+            location.replace('@Url.Action("Index", "Question")');
+        }
+
+
+        function onBtnSaveClick() {
+
+            if ($jq("#form1").valid()) {
+                var questionName = $jq("#txtQuestionName").val();
+                var status = $jq("#selectStatus").val();
+
+                $jq.ajax({
+                        url: "@Url.Action("SaveQuestion", "Question")",
+                        method: "POST",
+                        data: {
+                            __RequestVerificationToken: getAntiForgeryToken(),
+                            QuestionName: questionName,
+                            Status: status
+                        }
+                    })
+                    .done(function (result) {
+                        if (typeof (result) == "string") {
+                            if (isLoginForm(result)) {
+                                location.replace('@FormsAuthentication.LoginUrl');
+                                return;
+                            }
+                        }
+                        if (result.is_success) {
+                            doModalWithCloseEvent("dvAlertMsg", "Message Dialog", result.message, "onSaveSuccess()");
+                            return false;
+                        } else {
+                            doModal("dvAlertMsg", "Message Dialog", result.message, "", "");
+                        }
+                    })
+                    .fail(function() {
+
+                    });
+            }
+        }
+
+        function onSaveSuccess() {
+            location.replace('@Url.Action("Index", "Question")');
+        }
+
+        function onBtnBackClick(event) {
+            event.preventDefault();
+            location.replace('@Url.Action("Index", "Question")');
+        }
+
+    </script>
+}

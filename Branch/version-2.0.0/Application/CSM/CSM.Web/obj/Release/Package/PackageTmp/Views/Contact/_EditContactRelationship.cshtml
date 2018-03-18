@@ -1,0 +1,171 @@
+﻿@model CSM.Web.Models.ContactRelationshipViewModel
+@{
+    ViewBag.Title = "_EditContactRelationship";
+}
+
+@Html.HiddenFor(model => model.ContactId)
+@Html.HiddenFor(model => model.CustomerId)
+@Html.HiddenFor(model => model.ListIndex)
+@Html.HiddenFor(model => model.JsonContactRelationship, new { @id = "hddJsonContactRelationship" })
+<div class="modal-dialog modal-sm" style="min-width:900px;">
+    <div id="dvContactRelationshipForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">บันทึกสัญญาที่เกี่ยวข้อง</h5>
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="row margin-top-15">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                เลขที่บัญชี/สัญญา&nbsp;<span class="required-field-block">*</span>:
+                            </p>
+                        </div>
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(model => model.AccountId, Model.AccountList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", id = "AccountId" })     
+                            @Html.ValidationMessageFor(model => model.AccountId)                       
+                        </div>                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <p class="form-control-static">
+                                Product:
+                            </p>
+                        </div>
+                        <div class="col-md-5">
+                            @Html.TextBoxFor(model => model.Product, new { @class = "form-control input-sm", @id = "txtProduct" })                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                ความสัมพันธ์&nbsp;<span class="required-field-block">*</span>:
+                            </p>
+                        </div>
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(model => model.RelationshipId, Model.RelationshipList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm" }) 
+                            @Html.ValidationMessageFor(model => model.RelationshipId)                           
+                        </div>                        
+                    </div>
+                </div>
+                <div class="col-md-6">                    
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-blue btn-sm btn-xsmall" id="btnSaveRelationship">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" id="btnCancelRelationship">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $jq(function () {
+
+        $jq("#txtProduct").prop('disabled', true);
+
+        $jq('#btnSaveRelationship').click(function (e) {
+            e.preventDefault();
+            saveContactRelationship();
+            return false;
+        });
+
+        $jq("#AccountId").change(function (event) {
+            if ($jq(this).val() == '') {
+                $jq("#txtProduct").val('');
+            }
+            else {
+                getProduct();
+            }
+            return false;
+        });
+
+        $jq("#btnCancelRelationship").click(function (e) {
+            e.preventDefault();
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'doCancelRelationship()', 'Confirm');
+            }
+            return false;
+        });
+
+    });
+
+    function doCancelRelationship() {
+        hideModal('modalWindow');
+        $jq('#editContactRelationshipModal').modal('hide');
+        return false;
+    }
+
+    function saveContactRelationship() {
+        clearServerErrors();
+        //var formData = new FormData($jq('#form3').get(0));
+        var formData = $jq('#form3').serialize();
+
+        $jq.ajax({
+            url: '@Url.Action("EditContactRelationship", "Contact")',
+            type: "POST",
+            data: addAntiForgeryToken(formData),
+            //contentType: false,
+            //processData: false,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid === true) {
+                    $jq('#hddJsonContactRelationship').val(JSON.stringify(result.Data));
+                    loadContactRelationship();
+                    $jq('#editContactRelationshipModal').modal('hide');
+                } else {
+                    console.log(JSON.stringify(result));
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+
+    function getProduct() {
+       
+        // set data
+        var paramData = {
+            accountId: $jq("#AccountId").val()
+        }
+
+        $jq.ajax({
+            url: '@Url.Action("GetProduct", "Contact")',
+            type: "POST",
+            data: paramData,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == true) {
+                    $jq("#txtProduct").val(result.Data);
+                } else {
+                    var errorMsg = String.format('<strong></strong>&nbsp;{0}', result.Error);
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+</script>

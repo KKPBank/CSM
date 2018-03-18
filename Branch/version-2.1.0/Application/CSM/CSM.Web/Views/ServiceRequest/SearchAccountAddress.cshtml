@@ -1,0 +1,151 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.LookupAccountAddressViewModel
+@{Layout = null;}
+
+<div class="form-horizontal">
+    <input type="hidden" value="@Model" />
+    <div id="divBasicSearch">
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label">ประเภท:</label>
+                </div>
+                <div class="col-sm-9">
+                    @Html.DropDownListFor(m => m.AddressTypeId, Model.AddressTypeList, Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @id = "txtSearchType" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label">ที่อยู่จัดส่งเอกสาร:</label>
+                </div>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control input-sm" id="txtSearchAddress"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-12 text-right">
+                    <span class="btn btn-sm btn-primary" id="btnAccountAddressSearch"><i class="fa fa-search"></i> Search</span>
+                    <span class="btn btn-sm btn-default" id="btnAccountAddressClear"><i class="fa fa-file-o"></i> Clear</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive" id="divSearchAccountAddress">
+    <div id="dvSearchAccountAddressTable"></div>
+</div>
+
+<script type="text/javascript">
+    var searchFilter;
+    var successFilter;
+
+    $jq(function() {
+        initializeSearchFilter();
+        initializePaging();
+
+        $jq("#btnAccountAddressSearch").click(onBtnAccountAddressSearchClick);
+        $jq("#btnAccountAddressClear").click(onBtnAccountAddressClearClick);
+
+        loadAccountAddressTable();
+    });
+
+    function onBtnAccountAddressSearchClick() {
+        searchFilter.Type = $jq("#txtSearchType").val();
+        searchFilter.Address = $jq("#txtSearchAddress").val();
+
+        loadAccountAddressTable();
+    }
+
+    function onBtnAccountAddressClearClick() {
+        $jq("#txtSearchType").val("");
+        $jq("#txtSearchAddress").val("");
+
+        searchFilter.Type = $jq("#txtSearchType").val();
+        searchFilter.Address = $jq("#txtSearchAddress").val();
+
+        loadAccountAddressTable();
+    }
+
+    function loadAccountAddressTable() {
+        //get filter
+        getSearchFilterCriteria();
+
+        $jq.ajax({
+            url: "@Url.Action("SearchAccountAddress", "ServiceRequest")",
+            method: "POST",
+            data: searchFilter,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); }
+        })
+        .done(function(result) {
+            if (result.Valid == null) {
+                $jq("#dvSearchAccountAddressTable").html('');
+                successFilter = searchFilter;
+                $jq("#dvSearchAccountAddressTable").html(result);
+                initializePaging();
+            } else {
+                showServerErrors(result);
+            }
+        })
+        .fail(function () {
+            if (xhr.status === 401) {
+                location.replace('@FormsAuthentication.LoginUrl');
+                return;
+            } else {
+                var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+    }
+
+    function getSearchFilterCriteria() {
+        searchFilter.Type = $jq("#txtSearchType").val();
+        searchFilter.Address = $jq("#txtSearchAddress").val();
+    }
+
+    function initializeSearchFilter() {
+        searchFilter = {
+            Type: $jq("#txtSearchType").val(),
+            Address: $jq("#txtSearchAddress").val(),
+            CustomerId: $jq("#hiddenCustomerId").val(),
+            PageNo: '@Model.ContactAddressFilter.PageNo',
+            PageSize: '@Model.ContactAddressFilter.PageSize',
+            SortField: '@Model.ContactAddressFilter.SortField',
+            SortOrder: '@Model.ContactAddressFilter.SortOrder',
+            __RequestVerificationToken: getAntiForgeryToken()
+        };
+        successFilter = searchFilter;
+    }
+
+    function initializePaging() {
+        $jq("#dvSearchCustomerContractTable .input-page").change(function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = $jq(this).val();
+            loadAccountAddressTable();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchCustomerContractTable #pagesizelist").change(function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = "1";
+            searchFilter.PageSize = $jq(this).val();
+            loadAccountAddressTable();
+            return false;
+        });
+
+        $jq('#dvSearchCustomerContractTable .pagination ul li a').on('click', function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadAccountAddressTable();
+            return false;
+        });
+    }
+
+</script>

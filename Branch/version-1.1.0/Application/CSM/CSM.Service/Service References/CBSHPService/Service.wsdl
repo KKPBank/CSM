@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://www.siebel.com/xml/KKB%20Req%20Activity%20GAble%20IO" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s2="http://www.siebel.com/xml/KKB%20Res%20Activity%20GAble%20IO" xmlns:s3="http://www.siebel.com/xml/KKB%20Service%20Request%20IO" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="http://www.siebel.com/xml/KKB%20Req%20Activity%20GAble%20IO" />
+      <s:import namespace="http://www.siebel.com/xml/KKB%20Res%20Activity%20GAble%20IO" />
+      <s:import namespace="http://www.siebel.com/xml/KKB%20Service%20Request%20IO" />
+      <s:element name="SR_Request">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:c" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SR_RequestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s2:SR_RequestResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SR_Insert">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="k" type="s3:KKB_EAI_ServiceRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SR_InsertResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SR_InsertResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.siebel.com/xml/KKB%20Req%20Activity%20GAble%20IO">
+      <s:element name="c" type="s1:SiebelMessage" />
+      <s:complexType name="SiebelMessage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ListOfKkbReqActivityGableIo" type="s1:ArrayOfContact" />
+        </s:sequence>
+        <s:attribute name="MessageId2" type="s:string" />
+        <s:attribute name="MessageType2" type="s:string" />
+        <s:attribute name="IntObjectName2" type="s:string" />
+        <s:attribute name="IntObjectFormat2" type="s:string" />
+      </s:complexType>
+      <s:complexType name="ArrayOfContact">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Contact" type="s1:Contact" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Contact">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SentDate" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.siebel.com/xml/KKB%20Res%20Activity%20GAble%20IO">
+      <s:element name="SR_RequestResult" type="s2:SiebelMessage" />
+      <s:complexType name="SiebelMessage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ListOfKkbResActivityGableIo" type="s2:ArrayOfKkbContactActivityVbc" />
+        </s:sequence>
+        <s:attribute name="MessageId3" type="s:string" />
+        <s:attribute name="MessageType3" type="s:string" />
+        <s:attribute name="IntObjectName3" type="s:string" />
+        <s:attribute name="IntObjectFormat3" type="s:string" />
+      </s:complexType>
+      <s:complexType name="ArrayOfKkbContactActivityVbc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="KkbContactActivityVbc" type="s2:KkbContactActivityVbc" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="KkbContactActivityVbc">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ContactId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FinancialAccountNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Opened" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Owner" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VehicleRegistNumber" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.siebel.com/xml/KKB%20Service%20Request%20IO">
+      <s:complexType name="KKB_EAI_ServiceRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IntegrationId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FinancialAccountNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SRType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SRNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Area" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sub-Area" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Abstract" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sub-Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClosedDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Created" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Updated" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContactFullName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedByName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MainPhoneNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OwnedById" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Owner" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Priority" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="SR_RequestSoapIn">
+    <wsdl:part name="parameters" element="tns:SR_Request" />
+  </wsdl:message>
+  <wsdl:message name="SR_RequestSoapOut">
+    <wsdl:part name="parameters" element="tns:SR_RequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="SR_InsertSoapIn">
+    <wsdl:part name="parameters" element="tns:SR_Insert" />
+  </wsdl:message>
+  <wsdl:message name="SR_InsertSoapOut">
+    <wsdl:part name="parameters" element="tns:SR_InsertResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="SR_Request">
+      <wsdl:input message="tns:SR_RequestSoapIn" />
+      <wsdl:output message="tns:SR_RequestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SR_Insert">
+      <wsdl:input message="tns:SR_InsertSoapIn" />
+      <wsdl:output message="tns:SR_InsertSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SR_Request">
+      <soap:operation soapAction="http://tempuri.org/SR_Request" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SR_Insert">
+      <soap:operation soapAction="http://tempuri.org/SR_Insert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SR_Request">
+      <soap12:operation soapAction="http://tempuri.org/SR_Request" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SR_Insert">
+      <soap12:operation soapAction="http://tempuri.org/SR_Insert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="http://10.3.100.126:7777/CCHP/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="http://10.3.100.126:7777/CCHP/Service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,1399 @@
+﻿@model CSM.Web.Models.UserMonitoringModel
+@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@{
+    ViewBag.Title = "User Monitoring";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.UserMonitoring })
+}
+@section Breadcrumb {
+    <strong class="font-blue">User Monitoring &rsaquo;&rsaquo;</strong>
+    <strong class="font-green-jungle">User Monitoring Search</strong>
+}
+@using (Html.BeginForm("Search", "UserMonitoring", FormMethod.Post, new { @class = "form-horizontal sr", @id = "form1", @DefaultButton = "btnSearch" }))
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="hiddenUserIds" />
+    <input type="hidden" id="hiddenBranchIds" />
+    <input type="hidden" id="hiddenViewType" />
+
+    <input type="hidden" id="hiddenViewUserId" />
+    <input type="hidden" id="hiddenViewBranchId" />
+    @*<input type="hidden" id="hiddenViewStatusCode" />*@
+    <input type="hidden" id="hiddenViewStateId" />
+    
+    <h5 class="form-title">User Monitoring</h5>
+            <div>
+                <div class="collapse_container">
+                    <div class="collapse_header">
+                        <span class="collapse_sign">[-]</span> Group Assign Information
+                    </div>
+                    <div class="collapse_body">
+                        <hr class="dotted-line" />
+                        <div class="form-horizontal">
+                            <div class="row margin-top-15">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Product :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="txtGroupAssignProduct" placeholder="Auto complete" />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Campaign/Service :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="txtGroupAssignCampaignService" placeholder="Auto complete" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Type :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="txtGroupAssignType" placeholder="Auto complete" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Area :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="txtGroupAssignArea" placeholder="Auto complete" />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Sub Area :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="txtGroupAssignSubArea" placeholder="Auto complete" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">วันที่จ่ายงาน :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group date" id="datetimepicker1">
+                                            <input type="text" class="form-control input-sm" onchange="validateDateValue($jq(this));" id="txtGroupAssignFromDate" />
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="control-label">ถึง :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group date" id="datetimepicker2">
+                                            <input type="text" class="form-control input-sm" onchange="validateDateValue($jq(this));" id="txtGroupAssignToDate" />
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-9 col-sm-offset-3">
+                                        <div class="pull-right">
+                                            <span id="btnSearchGroupAssign" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Search</span>
+                                            <span id="btnGroupAssignReset" class="btn btn-sm btn-default"><i class="fa fa-file-o"></i> Clear</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr class="dashed-line" />
+                        <div class="clear"></div>
+                        <div id="dvSearchResultGroupAssign" class="table-responsive"></div>
+                    </div>
+                </div>
+                <div class="collapse_container">
+                    <div class="collapse_header">
+                        <span class="collapse_sign">[-]</span> User Assign Information
+                    </div>
+                    <div class="collapse_body">
+                        <hr class="dotted-line" />
+                        <div class="form-horizontal">
+
+                            <div class="row margin-top-15">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">สาขา :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" id="txtUserAssignBranch" placeholder="Auto complete" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Product :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="txtUserAssignProduct" placeholder="Auto complete" />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Campaign / Service :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="txtUserAssignCampaignService" placeholder="Auto complete" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Type :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="txtUserAssignType" placeholder="Auto complete" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Area :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="txtUserAssignArea" placeholder="Auto complete" />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Sub Area :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control input-sm" id="txtUserAssignSubArea" placeholder="Auto complete" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">วันที่จ่ายงาน :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group date" id="datetimepicker3">
+                                            <input type="text" class="form-control input-sm" onchange="validateDateValue($jq(this));" id="txtUserAssignFromDate" />
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="control-label">ถึง :</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group date" id="datetimepicker4">
+                                            <input type="text" class="form-control input-sm" onchange="validateDateValue($jq(this));" id="txtUserAssignToDate" />
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-sm-9 col-sm-offset-3">
+                                        <div class="pull-right">
+                                            <span id="btnSearchUserAssign" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Search</span>
+                                            <span id="btnUserAssignReset" class="btn btn-sm btn-default"><i class="fa fa-file-o"></i> Clear</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr class="dashed-line" />
+                        <div class="clear"></div>
+                        <div id="dvSearchResultUserAssign" class="table-responsive"></div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modalServiceRequest" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header"><h4 class="modal-title">แสดงรายชื่อ Service Request และโอนงาน</h4></div>
+                        <div class="modal-body" id="modalSearchCustomerBody">
+                            <div class="form-horizontal">
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-sm-3">
+                                            <label class="control-label">Branch<span style="color:red">*</span> :</label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="text" id="txtTransferBranch" placeholder="Auto complete" class="form-control input-sm" />
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="control-label">ผู้รับงาน<span style="color:red">*</span> :</label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="text" id="txtTransferUser" placeholder="Auto complete" class="form-control input-sm" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="dvSearchResultServiceRequest" class="table-responsive"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <span class="btn btn-primary btn-sm" id="btnTransfer"><i class="fa fa-send-o"></i> Transfer</span>
+                            <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+}
+<div style="display:none;">
+    <form action="@Url.Action("Edit", "ServiceRequest")" target="_blank" method="POST">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="SrId" id="hiddenEditSrId" />
+        <input type="submit" id="btnEditSr" />
+    </form>
+</div>
+@Html.Partial("_Antiforgery")
+@section masterjs
+{
+    <script type="text/javascript">
+
+        $jq(function () {
+
+            initGroupAssignAutoCompleteProduct();
+            initGroupAssignAutoCompleteCampaignService();
+            initGroupAssignAutoCompleteType();
+            initGroupAssignAutoCompleteArea();
+            initGroupAssignAutoCompleteSubArea();
+
+            initUserAssignAutoCompleteProduct();
+            initUserAssignAutoCompleteCampaignService();
+            initUserAssignAutoCompleteType();
+            initUserAssignAutoCompleteArea();
+            initUserAssignAutoCompleteSubArea();
+
+            initDatePicker();
+
+            $jq("#btnSearchGroupAssign").click(onBtnSearchGroupAssignClick);
+            $jq("#btnSearchUserAssign").click(onBtnSearchUserAssignClick);
+
+            $jq("#btnTransfer").click(onBtnTransferClick);
+
+            $jq("#btnGroupAssignReset").click(onBtnGroupAssignResetClick);
+            $jq("#btnUserAssignReset").click(onBtnUserAssignResetClick);
+
+            onBtnGroupAssignResetClick(false);
+            onBtnUserAssignResetClick(false);
+
+            initialPage();
+        });
+
+        function initialPage() {
+            $jq.ajax({
+                url: "@Url.Action("GetUserAndBranch", "UserMonitoring")",
+                method: "post",
+                data: {
+                    __RequestVerificationToken: getAntiForgeryToken()
+                }
+            }).done(function (result) {
+
+                if (result.IsSuccess) {
+
+                    $jq("#hiddenUserIds").val(result.UserIds);
+                    $jq("#hiddenBranchIds").val(result.BranchIds);
+
+                    $jq("#btnSearchGroupAssign").click();
+                    $jq("#btnSearchUserAssign").click();
+
+                    initUserAssignAutoCompleteBranch(result.BranchIds);
+                    initTransferAutoCompleteBranch(result.BranchIds);
+                    initTransferAutoCompleteUser(result.UserIds);
+                }
+                else {
+                    doModal('dvAlertMsg', 'Message Dialog', result.ErrorMessage, '', '');
+                }
+
+            }).fail(function (xhr) {
+                if (xhr.status === 401) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                } else {
+                    var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+        }
+
+        function onBtnSearchGroupAssignClick(e) {
+
+            if (e != null)
+                e.preventDefault();
+
+            var searchFilter = getSearchFilterGroupAssign();
+            searchFilter.PageNo = 1;
+            loadDataGroupAssign(searchFilter);
+
+            return false;
+        }
+
+        function getSearchFilterGroupAssign() {
+            var searchFilter = new Object();
+
+            searchFilter.BranchIds = $jq("#hiddenBranchIds").val();
+            searchFilter.ProductId = $jq("#txtGroupAssignProduct").val();
+            searchFilter.CampaignServiceId = $jq("#txtGroupAssignCampaignService").val();
+            searchFilter.TypeId = $jq("#txtGroupAssignType").val();
+            searchFilter.AreaId = $jq("#txtGroupAssignArea").val();
+            searchFilter.SubAreaId = $jq("#txtGroupAssignSubArea").val();
+            searchFilter.AssignDateFrom = $jq("#txtGroupAssignFromDate").val();
+            searchFilter.AssignDateTo = $jq("#txtGroupAssignToDate").val();
+
+            searchFilter.PageNo = '1';
+            searchFilter.PageSize = '15';
+            searchFilter.SortField = 'BranchCode';
+            searchFilter.SortOrder = 'ASC';
+            return searchFilter;
+        }
+
+        function loadDataGroupAssign(searchFilterGroupAssign) {
+
+            $jq.ajax({
+                url: '@Url.Action("SearchGroupAssign", "UserMonitoring")',
+                type: "POST",
+                data: searchFilterGroupAssign,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResultGroupAssign").html('');
+                        $jq("#dvSearchResultGroupAssign").html(result);
+                        initializePagingGroupAssign(searchFilterGroupAssign);
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                }
+            });
+
+            return false;
+        };
+
+        function initializePagingGroupAssign(searchFilter) {
+
+            $jq("#dvSearchResultGroupAssign .input-page").change(function (event) {
+                searchFilter.PageNo = $jq(this).val();
+                loadDataGroupAssign(searchFilter);
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchResultGroupAssign #pagesizelist").change(function (event) {
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadDataGroupAssign(searchFilter);
+                return false;
+            });
+
+            $jq('#dvSearchResultGroupAssign .pagination ul li a').on('click', function (event) {
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadDataGroupAssign(searchFilter);
+                return false;
+            });
+        }
+
+        function sortFieldGroupAssign(selectedSortField) {
+
+            var searchFilter = getSearchFilterGroupAssign();
+
+            if (selectedSortField == searchFilter.SortField)
+                searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            searchFilter.PageSize =
+            loadDataGroupAssign(searchFilter);
+        }
+    </script>
+
+    <script type="text/javascript">
+
+        function onBtnSearchUserAssignClick(e) {
+
+            if (e != null)
+                e.preventDefault();
+
+            var searchFilter = getSearchFilterUserAssign();
+            searchFilter.PageNo = 1;
+            loadDataUserAssign(searchFilter);
+
+            return false;
+        }
+
+        function getSearchFilterUserAssign() {
+            var searchFilter = new Object();
+
+            searchFilter.UserIds = $jq("#hiddenUserIds").val();
+            searchFilter.BranchId = $jq("#txtUserAssignBranch").val();
+            searchFilter.ProductId = $jq("#txtUserAssignProduct").val();
+            searchFilter.CampaignServiceId = $jq("#txtUserAssignCampaignService").val();
+            searchFilter.TypeId = $jq("#txtUserAssignType").val();
+            searchFilter.AreaId = $jq("#txtUserAssignArea").val();
+            searchFilter.SubAreaId = $jq("#txtUserAssignSubArea").val();
+            searchFilter.AssignDateFrom = $jq("#txtUserAssignFromDate").val();
+            searchFilter.AssignDateTo = $jq("#txtUserAssignToDate").val();
+
+            searchFilter.PageNo = '1';
+            searchFilter.PageSize = '15';
+            searchFilter.SortField = 'BranchCode';
+            searchFilter.SortOrder = 'ASC';
+            return searchFilter;
+        }
+
+        function loadDataUserAssign(searchFilterUserAssign) {
+
+            $jq.ajax({
+                url: '@Url.Action("SearchUserAssign", "UserMonitoring")',
+                type: "POST",
+                data: searchFilterUserAssign,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResultUserAssign").html('');
+                        $jq("#dvSearchResultUserAssign").html(result);
+                        initializePagingUserAssign(searchFilterUserAssign);
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                }
+            });
+
+            return false;
+        };
+
+        function initializePagingUserAssign(searchFilter) {
+
+            $jq("#dvSearchResultUserAssign .input-page").change(function (event) {
+                searchFilter.PageNo = $jq(this).val();
+                loadDataUserAssign(searchFilter);
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchResultUserAssign #pagesizelist").change(function (event) {
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadDataUserAssign(searchFilter);
+                return false;
+            });
+
+            $jq('#dvSearchResultUserAssign .pagination ul li a').on('click', function (event) {
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadDataUserAssign(searchFilter);
+                return false;
+            });
+        }
+
+        function sortFieldUserAssign(selectedSortField) {
+
+            var searchFilter = getSearchFilterUserAssign();
+
+            if (selectedSortField == searchFilter.SortField)
+                searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            loadDataUserAssign(searchFilter);
+        }
+
+    </script>
+
+    <script type="text/javascript">
+
+        function lookupServiceRequestByBranch(branchId, stateId) {
+
+            $jq("#hiddenViewType").val("branch");
+            $jq("#hiddenViewBranchId").val(branchId);
+            $jq("#hiddenViewUserId").val("");
+            $jq("#hiddenViewStateId").val(stateId);
+
+            var searchFilter = getSearchFilterServiceRequest(true);
+            searchFilter.PageNo = 1;
+            loadDataServiceRequest(searchFilter);
+
+            $jq("#txtTransferBranch").select2("val", "");
+            $jq("#txtTransferUser").select2("val", "");
+            $jq("#txtTransferUser").select2("disable");
+
+            $jq("#dvSearchResultServiceRequest").html('');
+            $jq("#modalServiceRequest").modal("show");
+
+            return false;
+        }
+
+        function lookupServiceRequestByUser(userId, stateId) {
+
+            $jq("#hiddenViewType").val("user");
+            $jq("#hiddenViewBranchId").val("");
+            $jq("#hiddenViewUserId").val(userId);
+            //$jq("#hiddenViewStatusCode").val(statusCode);
+            $jq("#hiddenViewStateId").val(stateId);
+
+            var searchFilter = getSearchFilterServiceRequest();
+            searchFilter.PageNo = 1;
+            loadDataServiceRequest(searchFilter);
+
+            $jq("#txtTransferBranch").select2("val", "");
+            $jq("#txtTransferUser").select2("val", "");
+            $jq("#txtTransferUser").select2("disable");
+
+            $jq("#dvSearchResultServiceRequest").html('');
+            $jq("#modalServiceRequest").modal("show");
+
+            return false;
+        }
+
+        function onBtnTransferClick() {
+
+            var branchId = $jq("#txtTransferBranch").select2("val");
+            if (branchId == "") {
+                doModal('dvAlertMsg', 'Message Dialog', "โปรดเลือกสาขาและผู้รับงาน", '', '');
+                return false;
+            }
+
+            var transferToUserId = $jq("#txtTransferUser").select2("val");
+            if (transferToUserId == "") {
+                doModal('dvAlertMsg', 'Message Dialog', "โปรดเลือกสาขาและผู้รับงาน", '', '');
+                return false;
+            }
+
+            if ($jq(".transfer:checked").length == 0) {
+                doModal('dvAlertMsg', 'Message Dialog', "โปรดเลือก Service Request อย่างน้อย 1 รายการ", '', '');
+                return false;
+            }
+
+            var transferSrs = $jq(".transfer:checked");
+
+            var srIds = new Array();
+            var transferTypes = new Array();
+
+            for (var i = 0; i < transferSrs.length; i++) {
+                srIds.push($jq(transferSrs[i]).attr("srId"));
+                transferTypes.push($jq(transferSrs[i]).attr("transferType"));
+            }
+
+            $jq("#dvLoading").show();
+
+            $jq.ajax({
+                url: "@Url.Action("TransferServiceRequest", "UserMonitoring")",
+                method: "post",
+                data: {
+                    srIds: srIds.join(),
+                    transferTypes: transferTypes.join(),
+                    transferToUserId: transferToUserId,
+                    __RequestVerificationToken: getAntiForgeryToken()
+                },
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+
+                    $jq("#dvLoading").hide();
+
+                    if (result.Valid == null) {
+
+                        doModal('dvAlertMsg', 'Message Dialog', "โอนงานเรียบร้อยแล้ว", '', '');
+
+                        onBtnSearchGroupAssignClick();
+                        onBtnSearchUserAssignClick();
+
+                        hideModal("modalServiceRequest");
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+
+                    $jq("#dvLoading").hide();
+
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                }
+            });
+
+        }
+
+        function getSearchFilterServiceRequest(isFirstInit) {
+            var searchFilter = new Object();
+
+            searchFilter.ViewType = $jq("#hiddenViewType").val();
+            searchFilter.BranchId = $jq("#hiddenViewBranchId").val();
+            searchFilter.UserId = $jq("#hiddenViewUserId").val();
+            //searchFilter.StatusCode = $jq("#hiddenViewStatusCode").val();
+            searchFilter.StateId = $jq("#hiddenViewStateId").val();
+
+            if (searchFilter.ViewType == "branch") {
+                searchFilter.ProductId = $jq("#txtGroupAssignProduct").val();
+                searchFilter.CampaignServiceId = $jq("#txtGroupAssignCampaignService").val();
+                searchFilter.TypeId = $jq("#txtGroupAssignType").val();
+                searchFilter.AreaId = $jq("#txtGroupAssignArea").val();
+                searchFilter.SubAreaId = $jq("#txtGroupAssignSubArea").val();
+                searchFilter.AssignDateFrom = $jq("#txtGroupAssignFromDate").val();
+                searchFilter.AssignDateTo = $jq("#txtGroupAssignToDate").val();
+            }
+            else if (searchFilter.ViewType == "user") {
+                searchFilter.ProductId = $jq("#txtUserAssignProduct").val();
+                searchFilter.CampaignServiceId = $jq("#txtUserAssignCampaignService").val();
+                searchFilter.TypeId = $jq("#txtUserAssignType").val();
+                searchFilter.AreaId = $jq("#txtUserAssignArea").val();
+                searchFilter.SubAreaId = $jq("#txtUserAssignSubArea").val();
+                searchFilter.AssignDateFrom = $jq("#txtUserAssignFromDate").val();
+                searchFilter.AssignDateTo = $jq("#txtUserAssignToDate").val();
+            }
+
+            searchFilter.PageNo = '1';
+            searchFilter.PageSize = '15';
+            searchFilter.SortField = '';
+            searchFilter.SortOrder = 'ASC';
+
+            return searchFilter;
+        }
+
+        function loadDataServiceRequest(searchFilterServiceRequest) {
+
+            $jq.ajax({
+                url: '@Url.Action("SearchServiceRequest", "UserMonitoring")',
+                type: "POST",
+                data: searchFilterServiceRequest,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResultServiceRequest").html('');
+                        $jq("#dvSearchResultServiceRequest").html(result);
+
+                        $jq("#chkTransferCheckAll").click(onChkTransferCheckAllToggle);
+                        $jq(".transfer").click(onCheckboxTransferItemChange);
+
+                        initializePagingServiceRequest(searchFilterServiceRequest);
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                }
+            });
+
+            return false;
+        };
+
+        function initializePagingServiceRequest(searchFilter) {
+
+            $jq("#dvSearchResultServiceRequest .input-page").change(function (event) {
+                searchFilter.PageNo = $jq(this).val();
+                loadDataServiceRequest(searchFilter);
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchResultServiceRequest #pagesizelist").change(function (event) {
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadDataServiceRequest(searchFilter);
+                return false;
+            });
+
+            $jq('#dvSearchResultServiceRequest .pagination ul li a').on('click', function (event) {
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadDataServiceRequest(searchFilter);
+                return false;
+            });
+        }
+
+        var currentSortFieldServiceRequest = "";
+        var currentSortOrderServiceRequest = "";
+
+        function sortFieldServiceRequest(selectedSortField) {
+
+            var searchFilter = getSearchFilterServiceRequest();
+
+            if (selectedSortField == currentSortFieldServiceRequest)
+                searchFilter.SortOrder = (currentSortOrderServiceRequest == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+
+            currentSortFieldServiceRequest = selectedSortField;
+            currentSortOrderServiceRequest = searchFilter.SortOrder;
+
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            searchFilter.PageSize = $jq("#dvSearchResultServiceRequest #pagesizelist").val();
+            loadDataServiceRequest(searchFilter);
+        }
+
+    </script>
+
+
+
+    <script type="text/javascript">
+
+        function openEditSr(srId) {
+            $jq("#hiddenEditSrId").val(srId);
+            $jq("#btnEditSr").click();
+        }
+
+        function onBtnGroupAssignResetClick(forceLoad) {
+            $jq("#txtGroupAssignProduct").select2("val", "");
+            $jq("#txtGroupAssignCampaignService").select2("val", "");
+            $jq("#txtGroupAssignArea").select2("val", "");
+            $jq("#txtGroupAssignSubArea").select2("val", "");
+            $jq("#txtGroupAssignFromDate").val("");
+            $jq("#txtGroupAssignToDate").val("");
+
+            if (forceLoad != false)
+                onBtnSearchGroupAssignClick();
+        }
+
+        function onBtnUserAssignResetClick(forceLoad) {
+            $jq("#txtUserAssignBranch").select2("val", "");
+
+            $jq("#txtUserAssignProduct").select2("val", "");
+            $jq("#txtUserAssignCampaignService").select2("val", "");
+            $jq("#txtUserAssignArea").select2("val", "");
+            $jq("#txtUserAssignSubArea").select2("val", "");
+            $jq("#txtUserAssignFromDate").val("");
+            $jq("#txtUserAssignToDate").val("");
+
+            if (forceLoad != false)
+                onBtnSearchUserAssignClick();
+        }
+
+        function onChkTransferCheckAllToggle() {
+            $jq(".transfer").prop("checked", $jq("#chkTransferCheckAll").is(':checked'));
+        }
+
+        function onCheckboxTransferItemChange() {
+            $jq("#chkTransferCheckAll").prop("checked", $jq(".transfer:not(:checked)").length == 0);
+        }
+
+        function initUserAssignAutoCompleteBranch(branchIds) {
+
+            $jq("#txtUserAssignBranch").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchBranchByBranchIds", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            branchIds: branchIds
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.BranchName,
+                                    id: item.BranchId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initTransferAutoCompleteBranch(branchIds) {
+
+            $jq("#txtTransferBranch").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchBranchByBranchIds", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            branchIds: branchIds
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.BranchName,
+                                    id: item.BranchId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            }).on("change", function () {
+
+                var branchId = $jq("#txtTransferBranch").select2("val");
+                if (branchId != "") {
+                    $jq("#txtTransferUser").select2("val", "");
+                    $jq("#txtTransferUser").select2("enable");
+                } else {
+                    $jq("#txtTransferUser").select2("val", "");
+                    $jq("#txtTransferUser").select2("disable");
+                }
+            });
+        }
+
+        function initTransferAutoCompleteUser(userIds) {
+
+            $jq("#txtTransferUser").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchUserByUserIds", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            branchId: $jq("#txtTransferBranch").select2("val"),
+                            userIds: userIds
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.FullName,
+                                    id: item.UserId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initGroupAssignAutoCompleteProduct() {
+
+            $jq("#txtGroupAssignProduct").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchProduct", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            campaignServiceId: $jq("#txtGroupAssignCampaignService").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.ProductName,
+                                    id: item.ProductId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initGroupAssignAutoCompleteCampaignService() {
+
+            $jq("#txtGroupAssignCampaignService").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchCampaignService", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            productId: $jq("#txtGroupAssignProduct").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.CampaignServiceName,
+                                    id: item.CampaignServiceId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initGroupAssignAutoCompleteArea() {
+            $jq("#txtGroupAssignArea").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchArea", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            subAreaId: $jq("#txtGroupAssignSubArea").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.AreaName,
+                                    id: item.AreaId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initGroupAssignAutoCompleteType() {
+            $jq("#txtGroupAssignType").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchType", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.TypeName,
+                                    id: item.TypeId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initGroupAssignAutoCompleteSubArea() {
+            $jq("#txtGroupAssignSubArea").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchSubArea", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            areaId: $jq("#txtGroupAssignArea").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.SubAreaName,
+                                    id: item.SubAreaId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initUserAssignAutoCompleteProduct() {
+
+            $jq("#txtUserAssignProduct").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchProduct", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            campaignServiceId: $jq("#txtUserAssignCampaignService").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.ProductName,
+                                    id: item.ProductId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initUserAssignAutoCompleteCampaignService() {
+
+            $jq("#txtUserAssignCampaignService").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchCampaignService", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            productId: $jq("#txtUserAssignProduct").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.CampaignServiceName,
+                                    id: item.CampaignServiceId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initUserAssignAutoCompleteType() {
+            $jq("#txtUserAssignType").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchType", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.TypeName,
+                                    id: item.TypeId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initUserAssignAutoCompleteArea() {
+            $jq("#txtUserAssignArea").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchArea", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            subAreaId: $jq("#txtUserAssignSubArea").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.AreaName,
+                                    id: item.AreaId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initUserAssignAutoCompleteSubArea() {
+            $jq("#txtUserAssignSubArea").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchSubArea", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            areaId: $jq("#txtUserAssignArea").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.SubAreaName,
+                                    id: item.SubAreaId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initDatePicker() {
+
+            var dateFormat = 'dd/mm/yyyy';
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker1').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker2').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker3').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker4').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+        }
+    </script>
+}

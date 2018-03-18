@@ -1,0 +1,32 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.NewsViewModel
+<div class="table-responsive">
+    <table class="table datatable">
+        <thead>
+            <tr>
+                <th style="width:10%!important;">Action</th>
+                <th style="width:90%!important;">Branch Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.NewsBranchList == null || Model.NewsBranchList.Count == 0)
+            {
+                <tr>
+                    <td colspan="2" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model.NewsBranchList)
+                {
+                    <tr>
+                        <td class="center">
+                            <a href="javascript:;" onclick="deleteBranch('@item.BranchId')" class="delete-active" title="Delete"></a>
+                        </td>
+                        <td>@item.BranchName</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

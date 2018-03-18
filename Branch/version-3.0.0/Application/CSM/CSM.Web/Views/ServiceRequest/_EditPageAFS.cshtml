@@ -1,0 +1,157 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.CreateServiceRequestViewModel
+           
+@if (Model.CanEdit && (ViewBag.IsEditView == null || !ViewBag.IsEditView))
+{
+    <tr>
+        <td class="text">รหัสสินทรัพย์รอขาย <span>*</span> :</td>
+        <td class="input" colspan="3">
+            @Html.TextBoxFor(model => model.AfsAssetId, new { @id = "txtAfsAssetId", @class = "form-control input-sm input-sr" })
+            @Html.ValidationMessageFor(model => model.AfsAssetId)
+            @Html.HiddenFor(model => model.AfsAssetNo, new { @id = "hiddenAfsAssetNo" })
+        </td>
+    </tr>
+    <tr>
+        <td class="text">รายละเอียดทรัพย์ :</td>
+        <td class="input" colspan="3">
+            @Html.TextAreaFor(model => model.AfsAssetDesc, new { style = "width:520px", @class = "readonly form-controls input-sm input-sr-long", @id = "hiddenAfsAssetDesc", @readonly = "readonly", rows = "4" })
+        </td>
+    </tr>
+}
+else
+{
+    <tr>
+        <td class="text">รหัสสินทรัพย์รอขาย :</td>
+        <td class="input" colspan="3">
+            <input type="hidden" name="AfsAssetId" id="hiddenAfsAssetId" value="@Model.AfsAssetId" />
+            <input type="hidden" name="AfsAssetNo" id="hiddenAfsAssetNo" value="@Model.AfsAssetNo" />
+            <span class="value">@Model.AfsAssetNo</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="text">รายละเอียดทรัพย์ :</td>
+        <td class="input" colspan="3">
+            <span class="value input-sr-long" style="min-height:80px">@Model.AfsAssetDesc</span>
+            <input type="hidden" name="AfsAssetDesc" id="hiddenAfsAssetDesc" value="@Model.AfsAssetDesc" />
+        </td>
+    </tr>
+}
+
+<input type="hidden" name="NCBMarketingName" value="@Model.NCBMarketingName" id="hiddenNCBMarketingName" />
+
+<script type="text/javascript">
+
+    $jq(function () {
+        initAutoCompleteAfs();
+
+        if ($jq("#txtAfsAssetId").select2("val") == "-1") {
+            $jq("#txtAfsAssetId").select2("val", "");
+        }
+    });
+
+    function initAutoCompleteAfs() {
+        initAutoCompleteAfsAsset();
+    }
+
+    function initAutoCompleteAfsAsset() {
+
+        $jq("#txtAfsAssetId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchAfsAsset", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.AssetNo,
+                                id: item.AssetId,
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.AfsAssetId", text: @Html.Raw(Json.Encode(@Model.AfsAssetNo)) };
+
+                if (data.text == null || data.text.trim().length == 0) {
+                    var text = $jq("#hiddenAfsAssetNo").val();
+                    if (text != null && text.trim().length > 0) {
+                        data.text = text;
+                    }
+                }
+
+                $jq("#hiddenAfsAssetDesc").val(@Html.Raw(Json.Encode(@Model.AfsAssetDesc)));
+
+                callback(data);
+            }
+        }).on("change", function (evt) {
+
+            if ($jq(this).val().length != 0) {
+                //on change
+                var text = $jq('#txtAfsAssetId').select2('data').text.trim();
+                $jq("#hiddenAfsAssetNo").val(text);
+
+                var value = $jq(this).val().trim();
+
+                if (value.length != 0) {
+                    $jq.ajax({
+                        url: "@Url.Action("GetAssetInfo", "ServiceRequest")",
+                        method: "POST",
+                        data: {
+                            afsAssetId: value,
+                            __RequestVerificationToken: getAntiForgeryToken()
+                        }
+                    }).done(function (result) {
+                        if (result.IsSuccess) {
+                            $jq("#hiddenAfsAssetDesc").val(result.AssetInfo);
+
+                            if (result.SaleOwnerUserId != null && result.SaleOwnerUserId.length > 0
+                                && result.SaleOwnerUserFullName != null && result.SaleOwnerUserFullName.length > 0
+                                && result.SaleOwnerBranchId != null && result.SaleOwnerBranchId.length > 0
+                                && result.SaleOwnerBranchName != null && result.SaleOwnerBranchName.length > 0)
+                            {
+                                if ($jq("#txtOwnerUser").length > 0)
+                                    $jq("#txtOwnerUser").select2("data", { id: result.SaleOwnerUserId, text: result.SaleOwnerUserFullName });
+                                if ($jq("#txtOwnerBranch").length > 0)
+                                    $jq("#txtOwnerBranch").select2("data", { id: result.SaleOwnerBranchId, text: result.SaleOwnerBranchName });
+
+                                if ($jq("#hiddenOwnerUserFullName").length > 0)
+                                    $jq("#hiddenOwnerUserFullName").val(result.SaleOwnerUserFullName);
+                                if ($jq("#hiddenOwnerBranchName").length > 0)
+                                    $jq("#hiddenOwnerBranchName").val(result.SaleOwnerBranchName);
+                            }
+                        }
+                    }).fail(function () {
+                        doModal('dvAlertMsg', 'Error', '@Resource.Error_System', '', '');
+                    });
+                }
+            }
+            else {
+                //on clear
+
+                $jq("#hiddenAfsAssetNo").val("");
+                $jq("#hiddenAfsAssetDesc").val("");
+            }
+        });
+    }
+
+</script>

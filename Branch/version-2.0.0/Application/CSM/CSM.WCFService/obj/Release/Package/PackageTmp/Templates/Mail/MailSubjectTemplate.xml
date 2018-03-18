@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<templates>
+  <template name="NotifySyncEmailFailed">
+    <subject>CSM fail to create jobs in communication pool – {timestamp}</subject>
+  </template>
+  <template name="NotifySyncEmailSuccess">
+    <subject>CSM partial fail to create jobs in communication pool – {timestamp}</subject>
+  </template>
+  <template name="NotifyImportAssetFailed">
+    <subject>CSM fail to import AFS files – {timestamp}</subject>
+  </template>
+  <template name="NotifyImportAssetSuccess">
+    <subject>CSM partial fail to import AFS files – {timestamp}</subject>
+  </template>
+  <template name="NotifyExportActivityFailed">
+    <subject>CSM fail to export activity – {timestamp}</subject>
+  </template>
+  <template name="NotifyExportActivitySuccess">
+    <subject>CSM partial fail to export activity – {timestamp}</subject>
+  </template>
+  <template name="NotifyFailExportActvity">
+    <subject>CSM fail to export employee – {timestamp}</subject>
+  </template>
+  <template name="NotifyImportContactSuccess">
+    <subject>CSM partial fail to import contact files – {timestamp}</subject>
+  </template>
+  <template name="NotifyImportContactFailed">
+    <subject>CSM fail to import contact files – {timestamp}</subject>
+  </template>
+  <template name="NotifyImportCISSuccess">
+    <subject>CSM partial to import cis files – {timestamp}</subject>
+  </template>
+  <template name="NotifyImportCISFailed">
+    <subject>CSM fail to import cis files – {timestamp}</subject>
+  </template>
+  <template name="NotifyImportHPSuccess">
+    <subject>CSM partial fail to import HP Activity files – {timestamp}</subject>
+  </template>
+  <template name="NotifyImportHPFailed">
+    <subject>CSM fail to import HP Activity files – {timestamp}</subject>
+  </template>
+  <template name="NotifyCreateSrFromReplyEmailSuccess">
+    <subject>CSM partial fail to Sync SR from Reply Email – {timestamp}</subject>
+  </template>
+  <template name="NotifyCreateSrFromReplyEmailFailed">
+    <subject>CSM fail to Sync SR from Reply Email – {timestamp}</subject>
+  </template>
+  <template name="NotifyReSubmitActivityToCARSystemSuccess">
+    <subject>CSM partial fail to Re-Submit Activity to CAR System – {timestamp}</subject>
+  </template>
+  <template name="NotifyReSubmitActivityToCARSystemFailed">
+    <subject>CSM fail to Re-Submit Activity to CAR System – {timestamp}</subject>
+  </template>
+  <template name="NotifyReSubmitActivityToCBSHPSystemSuccess">
+    <subject>CSM partial fail to Re-Submit Activity to CBS-HP System – {timestamp}</subject>
+  </template>
+  <template name="NotifyReSubmitActivityToCBSHPSystemFailed">
+    <subject>CSM fail to Re-Submit Activity to CBS-HP System – {timestamp}</subject>
+  </template>
+  <template name="NotifyExportSRReportFailed">
+    <subject>CSM fail to Export Report SR {reporttype} – {timestamp}</subject>
+  </template>
+</templates>

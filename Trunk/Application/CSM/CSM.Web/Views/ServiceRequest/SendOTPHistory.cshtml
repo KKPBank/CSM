@@ -1,0 +1,56 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@model CSM.Web.Models.SendOTPHistoryVM
+
+<div class="table-responsive">
+    <table class="table table-hover datatable">
+        <thead>
+            <tr>
+                <th class="center">ครั้งที่</th>
+                <th>สถานะ Generate</th>
+                <th>เหตุผลการ Generate</th>
+                <th>สถานะ Verify</th>
+                <th>เหตุผลการ Verify</th>
+                <th>เบอร์โทรศัพท์</th>
+                <th>Template Message</th>
+                @*<th>RefNo</th>*@
+                <th>วันเวลา</th>
+                <th>User</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.List != null && Model.List.Count > 0)
+            {
+                int runNo = 0;
+                foreach (var item in Model.List)
+                {
+                    runNo++;
+                    <tr>
+                        <td class="center">@runNo</td>
+                        <td>@item.RequestStatusCodeDisplay</td>
+                        <td>@item.RequestErrorCode - @item.RequestErrorDesc</td>
+                        <td>@item.ResultStatusCodeDisplay</td>
+                        <td>@item.ResultErrorCode - @item.ResultErrorDesc</td>
+                        <td>@item.MobileNo</td>
+                        <td>@item.RequestOTPPrefix@item.RequestOTPDetail@item.RequestOTPSuffix</td>
+                        @*<td>@item.RequestOTPSuffix</td>*@
+                        <td>@item.UpdateDate.ToDisplay()</td>
+                        <td>@item.UserAction</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $jq(function () {
+
+    });
+</script>

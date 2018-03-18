@@ -1,0 +1,198 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.QuestionViewModel
+
+@{
+    ViewBag.Title = "Search Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    @*<strong class="font-blue">Question &rsaquo;&rsaquo;</strong>*@
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; Search Question</strong>
+}
+<div class="form-horizontal">
+    <h5 class="form-title">Search Question</h5>
+    <hr class="dotted-line"/>
+    <div class="row margin-top-15">
+        <div class="form-group">
+            <div class="col-sm-2">
+                <label class="control-label">คำถาม :</label>
+            </div>
+            <div class="col-sm-5">
+                <input type="text" class="form-control input-sm" id="txtSearchQuestionName"/>
+            </div>
+            <div class="col-sm-2">
+                <label class="control-label">สถานะ :</label>
+            </div>
+            <div class="col-sm-3">
+                @Html.DropDownListFor(model => model.Status, Model.QuestionIsActiveList, Resource.Ddl_PleaseSelect, new {@class = "form-control input-sm", id = "selectStatus"})
+            </div>
+        </div>
+    </div>
+    <hr class="dashed-line"/>
+    <div class="row">
+        <form action="@Url.Action("Create", "Question")" method="post">
+            <button id="btnCreate" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> New Question</button>
+            <div class="pull-right">
+                <span id="btnSearch" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Search</span>
+                <span id="btnClearForm" class="btn btn-sm btn-default"><i class="fa fa-file-o"></i> Clear</span>
+            </div>
+        </form>
+    </div>
+    <div class="clearfix"></div>
+    <hr class="dashed-line"/>
+    <div class="clear"></div>
+
+    <div id="dvSearchQuestion">
+        @if(Model.QuestionList != null){
+            Html.RenderPartial("~/Views/Question/_QuestionList.cshtml", Model);
+        }
+    </div>
+
+</div>
+<div id="hdnFrm"></div>
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+    <style type="text/css">
+        .input-page {
+            width: 30px;
+        }
+        .btnEdit {
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript">
+    var searchFilter;
+    var successFilter;
+
+    $jq(document).ready(function () {
+        initializeSearchFilter();
+        initializePaging();
+
+        $jq('#btnSearch').click(onBtnSearchClick);
+        $jq("#btnClearForm").click(onBtnClearClick);
+    });
+
+    function editQuestion(questionId) {
+        $jq('#hdnFrm').html('<form action="@Url.Action("Edit","Question")" name="frmEdit" id="frmEdit" method="post" style="display:none;">@Html.AntiForgeryToken()<input type="text" name="QuestionId" value="' + questionId + '" /></form>');
+        document.forms['frmEdit'].submit();
+    }
+
+    function onBtnSearchClick() {
+
+        var search = $jq("#txtSearchQuestionName").val();
+        var status = $jq("#selectStatus").val();
+
+        if (search.trim().length == 0 && status.trim().length == 0) {
+            var warningMsg = '@Resource.Msg_EnteredAtLeastOneCriteria';
+            doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+            return false;
+        }
+
+        searchFilter.QuestionName = search;
+        searchFilter.Status = status;
+        loadQuestionList();
+    }
+    function onBtnClearClick() {
+        $jq("#txtSearchQuestionName").val("");
+        $jq("#selectStatus").val("");
+
+        searchFilter.QuestionName = $jq("#txtSearchQuestionName").val();
+        searchFilter.Status = $jq("#selectStatus").val();
+        $jq("#dvSearchQuestion").html("");
+    }
+
+    function loadQuestionList() {
+        $jq.ajax({
+            url: "@Url.Action("SearchQuestionList", "Question")",
+                    method: "POST",
+                    data: searchFilter,
+                    beforeSend: function() { $jq("#dvLoading").show(); },
+                    complete: function() { $jq("#dvLoading").hide(); }
+                })
+                .done(function (result) {
+
+                    if (isLoginForm(result)) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    }
+
+                    if (result.Valid == null) {
+                        $jq("#dvSearchQuestion").html('');
+                        successFilter = searchFilter;
+                        $jq("#dvSearchQuestion").html(result);
+                        initializePaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                })
+                .fail(function (xhr) {
+
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                } else {
+                    var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+    }
+
+    function initializeSearchFilter() {
+        searchFilter = {
+            QuestionName: $jq("#txtSearchQuestionName").val(),
+            Status: $jq("#selectStatus").val(),
+            PageNo: '@Model.SearchFilter.PageNo',
+            PageSize: '@Model.SearchFilter.PageSize',
+            SortField: '@Model.SearchFilter.SortField',
+            SortOrder: '@Model.SearchFilter.SortOrder',
+            __RequestVerificationToken: getAntiForgeryToken()
+        };
+        successFilter = searchFilter;
+    };
+
+    function initializePaging() {
+        $jq("#dvSearchQuestion .input-page").change(function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = $jq(this).val();
+            loadQuestionList();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchQuestion #pagesizelist").change(function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = "1";
+            searchFilter.PageSize = $jq(this).val();
+            loadQuestionList();
+            return false;
+        });
+
+        $jq('#dvSearchQuestion .pagination ul li a').on('click', function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadQuestionList();
+            return false;
+        });
+    }
+
+    function sortField(selectedSortField) {
+        if (selectedSortField == searchFilter.SortField)
+            searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+        else
+            searchFilter.SortOrder = 'ASC';
+        searchFilter.SortField = selectedSortField;
+        searchFilter.PageNo = 1;
+        loadAreaList();
+    }
+
+    </script>
+}

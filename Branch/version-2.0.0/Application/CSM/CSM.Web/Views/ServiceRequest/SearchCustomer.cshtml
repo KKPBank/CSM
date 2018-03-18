@@ -1,0 +1,284 @@
+﻿@model CSM.Web.Models.LookupCustomerViewModel
+@{
+    Layout = null;
+}
+<div class="form-horizontal">
+    <div id="divBasicSearch">
+        <div style="color:red;padding:0 0 10px;">
+            * หากต้องการค้นหาบางส่วนของคำ ให้ใส่ * ไว้ด้านหน้าหรือด้านหลังของคำค้นหาที่ Field
+            <strong class="text-primary">ตัวอักษรสี น้ำเงิน</strong>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label text-primary">ชื่อลูกค้า :</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchCustomerInput" id="txtSearchCustomerFirstname" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="control-label text-primary">นามสกุลลูกค้า :</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchCustomerInput" id="txtSearchCustomerLastname" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                        Subscription ID :
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchCustomerInput" id="txtSearchCustomerCardNo" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="control-label">ทะเบียนรถยนต์ :</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchCustomerInput" id="txtSearchCustomerCarNo" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label">เลขที่บัญชี/สัญญา :</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchCustomerInput" id="txtSearchCustomerAccountNo" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="control-label" title="สามารถค้นแบบ Partial ได้">เบอร์โทรศัพท์<br />(Partial Searh 9 Digit):</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchCustomerInput" id="txtSearchCustomerPhoneNo" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <span id="btnNewCustomer" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> New Customer</span>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <span class="btn btn-sm btn-primary" id="btnSearchCustomerSearch"><i class="fa fa-search"></i> Search</span>
+                    <span class="btn btn-sm btn-default" id="btnSearchCustomerClear"><i class="fa fa-file-o"></i> Clear</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive" id="divSearchCustomer" style="display: none">
+    <div id="dvSearchCustomerTable"></div>
+</div>
+
+<script type="text/javascript">
+    var customerSearchFilter;
+    var customerSuccessFilter;
+
+    $jq(function () {
+        initializeSearchFilter();
+        initializePaging();
+        onBtnSearchCustomerClearClick();
+
+
+        $jq("#btnSearchCustomerSearch").click(onBtnSearchCustomerSearchClick);
+        $jq("#btnSearchCustomerClear").click(onBtnSearchCustomerClearClick);
+
+        $jq(".searchCustomerInput").keypress(onSearchCustomerKeyPressEnter);
+
+        //Show Create Customer Modal
+        $jq("#btnNewCustomer").click(onBtnNewCustomer);
+
+        
+    });
+
+    function onBtnNewCustomer() {
+        clearCreateCustomerModal();
+
+        $jq("#modalCreateCustomer").modal("show");
+    }
+
+    function clearCreateCustomerModal() {
+        clearServerErrors();    
+
+        $jq("#ddlSubscriptType").val("");
+        $jq("#txtCardNo").val("");
+        onDdlCustomerSubscriptType();
+
+        $jq('#customerBirthDatetimepicker').datepicker("setDate", (new Date()).toDateString());
+        $jq("#txtBirthDate").val("");
+        $jq('#customerBirthDatetimepicker').datepicker("update");
+        $jq("#ddlTitleThai").val("");
+        $jq("#txtFirstNameThai").val("");
+        $jq("#txtLastNameThai").val("");
+        $jq("#ddlTitleEnglish").val("");
+        $jq("#txtFirstNameEnglish").val("");
+        $jq("#txtLastNameEnglish").val("");
+        $jq("#ddlPhoneType1").val("");
+        $jq("#txtPhoneNo1").val("");
+        $jq("#txtPhoneNo1").attr("readonly", "readonly");
+        $jq("#NotValidatePhone1").attr("checked", false);
+        $jq("#ddlPhoneType2").val("");
+        $jq("#txtPhoneNo2").val("");
+        $jq("#txtPhoneNo2").attr("disabled", true);
+        $jq("#ddlPhoneType3").val("");
+        $jq("#txtPhoneNo3").val("");
+        $jq("#txtPhoneNo3").attr("disabled", true);
+        $jq("#txtFax").val("");
+        $jq("#txtEmail").val("");
+
+        $jq("#btnModalCustomerSave").show();
+        $jq("#btnModalCustomerComfirm").hide();
+    }
+
+    function onSearchCustomerKeyPressEnter(e) { if (e.which == 13) onBtnSearchCustomerSearchClick(); }
+
+    var isFirstLoadTableSearchCustomer = true;
+
+    function onBtnSearchCustomerSearchClick()
+    {
+        if ($jq("#txtSearchCustomerFirstname").val().trim().length == 0
+                && $jq("#txtSearchCustomerLastname").val().trim().length == 0
+                && $jq("#txtSearchCustomerCardNo").val().trim().length == 0
+                && $jq("#txtSearchCustomerCarNo").val().trim().length == 0
+                && $jq("#txtSearchCustomerAccountNo").val().trim().length == 0
+                && $jq("#txtSearchCustomerPhoneNo").val().trim().length == 0)
+        {
+            doModal('dvAlertMsg', 'Message Dialog', 'โปรดเลือกอย่างน้อย 1 ตัวเลือก', '', '');
+            return;
+        }
+
+        if (isFirstLoadTableSearchCustomer)
+        {
+            $jq("#tableSearchCustomer").bootstrapTable();
+            $jq("#tableSearchCustomer").on('load-success.bs.table', onTableSearchCustomerLoadSuccess);
+            $jq("#tableSearchCustomer").on('load-error.bs.table', onTableSearchCustomerLoadError);
+
+            isFirstLoadTableSearchCustomer = false;
+        }
+//        else
+//        {
+//            loadCustomerTable();
+//        }
+
+        $jq("#divSearchCustomer").show();
+        loadCustomerTable();
+    }
+
+    //data table
+    function loadCustomerTable() {
+        //get criteria
+        getSearchFilterCriteria();
+
+        $jq.ajax({
+                url: "@Url.Action("SearchCustomer", "ServiceRequest")",
+                method: "POST",
+                data: customerSearchFilter,
+                beforeSend: function() { $jq("#dvLoading").show(); },
+                complete: function() { $jq("#dvLoading").hide(); }
+            })
+            .done(function(result) {
+                if (result.Valid == null) {
+                    $jq("#dvSearchCustomerTable").html('');
+                    customerSuccessFilter = customerSearchFilter;
+                    $jq("#dvSearchCustomerTable").html(result);
+                    initializePaging();
+                } else {
+                    showServerErrors(result);
+                }
+            })
+            .fail(function() {
+                if (xhr.status === 401) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                } else {
+                    var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+    }
+
+    function getSearchFilterCriteria() {
+        customerSearchFilter.FirstName = $jq("#txtSearchCustomerFirstname").val().trim();
+        customerSearchFilter.LastName = $jq("#txtSearchCustomerLastname").val().trim();
+        customerSearchFilter.CardNo = $jq("#txtSearchCustomerCardNo").val().trim();
+        customerSearchFilter.Registration = $jq("#txtSearchCustomerCarNo").val().trim();
+        customerSearchFilter.AccountNo = $jq("#txtSearchCustomerAccountNo").val().trim();
+        customerSearchFilter.PhoneNo = $jq("#txtSearchCustomerPhoneNo").val().trim();
+    }
+
+    function initializeSearchFilter() {
+        customerSearchFilter = {
+            FirstName: $jq("#txtSearchCustomerFirstname").val(),
+            LastName: $jq("#txtSearchCustomerLastname").val(),
+            CardNo: $jq("#txtSearchCustomerCardNo").val(),
+            Registration: $jq("#txtSearchCustomerCarNo").val(),
+            AccountNo: $jq("#txtSearchCustomerAccountNo").val(),
+            PhoneNo: $jq("#txtSearchCustomerPhoneNo").val(),
+            PageNo: '@Model.CustomerSearchFilter.PageNo',
+            PageSize: '@Model.CustomerSearchFilter.PageSize',
+            SortField: '@Model.CustomerSearchFilter.SortField',
+            SortOrder: '@Model.CustomerSearchFilter.SortOrder',
+            __RequestVerificationToken: getAntiForgeryToken()
+        };
+        customerSuccessFilter = customerSearchFilter;
+    };
+
+    function initializePaging() {
+        $jq("#dvSearchCustomerTable .input-page").change(function (event) {
+            customerSearchFilter = customerSuccessFilter;
+            customerSearchFilter.PageNo = $jq(this).val();
+            loadCustomerTable();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchCustomerTable #pagesizelist").change(function (event) {
+            customerSearchFilter = customerSuccessFilter;
+            customerSearchFilter.PageNo = "1";
+            customerSearchFilter.PageSize = $jq(this).val();
+            loadCustomerTable();
+            return false;
+        });
+
+        $jq('#dvSearchCustomerTable .pagination ul li a').on('click', function (event) {
+            customerSearchFilter = customerSuccessFilter;
+            customerSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadCustomerTable();
+            return false;
+        });
+    }
+
+    function onTableSearchCustomerLoadSuccess(e, result)
+    {
+        if (result.IsError)
+        {
+            doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+        }
+    }
+
+    function onTableSearchCustomerLoadError(e) {
+        doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+    }
+
+    function onBtnSearchCustomerClearClick() {
+        $jq("#txtSearchCustomerFirstname").val("");
+        $jq("#txtSearchCustomerLastname").val("");
+        $jq("#txtSearchCustomerCardNo").val("");
+        $jq("#txtSearchCustomerCarNo").val("");
+        $jq("#txtSearchCustomerAccountNo").val("");
+        $jq("#txtSearchCustomerPhoneNo").val("");
+
+        $jq("#divSearchCustomer").hide();
+
+        $jq("#txtSearchCustomerFirstname").focus();
+        $jq("#dvSearchCustomerTable").html('');
+    }
+
+</script>

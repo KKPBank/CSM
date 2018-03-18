@@ -1,0 +1,75 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using MvcPaging
+@model CSM.Web.Models.SubAreaViewModel
+
+<hr class="dashed-line clear" />
+@if (Model.SubAreaTableList == null || Model.SubAreaTableList.Count == 0)
+{
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th class="center" style="width: 10% !important;">Action</th>
+                    <th>Sub Area</th>
+                    <th>Sub Area Code</th>
+                    <th style="width: 10% !important;">สถานะ</th>
+                    <th style="width: 10% !important;">แก้ไขโดย</th>
+                    <th style="width: 10% !important;">วันที่แก้ไข</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="clearfix"></div>
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th class="center" style="width: 5% !important;">Action</th>
+                    <th>Sub Areas</th>
+                    <th>Sub Area Code</th>
+                    <th>สถานะ</th>
+                    <th>แก้ไขโดย</th>
+                    <th>วันที่แก้ไข</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SubAreaTableList)
+                {
+                    var areaCode = string.IsNullOrEmpty(item.area_code) ? item.area_code : item.area_code.Trim();
+                    <tr>
+                        <td class="center">
+                            <input type="hidden" class="hiddenSubAreaData"
+                                   subarea_id="@item.id"
+                                   name="@item.area_name"
+                                   code="@areaCode"
+                                   isactive="@item.status"
+                                   update_name="@item.update_name"
+                                   update_time="@item.update_date"/>
+                            <input type="hidden" class="hiddenSubAreaId" subarea_id="@item.id"/>
+                            <a href='javascript:;' class="delete-active" title="delete" onclick='onDeleteSubAreaRow(@item.id)'></a>
+                        </td>
+                        <td>@item.area_name</td>
+                        <td class="center">
+                            @item.area_code
+                        </td>
+                        <td class="center">
+                            @item.status
+                        </td>
+                        <td>@item.update_name</td>
+                        <td>@item.update_date</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+

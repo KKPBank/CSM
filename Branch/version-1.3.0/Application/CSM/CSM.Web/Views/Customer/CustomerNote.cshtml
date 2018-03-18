@@ -1,0 +1,171 @@
+﻿@using CSM.Entity
+@using CSM.Common.Resources
+@model CSM.Web.Models.CustomerViewModel
+@{
+    ViewBag.Title = Resource.Lbl_CustomerInformation;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink(Resource.Lbl_SearchCustomer, "Search", "Customer", new { @skip = "1" }, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_CustomerInformation </strong>
+}
+
+@if (Model != null)
+{
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">@Resource.Lbl_CustomerInformation</h5>
+        @Html.HiddenFor(model => model.CustomerInfo.CustomerId, new { @id = "hddCustomerId" })
+        @if (Model.CustomerInfo != null)
+        {
+            Html.RenderPartial("~/Views/Customer/_CustomerInfo.cshtml", Model.CustomerInfo);
+        }
+        <div class="clearfix"></div>
+
+        @Html.Action("CustomerTab", "MenuNavigator", new { selectedTab = CustomerTabCode.CustomerNote, customerId = @Model.CustomerInfo.CustomerId })
+
+        <div class="clearfix"></div>
+        <div class="tab-content">
+            <div id="tabNote" class="tab-pane fade in active">
+                <div id="dvSearchResult">
+                    @if (Model.NoteList != null)
+                    {
+                        Html.RenderPartial("~/Views/Customer/_CustomerNoteList.cshtml", Model);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="clearfix"></div>
+<!-- View Note -->
+<div id="viewNoteModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" 
+     role="dialog" data-url='@Url.Action("InitViewNote", "Customer")'>
+    @using (Html.BeginForm("InitViewNote", "Customer", FormMethod.Post, new { @class = "form-horizontal", @id = "form2" }))
+    {
+        <div id='dataContainer'>
+        </div>
+    }
+</div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        var searchFilter;
+        var successFilter;
+
+        $jq(document).ready(function () {
+            initializeSearchFilter();
+            initializePaging();
+            //loadNoteData();
+        });
+
+        function initializeSearchFilter() {
+            searchFilter = {
+                CustomerId: $jq("#hddCustomerId").val(),
+                PageNo: '@Model.NoteSearchFilter.PageNo',
+                PageSize: '@Model.NoteSearchFilter.PageSize',
+                SortField: '@Model.NoteSearchFilter.SortField',
+                SortOrder: '@Model.NoteSearchFilter.SortOrder'
+            };
+            successFilter = searchFilter;
+        };
+
+        function initializePaging() {
+
+            $jq("#dvSearchResult .input-page").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = $jq(this).val();
+                loadNoteData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchResult #pagesizelist").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadNoteData();
+                return false;
+            });
+
+            $jq('#dvSearchResult .pagination ul li a').on('click', function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadNoteData();
+                return false;
+            });
+        };
+
+        function loadNoteData() {
+            $jq.ajax({
+                url: '@Url.Action("CustomerNoteList", "Customer")',
+                type: "POST",
+                data: addAntiForgeryToken(searchFilter),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResult").html('');
+                        successFilter = searchFilter;
+                        $jq("#dvSearchResult").html(result);
+                        initializePaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        };
+
+        function sortField(selectedSortField) {
+            if (selectedSortField == searchFilter.SortField)
+                searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            loadNoteData();
+        }
+
+        function initViewNote(noteId) {
+            // set data
+            var paramData = {
+                noteId: noteId
+            }
+
+            var url = $jq('#viewNoteModal').data('url');
+            $jq.ajax({
+                type: 'POST',
+                url: url,
+                data: paramData,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    $jq('#dataContainer').html(result);
+                    $jq('#viewNoteModal').modal('show');
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+    </script>
+}

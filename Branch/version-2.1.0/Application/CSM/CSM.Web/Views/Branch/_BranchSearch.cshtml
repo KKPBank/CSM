@@ -1,0 +1,215 @@
+﻿@model CSM.Web.Models.BranchViewModel
+<div class="modal-dialog modal-sm" style="min-width:800px;">
+    <div id="dvBrForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">Select Branch</h5>
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-md-2 left-label">Branch Name</label>
+                <div class="col-md-5">
+                    @Html.TextBoxFor(model => model.SearchFilter.BranchName, new { @class = "form-control input-sm", @id = "txtBranchName" })
+                    @Html.ValidationMessageFor(model => model.SearchFilter.BranchName)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="clear"></div>
+                <div class="panel-actions noborder">
+                    <div class="pull-right">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-blue btn-sm" id="btnBrSearch">
+                                    <i class="fa fa-search"></i>&nbsp;Search
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" id="btnBrReset">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="dvBrSearchResult" class="col-md-12">
+                @if (Model.BranchList != null)
+                {
+                    Html.RenderPartial("~/Views/Branch/_BranchList.cshtml", Model);
+                }
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="form-inline">
+                <div class="form-group">
+                    <button type="button" class="btn btn-blue btn-sm btn-xsmall" id="btnBrSelect">Select</button>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-gray btn-sm btn-xsmall" id="btnClose">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var brSearchFilter, brSuccessFilter;
+
+    $jq(function () {
+        initBranchSearchFilter();
+        $jq("#btnBrSelect").hide();
+        $jq("#btnClose").hide();
+
+        $jq("#btnBrSearch").click(function (e) {
+            e.preventDefault();
+            brSearchFilter.BranchName = $jq("#txtBranchName").val(),
+            brSearchFilter.JsonBranch = $jq("#hddJsonBranch").val(),
+            brSearchFilter.PageNo = 1;
+            loadBranchData();
+            return false;
+        });
+
+        $jq("#btnBrReset").click(function (e) {
+            e.preventDefault();
+            $jq("#dvBrForm input[type='text'],#dvBrForm select").val('');
+            initBranchSearchFilter();
+            $jq("#dvBrSearchResult").html('');
+            clearServerErrors();
+            $jq(".has-error").removeClass('has-error');
+            $jq("#btnBrSelect").hide();
+            $jq("#btnClose").hide();
+            return false;
+        });
+
+        $jq('#btnBrSelect').click(function (e) {
+            e.preventDefault();
+            selectBranch();
+            return false;
+        });
+
+        $jq('#btnClose').click(function (e) {
+            $jq('#branchModal').modal('hide');
+            return false;
+        });
+
+        initBranchPaging();
+    });
+
+    function initBranchSearchFilter() {
+        brSearchFilter = {
+            BranchName: $jq("#txtBranchName").val(),
+            JsonBranch: $jq("#hddJsonBranch").val(),
+            PageNo: '@Model.SearchFilter.PageNo',
+            PageSize: '@Model.SearchFilter.PageSize',
+            SortField: '@Model.SearchFilter.SortField',
+            SortOrder: '@Model.SearchFilter.SortOrder'
+        };
+        brSuccessFilter = brSearchFilter;
+    };
+
+    function initBranchPaging() {
+        $jq("#dvBrSearchResult .input-page").change(function (event) {
+            brSearchFilter = brSuccessFilter;
+            brSearchFilter.PageNo = $jq(this).val();
+            loadBranchData();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvBrSearchResult #pagesizelist").change(function (event) {
+            brSearchFilter = brSuccessFilter;
+            brSearchFilter.PageNo = "1";
+            brSearchFilter.PageSize = $jq(this).val();
+            loadBranchData();
+            return false;
+        });
+
+        $jq('#dvBrSearchResult .pagination ul li a').on('click', function (event) {
+            brSearchFilter = brSuccessFilter;
+            brSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadBranchData();
+            return false;
+        });
+    };
+
+    function loadBranchData() {
+        clearServerErrors();
+
+        $jq.ajax({
+            url: '@Url.Action("BranchList", "Branch")',
+            type: "POST",
+            data: addAntiForgeryToken(brSearchFilter),
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == null) {
+                    $jq("#dvBrSearchResult").html('');
+                    brSuccessFilter = brSearchFilter;
+                    $jq("#dvBrSearchResult").html(result);
+
+                    if ($jq('#tblBranchList').length != 0) {
+                        $jq("#btnBrSelect").show();
+                        $jq("#btnClose").show();
+                    } else {
+                        $jq("#btnBrSelect").hide();
+                        $jq("#btnClose").hide();
+                    }
+
+                    initBranchPaging();
+
+                    $jq(".checkAll").change(function () {
+                        $jq("input:checkbox").prop('checked', $jq(this).prop("checked"));
+                    });
+                } else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    };
+
+    function selectBranch() {
+        var objBranch = $jq("#form2").serialize();
+
+        $jq.ajax({
+            url: '@Url.Action("SelectBranch", "Branch")',
+            type: "POST",
+            data: objBranch,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid === true) {
+                    $jq('#hddJsonBranch').val(JSON.stringify(result.Data));
+                    loadPoolBranch();
+                    $jq('#branchModal').modal('hide');
+                } else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+
+    function setBrSortField(selectedSortField) {
+        if (selectedSortField == brSearchFilter.SortField)
+            brSearchFilter.SortOrder = (brSearchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+        else
+            brSearchFilter.SortOrder = 'ASC';
+        brSearchFilter.SortField = selectedSortField;
+        brSearchFilter.PageNo = 1;
+        loadBranchData();
+    }
+</script>

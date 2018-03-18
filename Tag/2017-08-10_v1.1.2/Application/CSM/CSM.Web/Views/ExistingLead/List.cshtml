@@ -1,0 +1,96 @@
+﻿@using CSM.Entity
+@using CSM.Common.Resources
+@model CSM.Web.Models.ExistingLeadViewModel
+@{
+    ViewBag.Title = Resource.Lbl_CustomerInformation;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink(Resource.Lbl_SearchCustomer, "Search", "Customer", new { @skip = "1" }, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_CustomerInformation </strong>
+}
+
+@if (Model != null)
+{
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">@Resource.Lbl_CustomerInformation</h5>
+        @Html.HiddenFor(model => model.CustomerInfo.CustomerId, new { @id = "hddCustomerId" })
+        @if (Model.CustomerInfo != null)
+        {
+            Html.RenderPartial("~/Views/Customer/_CustomerInfo.cshtml", Model.CustomerInfo);
+            <input type="hidden" id="hiddenCustomerFirstNameTh" value="@Model.CustomerInfo.FirstNameThai" />
+            <input type="hidden" id="hiddenCustomerLastNameTh" value="@Model.CustomerInfo.LastNameThai" />
+            <input type="hidden" id="hiddenCustomerFirstNameEn" value="@Model.CustomerInfo.FirstNameEnglish" />
+            <input type="hidden" id="hiddenCustomerLastNameEn" value="@Model.CustomerInfo.LastNameEnglish" />
+        }
+        <div class="clearfix"></div>
+
+        @Html.Action("CustomerTab", "MenuNavigator", new { selectedTab = CustomerTabCode.ExistingLead, customerId = @Model.CustomerInfo.CustomerId })
+        @*<div class="clearfix"></div>
+            <div class="pull-left padding-top-5">
+                <button id="btnAddLead" type="button" class="btn btn-green btn-sm">
+                    <i class="fa fa-plus"></i>&nbsp;New LEAD
+                </button>
+            </div>*@
+        <div class="clearfix"></div>
+        <div class="tab-content">
+            <div id="tabExistingLead" class="tab-pane fade in active">
+                <div class="pull-right" id="dvServiceMsg"></div>
+                <div class="clear"></div>
+                <div id="dvSearchResult">
+                    @{ Html.RenderPartial("~/Views/ExistingLead/_ExistingLeadList.cshtml", Model); }
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+                        }
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        $jq(document).ready(function() {
+            loadData();
+
+            var errorMsg = '@ViewBag.Message';
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+
+        function loadData() {
+            var paramData = { customerId: $jq('#hddCustomerId').val() };
+            $jq.ajax({
+                url: '@Url.Action("ExistingLeadList", "ExistingLead")',
+                type: "POST",
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function() { $jq("#dvLoading").show(); },
+                complete: function() { $jq("#dvLoading").hide(); },
+                success: function(result) {
+                    if (result.Valid == null) {
+                        $jq('#dvServiceMsg').html('');
+                        $jq("#dvSearchResult").html('');
+                        $jq("#dvSearchResult").html(result);
+                    } else {
+                        showServiceErrors(result);
+                    }
+                },
+                error: function(xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+    </script>
+}

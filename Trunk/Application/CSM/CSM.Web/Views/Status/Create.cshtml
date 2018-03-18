@@ -1,0 +1,396 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@model CSM.Web.Models.SRStatusViewModel
+@{
+    ViewBag.Title = string.Format("{0} SR Status", ViewBag.EditMode);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" })</strong>
+    <strong class="font-blue">&rsaquo;&rsaquo; @Html.ActionLink("Search SR Status", "Index", "Status", null, new { @class = "font-blue" })</strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @ViewBag.EditMode SR Status</strong>
+}
+<h5 class="form-title">@ViewBag.EditMode SR Status</h5>
+<hr class="dotted-line" />
+<div class="container-fluid">
+
+    @using (Html.BeginForm("Save", "Status", FormMethod.Post, new { @id = "form1", @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "Data validation for save failed. Please check and try again.")
+        <input id="btnSubmitTrigger" type="submit" class="hidden" />
+
+        if (ViewData.ModelState["ErrorMessage"] != null && ViewData.ModelState["ErrorMessage"].Errors != null && ViewData.ModelState["ErrorMessage"].Errors.Count > 0)
+        {
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Warning!</strong> @ViewData.ModelState["ErrorMessage"].Errors[0].ErrorMessage
+            </div>
+        }
+
+        @Html.HiddenFor(m => m.SRStatusId, new { @id = "hdfSRStatusId" })
+        @Html.DropDownListFor(m => m.Old_SRPageIdList, Model.SRPageList, new
+   {
+       @id = "lstOld_SRPageId",
+       @style = "display: none"
+   })
+        <div class="row margin-top-15">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="ddlSRStateId" class="control-label left-label">State<span class="required-field-block">*</span> :</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(m => m.SRStateId, (IEnumerable<SelectListItem>)ViewBag.SRStateList
+                                                , Resource.Ddl_PleaseSelect, new { @id = "ddlSRStateId", @class = "form-control input-sm", @style = "width: 300px!Important" })
+                        @Html.ValidationMessageFor(m => m.SRStateId)
+                        @Html.HiddenFor(m => m.SRState.SRStateName, new { @id = "hdfSRStateName" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="txtStatusCode" class="control-label left-label">Status Code<span class="required-field-block">*</span> :</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.SRStatusCode, new { @id = "txtStatusCode", @class = "form-control input-sm", @style = "width: 300px!Important" })
+                        @Html.ValidationMessageFor(m => m.SRStatusCode)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="txtStatusName" class="control-label left-label">Status Name<span class="required-field-block">*</span> :</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.SRStatusName, new { @id = "txtStatusName", @class = "form-control input-sm", @style = "width: 300px!Important" })
+                        @Html.ValidationMessageFor(m => m.SRStatusName)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" style="display: none">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="ddlSendHP" class="control-label left-label">Send to HP Log 100<span class="required-field-block">*</span> :</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(m => m.SendHP, new SelectList(
+                                                    new SelectListItem[]
+                                                    {
+                                                        new SelectListItem() { Text= Resource.Ddl_PleaseSelect, Value = "" },
+                                                        new SelectListItem() { Text= "Yes", Value = "true" },
+                                                        new SelectListItem() { Text= "No", Value = "false" }
+                                                    }, "Value", "Text", ""), new { @id = "ddlSendHP", @class = "form-control input-sm", @style = "width: 300px!Important" })
+                        @Html.ValidationMessageFor(m => m.SendHP)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="ddlSendRule" class="control-label left-label">SR Status Ending ?<span class="required-field-block">*</span> :</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(m => m.SendRule, new SelectList(
+                                                    new SelectListItem[]
+                                                    {
+                                                        new SelectListItem() { Text= Resource.Ddl_PleaseSelect, Value = "" },
+                                                        new SelectListItem() { Text= "Yes", Value = "true" },
+                                                        new SelectListItem() { Text= "No", Value = "false" }
+                                                    }, "Value", "Text", ""), new { @id = "ddlSendRule", @class = "form-control input-sm", @style = "width: 300px!Important" })
+                        @Html.ValidationMessageFor(m => m.SendRule)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label for="ddlStatus" class="control-label left-label">สถานะ<span class="required-field-block">*</span> :</label>
+                    </div>
+                    <div class="col-sm-5">
+                        @Html.DropDownListFor(m => m.Status, new SelectList(
+                                                    new SelectListItem[]
+                                                    {
+                                                        new SelectListItem() { Text= Resource.Ddl_PleaseSelect, Value = "" },
+                                                        new SelectListItem() { Text= "Active", Value = "A" },
+                                                        new SelectListItem() { Text= "Inactive", Value = "I" }
+                                                    }, "Value", "Text", ""), new { @id = "ddlStatus", @class = "form-control input-sm", @style = "width: 300px!Important" })
+                        @Html.ValidationMessageFor(m => m.Status)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label for="ddlStatus" class="control-label left-label">สถานะ<span class="required-field-block">*</span> :</label>
+                    </div>
+                    <div class="col-sm-5">
+                        @Html.DropDownListFor(m => m.Status, new SelectList(
+                                                    new SelectListItem[]
+                                                    {
+                                                        new SelectListItem() { Text= Resource.Ddl_PleaseSelect, Value = "" },
+                                                        new SelectListItem() { Text= "Active", Value = "A" },
+                                                        new SelectListItem() { Text= "Inactive", Value = "I" }
+                                                    }, "Value", "Text", ""), new { @id = "ddlStatus", @class = "form-control input-sm", @style = "width: 300px!Important" })
+                        @Html.ValidationMessageFor(m => m.Status)
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+        <div class="row" style="display: none">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-group-static">
+                            SR Page&nbsp;<span class="required-field-block">*</span>:
+                        </p>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="form-inline">
+                            <div class="form-group" style="margin-right:10px!important;">
+                                @Html.DropDownListFor(m => m.SRPageIdAll, Model.SRPageListAll, new
+                           {
+                               multiple = "multiple",
+                               @class = "multiselect",
+                               data_right = "#lstSRPageId",
+                               data_right_all = "#btnAddAll",
+                               data_right_selected = "#btnAdd",
+                               data_left_all = "#btnRemoveAll",
+                               data_left_selected = "#btnRemove",
+                               style = "width:300px!important",
+                               size = "5"
+                           })
+                            </div>
+                            <div class="form-group" style="width:120px!important;margin-right:10px!important;">
+                                <button type="button" id="btnAddAll" class="btn btn-block"><i class="fa fa-forward"></i></button>
+                                <button type="button" id="btnAdd" class="btn btn-block"><i class="fa fa-chevron-right"></i></button>
+                                <button type="button" id="btnRemove" class="btn btn-block"><i class="fa fa-chevron-left"></i></button>
+                                <button type="button" id="btnRemoveAll" class="btn btn-block"><i class="fa fa-backward"></i></button>
+                            </div>
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.SRPageIdList, Model.SRPageList, new
+                           {
+                               multiple = "multiple",
+                               @class = "multiselect",
+                               style = "width:300px!important",
+                               size = "5",
+                               @id = "lstSRPageId"
+                           })
+                                @Html.ValidationMessageFor(model => model.SRPageIdList)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="ddlStateId" class="control-label left-label">สร้างโดย :</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.CreateUser.FullName, "", new { @id = "txtCreateUser", @class = "form-control input-sm", @style = "width: 300px!Important", @readonly = "readonly", tabindex = "-1" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="ddlStateId" class="control-label left-label">วันที่สร้าง :</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.CreateDateDisplay, "", new { @id = "txtCreateDate", @class = "form-control input-sm", @style = "width: 300px!Important", @readonly = "readonly", tabindex = "-1" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="ddlStateId" class="control-label left-label">แก้ไขโดย :</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.UpdateUser.FullName, "", new { @id = "txtUpdateUser", @class = "form-control input-sm", @style = "width: 300px!Important", @readonly = "readonly", tabindex = "-1" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <div class="col-md-3">
+                        <label for="ddlStateId" class="control-label left-label">วันที่แก้ไข :</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.UpdateDateDisplay, "", new { @id = "txtUpdateDate", @class = "form-control input-sm", @style = "width: 300px!Important", @readonly = "readonly", tabindex = "-1" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <hr class="dotted-line" />
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-12 text-right">
+                <span id="btnSave" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Save</span>
+                <span class="btn btn-sm btn-default" id="btnCancel"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SR Page Search -->
+<div id="srPageModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("Search", "Status")'>
+    @using (Html.BeginForm("SelectStatus", "Status", FormMethod.Post, new { @class = "form-horizontal", @id = "form2" }))
+    {
+        @Html.AntiForgeryToken()
+        <div id='dataContainer'>
+        </div>
+    }
+</div>
+
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+    @Scripts.Render("~/Scripts/multiselect.min.js")
+    <script type="text/javascript">
+
+        var _isSubmited = false;
+
+        $jq(function () {
+            var errorMsg = '@ViewBag.ErrorMessage';
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+
+            $jq("#btnSave").click(btnSave_Click);
+
+            $jq('#form1').submit(function () {
+                $jq("#dvLoading").show();
+            });
+
+            $jq("#btnCancel").click(btnCancel_Click);
+
+            $jq("#ddlSRStateId").change(function (e) {
+                $jq("#hdfSRStateName").val($jq("#ddlSRStateId option:selected").text());
+            });
+
+            $jq(".multiselect").multiselect();
+        });
+
+        function clearForm() {
+            $jq("#ddlSRStateId").val('');
+            $jq("#txtStatusCode").val('');
+            $jq("#txtStatusName").val('');
+            $jq("#ddlSendHP").val('false');
+            $jq("#ddlStatus").val('A');
+            $jq("#ddlSendRule").val('false');
+
+            $jq("#txtCreateUser").val('');
+            $jq("#txtCreateDate").val('');
+            $jq("#txtUpdateUser").val('');
+            $jq("#txtUpdateDate").val('');
+        }
+
+        function btnSave_Click(e) {
+            e.preventDefault();
+            var actionUrl = "@Url.Action("Save", "Status")";
+
+            var frm = $jq("#form1");
+
+            _isSubmited = true;
+
+            var formValid = frm.valid();
+
+            @*//Manualy Check Array base property.
+            if ($jq("#lstSRPageId option").length == 0) {
+                formValid = false;
+                frm.validate().showErrors({ "SRPageIdList": '@Model.SRPageIdListRequireMsg' });
+            }*@
+
+            if (formValid) {
+                $jq("#dvLoading").show();
+
+                var frmData = {
+                    __RequestVerificationToken: getAntiForgeryToken(),
+                    SRStatusId: $jq("#hdfSRStatusId").val(),
+                    SRStateId: $jq("#ddlSRStateId").val(),
+                    SRStatusCode: $jq("#txtStatusCode").val(),
+                    SRStatusName: $jq("#txtStatusName").val(),
+                    SendHP: $jq("#ddlSendHP").val(),
+                    SendRule: $jq("#ddlSendRule").val(),
+                    Status: $jq("#ddlStatus").val(),
+                };
+
+                //$jq("#lstSRPageId option").each(function () {
+                //    if (!frmData.SRPageIdList) {
+                //        frmData.SRPageIdList = [];
+                //    }
+                //    frmData.SRPageIdList.push($jq(this).val());
+                //});
+
+                //$jq("#lstOld_SRPageId option").each(function () {
+                //    if (!frmData.Old_SRPageIdList) {
+                //        frmData.Old_SRPageIdList = [];
+                //    }
+                //    frmData.Old_SRPageIdList.push($jq(this).val());
+                //});
+
+                $jq.ajax({
+                    url: actionUrl,
+                    traditional: true,
+                    dataType: "json",
+                    type: "POST",
+                    data: frmData
+                })
+                    .done(function (result) {
+                        $jq("#dvLoading").hide();
+
+                        if (result.IsSuccess) {
+                            var msg = "<strong>Save Success</strong>";
+                            doModalWithCloseEvent("dvAlertMsg", "Save Success", msg, "gotoIndexPage()");
+                            return;
+                        }
+                        doModal("dvAlertMsg", "Save Fail!", result.ErrorMessage, "", "");
+                    })
+                    .fail(function () {
+                        $jq("#dvLoading").hide();
+                        doModal("dvAlertMsg", "Message Dialog", "@Resource.Error_SaveFailed", "", "");
+                    });
+            }
+            return true;
+        }
+
+        function gotoIndexPage() {
+            window.location = "@Url.Action("Index")";
+        }
+
+        function btnCancel_Click(e) {
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'gotoIndexPage()', 'Confirm');
+            }
+            return false;
+        }
+    </script>
+}

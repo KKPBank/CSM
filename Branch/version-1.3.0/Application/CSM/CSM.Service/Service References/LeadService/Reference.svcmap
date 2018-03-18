@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="0e5b6412-81d1-4bcf-be3a-00250f8c16d2" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://10.3.112.46/SaleLeadService/LeadService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="LeadService.xsd" MetadataType="Schema" ID="87512b22-047c-46e9-9f05-fdfb0754e189" SourceId="1" SourceUrl="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd4" />
+    <MetadataFile FileName="LeadService1.xsd" MetadataType="Schema" ID="385a1ade-b978-4c6c-8a72-7d6de07721df" SourceId="1" SourceUrl="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd2" />
+    <MetadataFile FileName="LeadService2.xsd" MetadataType="Schema" ID="210bdf3b-c54d-4455-8e8a-07a26504d51d" SourceId="1" SourceUrl="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd1" />
+    <MetadataFile FileName="LeadService.disco" MetadataType="Disco" ID="7fc0eea0-b607-4669-8c7c-6e3a139d9734" SourceId="1" SourceUrl="http://10.3.112.46/SaleLeadService/LeadService.svc?disco" />
+    <MetadataFile FileName="LeadService.wsdl" MetadataType="Wsdl" ID="f320c6d0-5a6f-4a16-ab0f-300ee5158664" SourceId="1" SourceUrl="http://10.3.112.46/SaleLeadService/LeadService.svc?wsdl" />
+    <MetadataFile FileName="LeadService3.xsd" MetadataType="Schema" ID="6d5ece1e-f642-4ac9-9ae3-5fa0ec060bd4" SourceId="1" SourceUrl="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd0" />
+    <MetadataFile FileName="LeadService4.xsd" MetadataType="Schema" ID="080e4ba3-5c40-43c6-9054-cf5eb2e4d616" SourceId="1" SourceUrl="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

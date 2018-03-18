@@ -1,0 +1,1210 @@
+﻿@model CSM.Web.Models.ExportSRViewModel
+@using CSM.Common.Resources
+@{
+    string pageTitle = Resource.Lbl_Report_SR;
+    string loadUrl = Url.Action("LoadSRExcel", "Report");
+    string exportUrl = Url.Action("PrintSRExcel", "Report");
+    if (ViewBag.ReportCode == "CPN")
+    {
+        pageTitle = Resource.Lbl_Report_Complaint;
+        loadUrl = Url.Action("LoadComplaintReport", "Report");
+        exportUrl = Url.Action("PrintComplaintCSV", "Report");
+    }
+
+    ViewBag.Title = pageTitle;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Report })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_Reports, "List", "Report", null, new { @class = "font-blue" })</strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @pageTitle</strong>
+}
+<div id="dvForm" class="form-box">
+    <h5 class="form-title">@pageTitle</h5>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        ชื่อ - นามสกุลลูกค้า
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    <div class="clear"></div>
+                    <div class="pull-left">
+                        @Html.TextBoxFor(model => model.SearchFilter.FirstName, new
+                        {
+                            @class = "form-control input-sm",
+                            @id = "txtFirstName",
+                            @style = "width:178px!important;display:block"
+                        })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.FirstName)
+                    </div>
+                    <div class="pull-left margin-left-5">
+                        @Html.TextBoxFor(model => model.SearchFilter.LastName, new
+                        {
+                            @class = "form-control input-sm",
+                            @id = "txtLastName",
+                            @style = "width:178px!important;display:block"
+                        })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.LastName)
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                        Subscription ID
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.CardId, new
+                    {
+                        @class = "form-control input-sm input-medium",
+                        @id = "txtCardId",
+                        @maxlength = 13
+                    })
+                    @Html.ValidationMessageFor(model => model.SearchFilter.CardId)
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Product Group
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.ProductGroup, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtProductGroup"
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        เลขที่บัญชี/สัญญา
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.AccountNo, new
+                    {
+                        @class = "form-control input-sm input-medium",
+                        @id = "txtAccountNo"
+                    })
+                    @Html.ValidationMessageFor(model => model.SearchFilter.AccountNo)
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Product
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.Product, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtProduct"
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Type
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.Type, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtType"
+                    })
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Campaign/Service
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.Campaign, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtCampaign"
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Area
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.Area, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtArea"
+                    })
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        SR ID
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.SRId, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtSRId",
+                        @maxlength = 20
+                    })
+                    @Html.ValidationMessageFor(model => model.SearchFilter.SRId)
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Sub Area
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.SubArea, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtSubArea"
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Subject
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.Subject, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtSubject"
+                    })
+                    @Html.ValidationMessageFor(model => model.SearchFilter.Subject)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        SLA
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.DropDownListFor(m => m.SearchFilter.Sla, new SelectList(ViewBag.sla, "Value", "Text"),
+                                 Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm input-medium", @id = "ddlSla" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Description
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.Description, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtDescription"
+                    })
+                    @Html.ValidationMessageFor(model => model.SearchFilter.Description)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        SR Channel
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.DropDownListFor(m => m.SearchFilter.SRChannel, new SelectList(ViewBag.channel, "Value", "Text"),
+                        Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm input-medium", @id = "ddlSRChannel" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        SR Status
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.DropDownListFor(m => m.SearchFilter.SRStatus, new SelectList(ViewBag.srstatus, "Value", "Text"),
+                             Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @id = "ddlSRStatus" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">        
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-group-static">
+                        SR Created Date
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    <div class="clear"></div>
+                    <div class="pull-left form-inline">
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker1'>
+                                @Html.TextBoxFor(model => model.SearchFilter.SRDateFrom, new
+                                {
+                                    @class = "form-control input-sm",
+                                    @id = "txtSRDateFrom",
+                                    @style = "width:123px!important",
+                                    @onchange = "validateDateValue($jq(this));"
+                                })
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SearchFilter.SRDateFrom)
+                        </div>
+                    </div>
+                    <div class="pull-left padding-left-10 padding-right-10 padding-top-5">
+                        To.
+                    </div>
+                    <div class="pull-left form-inline">
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker2'>
+                                @Html.TextBoxFor(model => model.SearchFilter.SRDateTo, new
+                                {
+                                    @class = "form-control input-sm",
+                                    @id = "txtSRDateTo",
+                                    @style = "width:123px!important",
+                                    @onchange = "validateDateValue($jq(this));"
+                                })
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.SearchFilter.SRDateTo)
+                        </div>
+                    </div>
+                    <div class="dvDateRange clear"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-group-static">
+                        SR Created Time
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    <div class="clear"></div>
+                    <div class="pull-left form-inline">
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.SearchFilter.SRTimeFrom,
+                            new
+                            {
+                                @class = "form-control input-sm",
+                                @style = "width:160px!important",
+                                @id = "txtSRTimeFrom",
+                                @onchange = "formatTime($jq(this));",
+                                @onpaste = "return validatePaste('Digit');",
+                                @onkeypress = " return validateNumber(event);",
+                                @placeholder = "กรอกเวลาในรูปแบบ HHmm"
+                            })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.SRTimeFrom)
+                        </div>
+                    </div>
+                    <div class="pull-left padding-left-10 padding-right-10 padding-top-5">
+                        To.
+                    </div>
+                    <div class="pull-left form-inline">
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.SearchFilter.SRTimeTo,
+                            new
+                            {
+                                @class = "form-control input-sm",
+                                @style = "width:160px!important",
+                                @id = "txtSRTimeTo",
+                                @onchange = "formatTime($jq(this));",
+                                @onpaste = "return validatePaste('Digit');",
+                                @onkeypress = " return validateNumber(event);",
+                                @placeholder = "กรอกเวลาในรูปแบบ HHmm"
+                            })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.SRTimeTo)
+                        </div>
+                    </div>
+                    <div class="dvTimeRange clear"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Owner Branch
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.OwnerBranch, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtOwnerBranch"
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Owner SR
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.OwnerSR, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtOwnerSR"
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Creator Branch
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.CreatorBranch, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtCreatorBranch"
+                    })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="col-md-3 nopadding">
+                    <p class="form-control-static">
+                        Creator SR
+                    </p>
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.SearchFilter.CreatorSR, new
+                    {
+                        @class = "form-control input-sm",
+                        @id = "txtCreatorSR"
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<div class="panel-actions">
+    <div class="pull-right">
+        <div class="form-inline">
+            <div class="form-group">
+                <button id="btnExport" class="btn btn-blue btn-sm btn-xsmall">
+                    <i class="fa fa-file-excel-o"></i>&nbsp;Export
+                </button>
+            </div>
+            <div class="form-group">
+                <button id="btnReset" class="btn btn-gray btn-sm btn-xsmall">
+                    Clear
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+    var searchFilter;
+    var successFilter;
+    var pageSize = 20;
+
+    $jq(document).ready(function () {
+        initializeSearchFilter();
+        initDisabledSR(); // waiting remove
+
+        $jq("#dvForm").keypress(function (e) {
+            var kCode = e.keyCode || e.charCode; //for cross browser
+            if (kCode == 13) {
+                $jq("#btnExport").focus();
+                $jq("#btnExport").click();
+                return false;
+            }
+        });
+
+        $jq("#btnExport").click(function (e) {
+            e.preventDefault();
+            clearServerErrors();
+
+            searchFilter.FirstName = $jq("#txtFirstName").val().trim(),
+                searchFilter.LastName = $jq("#txtLastName").val().trim(),
+                searchFilter.CardId = $jq("#txtCardId").val().trim(),
+                searchFilter.AccountNo = $jq("#txtAccountNo").val().trim(),
+                searchFilter.ProductGroup = $jq("#txtProductGroup").val(),
+                searchFilter.Type = $jq("#txtType").val(),
+                searchFilter.SRStatus = $jq("#ddlSRStatus").val(),
+                searchFilter.Product = $jq("#txtProduct").val(),
+                searchFilter.Area = $jq("#txtArea").val(),
+                searchFilter.Campaign = $jq("#txtCampaign").val(),
+                searchFilter.SubArea = $jq("#txtSubArea").val(),
+                searchFilter.Sla = $jq("#ddlSla").val(),
+                searchFilter.SRChannel = $jq("#ddlSRChannel").val(),
+                searchFilter.SRDateFrom = $jq("#txtSRDateFrom").val(),
+                searchFilter.SRDateTo = $jq("#txtSRDateTo").val(),
+                searchFilter.SRTimeFrom = $jq("#txtSRTimeFrom").val(),
+                searchFilter.SRTimeTo = $jq("#txtSRTimeTo").val(),
+                searchFilter.OwnerSR = $jq("#txtOwnerSR").val(),
+                searchFilter.OwnerBranch = $jq("#txtOwnerBranch").val(),
+                searchFilter.Subject = $jq("#txtSubject").val().trim(),
+                searchFilter.CreatorSR = $jq("#txtCreatorSR").val(),
+                searchFilter.CreatorBranch = $jq("#txtCreatorBranch").val(),
+                searchFilter.Description = $jq("#txtDescription").val().trim(),
+                searchFilter.SRId = $jq("#txtSRId").val().trim(),
+                searchFilter.ProductGroupName = $jq("#hiddenProductGroupName").val(),
+                searchFilter.ProductName = $jq("#hiddenProductName").val(),
+                searchFilter.TypeName = $jq("#hiddenTypeName").val(),
+                searchFilter.CampaignName = $jq("#hiddenCampaignName").val(),
+                searchFilter.AreaName = $jq("#hiddenAreaName").val(),
+                searchFilter.SubAreaName = $jq("#hiddenSubAreaName").val(),
+                searchFilter.SlaName = $jq("#ddlSla option:selected").text(),
+                searchFilter.SRChannelName = $jq("#ddlSRChannel option:selected").text(),
+                searchFilter.SRStatusName = $jq("#ddlSRStatus option:selected").text(),
+                searchFilter.OwnerBranchName = $jq("#hiddenOwnerBranchName").val(),
+                searchFilter.OwnerSRName = $jq("#hiddenOwnerSRName").val(),
+                searchFilter.CreatorBranchName = $jq("#hiddenCreatorBranchName").val(),
+                searchFilter.CreatorSRName = $jq("#hiddenCreatorSRName").val(),
+                searchFilter.PageNo = 1;
+            loadExportSR();
+            return false;
+        });
+
+        $jq("#btnReset").click(function (e) {
+            e.preventDefault();
+
+            //$jq('[id^=datetimepicker]').datepicker("setDate", new Date());
+            $jq('#datetimepicker1').datepicker("setDate", (new Date()).toDateString());
+            $jq('#datetimepicker2').datepicker("setDate", (new Date()).toDateString());
+            $jq("#dvForm input[type='text'],#dvForm select").val('');
+            $jq('#datetimepicker1').datepicker("update");
+            $jq('#datetimepicker2').datepicker("update");
+
+            $jq("#txtProductGroup").select2("val", "");
+            $jq("#txtProduct").select2("val", "");
+            $jq("#txtCampaign").select2("val", "");
+            $jq("#txtType").select2("val", "");
+            $jq("#txtArea").select2("val", "");
+            $jq("#txtSubArea").select2("val", "");
+            $jq("#txtOwnerSR").select2("val", "");
+            $jq("#txtOwnerBranch").select2("val", "");
+            $jq("#txtCreatorSR").select2("val", "");
+            $jq("#txtCreatorBranch").select2("val", "");
+
+            initDisabledSR(); // waiting remove
+
+            initializeSearchFilter();
+            $jq("#dvSearchResult").html('');
+            clearServerErrors();
+            return false;
+        });
+
+        //AutoComplete
+        $jq("#txtProductGroup").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByProductGroupName", "Product")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        productId: $jq("#txtProduct").val(),
+                        campaignId: $jq("#txtCampaign").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+        $jq("#txtProduct").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByProductName", "Product")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        productGroupId: $jq("#txtProductGroup").val(),
+                        campaignId: $jq("#txtCampaign").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+        $jq("#txtCampaign").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByCampaignName", "Product")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        productGroupId: $jq("#txtProductGroup").val(),
+                        productId: $jq("#txtProduct").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+        $jq("#txtType").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByTypeName", "Product")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+        $jq("#txtArea").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByAreaName", "Product")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        subAreaId: $jq("#txtSubArea").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+        $jq("#txtSubArea").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchBySubAreaName", "Product")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        areaId: $jq("#txtArea").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+        @*$jq("#txtOwnerSR").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByActionName", "Report")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            branchId: $jq("#txtOwnerBranch").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+
+            $jq("#txtCreatorSR").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByActionName", "Report")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            branchId: $jq("#txtCreatorBranch").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });*@
+
+        $jq("#txtOwnerBranch").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByBranchName", "Report")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        userId: $jq("#txtOwnerSR").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+        $jq("#txtCreatorBranch").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByBranchName", "Report")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        userId: $jq("#txtCreatorSR").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+        //AutoComplete
+
+        var dateFormat = 'dd/mm/yyyy';
+
+        // DateTime Picker From Date
+        $jq('#datetimepicker1').datepicker({
+            format: dateFormat,
+            endDate: "0d",
+            orientation: 'auto top',
+            showOnFocus: "false",
+            language: 'th'
+        }).on('changeDate', function (ev) {
+            $jq(this).datepicker('hide');
+        });
+
+        // DateTime Picker To Date
+        $jq('#datetimepicker2').datepicker({
+            format: dateFormat,
+            endDate: "0d",
+            orientation: 'auto top',
+            showOnFocus: "false",
+            language: 'th'
+        }).on('changeDate', function (ev) {
+            $jq(this).datepicker('hide');
+        });
+    });
+
+    function initializeSearchFilter() {
+        searchFilter = {
+            FirstName: $jq("#txtFirstName").val(),
+            LastName: $jq("#txtLastName").val(),
+            CardId: $jq("#txtCardId").val(),
+            AccountNo: $jq("#txtAccountNo").val(),
+            ProductGroup: $jq("#txtProductGroup").val(),
+            Type: $jq("#txtType").val(),
+            SRStatus: $jq("#ddlSRStatus").val(),
+            Product: $jq("#txtProduct").val(),
+            Area: $jq("#txtArea").val(),
+            Campaign: $jq("#txtCampaign").val(),
+            SubArea: $jq("#txtSubArea").val(),
+            Sla: $jq("#ddlSla").val(),
+            SRChannel: $jq("#ddlSRChannel").val(),
+            SRDateFrom: $jq("#txtSRDateFrom").val(),
+            SRDateTo: $jq("#txtSRDateTo").val(),
+            SRTimeFrom: $jq("#txtSRTimeFrom").val(),
+            SRTimeTo: $jq("#txtSRTimeTo").val(),
+            OwnerSR: $jq("#txtOwnerSR").val(),
+            OwnerBranch: $jq("#txtOwnerBranch").val(),
+            Subject: $jq("#txtSubject").val(),
+            CreatorSR: $jq("#txtCreatorSR").val(),
+            CreatorBranch: $jq("#txtCreatorBranch").val(),
+            Description: $jq("#txtDescription").val(),
+            SRId: $jq("#txtSRId").val(),
+            PageNo: '@Model.SearchFilter.PageNo',
+            PageSize: '@Model.SearchFilter.PageSize',
+            SortField: '@Model.SearchFilter.SortField',
+            SortOrder: '@Model.SearchFilter.SortOrder',
+            ReportType: '@Model.SearchFilter.ReportType',
+            SearchFilterDisplay: ''
+        };
+        successFilter = searchFilter;
+    };
+
+    function loadExportSR() {
+        if (searchFilter.FirstName == "" &&
+            searchFilter.LastName == "" &&
+            searchFilter.CardId == "" &&
+            searchFilter.AccountNo == "" &&
+            searchFilter.ProductGroup == "" &&
+            searchFilter.Type == "" &&
+            searchFilter.SRStatus == "" &&
+            searchFilter.Product == "" &&
+            searchFilter.Area == "" &&
+            searchFilter.Campaign == "" &&
+            searchFilter.SubArea == "" &&
+            searchFilter.Sla == "" &&
+            searchFilter.SRChannel == "" &&
+            searchFilter.SRDateFrom == "" &&
+            searchFilter.SRDateTo == "" &&
+            searchFilter.SRTimeFrom == "" &&
+            searchFilter.SRTimeTo == "" &&
+            searchFilter.OwnerSR == "" &&
+            searchFilter.OwnerBranch == "" &&
+            searchFilter.Subject == "" &&
+            searchFilter.CreatorSR == "" &&
+            searchFilter.CreatorBranch == "" &&
+            searchFilter.Description == "" &&
+            searchFilter.SRId == "") {
+            var warningMsg = '@Resource.Msg_EnteredAtLeastOneCriteria';
+            doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+            return false;
+        }
+
+        var displayFilter = "";
+
+        if (searchFilter.FirstName != "" || searchFilter.LastName != "") {
+            displayFilter += `"ชื่อ - นามสกุล : ${searchFilter.FirstName} ${searchFilter.LastName}",`;
+        }
+        if (searchFilter.ProductGroup != "") {
+            displayFilter += `"Product Group : ${$jq("#txtProductGroup").text()}",`;
+        }
+        if (searchFilter.Product != "") {
+            displayFilter += `"Product : ${$jq("#txtProduct").text()}",`;
+        }
+        if (searchFilter.Campaign != "") {
+            displayFilter += `"Campaign/Service : ${$jq("#txtCampaign").text()}",`;
+        }
+        if (searchFilter.SRId != "") {
+            displayFilter += `"SR ID : ${searchFilter.SRId}",`;
+        }
+        if (searchFilter.Subject != "") {
+            displayFilter += `"Subject : ${searchFilter.Subject}",`;
+        }
+        if (searchFilter.Description != "") {
+            displayFilter += `"Description : ${searchFilter.Description}",`;
+        }
+        if (searchFilter.SRStatus != "") {
+            displayFilter += `"SR Status : ${$jq("#ddlSRStatus option:selected").text()}",`;
+        }
+        if (searchFilter.SRDateFrom != "") {
+            displayFilter += `"SR Created Date From:${searchFilter.SRDateFrom} ${searchFilter.SRTimeFrom}",`;
+        }
+        if (searchFilter.SRDateTo != "") {
+            displayFilter += `"SR Created Date To:${searchFilter.SRDateTo} ${searchFilter.SRTimeTo}",`;
+        }
+        if (searchFilter.OwnerBranch != "") {
+            displayFilter += `"Owner Branch : ${$jq("#txtOwnerBranch").text()}",`;
+        }
+        if (searchFilter.OwnerSR != "") {
+            displayFilter += `"Owner SR : ${$jq("#txtOwnerSR").text()}",`;
+        }
+        if (searchFilter.CreatorBranch != "") {
+            displayFilter += `"Creator Branch : ${$jq("#txtCreatorBranch").text()}",`;
+        }
+        if (searchFilter.CreatorSR != "") {
+            displayFilter += `"Creator SR : ${$jq("#txtCreatorSR").text()}",`;
+        }
+
+        if (searchFilter.CardId != "") {
+            displayFilter += `"Subscription ID : ${searchFilter.CardId}",`;
+        }
+        if (searchFilter.AccountNo != "") {
+            displayFilter += `"เลขที่บัญชี/สัญญา : ${searchFilter.AccountNo}",`;
+        }
+        if (searchFilter.Type != "") {
+            displayFilter += `"Type : ${$jq("#txtType").text()}",`;
+        }
+        if (searchFilter.Area != "") {
+            displayFilter += `"Area : ${$jq("#txtArea").text()}",`;
+        }
+        if (searchFilter.SubArea != "") {
+            displayFilter += `"Sub Area : ${$jq("#txtSubArea").text()}",`;
+        }
+        if (searchFilter.Sla != "") {
+            displayFilter += `"SLA : ${$jq("#ddlSla option:selected").text()}",`;
+        }
+        if (searchFilter.SRChannel != "") {
+            displayFilter += `"SR Channel : ${$jq("#ddlSRChannel option:selected").text()}",`;
+        }
+
+        searchFilter.SearchFilterDisplay = displayFilter;
+
+        $jq.ajax({
+            url: '@loadUrl',
+            type: "POST",
+            data: addAntiForgeryToken(searchFilter),
+            dataType: "json",
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == true) {
+                    var url = '@exportUrl';
+                    $jq('#dvTarget').html('');
+                    var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+                    $jq('#dvTarget').append('<form action="' + url + '" method="POST" class="hidden"></form>');
+                    $jq('#dvTarget form').append($jq(inputToken));
+                    $jq('#dvTarget form').submit();
+                    return;
+                } else {
+                    if (result.Error != "") {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', result.Error);
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                    else {
+                        showServerErrors(result);
+                    }
+                }
+                scrollToTop();
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+
+    function bindOwnerSR() {
+        $jq("#txtOwnerSR").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByActionName", "Report")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        branchId: $jq("#txtOwnerBranch").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function bindCreatorSR() {
+        $jq("#txtCreatorSR").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByActionName", "Report")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        branchId: $jq("#txtCreatorBranch").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    // ======== waiting remove =======
+    function initDisabledSR() {
+
+        $jq("#txtOwnerSR").prop('disabled', true);
+        $jq("#txtCreatorSR").prop('disabled', true);
+        bindOwnerSR();
+        bindCreatorSR();
+
+        $jq("#txtOwnerBranch").change(function (event) {
+            if ($jq(this).val() != '') {
+                $jq("#txtOwnerSR").select2("val", "");
+                $jq("#txtOwnerSR").prop("disabled", false);
+                bindOwnerSR();
+            }
+            else {
+                $jq("#txtOwnerSR").select2("val", "");
+                $jq("#txtOwnerSR").prop("disabled", true);
+                bindOwnerSR();
+            }
+            return false;
+        });
+
+        $jq("#txtCreatorBranch").change(function (event) {
+            if ($jq(this).val() != '') {
+                $jq("#txtCreatorSR").select2("val", "");
+                $jq("#txtCreatorSR").prop("disabled", false);
+                bindCreatorSR();
+            }
+            else {
+                $jq("#txtCreatorSR").select2("val", "");
+                $jq("#txtCreatorSR").prop("disabled", true);
+                bindCreatorSR();
+            }
+            return false;
+        });
+
+    }
+    // ======== end waiting remove =======
+</script>
+}

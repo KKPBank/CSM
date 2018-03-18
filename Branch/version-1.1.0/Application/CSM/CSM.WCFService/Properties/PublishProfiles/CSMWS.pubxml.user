@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\Projects\CSM\Publish\CSMWS</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/CSM.Business.dll">
+      <publishTime>08/09/2017 14:22:32</publishTime>
+    </File>
+    <File Include="bin/CSM.Common.dll">
+      <publishTime>08/09/2017 14:15:12</publishTime>
+    </File>
+    <File Include="bin/CSM.Data.dll">
+      <publishTime>08/09/2017 14:22:30</publishTime>
+    </File>
+    <File Include="bin/CSM.Entity.dll">
+      <publishTime>08/09/2017 14:15:12</publishTime>
+    </File>
+    <File Include="bin/CSM.Service.dll">
+      <publishTime>08/09/2017 14:15:12</publishTime>
+    </File>
+    <File Include="bin/CSM.WCFService.dll">
+      <publishTime>08/09/2017 14:22:32</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>05/17/2017 14:38:20</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>05/17/2017 14:38:20</publishTime>
+    </File>
+    <File Include="bin/EPPlus.dll">
+      <publishTime>05/17/2017 14:38:18</publishTime>
+    </File>
+    <File Include="bin/HtmlAgilityPack.dll">
+      <publishTime>05/17/2017 14:38:20</publishTime>
+    </File>
+    <File Include="bin/log4net.dll">
+      <publishTime>05/17/2017 14:38:08</publishTime>
+    </File>
+    <File Include="bin/LumiSoft.Net.dll">
+      <publishTime>05/17/2017 14:38:18</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>05/17/2017 14:38:16</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>05/17/2017 14:38:16</publishTime>
+    </File>
+    <File Include="bin/Renci.SshNet.dll">
+      <publishTime>05/17/2017 14:38:08</publishTime>
+    </File>
+    <File Include="bin/System.ComponentModel.DataAnnotations.dll">
+      <publishTime>09/26/2012 03:16:08</publishTime>
+    </File>
+    <File Include="bin/System.dll">
+      <publishTime>09/26/2012 03:16:08</publishTime>
+    </File>
+    <File Include="bin/System.Runtime.Serialization.dll">
+      <publishTime>09/26/2012 03:16:08</publishTime>
+    </File>
+    <File Include="bin/System.ServiceModel.dll">
+      <publishTime>09/26/2012 03:16:08</publishTime>
+    </File>
+    <File Include="bin/System.ServiceModel.Web.dll">
+      <publishTime>09/26/2012 03:16:08</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>05/17/2017 14:38:16</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>05/17/2017 14:38:16</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>05/17/2017 14:38:16</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>05/17/2017 14:38:16</publishTime>
+    </File>
+    <File Include="Config/Profile.xml">
+      <publishTime>05/17/2017 14:38:24</publishTime>
+    </File>
+    <File Include="CSMBranchService.svc">
+      <publishTime>05/17/2017 14:38:24</publishTime>
+    </File>
+    <File Include="CSMCustomerService.svc">
+      <publishTime>05/17/2017 14:38:24</publishTime>
+    </File>
+    <File Include="CSMFileService.svc">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="CSMMailService.svc">
+      <publishTime>05/17/2017 14:38:24</publishTime>
+    </File>
+    <File Include="CSMMasterService.svc">
+      <publishTime>05/17/2017 14:38:24</publishTime>
+    </File>
+    <File Include="CSMSRService.svc">
+      <publishTime>05/17/2017 14:38:24</publishTime>
+    </File>
+    <File Include="CSMUserService.svc">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Log.config">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/MailSubjectTemplate.xml">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyCreateSrFromReplyEmailFailed.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyCreateSrFromReplyEmailSuccess.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyExportActivityFailed.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyExportActivitySuccess.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyFailExportActvity.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyImportAssetFailed.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyImportAssetSuccess.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyImportCISFailed.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyImportCISSuccess.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyImportContactFailed.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyImportContactSuccess.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyImportHPFailed.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyImportHPSuccess.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyReSubmitActivityToCARSystemFailed.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyReSubmitActivityToCARSystemSuccess.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyReSubmitActivityToCBSHPSystemFailed.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifyReSubmitActivityToCBSHPSystemSuccess.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifySyncEmailFailed.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Templates/Mail/NotifySyncEmailSuccess.html">
+      <publishTime>05/17/2017 14:38:26</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>08/09/2017 14:15:18</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,612 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.NewsViewModel
+@{
+    ViewBag.Title = (Model.NewsId != null && Model.NewsId > 0) ? Resource.Lbl_EditNewsAnnouncement : Resource.Lbl_NewNewsAnnouncement;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink(Resource.Lbl_SearchNewsAnnouncement, "Search", "News", null, new { @class = "font-blue" })
+    </strong>
+    @if (Model.NewsId != null && Model.NewsId > 0)
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_EditNewsAnnouncement </strong>
+    }
+    else
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_NewNewsAnnouncement </strong>
+    }
+}
+
+@using (Html.BeginForm("Edit", "News", FormMethod.Post, new { @class = "form-horizontal", @id = "form1" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.NewsId, new { @id = "hddNewsId" })
+    @Html.HiddenFor(model => model.JsonBranch, new { @id = "hddJsonBranch" })
+    @Html.HiddenFor(model => model.JsonAttach, new { @id = "hddJsonAttach" })
+    <input id="btnSubmitTrigger" type="submit" class="hidden" />
+    <div id="dvForm" class="form-box">
+        @if (Model.NewsId != null && Model.NewsId > 0)
+        {
+            <h5 class="form-title">@Resource.Lbl_EditNewsAnnouncement</h5>            
+        }
+        else
+        {
+            <h5 class="form-title">@Resource.Lbl_NewNewsAnnouncement</h5>            
+        }
+        @*<h5 class="form-title">บันทึก News &amp; Announcements</h5>*@
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            Subject <span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(model => model.Topic, new { @class = "form-control input-sm", @id = "txtTopic", @maxLength = 100 })
+                        @Html.ValidationMessageFor(model => model.Topic)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            ประกาศเมื่อวันที่ <span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker1'>
+                                    @Html.TextBoxFor(model => model.AnnounceDate, new
+                                    {
+                                        @class = "form-control input-sm input-small",
+                                        @style = "min-width:100px;",
+                                        @id = "txtFromDate",
+                                        onchange = "validateDateValue($jq(this));"
+                                    })
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.AnnounceDate, null, new { @style = "display:block" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            วันที่ประกาศสิ้นสุด
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker2'>
+                                    @Html.TextBoxFor(model => model.ExpiryDate, new
+                                    {
+                                        @class = "form-control input-sm input-small",
+                                        @style = "min-width:100px",
+                                        @id = "txtToDate",
+                                        onchange = "validateDateValue($jq(this));"
+                                    })
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="dvDateRange" style="display:block!important;"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            ผู้ประกาศ
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        <p class="form-control-static">
+                            @Html.HiddenFor(model => model.FullName)
+                            @Model.FullName                            
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 nopadding">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            สถานะ <span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.DropDownListFor(model => model.Status, Model.StatusList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                            new { @class = "form-control input-sm", @style = "width:165px!important;display:block" })
+                        @Html.ValidationMessageFor(model => model.Status)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            สร้างโดย
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.HiddenFor(model => model.CreateUser)
+                        @Html.TextBoxFor(model => model.CreateUser, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            วันที่สร้าง
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control input-sm readonly", @style = "width:165px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            แก้ไขโดย
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.HiddenFor(model => model.UpdateUser)
+                        @Html.TextBoxFor(model => model.UpdateUser, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            วันที่แก้ไข
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.HiddenFor(model => model.UpdateDate)
+                        @Html.TextBoxFor(model => model.UpdateDate, new { @class = "form-control input-sm readonly", @style = "width:165px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            เนื้อหา <span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextAreaFor(model => model.Content, new { @class = "summernote" })
+                        @Html.ValidationMessageFor(model => model.Content)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-left">
+                    <p class="form-control-static">
+                        สาขา/ทีม <span class="required-field-block">*</span>
+                    </p>
+                </div>
+                <div class="pull-right">
+                    <button id="btnSearch" type="button" class="btn btn-green btn-sm btn-small">
+                        Select Branch
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="row">
+            <div id="dvSearchResult" class="col-md-12 nopadding">
+                @{ Html.RenderPartial("~/Views/News/_NewsBranchList.cshtml", Model); }
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-left">
+                    <p class="form-control-static">
+                        รายการเอกสาร
+                    </p>
+                </div>
+                <div class="pull-right">
+                    <button id="btnAddAttach" type="button" class="btn btn-green btn-sm btn-small">
+                        Add Attachment
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="row">
+            <div id="dvAttachment" class="col-md-12 nopadding">
+                @{ Html.RenderPartial("~/Views/News/_NewsAttachmentList.cshtml", Model); }
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="panel-actions noborder">
+        <div class="pull-right">
+            <div class="form-inline">
+                <div class="form-group">
+                    <button id="btnPreview" type="button" class="btn btn-blue btn-sm btn-xsmall">
+                        <i class="fa fa-file-picture-o"></i>&nbsp;Preview
+                    </button>
+                </div>
+                <div class="form-group">
+                    <button id="btnSave" type="button" class="btn btn-blue btn-sm btn-xsmall">
+                        <i class="fa fa-save"></i>&nbsp;Save
+                    </button>
+                </div>
+                <div class="form-group">
+                    <button id="btnCancel" type="button" class="btn btn-gray btn-sm btn-xsmall">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+}
+<!-- Branch Search -->
+<div id="branchModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("SearchBranch", "Branch")'>
+    @using (Html.BeginForm("SelectBranch", "Branch", FormMethod.Post, new { @class = "form-horizontal", @id = "form2" }))
+    {
+        @Html.AntiForgeryToken()
+        <div id='dataContainer'>
+        </div>
+    }
+</div>
+<!-- Attachment -->
+<div id="attachModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("InitEdit", "Attachment")'>
+    @using (Html.BeginForm("Edit", "Attachment", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", @id = "form3" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div id='attachContainer'>
+        </div>
+    }
+</div>
+<!-- Preview -->
+<div id="previewModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("InitNewsPreview", "News")'>
+    @using (Html.BeginForm("InitNewsPreview", "News", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", @id = "form4" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div id='previewContainer'>
+        </div>
+    }
+</div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        $jq(function () {
+            $jq('.summernote').summernote({
+                height: 150,
+                codemirror: {
+                    theme: 'monokai'
+                }
+            });
+
+            $jq('#btnSave').click(function () {
+                $jq('#btnSubmitTrigger').click();                
+            });
+
+            $jq('#form1').submit(function () {
+                scrollToTop();
+                $jq("#dvLoading").show();                
+            });                      
+            
+            $jq('#form2').keypress(function (e) {
+                var kCode = e.keyCode || e.charCode; //for cross browser
+                if (kCode == 13) {                
+                    $jq("#btnBrSearch").click();
+                    return false;
+                }
+            });
+
+            $jq('#btnSearch').click(function () {
+                var url = $jq('#branchModal').data('url');
+                $jq.ajax({
+                    type: 'POST',
+                    url: url,
+                    beforeSend: function () { $jq("#dvLoading").show(); },
+                    complete: function () { $jq("#dvLoading").hide(); },
+                    success: function (result) {
+                        $jq('#dataContainer').html(result);
+                        $jq('#branchModal').modal('show');
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                });
+
+                return false;
+            });
+
+            $jq('#btnPreview').click(function () {
+                var url = $jq('#previewModal').data('url');
+                //var formData = new FormData($jq('#form1').get(0));
+                var formData = $jq('#form1').serialize();
+                $jq.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: addAntiForgeryToken(formData),
+                    //contentType: false,
+                    //processData: false,
+                    beforeSend: function () { $jq("#dvLoading").show(); },
+                    complete: function () { $jq("#dvLoading").hide(); },
+                    success: function (result) {
+                        $jq('#previewContainer').html(result);
+                        $jq('#previewModal').modal('show');
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                });
+
+                return false;
+            });
+
+            $jq('#btnAddAttach').click(function () {
+                editAttach();
+            });
+
+            $jq("#btnCancel").click(function (e) {
+                e.preventDefault();
+                var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+                if ($jq.trim(msg) != '') {
+                    doModal('dvAlertMsg', 'Message Dialog', msg, 'initSearch()', 'Confirm');
+                }
+                return false;
+            });
+
+            var dateFormat = 'dd/mm/yyyy';
+
+            var newsId = $jq('#hddNewsId').val();
+
+            if (newsId == '' || newsId == '0') {
+                // DateTime Picker From Date
+                $jq('#datetimepicker1').datepicker({
+                    format: dateFormat,
+                    startDate: "0d",
+                    showOnFocus: "false",
+                    language: 'th'
+                }).on('changeDate', function(ev) {
+                    $jq(this).datepicker('hide');
+                });
+
+                // DateTime Picker To Date
+                $jq('#datetimepicker2').datepicker({
+                    format: dateFormat,
+                    startDate: "0d",
+                    showOnFocus: "false",
+                    language: 'th'
+                }).on('changeDate', function(ev) {
+                    $jq(this).datepicker('hide');
+                });
+            } else {
+                // DateTime Picker From Date
+                $jq('#datetimepicker1').datepicker({
+                    format: dateFormat,
+                    showOnFocus: "false",
+                    language: 'th'
+                }).on('changeDate', function (ev) {
+                    $jq(this).datepicker('hide');
+                });
+
+                // DateTime Picker To Date
+                $jq('#datetimepicker2').datepicker({
+                    format: dateFormat,
+                    showOnFocus: "false",
+                    language: 'th'
+                }).on('changeDate', function (ev) {
+                    $jq(this).datepicker('hide');
+                });
+            }
+
+           
+
+            var errorMsg = '@ViewBag.ErrorMessage';
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+
+        function initSearch() {
+            $jq("#dvLoading").show();
+            var actionUrl = '@Url.Action("Search", "News")';
+            $jq('#dvTarget').html('');
+            var input = $jq("<input>").attr("type", "hidden");
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+            $jq('#dvTarget form').append($jq(input));
+            $jq('#dvTarget form').submit();
+        }
+
+        function loadPoolBranch() {
+            var objNews = $jq("#form1").serialize();
+
+            $jq.ajax({
+                url: '@Url.Action("NewsBranchList", "News")',
+                type: "POST",
+                data: objNews,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResult").html('');
+                        $jq("#dvSearchResult").html(result);
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        };
+
+        var BranchIdDel;
+        function deleteBranch(branchId) {
+            BranchIdDel = branchId;
+            doModal('dvAlertMsg', 'Confirm Dialog', 'ต้องการลบข้อมูลใช่หรือไม่?', 'doDeleteBranch()', 'Confirm');
+        }
+
+        function doDeleteBranch() {
+            hideModal('modalWindow');
+            var objNews = $jq("#form1").serialize() + '&branchId=' + BranchIdDel;
+
+            $jq.ajax({
+                url: '@Url.Action("DeleteBranch", "News")',
+                type: "POST",
+                data: objNews,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == true) {
+                        $jq('#hddJsonBranch').val(result.Data);
+                        loadPoolBranch();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function loadAttach() {
+            var objNews = $jq("#form1").serialize();
+
+            $jq.ajax({
+                url: '@Url.Action("NewsAttachList", "News")',
+                type: "POST",
+                data: objNews,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvAttachment").html('');
+                        $jq("#dvAttachment").html(result);
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        };
+
+        function editAttach(attachId) {
+            var url = $jq('#attachModal').data('url');
+            var jsonObj = {};
+            jsonObj["JsonAttach"] = $jq('#hddJsonAttach').val();
+            jsonObj["NewsId"] = $jq('#hddNewsId').val();
+            jsonObj["ListIndex"] = attachId;
+
+            $jq.ajax({
+                type: 'POST',
+                url: url,
+                data: { jsonData: JSON.stringify(jsonObj) },
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    $jq('#attachContainer').html(result);
+                    $jq('#attachModal').modal('show');
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        var AttachIdDel;
+        function deleteAttach(attachId) {
+            AttachIdDel = attachId;
+            doModal('dvAlertMsg', 'Confirm Dialog', 'ต้องการลบข้อมูลใช่หรือไม่?', 'doDeleteAttach()', 'Confirm');
+        }
+
+        function doDeleteAttach() {
+            hideModal('modalWindow');
+            var objNews = $jq("#form1").serialize() + '&listIndex=' + AttachIdDel;
+
+            $jq.ajax({
+                url: '@Url.Action("DeleteAttach", "News")',
+                type: "POST",
+                data: objNews,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == true) {
+                        $jq('#hddJsonAttach').val(result.Data);
+                        loadAttach();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+    </script>
+}

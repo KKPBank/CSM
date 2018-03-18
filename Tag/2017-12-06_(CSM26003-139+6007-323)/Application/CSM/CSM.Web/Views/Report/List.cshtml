@@ -1,0 +1,46 @@
+﻿@using CSM.Common.Resources
+@{
+    ViewBag.Title = Resource.Lbl_Reports;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Report })
+}
+
+@section Breadcrumb {
+    <strong class="font-green-jungle">@Resource.Lbl_Reports</strong>
+}
+
+@using (Html.BeginForm("List", "Report", FormMethod.Post, new { @class = "form-horizontal", @id = "form1" }))
+{
+    @Html.AntiForgeryToken()
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title"><i class="fa fa-bar-chart"></i>&nbsp;@Resource.Lbl_Reports</h5>
+        <div class="table-responsive margin-bottom-15">
+            <table class="table table-condensed table-fixed table-clickable">
+                <tbody>
+                    @if (ViewBag.ReportList == null || ViewBag.ReportList.Count == 0)
+                    {
+                        <tr>
+                            <td class="center">@Resource.Msg_NoRecords</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in (List<CSM.Entity.MenuEntity>)ViewBag.ReportList)
+                        {
+                            <tr>
+                                <td>
+
+                                    <a href="@Url.Action(item.ActionName, item.ControllerName)">@item.MenuName</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

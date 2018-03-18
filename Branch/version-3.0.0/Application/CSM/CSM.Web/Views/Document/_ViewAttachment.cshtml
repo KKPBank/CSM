@@ -1,0 +1,108 @@
+﻿@model CSM.Web.Models.AttachViewModel
+@using CSM.Common.Utilities;
+@{
+    ViewBag.Title = "_ViewAttachment";
+}
+
+@Html.HiddenFor(model => model.AttachmentId)
+@Html.HiddenFor(model => model.CustomerId)
+
+<div class="modal-dialog modal-sm" style="min-width:800px;">
+    <div id="dvAttachForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">View Document</h5>
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="form-group">
+                <div class="col-md-3">
+                    <p class="form-control-static">
+                        เอกสารที่อัพโหลด :
+                    </p>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <p class="form-control-static">
+                        <a href="javascript:;" title="download" onclick="previewAttachment();"> @Html.DisplayFor(model => model.Filename)</a>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <p class="form-control-static">
+                        ชื่อเอกสาร :
+                    </p>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <p class="form-control-static">
+                        @Html.DisplayFor(model => model.DocName, new { @class = "form-control" })
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <p class="form-control-static">
+                        คำอธิบายเอกสาร :
+                    </p>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <p class="form-control-static">
+                        @Html.DisplayFor(model => model.DocDesc, new { @class = "form-control" })
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <p class="form-control-static">
+                        วันที่หมดอายุ :
+                    </p>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <p class="form-control-static">
+                        @Html.DisplayFor(model => model.ExpiryDate, new { @class = "form-control" })
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <p class="form-control-static">
+                        สถานะ :
+                    </p>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <p class="form-control-static">
+                        @Html.DisplayFor(model => model.StatusDisplay, new { @class = "form-control" })
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <p class="form-control-static">
+                        สร้างโดย :
+                    </p>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <p class="form-control-static">
+                        @Html.DisplayFor(model => model.CreateUserFullName, new { @class = "form-control" })
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <p class="form-control-static">
+                        ประเภทเอกสาร :
+                    </p>
+                </div>
+                <div class="col-md-7 nopadding">
+                    <p class="form-control-static">
+                        @Html.DisplayFor(model => model.AttachTypeDisplay, new { @class = "form-control" })
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

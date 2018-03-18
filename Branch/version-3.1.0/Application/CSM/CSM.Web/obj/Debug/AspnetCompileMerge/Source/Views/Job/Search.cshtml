@@ -1,0 +1,1027 @@
+﻿@model CSM.Web.Models.JobViewModel
+@using CSM.Common.Resources
+@{
+    ViewBag.Title = Resource.Lbl_SearchCommunicationPool;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.CommPool })
+}
+
+@section Breadcrumb {
+    
+    <strong class="font-blue">@Resource.Lbl_JobCommPool &rsaquo;&rsaquo;</strong>
+    <strong class="font-green-jungle">@Resource.Lbl_SearchCommunicationPool</strong>
+}
+
+@using (Html.BeginForm("Search", "Job", FormMethod.Post, new { @class = "form-horizontal", @id = "form1", @DefaultButton = "btnSearch" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.IsSelected, new { @id = "hddIsSelectd" })
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">@Resource.Lbl_SearchCommunicationPool</h5>
+        <div class="row margin-top-15">
+            <div class="col-md-12">
+                <div style="color:maroon;padding:0 0 10px;">
+                    * หากต้องการค้นหาบางส่วนของคำ ให้ใส่ * ไว้ด้านหน้าหรือด้านหลังของคำค้นหาที่ Field <strong class="text-primary">ตัวอักษรสี น้ำเงิน</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static text-primary">
+                            ชื่อลูกค้า
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.SearchFilter.FirstName, new { @class = "form-control input-sm", @id = "txtFirstName", @maxlength = 50 })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.FirstName)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static text-primary">
+                            นามสกุลลูกค้า
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.SearchFilter.LastName, new { @class = "form-control input-sm", @id = "txtLastName", @maxlength = 50 })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.LastName)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-group-static">
+                            Job Status
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(model => model.SearchFilter.JobStatus, new SelectList(ViewBag.jobstatus, "Key", "Value"),
+                            Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @id = "ddlJobStatus" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-group-static">
+                            Channel
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(m => m.SearchFilter.Channel, new SelectList(ViewBag.channel, "Key", "Value"),
+                            Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @id = "ddlChannel" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-group-static">
+                            Subject
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.SearchFilter.Subject, new { @class = "form-control input-sm", @id = "txtSubject", @maxlength = 50 })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.Subject)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        From
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.SearchFilter.From, new { @class = "form-control input-sm", @id = "txtFrom", @maxlength = 50 })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.From)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h6 class="form-title font-green-jungle btn-toggle" data-toggle="collapse" data-target="#pnlAdvSearch">
+            <span class="expand">[+]</span> Advance Search
+        </h6>
+        <div id="pnlAdvSearch" class="collapse">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-group-static">
+                                Action Date
+                            </p>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="clear"></div>
+                            <div class="pull-left form-inline">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        @Html.TextBoxFor(model => model.SearchFilter.DateFrom, new
+                                        {
+                                            @class = "form-control input-sm",
+                                            @id = "txtFromDate",
+                                            @style = "width:98px!important;",
+                                            @onchange = "validateDateValue($jq(this));"
+                                        })
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.SearchFilter.DateFrom)
+                                </div>
+                            </div>
+                            <div class="pull-left padding-left-5 padding-right-5 padding-top-5">
+                                To.
+                            </div>
+                            <div class="pull-left form-inline">
+                                <div class="form-group">
+                                    <div class='input-group date input-small' id='datetimepicker2'>
+                                        @Html.TextBoxFor(model => model.SearchFilter.DateTo, new
+                                        {
+                                            @class = "form-control input-sm",
+                                            @id = "txtToDate",
+                                            @style = "width:99px!important;",
+                                            @onchange = "validateDateValue($jq(this));"
+                                        })
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.SearchFilter.DateTo)
+                                </div>
+                            </div>
+                            <div class="dvDateRange clear"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            Action By
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.SearchFilter.ActionBy, new { @class = "form-control input-sm", @id = "txtActionBy", @maxlength = 50 })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.ActionBy)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-control-static">
+                                SR ID
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.SearchFilter.SRId, new { @class = "form-control input-sm", @id = "txtSRId", @maxlength = 20 })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.SRId)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-control-static">
+                                SR State
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.SearchFilter.SRState, new { @id = "txtSRStateId", @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-control-static">
+                                SR Status
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.SearchFilter.SRStatus, new { @id = "txtSRStatusId", @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-group-static">
+                                Job Date
+                            </p>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="clear"></div>
+                            <div class="pull-left form-inline">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimepicker3'>
+                                        @Html.TextBoxFor(model => model.SearchFilter.JobDateFrom, new
+                                        {
+                                            @class = "form-control input-sm",
+                                            @id = "txtJobFromDate",
+                                            @style = "width:98px!important;",
+                                            @onchange = "validateDateValue($jq(this));"
+                                        })
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.SearchFilter.JobDateFrom)
+                                </div>
+                            </div>
+                            <div class="pull-left padding-left-5 padding-right-5 padding-top-5">
+                                To.
+                            </div>
+                            <div class="pull-left form-inline">
+                                <div class="form-group">
+                                    <div class='input-group date input-small' id='datetimepicker4'>
+                                        @Html.TextBoxFor(model => model.SearchFilter.JobDateTo, new
+                                        {
+                                            @class = "form-control input-sm",
+                                            @id = "txtJobToDate",
+                                            @style = "width:99px!important;",
+                                            @onchange = "validateDateValue($jq(this));"
+                                        })
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.SearchFilter.JobDateTo)
+                                </div>
+                            </div>
+                            <div class="dvJobDateRange clear"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            
+                        </div>
+                        <div class="col-md-6">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-control-static">
+                                Owner Branch
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.SearchFilter.OwnerBranchId, new { @class = "form-control input-sm", @id = "txtOwnerBranch" })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.OwnerBranchId)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-control-static">
+                                Owner SR
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.SearchFilter.OwnerUserId, new { @class = "form-control input-sm", @id = "txtOwnerSr" })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.OwnerUserId)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-control-static">
+                                Creator Branch
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.SearchFilter.CreatorBranchId, new { @class = "form-control input-sm", @id = "txtCreatorBranch" })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.CreatorBranchId)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-control-static">
+                                Creator SR
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.SearchFilter.CreatorUserId, new { @class = "form-control input-sm", @id = "txtCreatorSr" })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.CreatorUserId)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="panel-actions">
+        <div class="pull-right">
+            <div class="form-inline">
+                <div class="form-group">
+                    <button id="btnSearch" type="button" class="btn btn-blue btn-sm btn-xsmall">
+                        <i class="fa fa-search"></i>&nbsp;Search
+                    </button>
+                </div>
+                <div class="form-group">
+                    <button id="btnReset" type="button" class="btn btn-gray btn-sm btn-xsmall">
+                        Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="dvSearchResult">
+        @if (Model.CommunicationPoolList != null)
+        {
+            Html.RenderPartial("~/Views/Job/_JobList.cshtml", Model);
+        }
+    </div>
+}
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        var searchFilter;
+        var successFilter;
+        var expandValue = 0;
+
+        $jq(function () {
+            initializeSearchFilter();
+            initAutoComplete();
+            clearAutoComplete();
+
+            $jq("#form1").keypress(function (e) {
+                var kCode = e.keyCode || e.charCode; //for cross browser
+                if (kCode == 13) {
+                    var defaultbtn = $jq(this).attr("DefaultButton");
+                    $jq("#" + defaultbtn).focus();
+                    $jq("#" + defaultbtn).click();
+                    return false;
+                }
+            });
+
+            $jq("#btnSearch").click(function (e) {
+                e.preventDefault();
+                clearServerErrors();
+
+                searchFilter.FirstName = $jq("#txtFirstName").val().trim(),
+                    searchFilter.LastName = $jq("#txtLastName").val().trim(),
+                    searchFilter.JobStatus = $jq("#ddlJobStatus").val(),
+                    searchFilter.Channel = $jq("#ddlChannel").val(),
+                    searchFilter.Subject = $jq("#txtSubject").val().trim(),
+                    searchFilter.From = $jq("#txtFrom").val().trim(),
+                    searchFilter.DateFrom = $jq("#txtFromDate").val(),
+                    searchFilter.DateTo = $jq("#txtToDate").val(),
+                    searchFilter.ActionBy = $jq("#txtActionBy").val().trim(),
+                    searchFilter.SRId = $jq("#txtSRId").val().trim(),
+                    searchFilter.SRState = $jq("#txtSRStateId").val(),
+                    searchFilter.SRStatus = $jq("#txtSRStatusId").val(),
+                    searchFilter.JobDateFrom = $jq("#txtJobFromDate").val(),
+                    searchFilter.JobDateTo = $jq("#txtJobToDate").val(),
+                    searchFilter.OwnerBranchId = $jq("#txtOwnerBranch").val(),
+                    searchFilter.OwnerUserId = $jq("#txtOwnerSr").val(),
+                    searchFilter.CreatorBranchId = $jq("#txtCreatorBranch").val(),
+                    searchFilter.CreatorUserId = $jq("#txtCreatorSr").val(),
+                    searchFilter.PageNo = 1;
+
+                loadData();
+                return false;
+            });
+
+            $jq("#btnReset").click(function (e) {
+                e.preventDefault();
+                //$jq('[id^=datetimepicker]').datepicker("setDate", new Date());
+                $jq('#datetimepicker1').datepicker("setDate", (new Date()).toDateString());
+                $jq('#datetimepicker2').datepicker("setDate", (new Date()).toDateString());
+                $jq('#datetimepicker3').datepicker("setDate", (new Date()).toDateString());
+                $jq('#datetimepicker4').datepicker("setDate", (new Date()).toDateString());
+                $jq("#dvForm input[type='text'],#dvForm select").val('');
+                $jq('#datetimepicker1').datepicker("update");
+                $jq('#datetimepicker2').datepicker("update");
+                $jq('#datetimepicker3').datepicker("update");
+                $jq('#datetimepicker4').datepicker("update");
+
+                clearAutoComplete();
+                initializeSearchFilter();
+                $jq("#dvSearchResult").html('');
+                clearServerErrors();
+                return false;
+            });
+
+            $jq('.btn-toggle').click(function () {
+                var o = $jq(this).find('span');
+                if (o.hasClass('minimize')) {
+                    o.removeClass('minimize').addClass('expand').text('[+]');
+                    expandValue = 0;
+                } else {
+                    o.removeClass('expand').addClass('minimize').text('[-]');
+                    expandValue = 1;
+                }
+                ShowhidePanel(expandValue);
+            });
+
+            //show hide panel
+            if ($jq("#hddIsSelectd").val() == "1") {
+                $jq('.btn-toggle').find('span').removeClass('expand').addClass('minimize').text('[-]');
+                $jq('#pnlAdvSearch').removeClass('collapse').addClass('collapse in');
+            }
+
+            var dateFormat = 'dd/mm/yyyy';
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker1').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker To Date
+            $jq('#datetimepicker2').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker Job From Date
+            $jq('#datetimepicker3').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker Job To Date
+            $jq('#datetimepicker4').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+        });
+
+        function initializeSearchFilter() {
+            searchFilter = {
+                FirstName: $jq("#txtFirstName").val(),
+                LastName: $jq("#txtLastName").val(),
+                JobStatus: $jq("#ddlJobStatus").val(),
+                Channel: $jq("#ddlChannel").val(),
+                Subject: $jq("#txtSubject").val(),
+                From: $jq("#txtFrom").val(),
+                DateFrom: $jq("#txtFromDate").val(),
+                DateTo: $jq("#txtToDate").val(),
+                ActionBy: $jq("#txtActionBy").val(),
+                SRId: $jq("#txtSRId").val(),
+                SRState: $jq("#txtSRStateId").val(),
+                SRStatus: $jq("#txtSRStatusId").val(),
+                JobDateFrom: $jq("#txtJobFromDate").val(),
+                JobDateTo: $jq("#txtJobToDate").val(),
+                OwnerBranchId: $jq("#txtOwnerBranch").val(),
+                OwnerUserId: $jq("#txtOwnerSr").val(),
+                CreatorBranchId: $jq("#txtCreatorBranch").val(),
+                CreatorUserId: $jq("#txtCreatorSr").val(),
+                PageNo: '@Model.SearchFilter.PageNo',
+                PageSize: '@Model.SearchFilter.PageSize',
+                SortField: '@Model.SearchFilter.SortField',
+                SortOrder: '@Model.SearchFilter.SortOrder'
+            };
+            successFilter = searchFilter;
+        };
+
+        function initializePaging() {
+            $jq("#dvSearchResult .input-page").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = $jq(this).val();
+                loadData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchResult #pagesizelist").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadData();
+                return false;
+            });
+
+            $jq('#dvSearchResult .pagination ul li a').on('click', function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadData();
+                return false;
+            });
+
+            //$jq("#tblJobList").tableHeadFixer({ "head": false, "left": 3 });
+        };
+
+        function sortField(selectedSortField) {
+            if (selectedSortField == searchFilter.SortField)
+                searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            loadData();
+        }
+
+        function loadData() {
+            if (searchFilter.FirstName == ""
+                && searchFilter.LastName == ""
+                && searchFilter.JobStatus == ""
+                && searchFilter.Channel == ""
+                && searchFilter.Subject == ""
+                && searchFilter.From == ""
+                && searchFilter.DateFrom == ""
+                && searchFilter.DateTo == ""
+                && searchFilter.ActionBy == ""
+                && searchFilter.SRId == ""
+                && searchFilter.SRState == ""
+                && searchFilter.SRStatus == ""
+                && searchFilter.JobDateFrom == ""
+                && searchFilter.JobDateTo == ""
+                && searchFilter.OwnerBranchId == ""
+                && searchFilter.OwnerUserId == ""
+                && searchFilter.CreatorBranchId == ""
+                && searchFilter.CreatorUserId == ""
+                ) {
+                var warningMsg = '@Resource.Msg_EnteredAtLeastOneCriteria';
+                doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+                return false;
+            }
+
+            $jq.ajax({
+                url: '@Url.Action("JobList", "Job")',
+                type: "POST",
+                data: addAntiForgeryToken(searchFilter),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResult").html('');
+                        successFilter = searchFilter;
+                        $jq("#dvSearchResult").html(result);
+                        initializePaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+            return false;
+        }
+
+        function initCommPoolEdit(jobId) {
+            var actionUrl = '@Url.Action("InitEdit", "Job")';
+            $jq('#dvTarget').html('');
+            var inputJobId = $jq("<input>").attr("type", "hidden").attr("name", "jobId").val(jobId);
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+            $jq('#dvTarget form').append($jq(inputJobId));
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').submit();
+        }
+
+        var jobId;
+        function confirmNewSR(id) {
+            jobId = id;
+            var msg = '@Resource.Msg_ConfirmCreateNewSR';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'initNewSR()', 'Confirm');
+            }
+            return false;
+        }
+
+        function initNewSR() {
+            var params = { jobId: jobId };
+
+            $jq.ajax({
+                url: '@Url.Action("NewSR", "Job")',
+                type: "POST",
+                data: addAntiForgeryToken(params),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == true) {
+                        var actionUrl = '@Url.Action("Edit", "ServiceRequest")';
+                        $jq('#dvTarget').html('');
+                        var inputSrId = $jq("<input>").attr("type", "hidden").attr("name", "SrId").val(result.SrId);
+                        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+                        $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+                        $jq('#dvTarget form').append($jq(inputToken));
+                        $jq('#dvTarget form').append($jq(inputSrId));
+                        $jq('#dvTarget form').submit();
+                        loadData();
+                    } else {
+                        showServerErrors(result);
+                    }
+                    hideModal('modalWindow');
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+            return false;
+        }
+
+        function ShowhidePanel(expandValue) {
+            var data = { expandValue: expandValue };
+            $jq.ajax({
+                url: '@Url.Action("ShowhidePanel", "Job")',
+                type: "POST",
+                data: addAntiForgeryToken(data),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function clearAutoComplete() {
+            $jq("#txtOwnerBranch").select2("val", "");
+            $jq("#txtOwnerSr").select2("val", "");
+            $jq("#txtCreatorBranch").select2("val", "");
+            $jq("#txtCreatorSr").select2("val", "");
+
+            $jq("#txtOwnerSr").select2("disable");
+            $jq("#txtCreatorSr").select2("disable");
+
+            $jq("#txtSRStatusId").select2("val", "");
+            $jq("#txtSRStateId").select2("val", "");
+        }
+
+        function initAutoComplete() {
+            initAutoCompleteOwnerBranch();
+            initAutoCompleteOwnerSr();
+            initAutoCompleteCreatorBranch();
+            initAutoCompleteCreatorSr();
+            initAutoCompleteState();
+            initAutoCompleteStatus();
+        }
+
+        function initAutoCompleteOwnerBranch() {
+
+            $jq("#txtOwnerBranch").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchBranch", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.BranchName,
+                                id: item.BranchId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+            }).on("change", function (evt) {
+
+                if ($jq(this).val().length != 0)
+                    $jq("#txtOwnerSr").select2("enable");
+                else {
+                    $jq("#txtOwnerSr").select2("disable");
+                    $jq("#txtOwnerSr").select2("val", "");
+                }
+            });
+        }
+
+        function initAutoCompleteOwnerSr() {
+
+            $jq("#txtOwnerSr").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchUser", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        branchId: $jq("#txtOwnerBranch").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.UserDisplayName,
+                                id: item.UserId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+            });
+        }
+
+        function initAutoCompleteCreatorBranch() {
+
+            $jq("#txtCreatorBranch").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchBranch", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.BranchName,
+                                id: item.BranchId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+            }).on("change", function (evt) {
+
+                if ($jq(this).val().length != 0)
+                    $jq("#txtCreatorSr").select2("enable");
+                else {
+                    $jq("#txtCreatorSr").select2("disable");
+                    $jq("#txtCreatorSr").select2("val", "");
+                }
+            });
+        }
+
+        function initAutoCompleteCreatorSr() {
+
+            $jq("#txtCreatorSr").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchUser", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        branchId: $jq("#txtCreatorBranch").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.UserDisplayName,
+                                id: item.UserId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+            });
+        }
+
+        function initAutoCompleteState() {
+
+            $jq("#txtSRStateId").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteState", "Status")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            statusId: $jq("#txtSRStatusId").val(),
+                            isAllStatus: false
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.SRStateName,
+                                    id: item.SRStateId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            }).on("change", function (evt) {
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+                    // On Selected
+                    $jq.ajax({
+                        url: "@Url.Action("AutoCompleteStatus", "Status")",
+                        method: "POST",
+                        data: {
+                            keyword: '',
+                            stateId: $jq(this).val(),
+                            isAllStatus: false
+                        }
+                    }).done(function (result) {
+                        if (result.length == 1) {
+                            $jq("#txtSRStatusId").select2("data", { id: result[0].SRStatusId, text: result[0].SRStatusName });
+                        } else {
+                            $jq("#txtSRStatusId").select2('val', '');
+                        }
+                    }).fail(function () {
+                        if (xhr.status === 401) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        } else {
+                            var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                        }
+                    });
+                }
+            });
+        }
+
+        function initAutoCompleteStatus() {
+
+            $jq("#txtSRStatusId").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteStatus", "Status")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            stateId: $jq("#txtSRStateId").val(),
+                            isAllStatus: false
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.SRStatusName,
+                                    id: item.SRStatusId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            }).on("change", function (evt) {
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+                    // On Selected
+                    $jq.ajax({
+                        url: "@Url.Action("AutoCompleteState", "Status")",
+                        method: "POST",
+                        data: {
+                            keyword: '',
+                            statusId: $jq(this).val(),
+                            isAllStatus: false
+                        }
+                    }).done(function (result) {
+                        if (result.length == 1) {
+                            $jq("#txtSRStateId").select2("data", { id: result[0].SRStateId, text: result[0].SRStateName });
+                        } else {
+                            $jq("#txtSRStateId").select2('val', '');
+                        }
+                    }).fail(function () {
+                        if (xhr.status === 401) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        } else {
+                            var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                        }
+                    });
+
+                }
+            });
+        }
+    </script>
+}

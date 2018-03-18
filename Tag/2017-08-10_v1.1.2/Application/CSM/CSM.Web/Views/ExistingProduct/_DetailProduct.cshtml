@@ -1,0 +1,111 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.ExistingProductViewModel
+<div class="modal-dialog modal-sm" style="min-width:800px;">
+    <div id="dvBrForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">รายละเอียดการติดต่อ</h5>           
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-4 left-label">อีเมล์:</label>
+                        <div class="col-md-8">
+                            <p class="form-control-static">
+                                @Model.DetailProduct.EmailDisplay
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-4 left-label">แฟกซ์:</label>
+                        <div class="col-md-8">
+                            <p class="form-control-static">
+                                @Model.DetailProduct.FaxDisplay
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-4 left-label">เบอร์โทรศัพท์ #1:</label>
+                        <div class="col-md-8">
+                            <p class="form-control-static">
+                                @Model.DetailProduct.PhoneNo1
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-4 left-label">เบอร์โทรศัพท์ #2:</label>
+                        <div class="col-md-8">
+                            <p class="form-control-static">
+                                @Model.DetailProduct.PhoneNo2
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-4 left-label">เบอร์โทรศัพท์ #3:</label>
+                        <div class="col-md-8">
+                            <p class="form-control-static">
+                                @Model.DetailProduct.PhoneNo3
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div>
+                
+                <div class="table-responsive">
+                    <table class="table datatable">
+                        <thead>
+                            <tr>
+                                <th style="width:80%!important;">ที่อยู่</th>
+                                <th style="width:20%!important;">ประเภท</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.DetailProduct.AccountAddressList == null || Model.DetailProduct.AccountAddressList.Count() ==  0)
+                            {
+                                <tr>
+                                    <td colspan="2" class="center">@Resource.Msg_NoRecords</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.DetailProduct.AccountAddressList)
+                                {
+                                    <tr>                                        
+                                        <td style="width: 80% !important;">@item.AddressDiplay</td>
+                                        <td style="width: 20% !important;">@item.AddressTypeName</td>                                        
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>              
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="modal-footer">                
+               <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" aria-hidden="true">Close</button>                
+            </div>
+        </div>
+    </div>
+</div>

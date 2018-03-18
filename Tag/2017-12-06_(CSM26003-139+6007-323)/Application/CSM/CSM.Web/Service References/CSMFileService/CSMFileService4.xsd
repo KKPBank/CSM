@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.SchedTask" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.SchedTask" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:5300/CSMFileService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:5300/CSMFileService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" />
+  <xs:complexType name="ImportAFSTaskResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElapsedTime" type="xs:long" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="FileList" nillable="true" type="q1:ArrayOfanyType" />
+      <xs:element minOccurs="0" name="NumOfComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfErrProp" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfErrSaleZone" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfProp" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSaleZones" type="xs:int" />
+      <xs:element minOccurs="0" name="SchedDateTime" type="xs:dateTime" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" minOccurs="0" name="StatusResponse" nillable="true" type="q2:StatusResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ImportAFSTaskResponse" nillable="true" type="tns:ImportAFSTaskResponse" />
+  <xs:complexType name="ExportAFSTaskResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElapsedTime" type="xs:long" />
+      <xs:element minOccurs="0" name="NumOfActivity" type="xs:int" />
+      <xs:element minOccurs="0" name="SchedDateTime" type="xs:dateTime" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" minOccurs="0" name="StatusResponse" nillable="true" type="q3:StatusResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExportAFSTaskResponse" nillable="true" type="tns:ExportAFSTaskResponse" />
+  <xs:complexType name="ExportNCBTaskResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElapsedTime" type="xs:long" />
+      <xs:element minOccurs="0" name="NumOfNew" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfUpdate" type="xs:int" />
+      <xs:element minOccurs="0" name="SchedDateTime" type="xs:dateTime" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" minOccurs="0" name="StatusResponse" nillable="true" type="q4:StatusResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExportNCBTaskResponse" nillable="true" type="tns:ExportNCBTaskResponse" />
+  <xs:complexType name="ImportBDWTaskResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElapsedTime" type="xs:long" />
+      <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="FileList" nillable="true" type="q5:ArrayOfanyType" />
+      <xs:element minOccurs="0" name="NumOfBdwContact" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfError" type="xs:int" />
+      <xs:element minOccurs="0" name="SchedDateTime" type="xs:dateTime" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" minOccurs="0" name="StatusResponse" nillable="true" type="q6:StatusResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ImportBDWTaskResponse" nillable="true" type="tns:ImportBDWTaskResponse" />
+  <xs:complexType name="ImportCISTaskResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElapsedTime" type="xs:long" />
+      <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="FileErrorList" nillable="true" type="q7:ArrayOfanyType" />
+      <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="FileList" nillable="true" type="q8:ArrayOfanyType" />
+      <xs:element minOccurs="0" name="NumOfAddressComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfAddressType" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfAddressTypeComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfAddressTypeError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCor" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCorComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCountry" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCountryComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCountryError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCusEmail" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCusEmailComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCusEmailError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCusPhone" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCusPhoneComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfCusPhoneError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfDis" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfDistrictComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfDistrictError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfEmailComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfEmailtype" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfEmailtypeComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfEmailtypeError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfErrCor" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfErrEmail" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfErrIndiv" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfErrPhone" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfErrSub" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfIndiv" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfIndivComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfPhoneComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfPhonetype" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfPhonetypeComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfPhonetypeError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfPro" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfProd" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfProdComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfProdError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfProvinceComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfProvinceError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSub" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSubAdd" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSubComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSubDis" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSubDistrictComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSubDistrictError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSubMail" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSubPhone" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSubType" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSubTypeComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSubTypeError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfTitle" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfTitleComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfTitleError" type="xs:int" />
+      <xs:element minOccurs="0" name="SchedDateTime" type="xs:dateTime" />
+      <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" minOccurs="0" name="StatusResponse" nillable="true" type="q9:StatusResponse" />
+      <xs:element minOccurs="0" name="numOfErrAddress" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ImportCISTaskResponse" nillable="true" type="tns:ImportCISTaskResponse" />
+  <xs:complexType name="ImportHpTaskResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElapsedTime" type="xs:long" />
+      <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="FileList" nillable="true" type="q10:ArrayOfanyType" />
+      <xs:element minOccurs="0" name="NumOfComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfError" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfTotal" type="xs:int" />
+      <xs:element minOccurs="0" name="SchedDateTime" type="xs:dateTime" />
+      <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" minOccurs="0" name="StatusResponse" nillable="true" type="q11:StatusResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ImportHpTaskResponse" nillable="true" type="tns:ImportHpTaskResponse" />
+  <xs:complexType name="ImportHRTaskResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElapsedTime" type="xs:long" />
+      <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="FileList" nillable="true" type="q12:ArrayOfanyType" />
+      <xs:element minOccurs="0" name="NumOfComplete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfError" type="xs:int" />
+      <xs:element minOccurs="0" name="SchedDateTime" type="xs:dateTime" />
+      <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" minOccurs="0" name="StatusResponse" nillable="true" type="q13:StatusResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ImportHRTaskResponse" nillable="true" type="tns:ImportHRTaskResponse" />
+</xs:schema>

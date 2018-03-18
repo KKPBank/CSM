@@ -1,0 +1,399 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@model CSM.Web.Models.CampaignViewModel
+@{
+    ViewBag.Title = "_CampaignEdit";
+}
+
+<div class="modal-dialog modal-sm" style="min-width:900px;">
+    <div id="dvCampaignForm" class="modal-content">
+        @Html.HiddenFor(model => model.CampaignId)
+        @Html.HiddenFor(model => model.CampaignName)
+        @Html.HiddenFor(model => model.ContractNoRefer)
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">New Recommended Campaign</h5>
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                สนใจ/ไม่สนใจ&nbsp;<span class="required-field-block">*</span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="radio-group">
+                                @Html.RadioButtonFor(model => model.Interested, Constants.CMTParamConfig.Interested)
+                                <label>@Resource.Msg_Interested</label>
+                                @Html.RadioButtonFor(model => model.Interested, Constants.CMTParamConfig.NoInterested)
+                                <label>@Resource.Msg_NoInterested</label><br />
+                                @Html.ValidationMessageFor(model => model.Interested)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                ช่องทาง
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.HiddenFor(model => model.ChannelId)
+                            @Html.HiddenFor(model => model.ChannelName)
+                            @Html.TextBoxFor(model => model.ChannelName, new { @id = "txtChannelId", @class = "form-control input-sm readonly", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                ชื่อลูกค้า&nbsp;<span class="required-field-block">*</span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.FirstName, new { @id = "txtFirstName", @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.FirstName)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                นามสกุลลูกค้า
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.LastName, new { @id = "txtLastName", @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.LastName)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                ประเภทลูกค้า
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(model => model.CustomerType, Model.CustomerTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                new { @class = "form-control input-sm", @style = "display:block" })
+                            @Html.ValidationMessageFor(model => model.CustomerType)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                                Subscription ID
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.CardNo, new { @id = "txtCardNo", @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.CardNo)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                เบอร์โทรศัพท์&nbsp;<span class="required-field-block">*</span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.PhoneNo, new { @id = "txtPhoneNo", @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.PhoneNo)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                อีเมล์
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.Email, new { @id = "txtEmail", @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.Email)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                เวลาสะดวกในการติดต่อกลับ
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.AvailableTime, new
+                            {
+                                @id = "txtAvailableTime",
+                                @class = "form-control input-sm",
+                                @onchange = "formatTime($jq(this));",
+                                @onpaste="return validatePaste('Digit');",
+                                @onkeypress=" return validateNumber(event);",
+                                @placeholder = "กรอกเวลาในรูปแบบ HHmm"
+                            })
+                            @Html.ValidationMessageFor(model => model.AvailableTime)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                Owner Branch
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.OwnerBranch, new { @id = "txtOwnerBranch", @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.OwnerBranch)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                Owner Lead
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(model => model.OwnerLead, new { @id = "txtOwnerLead", @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.OwnerLead)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                ชื่อแคมเปญ
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                @Model.CampaignName
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                เลขที่สัญญาที่เคยมีกับธนาคาร
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.HiddenFor(model => model.ContractNoRefer)
+                            @Model.ContractNoRefer
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-control-static">
+                                รายละเอียด
+                            </p>
+                        </div>
+                        <div class="col-md-9">
+                            @Html.TextAreaFor(model => model.Comments, new { @id = "txtComments", @style = "width:100%!important;height:100px!important" })
+                            @Html.ValidationMessageFor(model => model.Comments)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-blue btn-sm btn-xsmall" id="btnSaveCampaign">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" id="btnCancelCampaign">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $jq(function () {
+        var pageSize = 20;
+
+        $jq('#btnSaveCampaign').click(function (e) {
+            e.preventDefault();
+            saveCampaign();
+            return false;
+        });
+
+        $jq("#txtOwnerBranch").select2({
+            minimumInputLength: '@Constants.MinLenght.AutoComplete',
+            placeholder: '@CSM.Common.Resources.Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByBranchName", "Report")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        userId: $jq('#txtOwnerLead').val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+        $jq("#txtOwnerLead").select2({
+            minimumInputLength: '@Constants.MinLenght.AutoComplete',
+            placeholder: '@CSM.Common.Resources.Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByActionName", "Report")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        branchId: $jq("#txtOwnerBranch").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    });
+
+    function saveCampaign() {
+        clearServerErrors();
+        var objCampaign = $jq("#form2").serialize();
+
+        $jq.ajax({
+            url: '@Url.Action("Edit", "Campaign")',
+            type: "POST",
+            data: objCampaign,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid === true) {
+                    $jq('#campaignModal').modal('hide');
+                } else {
+                    showServerErrors(result);
+                }
+
+                reloadCampaignList();
+
+                if (!$jq("#dvRecCampSearchResult").hasClass('hidden')) {
+                    reloadRecCampaign();
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+
+    function reloadCampaignList() {
+        var paramData = { customerId: $jq('#hddCustomerId').val() };
+        $jq.ajax({
+            url: '@Url.Action("CampaignList", "Campaign")',
+            type: "POST",
+            data: addAntiForgeryToken(paramData),
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == null) {
+                    $jq("#dvSearchResult").html('');
+                    $jq("#dvSearchResult").html(result);
+                } else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+
+    function reloadRecCampaign() {
+        var paramData = { customerId: $jq('#hddCustomerId').val() };
+        $jq.ajax({
+            url: '@Url.Action("RecommendedCampaignList", "Campaign")',
+            type: "POST",
+            data: addAntiForgeryToken(paramData),
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == null) {
+                    $jq("#dvRecCampSearchResult").html('').removeClass('hidden');
+                    $jq("#dvRecCampSearchResult").html(result);
+                } else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+</script>

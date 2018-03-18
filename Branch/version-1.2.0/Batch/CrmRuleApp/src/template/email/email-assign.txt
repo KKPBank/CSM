@@ -1,0 +1,27 @@
+﻿SR ID;%SR_ID%; ได้มอบหมายให้คุณดำเนินการ;%SUBAREA_NAME%;Contract No./ Account No. : %ACCOUNT_NO%
+Email Message :
+Service Request ID : %SR_ID%
+Branch No : %BRANCH_CODE%
+Branch Name : %BRANCH_NAME%
+Contract No./ Account No. : %ACCOUNT_NO%
+Product Group : %PRODUCT_GROUP_NAME%
+Product : %PRODUCT_NAME%
+Campaign : %CAMPAIGN_NAME%
+Type : %TYPE_NAME%
+Area : %AREA_NAME%
+Subarea : %SUBAREA_NAME%
+Channel : %CHANNEL_NAME%
+Status : %STATUS%
+Customer Name : %CUSTOMER_NAME%
+เลขบัตรประชาชน/เลขนิติบุคคล: %SUBSCRIPTION_ID%
+Owner : %OWNER%
+Assigned Date : %ASSIGNED_DATE%
+Delegate : %DELEGATE%
+Delegated Date : %DELEGATE_DATE%
+Created By: %CREATE_BY%
+Created Date : %CREATE_DATE%
+เวลาแจ้งเตือนครั้งถัดไป : %NEXTSLA%
+Link : %LINK%
+
+***สามารถ Action SR ได้ โดยการ Reply Mail แล้วใส่สถานะของ SR (Closed: CL , In Progress : IP , Route back : RB) ที่ Subject Mail ระบบจะบันทึก Action ดังกล่าวลง Activity และทำการ Update สถานะตามที่ระบุ Subject Mail ให้อัตโนมัติ
+ตัวอย่างเช่น  Re: SR ID;560000001889;  ได้มอบหมายให้คุณดำเนินการ (CL)

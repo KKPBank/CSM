@@ -1,0 +1,509 @@
+﻿@model CSM.Web.Models.HomeViewModel
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Home })
+}
+
+@section Breadcrumb {
+    <strong class="font-green-jungle">Home</strong>
+}
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal", @id = "form1", @DefaultButton = "btnSearch" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="clear"></div>
+    <div class="pull-left">
+        @*<h5 class="form-title">Group Service Request Pending</h5>*@
+        <h6 class="form-title font-green-jungle btn-toggle" data-toggle="collapse" data-target="#dvGroupSearchResult">
+            <span class="minimize">[-]</span> Group Service Request Pending
+        </h6>
+    </div>
+    <div class="pull-left margin-left-20">
+        <button id="btnRefreshGroup" type="button" class="btn btn-green btn-sm btn-xsmall">
+            <i class="fa fa-refresh"></i>&nbsp;Refresh
+        </button>
+    </div>
+    <div class="clear"></div>
+    <div id="dvGroupSearchResult" class="collapse in">
+        @if (Model.GroupServiceRequestList != null)
+        {
+            Html.RenderPartial("~/Views/Home/_GroupServiceRequestList.cshtml", Model);
+        }
+    </div>
+    <div class="clear margin-top-15"></div>
+    <div class="pull-left">
+        @*<h5 class="form-title">Individual Service Request Pending</h5>*@
+        <h6 class="form-title font-green-jungle btn-toggle" data-toggle="collapse" data-target="#dvIndividualSearchResult">
+            <span class="minimize">[-]</span> Individual Service Request Pending
+        </h6>
+    </div>
+    <div class="pull-left margin-left-20">
+        @Html.DropDownListFor(model => model.IndividualSrSearchFilter.FilterType, new SelectList(new Dictionary<string, string> { { "", "ทั้งหมด" }, { "1", "ของตนเอง" } }, "Key", "Value"), new { @class = "form-control input-sm", id = "ddlFilterType", @style = "width:200px!important" })
+    </div>
+    <div class="pull-left margin-left-20">
+        <button id="btnRefreshIndividual" type="button" class="btn btn-green btn-sm btn-xsmall">
+            <i class="fa fa-refresh"></i>&nbsp;Refresh
+        </button>
+    </div>
+    <div class="clear"></div>
+    <div id="dvIndividualSearchResult" class="collapse in">
+        @if (Model.IndividualServiceRequestList != null)
+            {
+                Html.RenderPartial("~/Views/Home/_IndividualServiceRequestList.cshtml", Model);
+            }
+    </div>
+    <div class="clear margin-top-15"></div>
+    @*<h5 class="form-title">ข่าวสารที่ยังไม่ได้อ่าน</h5>*@
+    <h6 class="form-title font-green-jungle btn-toggle" data-toggle="collapse" data-target="#dvNewsUnreadResult">
+        <span class="expand">[+]</span> ข่าวสารที่ยังไม่ได้อ่าน
+    </h6>
+    <div id="dvNewsUnreadResult" class="collapse">
+        @if (Model.NewsUnreadList != null)
+            {
+                Html.RenderPartial("~/Views/Home/_NewsUnreadList.cshtml", Model);
+            }
+    </div>
+    <div class="clear margin-top-15"></div>
+    @*<h5 class="form-title">ข่าวสารที่อ่านแล้ว</h5>*@
+    <h6 class="form-title font-green-jungle btn-toggle" data-toggle="collapse" data-target="#dvNewsReadResult">
+        <span class="expand">[+]</span> ข่าวสารที่อ่านแล้ว
+    </h6>
+    <div id="dvNewsReadResult" class="collapse">
+        @if (Model.NewsReadList != null)
+        {
+            Html.RenderPartial("~/Views/Home/_NewsReadList.cshtml", Model);
+        }
+    </div>
+}
+<!-- Accept News -->
+<div id="acceptNewsModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("InitAcceptNews", "Home")'>
+    @using (Html.BeginForm("InitAcceptNews", "Home", FormMethod.Post, new { @class = "form-horizontal", @id = "form2" }))
+    {
+        @Html.AntiForgeryToken()
+        <div id='dataContainer'>
+        </div>
+    }
+</div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        var readSearchFilter;
+        var readSuccessFilter;
+        var unreadSearchFilter;
+        var unreadSuccessFilter;
+        var groupSearchFilter;
+        var groupSuccessFilter;
+        var indySearchFilter;
+        var indySuccessFilter;
+
+        $jq(document).ready(function () {
+            // GroupServiceRequest
+            initSearchFilterGroup();
+            initPagingGroup();
+
+            // IndividualServiceRequest
+            initSearchFilterIndividual();
+            initPagingIndividual();
+
+            // News
+            initReadSearchFilter();
+            initNewsReadPaging();
+
+            initUnreadSearchFilter();
+            initNewsUnreadPaging();
+
+            loadGroupServiceRequestData();
+            loadIndividualServiceRequestData();
+            loadNewsUnreadData();
+            loadNewsReadData();
+
+            $jq("#btnRefreshGroup").click(function (e) {
+                e.preventDefault();
+                loadGroupServiceRequestData();
+                return false;
+            });
+
+            $jq("#btnRefreshIndividual").click(function (e) {
+                e.preventDefault();
+                initSearchFilterIndividual();
+                loadIndividualServiceRequestData();
+                return false;
+            });
+
+            //$jq("#ddlFilterType").change(function (event) {
+            //    initSearchFilterIndividual();
+            //    loadIndividualServiceRequestData();
+            //    return false;
+            //});
+
+            $jq('.btn-toggle').click(function () {
+                var o = $jq(this).find('span');
+                if (o.hasClass('minimize')) {
+                    o.removeClass('minimize').addClass('expand').text('[+]');                    
+                } else {
+                    o.removeClass('expand').addClass('minimize').text('[-]');                   
+                }                
+            });
+        });
+
+        function initReadSearchFilter() {
+            readSearchFilter = {
+                Topic: '',
+                DateFrom: '',
+                DateTo: '',
+                Status: '1',
+                PageNo: '@Model.NewsReadSearchFilter.PageNo',
+                PageSize: '@Model.NewsReadSearchFilter.PageSize',
+                SortField: '@Model.NewsReadSearchFilter.SortField',
+                SortOrder: '@Model.NewsReadSearchFilter.SortOrder'
+            };
+            readSuccessFilter = readSearchFilter;
+        }
+
+        function initUnreadSearchFilter() {
+            unreadSearchFilter = {
+                Topic: '',
+                DateFrom: '',
+                DateTo: '',
+                Status: '1',
+                PageNo: '@Model.NewsUnreadSearchFilter.PageNo',
+                PageSize: '@Model.NewsUnreadSearchFilter.PageSize',
+                SortField: '@Model.NewsUnreadSearchFilter.SortField',
+                SortOrder: '@Model.NewsUnreadSearchFilter.SortOrder'
+            };
+            unreadSuccessFilter = unreadSearchFilter;
+        }
+
+        function initNewsUnreadPaging() {
+            // News Unread
+            $jq("#dvNewsUnreadResult .input-page").change(function (event) {
+                unreadSearchFilter = unreadSuccessFilter;
+                unreadSearchFilter.PageNo = $jq(this).val();
+                loadNewsUnreadData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvNewsUnreadResult #pagesizelist").change(function (event) {
+                unreadSearchFilter = unreadSuccessFilter;
+                unreadSearchFilter.PageNo = "1";
+                unreadSearchFilter.PageSize = $jq(this).val();
+                loadNewsUnreadData();
+                return false;
+            });
+
+            $jq('#dvNewsUnreadResult .pagination ul li a').on('click', function (event) {
+                unreadSearchFilter = unreadSuccessFilter;
+                unreadSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadNewsUnreadData();
+                return false;
+            });
+        }
+
+        function initNewsReadPaging() {
+            $jq("#dvNewsReadResult .input-page").change(function (event) {
+                readSearchFilter = readSuccessFilter;
+                readSearchFilter.PageNo = $jq(this).val();
+                loadNewsReadData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvNewsReadResult #pagesizelist").change(function (event) {
+                readSearchFilter = readSuccessFilter;
+                readSearchFilter.PageNo = "1";
+                readSearchFilter.PageSize = $jq(this).val();
+                loadNewsReadData();
+                return false;
+            });
+
+            $jq('#dvNewsReadResult .pagination ul li a').on('click', function (event) {
+                readSearchFilter = readSuccessFilter;
+                readSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadNewsReadData();
+                return false;
+            });
+        }
+
+        function loadNewsUnreadData() {
+            $jq.ajax({
+                url: '@Url.Action("NewsUnreadList", "Home")',
+                type: "POST",
+                data: addAntiForgeryToken(unreadSearchFilter),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvNewsUnreadResult").html('');
+                        unreadSuccessFilter = unreadSearchFilter;
+                        $jq("#dvNewsUnreadResult").html(result);
+                        initNewsUnreadPaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function loadNewsReadData() {
+            $jq.ajax({
+                url: '@Url.Action("NewsReadList", "Home")',
+                type: "POST",
+                data: addAntiForgeryToken(readSearchFilter),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvNewsReadResult").html('');
+                        readSuccessFilter = readSearchFilter;
+                        $jq("#dvNewsReadResult").html(result);
+                        initNewsReadPaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function initAcceptNews(newsId, isShowAcceptNews) {
+            // set data
+            var paramData = {
+                newsId: newsId,
+                isShowAcceptNews: isShowAcceptNews, // ใช้สำหรับ show/hide CheckBox
+            }
+
+            var url = $jq('#acceptNewsModal').data('url');
+            $jq.ajax({
+                type: 'POST',
+                url: url,
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    $jq('#dataContainer').html(result);
+                    $jq('#acceptNewsModal').modal('show');
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+        function sortFieldNewsRead(selectedSortField) {
+            if (selectedSortField == readSearchFilter.SortField)
+                readSearchFilter.SortOrder = (readSearchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                readSearchFilter.SortOrder = 'ASC';
+            readSearchFilter.SortField = selectedSortField;
+            readSearchFilter.PageNo = 1;
+            loadNewsReadData();
+        }
+
+        function sortFieldNewsUnread(selectedSortField) {
+            if (selectedSortField == unreadSearchFilter.SortField)
+                unreadSearchFilter.SortOrder = (unreadSearchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                unreadSearchFilter.SortOrder = 'ASC';
+            unreadSearchFilter.SortField = selectedSortField;
+            unreadSearchFilter.PageNo = 1;
+            loadNewsUnreadData();
+        }
+
+
+        // ------------------ Group Service Request -------------------
+        function initSearchFilterGroup() {
+            groupSearchFilter = {
+                PageNo: '@Model.GroupSrSearchFilter.PageNo',
+                PageSize: '@Model.GroupSrSearchFilter.PageSize',
+                SortField: '@Model.GroupSrSearchFilter.SortField',
+                SortOrder: '@Model.GroupSrSearchFilter.SortOrder'
+            };
+            groupSuccessFilter = groupSearchFilter;
+        }
+
+        function initPagingGroup() {
+            $jq("#dvGroupSearchResult .input-page").change(function (event) {
+                groupSearchFilter = groupSuccessFilter;
+                groupSearchFilter.PageNo = $jq(this).val();
+                loadGroupServiceRequestData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvGroupSearchResult #pagesizelist").change(function (event) {
+                groupSearchFilter = groupSuccessFilter;
+                groupSearchFilter.PageNo = "1";
+                groupSearchFilter.PageSize = $jq(this).val();
+                loadGroupServiceRequestData();
+                return false;
+            });
+
+            $jq('#dvGroupSearchResult .pagination ul li a').on('click', function (event) {
+                groupSearchFilter = groupSuccessFilter;
+                groupSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadGroupServiceRequestData();
+                return false;
+            });
+
+            try {
+                $jq("#tblGrpServiceList").tableHeadFixer({ "head": false, "left": 3 });
+            }
+            catch (e) { }
+        }
+
+        function loadGroupServiceRequestData() {
+            $jq.ajax({
+                url: '@Url.Action("GroupServiceRequestList", "Home")',
+                type: "POST",
+                data: addAntiForgeryToken(groupSearchFilter),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvGroupSearchResult").html('');
+                        groupSuccessFilter = groupSearchFilter;
+                        $jq("#dvGroupSearchResult").html(result);
+                        initPagingGroup();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function sortFieldGroup(selectedSortField) {
+            if (selectedSortField == groupSearchFilter.SortField)
+                groupSearchFilter.SortOrder = (groupSearchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                groupSearchFilter.SortOrder = 'ASC';
+            groupSearchFilter.SortField = selectedSortField;
+            groupSearchFilter.PageNo = 1;
+            loadGroupServiceRequestData();
+        }
+
+        //--------------------------- End  -------------------------------
+
+        //---------------------- Individual Service Request  --------
+        function initSearchFilterIndividual() {
+            indySearchFilter = {
+                FilterType: $jq("#ddlFilterType").val(),
+                PageNo: '@Model.IndividualSrSearchFilter.PageNo',
+                PageSize: '@Model.IndividualSrSearchFilter.PageSize',
+                SortField: '@Model.IndividualSrSearchFilter.SortField',
+                SortOrder: '@Model.IndividualSrSearchFilter.SortOrder'
+            };
+            indySuccessFilter = indySearchFilter;
+        }
+
+        function initPagingIndividual() {
+            $jq("#dvIndividualSearchResult .input-page").change(function (event) {
+                indySearchFilter = indySuccessFilter;
+                indySearchFilter.PageNo = $jq(this).val();
+                loadIndividualServiceRequestData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvIndividualSearchResult #pagesizelist").change(function (event) {
+                indySearchFilter = indySuccessFilter;
+                indySearchFilter.PageNo = "1";
+                indySearchFilter.PageSize = $jq(this).val();
+                loadIndividualServiceRequestData();
+                return false;
+            });
+
+            $jq('#dvIndividualSearchResult .pagination ul li a').on('click', function (event) {
+                indySearchFilter = indySuccessFilter;
+                indySearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadIndividualServiceRequestData();
+                return false;
+            });
+
+            try {
+                $jq("#tblIndyServiceList").tableHeadFixer({ "head": false, "left": 3 });
+            }
+            catch (e) { }
+        }
+
+        function loadIndividualServiceRequestData() {
+            $jq.ajax({
+                url: '@Url.Action("IndividualServiceRequestList", "Home")',
+                type: "POST",
+                data: addAntiForgeryToken(indySearchFilter),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvIndividualSearchResult").html('');
+                        indySuccessFilter = indySearchFilter;
+                        $jq("#dvIndividualSearchResult").html(result);
+                        initPagingIndividual();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function sortFieldIndividual(selectedSortField) {
+            if (selectedSortField == indySearchFilter.SortField)
+                indySearchFilter.SortOrder = (indySearchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                indySearchFilter.SortOrder = 'ASC';
+            indySearchFilter.SortField = selectedSortField;
+            indySearchFilter.PageNo = 1;
+            loadIndividualServiceRequestData();
+        }
+
+        function initEditSR(srId) {
+            var actionUrl = '@Url.Action("Edit", "ServiceRequest")';
+            $jq('#dvTarget').html('');
+            var inputSrId = $jq("<input>").attr("type", "hidden").attr("name", "SrId").val(srId);
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').append($jq(inputSrId));
+            $jq('#dvTarget form').submit();
+        }
+
+        // ------------------------- End -----------------------
+    </script>
+}

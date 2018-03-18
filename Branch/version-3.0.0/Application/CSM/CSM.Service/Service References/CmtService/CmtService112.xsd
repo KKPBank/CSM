@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="CampaignByCustomer" elementFormDefault="qualified" targetNamespace="CampaignByCustomer" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CampByCitizenIdBody" type="tns:ReqCampByIdEntity" />
+  <xs:complexType name="ReqCampByIdEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CitizenId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RequestDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Channel" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CampaignNum" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="HasOffered" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="IsInterested" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CustomerFlag" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Command" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="header" type="tns:Header" />
+  <xs:complexType name="Header">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="transaction_date" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="user_name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="service_name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="system_code" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="reference_no" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

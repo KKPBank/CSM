@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.kiatnakinbank.com/services/CSM/CSMSRService" elementFormDefault="qualified" targetNamespace="http://www.kiatnakinbank.com/services/CSM/CSMSRService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:5300/CSMSRService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" />
+  <xs:import schemaLocation="http://localhost:5300/CSMSRService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.SchedTask" />
+  <xs:element name="CreateSR">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" minOccurs="0" name="request" nillable="true" type="q1:CreateSRRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateSRResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" minOccurs="0" name="CreateSRResult" nillable="true" type="q2:CreateSRResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateSR">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" minOccurs="0" name="request" nillable="true" type="q3:UpdateSRRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateSRResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" minOccurs="0" name="UpdateSRResult" nillable="true" type="q4:UpdateSRResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchSR">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" minOccurs="0" name="request" nillable="true" type="q5:SearchSRRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchSRResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" minOccurs="0" name="SearchSRResult" nillable="true" type="q6:SearchSRResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSR">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" minOccurs="0" name="request" nillable="true" type="q7:GetSRRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSRResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" minOccurs="0" name="GetSRResult" nillable="true" type="q8:GetSRResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateSRActivityFromReplyEmail">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateSRActivityFromReplyEmailResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.SchedTask" minOccurs="0" name="CreateSRActivityFromReplyEmailResult" nillable="true" type="q9:CreateSrFromReplyEmailTaskResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReSubmitActivityToCARSystem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReSubmitActivityToCARSystemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.SchedTask" minOccurs="0" name="ReSubmitActivityToCARSystemResult" nillable="true" type="q10:ReSubmitActivityToCARSystemTaskResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReSubmitActivityToCBSHPSystem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReSubmitActivityToCBSHPSystemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.SchedTask" minOccurs="0" name="ReSubmitActivityToCBSHPSystemResult" nillable="true" type="q11:ReSubmitActivityToCBSHPSystemTaskResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

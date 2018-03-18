@@ -1,0 +1,785 @@
+﻿@model CSM.Web.Models.ProductViewModel
+@using CSM.Common.Resources
+@{
+    ViewBag.Title = (Model.IsEdit) ? Resource.Lbl_EditSRStatus : Resource.Lbl_NewSRStatus;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" })</strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink(Resource.Lbl_SearchSRStatus, "Search", "Product", null, new { @class = "font-blue" })
+    </strong>
+    @if (Model.IsEdit)
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_EditSRStatus </strong>
+    }
+    else
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_NewSRStatus </strong>
+    }
+}
+
+@using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { @class = "form-horizontal", @id = "form1" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.IsEdit)
+    <input id="btnSubmitTrigger" type="submit" class="hidden" />
+
+    <div id="dvForm" class="form-box">
+        @if (Model.IsEdit)
+        {
+            <h5 class="form-title">@Resource.Lbl_EditSRStatus</h5>            
+        }
+        else
+        {
+            <h5 class="form-title">@Resource.Lbl_NewSRStatus</h5>           
+        }
+        @*<h5 class="form-title">บันทึกการเปลี่ยนแปลงสถานะ</h5>*@
+
+        <div class="row margin-top-15">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-group-static">
+                            Product Group&nbsp;<span class="required-field-block">*</span>:
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.IsEdit)
+                        {
+                            @Html.HiddenFor(model => model.ProductGroupName, new { id = "txtProductGroupName" })
+                            @Html.HiddenFor(model => model.ProductGroupId)
+                            <input type="text" id="txtProductGroup" class="form-control input-sm readonly" style="width:225px!important" disabled="disabled" value="@Model.ProductGroupId" />
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.ProductGroupName, new { id = "txtProductGroupName" })
+                            @Html.TextBoxFor(model => model.ProductGroupId, new { @class = "form-control input-sm", @id = "txtProductGroup", @style = "width:225px!important" })
+                            @Html.ValidationMessageFor(model => model.ProductGroupId)
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Type&nbsp;<span class="required-field-block">*</span>:
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.IsEdit)
+                        {
+                            @Html.HiddenFor(model => model.TypeName, new { id = "txtTypeName" })
+                            @Html.HiddenFor(model => model.TypeId)
+                            <input type="text" id="txtType" class="form-control input-sm readonly" style="width:225px!important" disabled="disabled" value="@Model.TypeId" />
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.TypeName, new { id = "txtTypeName" })
+                            @Html.TextBoxFor(model => model.TypeId, new { @class = "form-control input-sm", @id = "txtType", @style = "width:225px!important" })
+                            @Html.ValidationMessageFor(model => model.TypeId)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-group-static">
+                            Product&nbsp;<span class="required-field-block">*</span>:
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.IsEdit)
+                        {
+                            @Html.HiddenFor(model => model.ProductName, new { id = "txtProductName" })
+                            @Html.HiddenFor(model => model.ProductId)
+                            <input type="text" id="txtProduct" class="form-control input-sm readonly" style="width:225px!important" disabled="disabled" value="@Model.ProductId" />
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.ProductName, new { id = "txtProductName" })
+                            @Html.TextBoxFor(model => model.ProductId, new { @class = "form-control input-sm", @id = "txtProduct", @style = "width:225px!important" })
+                            @Html.ValidationMessageFor(model => model.ProductId)
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Area&nbsp;<span class="required-field-block">*</span>:
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.IsEdit)
+                        {
+                            @Html.HiddenFor(model => model.AreaName, new { id = "txtAreaName" })
+                            @Html.HiddenFor(model => model.AreaId)
+                            <input type="text" id="txtArea" class="form-control input-sm readonly" style="width:225px!important" disabled="disabled" />
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.AreaName, new { id = "txtAreaName" })
+                            @Html.TextBoxFor(model => model.AreaId, new { @class = "form-control input-sm", @id = "txtArea", @style = "width:225px!important" })
+                            @Html.ValidationMessageFor(model => model.AreaId)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-group-static">
+                            Campaign:
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.IsEdit)
+                        {
+                            @Html.HiddenFor(model => model.CampaignName, new { id = "txtCampaignName" })
+                            @Html.HiddenFor(model => model.CampaignId)
+                            <input type="text" id="txtCampaign" class="form-control input-sm readonly" style="width:225px!important" disabled="disabled" value="@Model.CampaignId" />
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.CampaignName, new { id = "txtCampaignName" })
+                            @Html.TextBoxFor(model => model.CampaignId, new { @class = "form-control input-sm", @id = "txtCampaign", @style = "width:225px!important" })
+                            @Html.ValidationMessageFor(model => model.CampaignId)
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        Sub Area:
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.IsEdit)
+                        {
+                            @Html.HiddenFor(model => model.SubAreaName, new { id = "txtSubAreaName" })
+                            @Html.HiddenFor(model => model.SubAreaId)
+                            <input type="text" id="txtSubArea" class="form-control input-sm readonly" style="width:225px!important" disabled="disabled" value="@Model.SubAreaId" />
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.SubAreaName, new { id = "txtSubAreaName" })
+                            @Html.TextBoxFor(model => model.SubAreaId, new { @class = "form-control input-sm", @id = "txtSubArea", @style = "width:225px!important" })
+                            @Html.ValidationMessageFor(model => model.SubAreaId)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-group-static">
+                            From SR State&nbsp;:
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.IsEdit)
+                        {
+                            @Html.HiddenFor(model => model.FromSRStateId)
+                            @Html.TextBoxFor(m => m.FromSRStateId, new { @id = "txtFromSRStateId", @class = "form-control input-sm", disabled = "disabled", @style = "width:225px!important" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.FromSRStateId, new { @id = "txtFromSRStateId", @class = "form-control input-sm", @style = "width:225px!important" })
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-group-static">
+                            From SR Status&nbsp;<span class="required-field-block">*</span>:
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.IsEdit)
+                        {
+                            @Html.HiddenFor(model => model.FromSRStatusId)
+                            @Html.TextBoxFor(m => m.FromSRStatusId, new { @id = "txtFromSRStatusId", @class = "form-control input-sm", disabled = "disabled", @style = "width:225px!important" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.FromSRStatusId, new { @id = "txtFromSRStatusId", @class = "form-control input-sm", @style = "width:225px!important" })
+                            @Html.ValidationMessageFor(model => model.FromSRStatusId)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-group-static">
+                            To SR Status&nbsp;<span class="required-field-block">*</span>:
+                        </p>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="form-inline">
+                            <div class="form-group" style="margin-right:10px!important;">
+                                @Html.DropDownListFor(model => model.ToSRStatusLeftId, Model.ToSRStatusLeftList, new
+                                {
+                                    multiple = "multiple",
+                                    @class = "multiselect",
+                                    data_right = "#multiselect_to_1",
+                                    data_right_all = "#right_All_1",
+                                    data_right_selected = "#right_Selected_1",
+                                    data_left_all = "#left_All_1",
+                                    data_left_selected = "#left_Selected_1",
+                                    style = "width:320px!important",
+                                    size = "8"
+                                })
+                            </div>
+                            <div class="form-group" style="width:120px!important;margin-right:10px!important;">
+                                <button type="button" id="right_All_1" class="btn btn-block"><i class="fa fa-forward"></i></button>
+                                <button type="button" id="right_Selected_1" class="btn btn-block"><i class="fa fa-chevron-right"></i></button>
+                                <button type="button" id="left_Selected_1" class="btn btn-block"><i class="fa fa-chevron-left"></i></button>
+                                <button type="button" id="left_All_1" class="btn btn-block"><i class="fa fa-backward"></i></button>
+                            </div>
+                            <div class="form-group">
+                                @Html.DropDownListFor(model => model.ToSRStatusRightId, Model.ToSRStatusRightList, new
+                                {
+                                    multiple = "multiple",
+                                    @class = "multiselect",
+                                    style = "width:320px!important",
+                                    size = "8",
+                                    @id = "multiselect_to_1"
+                                })
+                                @Html.ValidationMessageFor(model => model.ToSRStatusRightId)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            สร้างโดย
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.CreateUser, new { @class = "form-control input-sm readonly", @style = "width:255px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            วันที่สร้าง&nbsp;
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control input-sm readonly", @style = "width:255px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            แก้ไขโดย
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.UpdateUser, new { @class = "form-control input-sm readonly", @style = "width:255px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            วันที่แก้ไข&nbsp;
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.UpdateDate, new { @class = "form-control input-sm readonly", @style = "width:255px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="panel-actions noborder">
+        <div class="pull-right">
+            <div class="form-inline">
+                <div class="form-group">
+                    <button id="btnSave" type="button" class="btn btn-blue btn-sm btn-xsmall">
+                        <i class="fa fa-save"></i>&nbsp;Save
+                    </button>
+                </div>
+                <div class="form-group">
+                    <button id="btnReset" type="button" class="btn btn-gray btn-sm btn-xsmall">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="dvSearchResult">
+        @if (Model.ProductList != null)
+        {
+            Html.RenderPartial("~/Views/Product/_ProductList.cshtml", Model);
+        }
+    </div>
+}
+<div id="dvTarget"></div>
+
+@section masterjs
+{
+    @Scripts.Render("~/Scripts/multiselect.min.js")
+    <script type="text/javascript">
+        var searchFilter;
+        var successFilter;
+        var pageSize = 20;
+
+        $jq(function () {
+
+            initAutoComplete();
+
+            $jq('#btnSave').click(function () {
+                $jq('#btnSubmitTrigger').click();
+            });
+
+            $jq('#form1').submit(function () {
+                $jq("#dvLoading").show();
+            });
+
+            $jq("#btnReset").click(function (e) {
+                var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+                if ($jq.trim(msg) != '') {
+                    doModal('dvAlertMsg', 'Message Dialog', msg, 'initSearch()', 'Confirm');
+                }
+                return false;
+            });
+
+            $jq("#txtProductGroup").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByProductGroupName", "Product")',
+                    dataType: 'json',
+                    data: function(term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            productId: $jq("#txtProduct").val(),
+                            campaignId: $jq("#txtCampaign").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function(xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            }).on("select2-selecting", function(e) {
+                console.log("selecting val=" + e.val + " choice=" + e.object.text);
+                $jq("#txtProductGroupName").val(e.object.text);
+            });
+
+            if ($jq.trim('@Model.ProductGroupId') != "") {
+                $jq("#txtProductGroup").select2("data", { id: "@Model.ProductGroupId", text: "@Model.ProductGroupName" });
+            }
+
+            $jq("#txtProduct").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByProductName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            productGroupId: $jq("#txtProductGroup").val(),
+                            campaignId: $jq("#txtCampaign").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            }).on("select2-selecting", function (e) {
+                console.log("selecting val=" + e.val + " choice=" + e.object.text);
+                $jq("#txtProductName").val(e.object.text);
+            });
+
+            if ($jq.trim('@Model.ProductId') != "") {
+                $jq("#txtProduct").select2("data", { id: "@Model.ProductId", text: "@Model.ProductName" });
+            }
+
+            $jq("#txtCampaign").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByCampaignName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            productGroupId: $jq("#txtProductGroup").val(),
+                            productId: $jq("#txtProduct").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            }).on("select2-selecting", function (e) {
+                console.log("selecting val=" + e.val + " choice=" + e.object.text);
+                $jq("#txtCampaignName").val(e.object.text);
+            });
+
+            if ($jq.trim('@Model.CampaignId') != "") {
+                $jq("#txtCampaign").select2("data", { id: "@Model.CampaignId", text: "@Model.CampaignName" });
+            }
+
+            $jq("#txtType").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByTypeName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            }).on("select2-selecting", function (e) {
+                console.log("selecting val=" + e.val + " choice=" + e.object.text);
+                $jq("#txtTypeName").val(e.object.text);
+            });
+
+            if ($jq.trim('@Model.TypeId') != "") {
+                $jq("#txtType").select2("data", { id: "@Model.TypeId", text: "@Model.TypeName" });
+            }
+
+            $jq("#txtArea").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByAreaName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            subAreaId: $jq("#txtSubArea").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            }).on("select2-selecting", function (e) {
+                console.log("selecting val=" + e.val + " choice=" + e.object.text);
+                $jq("#txtAreaName").val(e.object.text);
+            });
+
+            if ($jq.trim('@Model.AreaId') != "") {
+                $jq("#txtArea").select2("data", { id: "@Model.AreaId", text: "@Model.AreaName" });
+            }
+
+            $jq("#txtSubArea").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchBySubAreaName", "Product")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            areaId: $jq("#txtArea").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            }).on("select2-selecting", function (e) {
+                console.log("selecting val=" + e.val + " choice=" + e.object.text);
+                $jq("#txtSubAreaName").val(e.object.text);
+            });
+
+            if ($jq.trim('@Model.SubAreaId') != "") {
+                $jq("#txtSubArea").select2("data", { id: "@Model.SubAreaId", text: "@Model.SubAreaName" });
+            }
+
+            $jq(".multiselect").multiselect();
+
+            var errorMsg = '@ViewBag.ErrorMessage';
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+
+        function initSearch() {
+            $jq("#dvLoading").show();
+            var actionUrl = '@Url.Action("Search", "Product")';
+            $jq('#dvTarget').html('');
+            var input = $jq("<input>").attr("type", "hidden");
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+            $jq('#dvTarget form').append($jq(input));
+            $jq('#dvTarget form').submit();
+        }
+
+        function initAutoComplete() {
+            initAutoCompleteFromSRState();
+            initAutoCompleteFromSRStatus();
+        }
+
+        function initAutoCompleteFromSRState() {
+            $jq("#txtFromSRStateId").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteState", "Status")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            statusId: $jq("#txtFromSRStatusId").val(),
+                            isAllStatus: false
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.SRStateName,
+                                    id: item.SRStateId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: "@Model.FromSRStateId", text: "@Model.FromSRStateName" };
+                    callback(data);
+                }
+            }).on("change", function (evt) {
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+                    // On Selected
+                    $jq.ajax({
+                        url: "@Url.Action("AutoCompleteStatus", "Status")",
+                        method: "POST",
+                        data: {
+                            keyword: '',
+                            stateId: $jq(this).val(),
+                            isAllStatus: false
+                        }
+                    }).done(function (result) {
+                        if (result.length == 1) {
+                            $jq("#txtFromSRStatusId").select2("data", { id: result[0].SRStatusId, text: result[0].SRStatusName });
+                        } else {
+                            $jq("#txtFromSRStatusId").select2('val', '');
+                        }
+                    }).fail(function () {
+                        if (xhr.status === 401) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        } else {
+                            var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                        }
+                    });
+                }
+            });
+        }
+
+        function initAutoCompleteFromSRStatus() {
+            $jq("#txtFromSRStatusId").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteStatus", "Status")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            stateId: $jq("#txtFromSRStateId").val(),
+                            isAllStatus: false
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.SRStatusName,
+                                    id: item.SRStatusId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: "@Model.FromSRStatusId", text: "@Model.FromSRStatusName" };
+                    callback(data);
+                }
+            }).on("change", function (evt) {
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+                    // On Selected
+                    $jq.ajax({
+                        url: "@Url.Action("AutoCompleteState", "Status")",
+                        method: "POST",
+                        data: {
+                            keyword: '',
+                            statusId: $jq(this).val(),
+                            isAllStatus: false
+                        }
+                    }).done(function (result) {
+                        if (result.length == 1) {
+                            $jq("#txtFromSRStateId").select2("data", { id: result[0].SRStateId, text: result[0].SRStateName });
+                        } else {
+                            $jq("#txtFromSRStateId").select2('val', '');
+                        }
+                    }).fail(function () {
+                        if (xhr.status === 401) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        } else {
+                            var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                        }
+                    });
+
+                }
+            });
+        }
+    </script>
+}

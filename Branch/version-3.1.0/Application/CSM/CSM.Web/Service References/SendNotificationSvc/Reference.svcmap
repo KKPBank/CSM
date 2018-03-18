@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="3d7d57cc-3238-4992-a9fb-cd1e377e828f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SendNotification5.xsd" MetadataType="Schema" ID="520ec1e5-c2e0-45b0-9bf7-4d9f2393fc63" SourceId="1" SourceUrl="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd1" />
+    <MetadataFile FileName="SendNotification51.xsd" MetadataType="Schema" ID="97a702de-153f-4d56-b7c5-9ec1aba3c312" SourceId="1" SourceUrl="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd4" />
+    <MetadataFile FileName="SendNotification52.xsd" MetadataType="Schema" ID="d15f2698-b615-4557-a119-8afcc0af025e" SourceId="1" SourceUrl="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd3" />
+    <MetadataFile FileName="SendNotification1.wsdl" MetadataType="Wsdl" ID="12706fa4-fbf5-4051-8331-f050b429d923" SourceId="1" SourceUrl="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?wsdl" />
+    <MetadataFile FileName="SendNotification53.xsd" MetadataType="Schema" ID="9ce7b208-75c8-4eec-8141-b1b06d3aa23c" SourceId="1" SourceUrl="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd2" />
+    <MetadataFile FileName="SendNotification54.xsd" MetadataType="Schema" ID="66989816-4d6b-4121-b258-f6ec7e213ea4" SourceId="1" SourceUrl="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

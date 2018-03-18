@@ -1,0 +1,683 @@
+﻿@using CSM.Common.Utilities
+@using CSM.Common.Resources
+@model CSM.Web.Models.CreateServiceRequestViewModel
+
+<style type="text/css">
+    .phone-readonly {
+        background: #eee none repeat scroll 0 0 !important;
+        cursor: not-allowed;
+    }
+</style>
+
+<form id="frmContact" method="post" novalidate="novalidate">
+
+    @Html.ValidationSummary(true)
+    <div class="modal-dialog modal-lg" style="width: 1250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">บันทึกข้อมูลผู้ติดต่อ</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <div class="row margin-top-15">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static nowrap">
+                                    Subscription Type:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.AccoutSubscriptType, Model.AccountSubscriptTypeList,
+                                    CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                    new { @class = "form-control input-sm input-small", id = "ddlAccountSubscriptType", @style = "width:200px!important" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static" id="labelContactCardNo" style="padding-top:0" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                                    Subscription ID <span class="required-field-block">*</span>:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(model => model.AccountCardNo, new { @class = "form-control input-sm", @id = "txtAccountCardNo", @maxlength = 20 })
+                                @Html.ValidationMessageFor(model => model.AccountCardNo)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    วันเกิด:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <div class='input-group date' id='accountBirthDatetimepicker'>
+                                            @Html.TextBoxFor(model => model.AccountBirthDate, new
+                                            {
+                                               @class = "form-control input-sm input-small",
+                                               @id = "txtAccountBirthDate",
+                                               onchange = "validateDateValue($jq(this));"
+                                            })
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.AccountBirthDate)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static">
+                                    คำนำหน้า:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.AccountTitleThai, Model.AccountTitleThaiList,
+                                    CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                    new { @class = "form-control input-sm input-small", id = "ddlAccountTitleThai", @style = "width:200px!important" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static">
+                                    ชื่อผู้ติดต่อ&nbsp;<span class="required-field-block">*</span>:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(model => model.AccountFirstNameThai, new { @class = "form-control input-sm", @id = "txtAccountFirstNameThai", @maxlength = 50 })
+                                @Html.ValidationMessageFor(model => model.AccountFirstNameThai)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <p class="form-control-static nowrap">
+                                    นามสกุลผู้ติดต่อ:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AccountLastNameThai, new { @class = "form-control input-sm", @id = "txtAccountLastNameThai", @maxlength = 50 })
+                                @Html.ValidationMessageFor(model => model.AccountLastNameThai)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static">
+                                    Title:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.AccountTitleEnglish, Model.AccountTitleEnglishList,
+                                    CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                    new { @class = "form-control input-sm input-small", id = "ddlAccountTitleEnglish", @style = "width:200px!important" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static">
+                                    First Name:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(model => model.AccountFirstNameEnglish, new { @class = "form-control input-sm", @id = "txtAccountFirstNameEnglish", @maxlength = 50 })
+                                @Html.ValidationMessageFor(model => model.AccountFirstNameEnglish)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    Last Name:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(model => model.AccountLastNameEnglish, new { @class = "form-control input-sm", @id = "txtAccountLastNameEnglish", @maxlength = 50 })
+                                @Html.ValidationMessageFor(model => model.AccountLastNameEnglish)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <p class="form-control-static nowrap">
+                                    เบอร์โทรศัพท์ #1 <span class="required-field-block">*</span>:
+                                </p>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="clear"></div>
+                                <div class="pull-left">
+                                    @Html.DropDownListFor(model => model.AccountPhoneType1, Model.AccountPhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm input-small", id = "ddlAccountPhoneType1" })
+                                </div>
+                                <div class="pull-left margin-left-5">
+                                    @Html.TextBoxFor(model => model.AccountPhoneNo1, new
+                               {
+                                   @class = "form-control input-sm input-large",
+                                   @readonly = "readonly",
+                                   @id = "txtAccountPhoneNo1",
+                                   @maxlength = Constants.MaxLength.PhoneNo
+                               })
+                                    @Html.ValidationMessageFor(model => model.AccountPhoneNo1)
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <p class="form-control-static">
+                                    เบอร์โทรศัพท์ #2:
+                                </p>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="clear"></div>
+                                <div class="pull-left">
+                                    @Html.DropDownListFor(model => model.AccountPhoneType2, Model.AccountPhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm input-small", id = "ddlAccountPhoneType2" })
+                                </div>
+                                <div class="pull-left margin-left-5">
+                                    @Html.TextBoxFor(model => model.AccountPhoneNo2, new
+                               {
+                                   @class = "form-control input-sm input-large",
+                                   @id = "txtAccountPhoneNo2",
+                                   @disabled = "",
+                                   @maxlength = Constants.MaxLength.PhoneNo
+                               })
+                                    @Html.ValidationMessageFor(model => model.AccountPhoneNo2)
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <p class="form-control-static">
+                                    เบอร์โทรศัพท์ #3:
+                                </p>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="clear"></div>
+                                <div class="pull-left">
+                                    @Html.DropDownListFor(model => model.AccountPhoneType3, Model.AccountPhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm input-small", id = "ddlAccountPhoneType3" })
+                                </div>
+                                <div class="pull-left margin-left-5">
+                                    @Html.TextBoxFor(model => model.AccountPhoneNo3, new
+                               {
+                                   @class = "form-control input-sm input-large",
+                                   @id = "txtAccountPhoneNo3",
+                                   @disabled = "",
+                                   @maxlength = Constants.MaxLength.PhoneNo
+                               })
+                                    @Html.ValidationMessageFor(model => model.AccountPhoneNo3)
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static">
+                                    เบอร์แฟกซ์:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(model => model.AccountFax, new { @class = "form-control input-sm", @id = "txtAccountFax", @maxlength = 20 })
+                                @Html.ValidationMessageFor(model => model.AccountFax)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static">
+                                    อีเมล์:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(model => model.AccountEmail, new { @class = "form-control input-sm input-large", @id = "txtAccountEmail", @maxlength = 50 })
+                                @Html.ValidationMessageFor(model => model.AccountEmail)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static">
+                                    เลขที่บัญชี/สัญญา <span class="required-field-block">*</span>:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.AccountAccountId, Model.AccountList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", id = "ddlAccountId" })
+                                @Html.ValidationMessageFor(model => model.AccountAccountId)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static">
+                                    Product:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(model => model.AccountProduct, new { @class = "form-control input-sm", @id = "txtAccountProduct", disabled = "true" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="folrm-group">
+                            <div class="col-md-5">
+                                <p class="form-control-static">
+                                    ความสัมพันธ์&nbsp;<span class="required-field-block">*</span>:
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.RelationshipId, Model.RelationshipList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm input-small" })
+                                @Html.ValidationMessageFor(model => model.RelationshipId)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="btnModalAccounteSave" class="btn btn-blue btn-sm btn-xsmall"><i class="fa fa-save"></i> Save</span>
+                @* <span id="btnModalAccounteConfirm" style="display: none;" class="btn btn-blue btn-sm btn-xsmall"><i class="fa fa-save"></i> Confirm</span>*@
+                <span class="btn btn-sm btn-default" id="btnModalAccountCancel"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<script type="text/javascript">
+    // To Validate Hidden Fields
+    $jq.validator.setDefaults({ ignore: null });
+
+    //    var isConfirm = false;
+    //    var isNameConfirm = false;
+
+    $jq(function () {
+        $jq("#ddlAccountId").change(onAccountChange);
+
+        $jq.validator.unobtrusive.parse("#frmContact");
+
+        var dateFormat = 'dd/mm/yyyy';
+
+        // DateTime Picker for account birthdate
+        $jq('#accountBirthDatetimepicker').datepicker({
+            format: dateFormat,
+            endDate: "0d",
+            showOnFocus: "false",
+            language: 'th'
+        }).on('changeDate', function (ev) {
+            $jq(this).datepicker('hide');
+        });
+
+        //Modal Account Function
+        $jq("#btnModalAccounteSave").click(onBtnModalAccounteSaveClick);
+        $jq("#btnModalAccountCancel").click(onBtnModalAccountCancelClick);
+        //        $jq("#btnModalAccounteConfirm").click(onBtnModalAccounteConfirmClick);
+
+        $jq("#ddlAccountPhoneType1").change(onDdlAccountPhoneType1Change);
+        $jq("#ddlAccountPhoneType2").change(onDdlAccountPhoneType2Change);
+        $jq("#ddlAccountPhoneType3").change(onDdlAccountPhoneType3Change);
+
+        $jq("#ddlAccountSubscriptType").change(onDdlContactSubscriptType);
+
+        onDdlContactSubscriptType();
+    });
+
+    //==Modal Account Function==
+
+    //    function onBtnModalAccounteConfirmClick() {
+    //        isConfirm = true;
+    //        onBtnModalAccounteSaveClick();
+    //    }
+
+    function onDdlContactSubscriptType() {
+        if ($jq("#ddlAccountSubscriptType").val() == "") {
+            $jq("#labelContactCardNo").html("Subscription ID :");
+            $jq("#txtAccountCardNo").val("");
+            $jq("#txtAccountCardNo").attr("readonly", "readonly");
+            removeValidateError("#frmContact #txtAccountCardNo");
+        }
+        else {
+            $jq("#labelContactCardNo").html("Subscription ID<span class='required-field-block'>*</span> :");
+            $jq("#txtAccountCardNo").removeAttr("readonly");
+        }
+    }
+
+    function onBtnModalAccounteSaveClick() {
+
+        var countError = 0;
+
+        if ($jq("#txtAccountFirstNameThai").val().trim() == "" && $jq("#txtAccountFirstNameEnglish").val().trim() == "") {
+            addValidateError("#frmContact #txtAccountFirstNameThai", "กรุณาระบุ ชื่อผู้ติดต่อ");
+            countError++;
+        }
+        else {
+            removeValidateError("#txtAccountFirstNameThai");
+        }
+
+        if ($jq("#txtAccountPhoneNo1").val().trim() == "") {
+            addValidateError("#frmContact #txtAccountPhoneNo1", "กรุณาระบุ เบอร์โทรศัพท์");
+            countError++;
+        }
+        else {
+            removeValidateError("#txtAccountPhoneNo1");
+        }
+
+        if ($jq("#ddlAccountSubscriptType").val() != "" && $jq("#txtAccountCardNo").val().trim() == "") {
+            addValidateError("#frmContact #txtAccountCardNo", "กรุณากรอกข้อมูล Subscription ID");
+            countError++;
+        }
+        else {
+            removeValidateError("#frmContact #txtAccountCardNo");
+        }
+
+        //var regexThai = new RegExp("([\-ก-๙0-9(). ]+)");
+        var regexThai = /^[\-ก-๙0-9(),. ]{0,}$/;
+
+        var firstNameThai = $jq("#txtAccountFirstNameThai").val().trim();
+
+        if (firstNameThai != "") {
+            if (regexThai.test(firstNameThai)) {
+                removeValidateError("#txtAccountFirstNameThai");
+            } else {
+                addValidateError("#frmContact #txtAccountFirstNameThai", "@Resource.ValErr_NoSpecialCharacterThai");
+                countError++;
+            }
+        }
+
+        var lastNameThai = $jq("#txtAccountLastNameThai").val().trim();
+
+        if (lastNameThai != "") {
+            if (regexThai.test(lastNameThai)) {
+                removeValidateError("#txtAccountLastNameThai");
+            } else {
+                addValidateError("#frmContact #txtAccountLastNameThai", "@Resource.ValErr_NoSpecialCharacterThai");
+                countError++;
+            }
+        }
+
+        //var regexEng = new RegExp("([\-a-zA-Z0-9(). ]+)");
+        var regexEng = /^[\-a-zA-Z0-9(),. ]{0,}$/;
+
+        var firstNameEng = $jq("#txtAccountFirstNameEnglish").val().trim();
+
+        if (firstNameEng != "") {
+            if (regexEng.test(firstNameEng)) {
+                removeValidateError("#txtAccountFirstNameEnglish");
+            } else {
+                addValidateError("#frmContact #txtAccountFirstNameEnglish", "@Resource.ValErr_NoSpecialCharacterEnglish");
+                countError++;
+            }
+        }
+
+        var lastNameEng = $jq("#txtAccountLastNameEnglish").val().trim();
+
+        if (lastNameEng != "") {
+            if (regexEng.test(lastNameEng)) {
+                removeValidateError("#txtAccountLastNameEnglish");
+            } else {
+                addValidateError("#frmContact #txtAccountLastNameEnglish", "@Resource.ValErr_NoSpecialCharacterEnglish");
+                countError++;
+            }
+        }
+
+        //var regexPhone = new RegExp("([0-9]+)");
+        var regexPhone = /^[0-9]{0,}$/;
+
+        var fax = $jq("#txtAccountFax").val().trim();
+
+        if (fax != "") {
+            if (regexPhone.test(fax)) {
+                removeValidateError("#txtAccountFax");
+            } else {
+                addValidateError("#frmContact #txtAccountFax", "@Resource.ValErr_NumericOnly");
+                countError++;
+            }
+        }
+
+        @*var regexEmail = new RegExp("^([\\w\\.\\-]+)@@([\\w\\-]+)((\\.(\\w){2,3})+)$");
+
+        var email = $jq("#txtAccountEmail").val().trim();
+
+        if (email != "") {
+            if (regexEmail.test(email)) {
+                removeValidateError("#txtAccountEmail");
+            } else {
+                addValidateError("#frmContact #txtAccountEmail", "@Resource.ValErr_InvalidEmail");
+                countError++;
+            }
+        }*@
+
+        if (countError > 0)
+            return;
+
+        var isValid = $jq("#frmContact").valid();
+
+        if (isValid) {
+
+            //validate phone is digit
+            var phone1 = $jq("#txtAccountPhoneNo1").val();
+            var phone2 = $jq("#txtAccountPhoneNo2").val();
+            var phone3 = $jq("#txtAccountPhoneNo3").val();
+
+            //var regexPhone2 = new RegExp("([0-9#]+)");
+            var regexPhone2 = /^[0-9#]{0,}$/;
+
+            if (phone1.trim().length > 0) {
+                if (!regexPhone2.test(phone1)) {
+                    doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์#1 ข้อมูลที่กรอกต้องเป็นตัวเลขเท่านั้น', '', '');
+                    return false;
+                }
+            }
+
+            if (phone2.trim().length > 0) {
+                if (!regexPhone2.test(phone2)) {
+                    doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์#2 ข้อมูลที่กรอกต้องเป็นตัวเลขเท่านั้น', '', '');
+                    return false;
+                }
+            }
+
+            if (phone3.trim().length > 0) {
+                if (!regexPhone2.test(phone3)) {
+                    doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์#3 ข้อมูลที่กรอกต้องเป็นตัวเลขเท่านั้น', '', '');
+                    return false;
+                }
+            }
+
+            //validate duplicate phone
+            if (phone1.trim().length > 0 && phone2.trim().length > 0) {
+                if (phone1 == phone2) {
+                    doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์ ซ้ำกัน', '', '');
+                    return false;
+                }
+            }
+
+            if (phone1.trim().length > 0 && phone3.trim().length > 0) {
+                if (phone1 == phone3) {
+                    doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์ ซ้ำกัน', '', '');
+                    return false;
+                }
+            }
+
+            if (phone2.trim().length > 0 && phone3.trim().length > 0) {
+                if (phone2 == phone3) {
+                    doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์ ซ้ำกัน', '', '');
+                    return false;
+                }
+            }
+
+            $jq.ajax({
+                url: "@Url.Action("SaveAccount", "ServiceRequest")",
+                method: "POST",
+                data: {
+                    SubscriptType: $jq("#ddlAccountSubscriptType").val(),
+                    CardNo: $jq("#txtAccountCardNo").val(),
+                    BirthDate: $jq("#txtAccountBirthDate").val(),
+                    TitleThai: $jq("#ddlAccountTitleThai").val(),
+                    FirstNameThai: $jq("#txtAccountFirstNameThai").val(),
+                    LastNameThai: $jq("#txtAccountLastNameThai").val(),
+                    TitleEnglish: $jq("#ddlAccountTitleEnglish").val(),
+                    FirstNameEnglish: $jq("#txtAccountFirstNameEnglish").val(),
+                    LastNameEnglish: $jq("#txtAccountLastNameEnglish").val(),
+                    PhoneType1: $jq("#ddlAccountPhoneType1").val(),
+                    PhoneNo1: $jq("#txtAccountPhoneNo1").val(),
+                    PhoneType2: $jq("#ddlAccountPhoneType2").val(),
+                    PhoneNo2: $jq("#txtAccountPhoneNo2").val(),
+                    PhoneType3: $jq("#ddlAccountPhoneType3").val(),
+                    PhoneNo3: $jq("#txtPhontxtAccountPhoneNo3eNo3").val(),
+                    Fax: $jq("#txtAccountFax").val(),
+                    Email: $jq("#txtAccountEmail").val(),
+                    CustomerId: $jq("#hiddenCustomerId").val(),
+                    AccountId: $jq("#ddlAccountId").val(),
+                    RelationShipId: $jq("#RelationshipId").val(),
+                    __RequestVerificationToken: getAntiForgeryToken()
+                }
+            })
+                .done(function (result) {
+                    if (result.IsSuccess) {
+                        $jq("#modalCreateAccount").modal("hide");
+                        //refresh customer contact table
+                        $jq("#dvLoading").show();
+                        $jq("#modalSearchContactBody").load("@Url.Action("SearchContact", "ServiceRequest")", function (response, status, xhr) {
+                            if (status == "error") {
+                                doModal('dvAlertMsg', 'Message Dialog', 'Cannot Load Search Contact Page. Please check your network connection', '', '');
+                            }
+
+                            $jq("#dvLoading").hide();
+                        });
+                    } else {
+                        doModal('dvAlertMsg', 'Message Dialog', result.Message, '', '');
+                    }
+
+                }).fail(function () {
+                    doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+                });
+            //            isConfirm = false;
+        }
+    }
+
+    function onBtnModalAccountCancelClick() {
+        //        $jq("#modalCreateAccount").modal("hide");
+        var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+        if ($jq.trim(msg) != '') {
+            doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateAccountModal()', 'Confirm');
+        }
+        return false;
+    }
+
+    function closeCreateAccountModal() {
+        $jq("#modalWindow").modal('hide');
+        $jq("#modalCreateAccount").modal('hide');
+    }
+
+    function onDdlAccountPhoneType1Change() {
+        if ($jq("#ddlAccountPhoneType1").val() == "") {
+            $jq("#txtAccountPhoneNo1").val("");
+            $jq("#txtAccountPhoneNo1").attr("readonly", "readonly");
+        } else {
+            $jq("#txtAccountPhoneNo1").removeAttr("readonly");
+        }
+    }
+
+    function onDdlAccountPhoneType2Change() {
+        if ($jq("#ddlAccountPhoneType2").val() == "") {
+            $jq("#txtAccountPhoneNo2").val("");
+            $jq("#txtAccountPhoneNo2").attr("disabled", true);
+        } else {
+            $jq("#txtAccountPhoneNo2").removeAttr("disabled");
+        }
+    }
+
+    function onDdlAccountPhoneType3Change() {
+        if ($jq("#ddlAccountPhoneType3").val() == "") {
+            $jq("#txtAccountPhoneNo3").val("");
+            $jq("#txtAccountPhoneNo3").attr("disabled", true);
+        } else {
+            $jq("#txtAccountPhoneNo3").removeAttr("disabled");
+        }
+    }
+
+    //==End Modal Account Function==
+
+    function onAccountChange() {
+        if ($jq(this).val() == '') {
+            $jq("#txtAccountProduct").val('');
+        }
+        else {
+            getProduct();
+        }
+        return false;
+    }
+
+    function getProduct() {
+
+        // set data
+        var paramData = {
+            accountId: $jq("#ddlAccountId").val()
+        }
+
+        $jq.ajax({
+            url: '@Url.Action("GetProductByAccountId", "ServiceRequest")',
+            type: "POST",
+            data: paramData,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+
+                if (result.Valid) {
+                    $jq("#txtAccountProduct").val(result.Product);
+                } else {
+                    var errorMsg = String.format('<strong></strong>&nbsp;{0}', result.Error);
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+
+</script>

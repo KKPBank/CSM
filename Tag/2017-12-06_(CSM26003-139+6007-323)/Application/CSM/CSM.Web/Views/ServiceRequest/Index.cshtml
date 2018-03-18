@@ -1,0 +1,1440 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.SearchServiceRequestViewModel
+@{
+    ViewBag.Title = "Search Service Request";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.ServiceRequest })
+}
+@section Breadcrumb {
+    <strong class="font-blue">Service Request &rsaquo;&rsaquo;</strong>
+    <strong class="font-green-jungle">Search Service Request</strong>
+}
+
+<div class="form-horizontal sr">
+    <h5 class="form-title">Search Service Request</h5>
+    <hr class="dotted-line" />
+    <div class="bs-example">
+        <div id="divBasicSearch">
+            <div style="color:maroon;padding:0 0 10px;">
+                * หากต้องการค้นหาบางส่วนของคำ ให้ใส่ * ไว้ด้านหน้าหรือด้านหลังของคำค้นหาที่ Field <strong class="text-primary">ตัวอักษรสี น้ำเงิน</strong>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="text-primary">ชื่อลูกค้า :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm searchOnEnter" id="txtFirstName" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="text-primary">นามสกุลลูกค้า :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm searchOnEnter" id="txtLastName" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label style="text-align: left" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">Subscription ID (ลูกค้า):</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm searchOnEnter" id="txtCustomerCardNo" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">SR ID :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm searchOnEnter" id="txtSrNo" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">เลขที่บัญชี/สัญญา :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm searchOnEnter" id="txtAccountNo" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">เบอร์โทรศัพท์ :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm searchOnEnter" id="txtPhoneNo" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">Owner Branch :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtOwnerBranch" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">Owner SR :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtOwnerSr" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">Delegate Branch :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtDelegateBranch" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">Delegate SR :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtDelegateSr" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">Creator Branch :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtCreatorBranch" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">Creator SR :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtCreatorSr" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h5 class="form-title collapse_header" id="divAdvSearchHeader">@Html.Raw(Model.IsShowAdvanceSearch ? "[&mdash;]" : "[+]") Advance Search</h5>
+
+        <div id="divAdvSearch" @Html.Raw(Model.IsShowAdvanceSearch ? "" : "style='display:none'")>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">วันที่สร้าง SR :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <div class="input-group date" id="datetimepicker1">
+                                    <input type="text" class="form-control input-sm" id="txtFromDate" onchange="validateDateValue($jq(this));" />
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">To.</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <div class="input-group date" id="datetimepicker2">
+                                    <input type="text" class="form-control input-sm" id="txtToDate" onchange="validateDateValue($jq(this));" />
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">วันที่ปิด SR :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <div class="input-group date" id="datetimepicker3">
+                                    <input type="text" class="form-control input-sm" id="txtCloseFromDate" onchange="validateDateValue($jq(this));" />
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">To.</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <div class="input-group date" id="datetimepicker4">
+                                    <input type="text" class="form-control input-sm" id="txtCloseToDate" onchange="validateDateValue($jq(this));" />
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">Subject :</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control input-sm searchOnEnter" id="txtSubject">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">SR Channel:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtChannel" placeholder="แสดงทั้งหมด">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">Product Group:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtProductGroupName" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">Product:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtProductName" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">Campaign/Service:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtCampaignServiceName" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">Type:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtType" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">Area:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtArea" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">Sub Area:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" id="txtSubArea" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="text-primary">ชื่อผู้ติดต่อ :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm searchOnEnter" id="txtContactFirstName" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="text-primary">นามสกุลผู้ติดต่อ :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm searchOnEnter" id="txtContactLastName" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">Subscription ID (ผู้ติดต่อ) :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm searchOnEnter" id="txtContactCardNo" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">SR State :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.SearchFilter.SRStateId, new { @id = "txtSRStateId", @class= "form-control input-sm" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">SR Status :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(m => m.SearchFilter.SRStatusIdList, (IEnumerable<SelectListItem>)ViewBag.SRStatusList
+                             , new { @id = "ddlSRStatusList", @class = "form-control input-sm", @multiple = "multiple", @style = "height: 150px" })
+                        @*@Html.Raw(Model.ServiceRequestStatusList)*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="dashed-line" />
+        <div>
+            <form id="frmCreateSr" action="@Url.Action("Create")" method="POST" style="display: inline">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-sm btn-success"><i class="fa fa-plus"></i> New Service Request</button>
+            </form>
+
+            <div class="pull-right">
+                <span id="btnSearch" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Search</span>
+                <span id="btnReset" class="btn btn-sm btn-default"><i class="fa fa-file-o"></i> Clear</span>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <hr class="dashed-line" />
+        <div class="clear"></div>
+
+        <style type="text/css">
+            .bootstrap-table .table > thead > tr > th {
+                padding: 3px;
+                vertical-align: middle !important;
+                background-color: #b3c8e7;
+            }
+
+            .table > thead > tr > th .th-inner {
+                padding: 5px;
+                line-height: 14px;
+                text-align: center;
+            }
+        </style>
+
+        <div id="dvSearchResult" class="table-responsive margin-top-10"></div>
+    </div>
+</div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    @Scripts.Render("~/Scripts/multiselect.min.js")
+
+    <script type="text/javascript">
+
+        var searchFilter;
+        var successFilter;
+
+        $jq(function () {
+
+            initializeSearchFilter();
+            initializePaging();
+            initializeDatePicker();
+
+            // Initial Event Handler
+            $jq("#btnNewSr").click(onBtnNewSrClick);
+            $jq("#btnSearch").click(onBtnSearchClick);
+            $jq("#btnReset").click(onBtnResetClick);
+
+            initAutoComplete();
+            clearForm();
+
+            $jq(".searchOnEnter").keypress(onTextBoxKeypress);
+
+            $jq("#txtFirstName").focus();
+
+            $jq("#divAdvSearchHeader").click(function () {
+                setTimeout(function () {
+                    ShowhidePanel($jq("#divAdvSearch").css("display").toLowerCase() == "block" ? 1 : 0);
+                }, 300);
+            });
+
+            //$jq("#ddlSRStatusList").multiselect();
+
+            $jq("#txtSRStateId").change(function (e) {
+                if ($jq("#txtSRStateId").val().length == 0) {
+
+                    $jq("#ddlSRStatusList option").each(function () {
+                        $jq(this).show();
+                        $jq(this).removeAttr("selected");
+                    });
+
+                }
+            });
+        });
+
+        function ShowhidePanel(expandValue) {
+            var data = {
+                expandValue: expandValue
+            };
+            $jq.ajax({
+                url: '@Url.Action("ShowhidePanel", "ServiceRequest")',
+                type: "POST",
+                data: addAntiForgeryToken(data),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function onTextBoxKeypress(e) {
+            if (e.which == 13) {
+                $jq("#btnSearch").click();
+            }
+        }
+
+        function clearForm() {
+
+            $jq("#txtFirstName").val("");
+            $jq("#txtLastName").val("");
+            $jq("#txtCustomerCardNo").val("");
+            $jq("#txtSrNo").val("");
+            $jq("#txtAccountNo").val("");
+            $jq("#txtPhoneNo").val("");
+
+            $jq("#txtOwnerBranch").select2("val", "");
+            $jq("#txtOwnerSr").select2("val", "");
+            $jq("#txtDelegateBranch").select2("val", "");
+            $jq("#txtDelegateSr").select2("val", "");
+            $jq("#txtCreatorBranch").select2("val", "");
+            $jq("#txtCreatorSr").select2("val", "");
+
+            $jq("#txtProductGroupName").select2("val", "");
+            $jq("#txtProductName").select2("val", "");
+            $jq("#txtCampaignServiceName").select2("val", "");
+
+            $jq("#txtType").select2("val", "");
+            $jq("#txtArea").select2("val", "");
+            $jq("#txtSubArea").select2("val", "");
+            $jq("#txtContactFirstName").val("");
+            $jq("#txtContactLastName").val("");
+
+            $jq("#txtChannel").select2("val", "");
+
+            $jq("#txtOwnerSr").select2("disable");
+            $jq("#txtDelegateSr").select2("disable");
+            $jq("#txtCreatorSr").select2("disable");
+
+            $jq("#txtFromDate").val("");
+            $jq("#txtToDate").val("");
+            $jq("#txtCloseFromDate").val("");
+            $jq("#txtCloseToDate").val("");
+
+            $jq("#txtSubject").val("");
+            $jq("#txtChannel").select2("val", "");
+
+            $jq("#txtContactCardNo").val("");
+
+            $jq("#txtSRStateId").select2("val", "");
+            $jq("#ddlSRStatusList option").each(function () {
+                $jq(this).show();
+                $jq(this).removeAttr("selected");
+            });
+
+            //$jq("#tableSRStatus tr").each(function () {
+            //    $jq('input[type="checkbox"]:checked').each(function (i, row) {
+            //        row.checked = false;
+            //    });
+            //});
+        }
+
+        function onBtnNewSrClick() {
+
+        }
+
+        function onBtnSearchClick(e) {
+            e.preventDefault();
+            searchFilter.CustomerFirstName = $jq("#txtFirstName").val();
+            searchFilter.CustomerLastName = $jq("#txtLastName").val();
+            searchFilter.CustomerCardNo = $jq("#txtCustomerCardNo").val();
+            searchFilter.SrNo = $jq("#txtSrNo").val();
+            searchFilter.AccountNo = $jq("#txtAccountNo").val();
+            searchFilter.PhoneNo = $jq("#txtPhoneNo").val();
+            searchFilter.OwnerBranchId = $jq("#txtOwnerBranch").val();
+            searchFilter.OwnerUserId = $jq("#txtOwnerSr").val();
+            searchFilter.DelegateBranchId = $jq("#txtDelegateBranch").val();
+            searchFilter.DelegateUserId = $jq("#txtDelegateSr").val();
+            searchFilter.CreatorBranchId = $jq("#txtCreatorBranch").val();
+            searchFilter.CreatorUserId = $jq("#txtCreatorSr").val();
+
+            searchFilter.CreateDateFrom = $jq("#txtFromDate").val();
+            searchFilter.CreateDateTo = $jq("#txtToDate").val();
+            searchFilter.CloseDateFrom = $jq("#txtCloseFromDate").val();
+            searchFilter.CloseDateTo = $jq("#txtCloseToDate").val();
+            searchFilter.Subject = $jq("#txtSubject").val();
+            searchFilter.ChannelId = $jq("#txtChannel").val();
+            searchFilter.ProductGroupId = $jq("#txtProductGroupName").val();
+            searchFilter.ProductId = $jq("#txtProductName").val();
+            searchFilter.CampaignServiceId = $jq("#txtCampaignServiceName").val();
+            searchFilter.TypeId = $jq("#txtType").val();
+            searchFilter.AreaId = $jq("#txtArea").val();
+            searchFilter.SubAreaId = $jq("#txtSubArea").val();
+            searchFilter.ContactFirstName = $jq("#txtContactFirstName").val();
+            searchFilter.ContactLastName = $jq("#txtContactLastName").val();
+            searchFilter.ContactCardNo = $jq("#txtContactCardNo").val();
+
+            searchFilter.CanViewAllUsers = $jq("#hiddenCanViewAllUsers").val();
+            searchFilter.CanViewSrPageIds = $jq("#hiddenCanViewSrPageIds").val();
+            searchFilter.CanViewUserIds = $jq("#hiddenCanViewUserIds").val();
+
+            searchFilter.CurrentUserId = $jq("#hiddenCurrentUserId").val();
+            searchFilter.CurrentUserRoleCode = $jq("#hiddenCurrentUserRoleCode").val();
+            searchFilter.SRStatusStringList = getSRStatusList();
+            searchFilter.SRStateId = $jq("#txtSRStateId").val();
+
+            searchFilter.PageNo = 1;
+            loadData();
+            return false;
+        }
+
+        function getSRStatusList() {
+            var statuslist = "";
+            //$jq("#tableSRStatus tr").each(function () {
+            //    cbs = $jq('input[type="checkbox"]:checked');
+            //});
+            //if (cbs.length > 0) {
+            //    cbs.each(function (i, row) {
+            //        statuslist += (statuslist != "" ? "," : "") + row.value;
+            //    });
+            //}
+            $jq('#ddlSRStatusList :selected').each(function () {
+                statuslist += (statuslist != "" ? "," : "") + $jq(this).val();
+            });
+            return statuslist;
+        }
+
+        function validSearchFilter() {
+            if (searchFilter.CustomerFirstName == ""
+                && searchFilter.CustomerLastName == ""
+                && searchFilter.CustomerCardNo == ""
+                && searchFilter.SrNo == ""
+                && searchFilter.AccountNo == ""
+                && searchFilter.PhoneNo == ""
+                && searchFilter.OwnerBranchId == ""
+                && searchFilter.OwnerUserId == ""
+                && searchFilter.DelegateBranchId == ""
+                && searchFilter.DelegateUserId == ""
+                && searchFilter.CreatorBranchId == ""
+                && searchFilter.CreatorUserId == ""
+                && searchFilter.CreateDateFrom == ""
+                && searchFilter.CreateDateTo == ""
+                && searchFilter.CloseDateFrom == ""
+                && searchFilter.CloseDateTo == ""
+                && searchFilter.Subject == ""
+                && searchFilter.ChannelId == ""
+                && searchFilter.ProductGroupId == ""
+                && searchFilter.ProductId == ""
+                && searchFilter.CampaignServiceId == ""
+                && searchFilter.TypeId == ""
+                && searchFilter.AreaId == ""
+                && searchFilter.SubAreaId == ""
+                && searchFilter.ContactFirstName == ""
+                && searchFilter.ContactLastName == ""
+                && searchFilter.ContactCardNo == ""
+                && searchFilter.SRStatusStringList == ""
+                && searchFilter.SRStateId == "") {
+                var warningMsg = 'กรุณากรอกข้อมูลอย่างน้อย 1 เงื่อนไข';
+                doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+                return false;
+            }
+            return true;
+        }
+
+        function loadData() {
+
+            if (!validSearchFilter()) {
+                return false;
+            }
+            $jq.ajax({
+                url: '@Url.Action("ServiceRequestList", "ServiceRequest")',
+                type: "POST",
+                data: searchFilter,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResult").html('');
+                        successFilter = searchFilter;
+                        $jq("#dvSearchResult").html(result);
+                        initializePaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                }
+            });
+
+            return false;
+        };
+
+        function initializeSearchFilter() {
+            searchFilter = {
+                CustomerFirstName: $jq("#txtFirstName").val(),
+                CustomerLastName: $jq("#txtLastName").val(),
+                CustomerCardNo: $jq("#txtCustomerCardNo").val(),
+                SrNo: $jq("#txtSrNo").val(),
+                AccountNo: $jq("#txtAccountNo").val(),
+                PhoneNo: $jq("#txtPhoneNo").val(),
+                OwnerBranchId: $jq("#txtOwnerBranch").val(),
+                OwnerUserId: $jq("#txtOwnerSr").val(),
+                DelegateBranchId: $jq("#txtDelegateBranch").val(),
+                DelegateUserId: $jq("#txtDelegateSr").val(),
+                CreatorBranchId: $jq("#txtCreatorBranch").val(),
+                CreatorUserId: $jq("#txtCreatorSr").val(),
+
+                //advance search data
+                CreateDateFrom: $jq("#txtFromDate").val(),
+                CreateDateTo: $jq("#txtToDate").val(),
+                CloseDateFrom: $jq("#txtCloseFromDate").val(),
+                CloseDateTo: $jq("#txtCloseToDate").val(),
+                Subject: $jq("#txtSubject").val(),
+                ChannelId: $jq("#txtChannel").val(),
+                ProductGroupId: $jq("#txtProductGroupName").val(),
+                ProductId: $jq("#txtProductName").val(),
+                CampaignServiceId: $jq("#txtCampaignServiceName").val(),
+                TypeId: $jq("#txtType").val(),
+                AreaId: $jq("#txtArea").val(),
+                SubAreaId: $jq("#txtSubArea").val(),
+                ContactFirstName: $jq("#txtContactFirstName").val(),
+                ContactLastName: $jq("#txtContactLastName").val(),
+                ContactCardNo: $jq("#txtContactCardNo").val(),
+                SRStateId: $jq("#txtSRStateId").val(),
+                SRStatusStringList: "",
+
+                PageNo: '@Model.SearchFilter.PageNo',
+                PageSize: '@Model.SearchFilter.PageSize',
+                SortField: '@Model.SearchFilter.SortField',
+                SortOrder: '@Model.SearchFilter.SortOrder'
+            };
+            successFilter = searchFilter;
+        };
+
+        function initializePaging() {
+            $jq("#dvSearchResult .input-page").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = $jq(this).val();
+                loadData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchResult #pagesizelist").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadData();
+                return false;
+            });
+
+            $jq('#dvSearchResult .pagination ul li a').on('click', function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadData();
+                return false;
+            });
+        }
+
+        function sortField(selectedSortField) {
+            if (selectedSortField == searchFilter.SortField)
+                searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            loadData();
+        }
+
+        function initializeDatePicker() {
+
+            var dateFormat = 'dd/mm/yyyy';
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker1').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker2').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker3').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker4').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+        }
+
+        function onBtnResetClick(e) {
+
+            e.preventDefault();
+
+            clearForm();
+            $jq("#dvSearchResult").html('');
+
+            return false;
+        }
+
+        $jq('#btnAdd').click(function () {
+            $jq('#exampleModal').modal('show');
+        });
+
+        // [START] Basic Search: Collapse Box
+        $jq("#divBasicSearchHeader").click(onDivBasicSearchHeaderClick);
+
+        function onDivBasicSearchHeaderClick() {
+            if ($jq("#divBasicSearch").css("display") == "none")
+                $jq("#divBasicSearchHeader").html("[&mdash;] Basic Search");
+            else
+                $jq("#divBasicSearchHeader").html("[+] Basic Search");
+
+            $jq("#divBasicSearch").slideToggle("fast");
+        }
+        // [ END ] Basic Search: Collapse Box
+
+        // [START] Advance Search: Collapse Box
+        $jq("#divAdvSearchHeader").click(onDivAdvanceSearchHeaderClick);
+
+        function onDivAdvanceSearchHeaderClick() {
+            if ($jq("#divAdvSearch").css("display") == "none")
+                $jq("#divAdvSearchHeader").html("[&mdash;] Advance Search");
+            else
+                $jq("#divAdvSearchHeader").html("[+] Advance Search");
+
+            $jq("#divAdvSearch").slideToggle("fast");
+        }
+        // [ END ] Advance Search: Collapse Box
+
+    </script>
+
+    <!-- Start of AutoComplete -->
+    <script type="text/javascript">
+
+    // [START] AutoComplete
+
+    function initAutoComplete() {
+
+        initAutoCompleteOwnerBranch();
+        initAutoCompleteOwnerSr();
+        initAutoCompleteDelegateBranch();
+        initAutoCompleteDelegateSr();
+        initAutoCompleteCreatorBranch();
+        initAutoCompleteCreatorSr();
+
+        initAutoCompleteProductGroup();
+        initAutoCompleteProduct();
+        initAutoCompleteCampaignService();
+
+        initAutoCompleteArea();
+        initAutoCompleteSubArea();
+        initAutoCompleteType();
+
+        initAutoCompleteChannel();
+
+        initAutoCompleteState();
+    }
+
+    function initAutoCompleteOwnerBranch() {
+
+        $jq("#txtOwnerBranch").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchBranch", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.BranchName,
+                                id: item.BranchId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        }).on("change", function (evt) {
+
+            if ($jq(this).val().length != 0)
+                $jq("#txtOwnerSr").select2("enable");
+            else {
+                $jq("#txtOwnerSr").select2("disable");
+                $jq("#txtOwnerSr").select2("val", "");
+            }
+        });
+    }
+
+    function initAutoCompleteOwnerSr() {
+
+        $jq("#txtOwnerSr").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchUser", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            branchId: $jq("#txtOwnerBranch").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.UserDisplayName,
+                                    id: item.UserId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initAutoCompleteDelegateBranch() {
+
+            $jq("#txtDelegateBranch").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchBranch", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.BranchName,
+                                id: item.BranchId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        }).on("change", function (evt) {
+
+            if ($jq(this).val().length != 0)
+                $jq("#txtDelegateSr").select2("enable");
+            else {
+                $jq("#txtDelegateSr").select2("disable");
+                $jq("#txtDelegateSr").select2("val", "");
+            }
+        });
+    }
+
+    function initAutoCompleteDelegateSr() {
+
+        $jq("#txtDelegateSr").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchUser", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        branchId: $jq("#txtDelegateBranch").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.UserDisplayName,
+                                id: item.UserId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteCreatorBranch() {
+
+        $jq("#txtCreatorBranch").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchBranch", "AutoComplete")",
+            dataType: 'json',
+            type: "post",
+            quietMillis: 150,
+            data: function (keyword) {
+                return {
+                    keyword: keyword
+                };
+            },
+            results: function (data) {
+                if (data.RedirectUrl != undefined) {
+                    topLocation(data.RedirectUrl);
+                    return;
+                }
+                return {
+                    results: $jq.map(data, function (item) {
+                        return {
+                            text: item.BranchName,
+                            id: item.BranchId
+                        }
+                    })
+                };
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        }
+        }).on("change", function (evt) {
+
+            if ($jq(this).val().length != 0)
+                $jq("#txtCreatorSr").select2("enable");
+            else {
+                $jq("#txtCreatorSr").select2("disable");
+                $jq("#txtCreatorSr").select2("val", "");
+            }
+        });
+    }
+
+    function initAutoCompleteCreatorSr() {
+
+        $jq("#txtCreatorSr").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchUser", "AutoComplete")",
+            dataType: 'json',
+            type: "post",
+            quietMillis: 150,
+            data: function (keyword) {
+                return {
+                    keyword: keyword,
+                    branchId: $jq("#txtCreatorBranch").val()
+                };
+            },
+            results: function (data) {
+                if (data.RedirectUrl != undefined) {
+                    topLocation(data.RedirectUrl);
+                    return;
+                }
+                return {
+                    results: $jq.map(data, function (item) {
+                        return {
+                            text: item.UserDisplayName,
+                            id: item.UserId
+                        }
+                    })
+                };
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        }
+        });
+    }
+
+    function initAutoCompleteProductGroup() {
+
+        $jq("#txtProductGroupName").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchProductGroup", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        productId: $jq("#txtProductName").val(),
+                        campaignServiceId: $jq("#txtProductGroupName").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.ProductGroupName,
+                                id: item.ProductGroupId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteProduct() {
+
+        $jq("#txtProductName").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchProduct", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        productGroupId: $jq("#txtProductGroupName").val(),
+                        campaignServiceId: $jq("#txtCampaignServiceName").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.ProductName,
+                                id: item.ProductId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        }).on("change", function (evt) {
+            if ($jq(this).val().length != 0) {
+                //                $jq("#txtCampaignServiceName").select2("val", "");
+            }
+        });
+    }
+
+    function initAutoCompleteCampaignService() {
+
+        $jq("#txtCampaignServiceName").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchCampaignService", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        productGroupId: $jq("#txtProductGroupName").val(),
+                        productId: $jq("#txtProductName").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.CampaignServiceName,
+                                id: item.CampaignServiceId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteArea() {
+
+        $jq("#txtArea").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchArea", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        subAreaId: $jq("#txtSubArea").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.AreaName,
+                                id: item.AreaId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteSubArea() {
+
+        $jq("#txtSubArea").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchSubArea", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        areaId: $jq("#txtArea").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.SubAreaName,
+                                id: item.SubAreaId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteType() {
+
+        $jq("#txtType").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchType", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.TypeName,
+                                id: item.TypeId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteChannel() {
+
+        $jq("#txtChannel").select2({
+            minimumResultsForSearch: -1,
+            cache: true,
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchChannel", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 50,
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.Name,
+                                id: item.ChannelId
+                            }
+                        })
+                    };
+                }
+            }
+        });
+    }
+
+    function initSrEdit(srId) {
+
+        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+        var inputSrId = $jq("<input>").attr("type", "hidden").attr("name", "srId").val(srId);
+
+        $jq('#dvTarget').html('');
+        $jq('#dvTarget').append("<form action='@Url.Action("Edit", "ServiceRequest")' method='POST' class='hidden' target='_blank'>");
+        $jq('#dvTarget form').append($jq(inputToken));
+        $jq('#dvTarget form').append($jq(inputSrId));
+        $jq('#dvTarget form').submit();
+    }
+
+    function initSrCopy(srId) {
+
+        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+        var inputSrId = $jq("<input>").attr("type", "hidden").attr("name", "sourceSrId").val(srId);
+
+        $jq('#dvTarget').html('');
+        $jq('#dvTarget').append("<form action='@Url.Action("CopySR", "ServiceRequest")' method='POST' class='hidden' target='_blank'>");
+        $jq('#dvTarget form').append($jq(inputToken));
+        $jq('#dvTarget form').append($jq(inputSrId));
+        $jq('#dvTarget form').submit();
+    }
+
+    function initAutoCompleteState() {
+
+        $jq("#txtSRStateId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteState", "Status")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        statusId: $jq("#txtSRStatusId").val(),
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.SRStateName,
+                                id: item.SRStateId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        }).on("change", function (evt) {
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetByState", "Status")",
+                    method: "POST",
+                    data: {
+                        __RequestVerificationToken: getAntiForgeryToken(),
+                        stateId: $jq(this).val()
+                    }
+                }).done(function (result) {
+                    $jq("#ddlSRStatusList option").each(function () {
+                        $jq(this).show();
+                        $jq(this).removeAttr("selected");
+                    });
+                    if (result.length > 0) {
+                        $jq("#ddlSRStatusList option").each(function () {
+                            $jq(this).hide();
+                        });
+                        var i;
+                        for (i = 0; i < result.length; i++) {
+                            $jq("#ddlSRStatusList").children("option[value='" + result[i].SRStatusId + "']").show();
+                        }
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            }
+        });
+    }
+    </script>
+    <!-- End of AutoComplete -->
+}

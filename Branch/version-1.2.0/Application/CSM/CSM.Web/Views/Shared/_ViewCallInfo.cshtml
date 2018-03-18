@@ -1,0 +1,65 @@
+﻿@model CSM.Entity.CallInfoEntity
+@{
+    Layout = null;
+}
+<div class="modal-dialog modal-sm" style="min-width:600px;">
+    <div id="dvBrForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">Call Information</h5>
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                Call ID :
+                            </p>
+                        </div>
+                        <div class="col-md-6 nopadding">
+                            <p class="form-control-static">
+                                @Model.CallId
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                Phone No :
+                            </p>
+                        </div>
+                        <div class="col-md-6 nopadding">
+                            <p class="form-control-static">
+                                @Model.PhoneNo
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p class="form-control-static">
+                                เลขที่บัตรประชาชน/นิติบุคคล :
+                            </p>
+                        </div>
+                        <div class="col-md-6 nopadding">
+                            <p class="form-control-static">
+                                @Model.CardNo
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

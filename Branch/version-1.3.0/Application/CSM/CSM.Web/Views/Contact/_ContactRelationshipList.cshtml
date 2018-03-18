@@ -1,0 +1,45 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.ContactEditViewModel
+<div class="table-responsive">
+    <table class="table table-hover datatable">
+        <thead>
+            <tr>
+                <th style="width:10%!important;">Action</th>
+                <th style="width:20%!important;">เลขที่สัญญา</th>
+                <th style="width:20%!important;">Product</th>
+                <th style="width:20%!important;">ความสัมพันธ์</th>
+                <th style="width:30%!important;">ชื่อ-สกุลลูกค้า</th>                
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ContactRelationshipList == null || Model.ContactRelationshipList.Count() == 0)
+            {
+                <tr>
+                    <td colspan="7" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            }
+            else
+            {
+                var rowIndex = 0;
+                foreach (var item in Model.ContactRelationshipList)
+                {
+                    <tr>
+                        <td class="center" style="width:10%!important;">                            
+                            @if (item.IsEdit == true)
+                            {
+                                <a href="javascript:;" onclick="editContactRelationship('@rowIndex')" class="edit-active" title="Edit"></a>
+                            }                                
+                                
+                        </td>
+                        <td style="width: 20% !important;">@item.AccountDescDisplay</td>
+                        <td style="width: 20% !important;">@item.Product</td>
+                        <td style="width: 20% !important;">@item.RelationshipNameDisplay</td>
+                        <td style="width: 30% !important;">@item.CustomerFullNameThaiEng</td>                        
+                    </tr>
+                   
+                    ++rowIndex;
+                }
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="CSM.WCFService.CSMFileService" CodeBehind="CSMFileService.svc.cs" %>

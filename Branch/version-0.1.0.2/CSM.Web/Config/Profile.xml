@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<services>
+  <service name="CampaignByCustomer">
+    <service_name>CMT</service_name>
+    <username>CMT</username>
+    <password>CMT</password>
+    <reference_no>2014022500001</reference_no>
+    <system_code>CMT</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command>CampaignByCustomer</command>
+  </service>
+  <service name="UpdateCustomerFlags">
+    <service_name>CMT</service_name>
+    <username>CMT</username>
+    <password>CMT</password>
+    <reference_no>2014022500001</reference_no>
+    <system_code>CMT</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command>UpdateCustomerFlags</command>
+  </service>
+  <service name="InsertLead">
+    <service_name>SLM</service_name>
+    <username>slm_user5</username>
+    <password>password</password>
+    <reference_no>2014022500001</reference_no>
+    <system_code></system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command></command>
+  </service>
+  <service name="SearchLead">
+    <service_name>COC</service_name>
+    <username>coc_user5</username>
+    <password>password</password>
+    <reference_no>2014022500001</reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command></command>
+  </service>
+  <service name="CreateActivityLog">
+    <service_name>CreateActivityLog</service_name>
+    <username>CSM</username>
+    <password>12345</password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command></command>
+  </service>
+  <service name="InquiryActivityLog">
+    <service_name>InquiryActivityLog</service_name>
+    <username>CSM</username>
+    <password>12345</password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id>CALLCENTER</channel_id>
+    <command></command>
+  </service>
+  <service name="CreateProductMaster">
+    <service_name>CreateProductMaster</service_name>
+    <username>CMT</username>
+    <password>password</password>
+    <reference_no></reference_no>
+    <system_code>CSM</system_code>
+    <transaction_date></transaction_date>
+    <channel_id></channel_id>
+    <command></command>
+  </service>
+</services>

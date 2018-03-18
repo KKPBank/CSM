@@ -1,0 +1,32 @@
+﻿@model CSM.Web.Models.ContactEditViewModel
+
+<hr class="dashed-line clear" />
+<div class="clearfix"></div>
+<span class="required-field-block">ไม่สามารถเพิ่มข้อมูลผู้ติดต่อได้ เนื่องจากพบผู้ติดต่อที่มี ชื่อ นามสกุล และเบอร์โทรศัพท์ตรงกันดังต่อไปนี้</span>
+<div class="table-responsive margin-top-10">
+    <table class="table table-hover datatable">
+        <thead>
+            <tr>
+                <th class="center text-nowrap" style="width:10%!important;">Action</th>
+                <th class="center text-nowrap" style="width:20%!important;" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">Subscription ID</th>
+                <th class="center text-nowrap" style="width:20%!important;">ชื่อผู้ติดต่อ</th>
+                <th class="center text-nowrap" style="width:20%!important;">นามสกุล</th>
+                <th class="center text-nowrap" style="width:15%!important;">เบอร์โทรศัพท์</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ContactList)
+            {
+                <tr>
+                    <td class="center">
+                        <a href="javascript:;" class="btn btn-success btn-xs" title="เลือก" onclick="editCustomerContact('@item.ContactId');">เลือก</a>                        
+                    </td>
+                    <td>@item.CardNo</td>
+                    <td>@item.FirstNameThaiEng</td>
+                    <td>@item.LastNameThaiEng</td>
+                    <td>@item.PhoneNo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

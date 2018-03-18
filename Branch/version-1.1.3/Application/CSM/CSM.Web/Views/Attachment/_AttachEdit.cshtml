@@ -1,0 +1,216 @@
+﻿@model CSM.Web.Models.AttachViewModel
+@using CSM.Common.Utilities;
+@{
+    ViewBag.Title = "_AttachmentEdit";
+}
+
+@Html.HiddenFor(model => model.NewsId)
+@Html.HiddenFor(model => model.ListIndex)
+@Html.HiddenFor(model => model.JsonAttach)
+<div class="modal-dialog modal-sm" style="min-width:800px;">
+    <div id="dvAttachForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">New Attachment</h5>
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-md-3 left-label">เอกสารที่อัพโหลด <span class="required-field-block">*</span></label>
+                <div class="col-md-6 nopadding">
+                    @Html.TextBoxFor(model => model.FileAttach, null, new { @id = "txtFileAttach", type = "file" })
+                    <span class="required-message-block">@(ViewBag.UploadLimitType)</span>
+                    @Html.ValidationMessageFor(model => model.FileAttach)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 left-label">ชื่อเอกสาร <span class="required-field-block">*</span></label>
+                <div class="col-md-6 nopadding">
+                    @Html.TextBoxFor(model => model.DocName, new
+                   {
+                       @id = "txtDocName",
+                       @class = "form-control input-sm",
+                       @maxlength = Constants.MaxLength.AttachName
+                   })
+                    @Html.ValidationMessageFor(model => model.DocName)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 left-label">คำอธิบายเอกสาร</label>
+                <div class="col-md-6 nopadding">
+                    @Html.TextAreaFor(model => model.DocDesc, new
+                   {
+                       @id = "txtDocDesc",
+                       @class = "form-control input-sm",
+                       @onkeypress = "checkTextAreaMaxLength(this,event," + Constants.MaxLength.AttachDesc + ");",
+                       @onblur = "stringLimit(this,event," + Constants.MaxLength.AttachDesc + ");"
+                   })
+                    @Html.ValidationMessageFor(model => model.DocDesc)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 left-label">วันที่หมดอายุ</label>
+                <div class="col-md-6 nopadding">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <div class='input-group date' id='datepickAttach'>
+                                @Html.TextBoxFor(model => model.ExpiryDate, new
+                                {
+                                    @class = "form-control input-sm input-small",
+                                    @style = "min-width:100px",
+                                    @id = "txtExpiryDate",
+                                    onchange = "validateDateValue($jq(this));"
+                                })
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ExpiryDate)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 left-label">ประเภทเอกสาร</label>
+                <div class="col-md-7 nopadding">
+                    @if (Model.DocTypeCheckBoxes != null && Model.DocTypeCheckBoxes.Count > 0)
+                    {
+                        <table class="checkboxlist">
+                            @for (int i = 0; i < Model.DocTypeCheckBoxes.Count(); i++)
+                            {
+                                <tr style="width:42%!important">
+                                    <td>
+                                        @Html.CheckBoxFor(model => model.DocTypeCheckBoxes[i].Checked, new { @id = "cblDocType_" + i })
+                                        @Html.HiddenFor(model => model.DocTypeCheckBoxes[i].Value)
+                                    </td>
+                                    <td class="padding-left-2 ">@Model.DocTypeCheckBoxes[i].Text</td>
+                                </tr>
+                            }
+                        </table>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-blue btn-sm btn-xsmall" id="btnSaveAttach">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" id="btnCancelAttach">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $jq(function () {
+        var isSupported = supportFormData();
+        var dateFormat = 'dd/mm/yyyy';
+
+        $jq('#btnSaveAttach').click(function (e) {
+            e.preventDefault();
+            if (isSupported) {
+                saveAttach();
+            } else {
+                $jq('#form3').submit();
+            }
+            return false;
+        });
+
+        $jq("#btnCancelAttach").click(function (e) {
+            e.preventDefault();
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'doCancelAttach()', 'Confirm');
+            }
+            return false;
+        });
+
+        // DateTime Picker From Date
+        $jq('#datepickAttach').datepicker({
+            format: dateFormat,
+            startDate: "0d",
+            showOnFocus: "false",
+            language: 'th'
+        }).on('changeDate', function (ev) {
+            $jq(this).datepicker('hide');
+        });
+
+        $jq('#form3').ajaxForm({
+            beforeSend: function () {
+                $jq("#dvLoading").show();
+            },
+            success: function () {
+                $jq("#dvLoading").hide();
+            },
+            complete: function (xhr, status, error) {
+                try {
+                    var result = JSON.parse(xhr.responseText);
+                    if (result.Valid === true) {
+                        $jq('#hddJsonAttach').val(JSON.stringify(result.Data));
+                        loadAttach();
+                        $jq('#attachModal').modal('hide');
+                    } else {
+                        //console.log(JSON.stringify(result));
+                        showServerErrors(result);
+                    }
+                } catch (e) {
+                    topLocation('@FormsAuthentication.LoginUrl');
+                }
+            },
+            error: function (xhr) {
+                $jq("#dvLoading").hide();
+                if (xhr.status === 400 || xhr.status === 404) {
+                    var inputCtrl = $jq('#txtFileAttach');
+                    var spanCtrl = inputCtrl.parent().parent().find('span.field-validation-valid');
+                    inputCtrl.addClass('input-validation-error');
+                    spanCtrl.html('@CSM.Common.Resources.Resource.ValError_FileSizeExceedServerMaxLimit').removeClass('field-validation-valid').addClass('field-validation-error');
+                    return false;
+                }
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+    });
+
+    function doCancelAttach() {
+        hideModal('modalWindow');
+        $jq('#attachModal').modal('hide');
+        return false;
+    }
+
+    function saveAttach() {
+        clearServerErrors();
+        var formData = new FormData($jq('#form3').get(0));
+
+        $jq.ajax({
+            url: '@Url.Action("Edit", "Attachment")',
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (data) {
+                var result = JSON.parse(data);
+                if (result.Valid === true) {
+                    $jq('#hddJsonAttach').val(JSON.stringify(result.Data));
+                    loadAttach();
+                    $jq('#attachModal').modal('hide');
+                } else {
+                    //console.log(JSON.stringify(result));
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 400 || xhr.status === 404) {
+                    var inputCtrl = $jq('#txtFileAttach');
+                    var spanCtrl = inputCtrl.parent().parent().find('span.field-validation-valid');
+                    inputCtrl.addClass('input-validation-error');
+                    spanCtrl.html('@CSM.Common.Resources.Resource.ValError_FileSizeExceedServerMaxLimit').removeClass('field-validation-valid').addClass('field-validation-error');
+                    return false;
+                }
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+</script>

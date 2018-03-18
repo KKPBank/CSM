@@ -1,0 +1,39 @@
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+		<property name="hibernate.default_schema">dbo</property>
+		<mapping class="com.motiftech.icollection.entity.Activity"/>
+		<mapping class="com.motiftech.icollection.entity.Area"/>
+		<mapping class="com.motiftech.icollection.entity.AutoForward"/>
+		<mapping class="com.motiftech.icollection.entity.Branch"/>
+		<mapping class="com.motiftech.icollection.entity.BranchCalendar"/>
+		<mapping class="com.motiftech.icollection.entity.Campaignservice"/>
+		<mapping class="com.motiftech.icollection.entity.ComplaintIssue"/>
+		<mapping class="com.motiftech.icollection.entity.ComplaintSubject"/>
+		<mapping class="com.motiftech.icollection.entity.ComplaintType"/>
+		<mapping class="com.motiftech.icollection.entity.ComplaintRootCause"/>
+		<mapping class="com.motiftech.icollection.entity.Channel"/>
+		<mapping class="com.motiftech.icollection.entity.Customer"/>
+		<mapping class="com.motiftech.icollection.entity.MapProduct"/>
+		<mapping class="com.motiftech.icollection.entity.MasterAccount"/>
+		<mapping class="com.motiftech.icollection.entity.Option"/>
+		<mapping class="com.motiftech.icollection.entity.PrepareEmail"/>
+		<mapping class="com.motiftech.icollection.entity.Product"/>
+		<mapping class="com.motiftech.icollection.entity.ProductGroup"/>
+		<mapping class="com.motiftech.icollection.entity.SLA"/>
+		<mapping class="com.motiftech.icollection.entity.SR"/>
+		<mapping class="com.motiftech.icollection.entity.SRLogging"/>
+		<mapping class="com.motiftech.icollection.entity.SRStatus"/>
+		<mapping class="com.motiftech.icollection.entity.State"/>
+		<mapping class="com.motiftech.icollection.entity.Subarea"/>
+		<mapping class="com.motiftech.icollection.entity.Type"/>
+		<mapping class="com.motiftech.icollection.entity.User"/>
+		<!-- <mapping class="com.motiftech.icollection.entity.Work"/> -->
+		<mapping class="com.motiftech.icollection.entity.VW_SR"/>
+		<mapping class="com.motiftech.icollection.entity.HREmployee"/>
+		<mapping class="com.motiftech.icollection.entity.Contact"/>
+		<mapping class="com.motiftech.icollection.entity.ContactPhone"/>
+    </session-factory>
+</hibernate-configuration>

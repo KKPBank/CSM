@@ -1,0 +1,553 @@
+﻿@model CSM.Web.Models.ContactEditViewModel
+@using CSM.Common.Utilities;
+@{
+    ViewBag.Title = "_EditCustomerContact";
+}
+
+@Html.HiddenFor(model => model.ContactId, new { id = "hddContactIdEdit" })
+@Html.HiddenFor(model => model.CustomerId)
+@Html.HiddenFor(model => model.IsEdit, new { id = "hddContactIsEdit" })
+@Html.HiddenFor(model => model.JsonContactRelationship, new { @id = "hddJsonContactRelationship" })
+@Html.HiddenFor(model => model.IsConfirm, new { @id = "hddIsConfirm" })
+
+<div class="modal-dialog modal-sm" style="min-width:1240px;">
+    <div id="dvCustomerContactForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">บันทึกข้อมูลผู้ติดต่อ</h5>
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="row margin-top-15">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static nowrap">
+                                Subscription Type:
+                            </p>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.SubscriptType, Model.SubscriptTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                              new { @class = "form-control input-sm input-small", id = "ddlSubscriptType", @style = "width:260px!important" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <p class="form-control-static" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                                Subscription ID&nbsp;<span id="reqCardNo" class="required-field-block">*</span>:
+                            </p>
+                        </div>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(model => model.CardNo, new { @class = "form-control input-sm", @id = "txtCardNo", @maxlength = Constants.MaxLength.CardNo })
+                            @Html.ValidationMessageFor(model => model.CardNo)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                วันเกิด:
+                            </p>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        @Html.TextBoxFor(model => model.BirthDate, new
+                                        {
+                                            @class = "form-control input-sm input-small",
+                                            @id = "txtBirthDate",
+                                            onchange = "validateDateValue($jq(this));"
+                                        })
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.BirthDate)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                คำนำหน้า:
+                            </p>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.TitleThai, Model.TitleThaiList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                     new { @class = "form-control input-sm input-small", id = "ddlTitleThai", @style = "width:260px!important" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                ชื่อผู้ติดต่อ&nbsp;<span class="required-field-block">*</span>:
+                            </p>
+                        </div>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(model => model.FirstNameThai, new { @class = "form-control input-sm", @id = "txtFirstNameThai", @maxlength = Constants.MaxLength.FirstName })
+                            @Html.ValidationMessageFor(model => model.FirstNameThai)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static nowrap">
+                                นามสกุลผู้ติดต่อ:
+                            </p>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.LastNameThai, new { @class = "form-control input-sm", @id = "txtLastNameThai", @maxlength = Constants.MaxLength.LastName })
+                            @Html.ValidationMessageFor(model => model.LastNameThai)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                Title:
+                            </p>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.TitleEnglish, Model.TitleEnglishList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                     new { @class = "form-control input-sm input-small", id = "ddlTitleEnglish", @style = "width:260px!important" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                First Name:
+                            </p>
+                        </div>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(model => model.FirstNameEnglish, new { @class = "form-control input-sm", @id = "txtFirstNameEnglish", @maxlength = Constants.MaxLength.FirstName })
+                            @Html.ValidationMessageFor(model => model.FirstNameEnglish)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                Last Name:
+                            </p>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.LastNameEnglish, new { @class = "form-control input-sm", @id = "txtLastNameEnglish", @maxlength = Constants.MaxLength.LastName })
+                            @Html.ValidationMessageFor(model => model.LastNameEnglish)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <p class="form-control-static nowrap">
+                                เบอร์โทรศัพท์ #1&nbsp;<span class="required-field-block">*</span>:
+                            </p>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="clear"></div>
+                            <div class="pull-left">
+                                @Html.DropDownListFor(model => model.PhoneType1, Model.PhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                    new { @class = "form-control input-sm input-small", id = "ddlPhoneType1" })
+                            </div>
+                            <div class="pull-left margin-left-5">
+                                @Html.TextBoxFor(model => model.PhoneNo1, new
+                                {
+                                    @class = "form-control input-sm input-large",
+                                    @id = "txtPhoneNo1",
+                                    @maxlength = Constants.MaxLength.PhoneNo
+                                })
+                                @Html.ValidationMessageFor(model => model.PhoneNo1)
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <p class="form-control-static">
+                                เบอร์โทรศัพท์ #2:
+                            </p>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="clear"></div>
+                            <div class="pull-left">
+                                @Html.DropDownListFor(model => model.PhoneType2, Model.PhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                    new { @class = "form-control input-sm input-small", id = "ddlPhoneType2" })
+                            </div>
+                            <div class="pull-left margin-left-5">
+                                @Html.TextBoxFor(model => model.PhoneNo2, new
+                                {
+                                    @class = "form-control input-sm input-large",
+                                    @id = "txtPhoneNo2",
+                                    @maxlength = Constants.MaxLength.PhoneNo
+                                })
+                                @Html.ValidationMessageFor(model => model.PhoneNo2)
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <p class="form-control-static">
+                                เบอร์โทรศัพท์ #3:
+                            </p>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="clear"></div>
+                            <div class="pull-left">
+                                @Html.DropDownListFor(model => model.PhoneType3, Model.PhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                    new { @class = "form-control input-sm input-small", id = "ddlPhoneType3" })
+                            </div>
+                            <div class="pull-left margin-left-5">
+                                @Html.TextBoxFor(model => model.PhoneNo3, new
+                                {
+                                    @class = "form-control input-sm input-large",
+                                    @id = "txtPhoneNo3",
+                                    @maxlength = Constants.MaxLength.PhoneNo
+                                })
+                                @Html.ValidationMessageFor(model => model.PhoneNo3)
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                เบอร์แฟกซ์:
+                            </p>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.Fax, new { @class = "form-control input-sm", @id = "txtFax", @maxlength = Constants.MaxLength.PhoneNo })
+                            @Html.ValidationMessageFor(model => model.Fax)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                อีเมล์:
+                            </p>
+                        </div>
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control input-sm input-large", @id = "txtEmail", @maxlength = Constants.MaxLength.Email })
+                            @Html.ValidationMessageFor(model => model.Email)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            @*<div id="dvSaveContact" class="modal-footer" style="display:none;">
+                    <button type="button" class="btn btn-blue btn-sm btn-xsmall" id="btnSaveContact">
+                        <i class="fa fa-save"></i>&nbsp;Save
+                    </button>
+                    <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" id="btnCancelAttach">Cancel</button>
+                </div>*@
+            <div class="clearfix"></div>
+            <div id="dvContactDuplicateResult">
+                @if (Model.ContactList != null && Model.ContactList.Count() > 0)
+                {
+                    Html.RenderPartial("~/Views/Contact/_ContactDuplicateList.cshtml", Model);
+                }
+            </div>
+            <div class="clearfix"></div>
+            <div id="dvAddEditCustomerContact" style="display:none;">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="pull-left">
+                            <p class="form-control-static">
+                                สัญญาที่เกี่ยวข้อง <span id="reqCardNo" class="required-field-block">*</span>:
+                            </p>
+                        </div>
+                        <div class="pull-right">
+                            <button id="btnAddRelationship" type="button" class="btn btn-green btn-sm btn-small">
+                                New
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="row">
+                    <div id="dvRelationship" class="col-md-12 nopadding">
+                        @{ Html.RenderPartial("~/Views/Contact/_ContactRelationshipList.cshtml", Model); }
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-blue btn-sm btn-xsmall" id="btnSaveContact">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                <button type="button" class="btn btn-blue btn-sm btn-xsmall" id="btnSaveContactAll" style="display:none;">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                <button type="button" class="btn btn-gray btn-sm btn-xsmall" id="btnReEdit" style="display:none;">Re-Edit</button>
+                <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" id="btnCancelAll">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $jq(function () {
+
+        var dateFormat = 'dd/mm/yyyy';
+
+        // DateTime Picker
+        $jq('#datetimepicker1').datepicker({
+            format: dateFormat,
+            endDate: "0d",
+            showOnFocus: "false",
+            language: 'th'
+        }).on('changeDate', function (ev) {
+            $jq(this).datepicker('hide');
+        });
+
+        $jq('#btnAddRelationship').click(function () {
+            editContactRelationship();
+        });
+
+        $jq('#btnSaveContact').click(function (e) {
+            e.preventDefault();
+            $jq("#dvCustomerContactForm input[type='text'],#dvCustomerContactForm select").prop('disabled', false);
+            saveContact();
+            return false;
+        });
+        $jq('#btnSaveContactAll').click(function (e) {
+            e.preventDefault();
+            $jq("#dvCustomerContactForm input[type='text'],#dvCustomerContactForm select").prop('disabled', false);
+            saveContactAll();
+            return false;
+        });
+
+        $jq('#btnReEdit').click(function (e) {
+            //e.preventDefault();
+            //$jq("#dvCustomerContactForm input[type='text'],#dvCustomerContactForm select").prop('disabled', false);
+            //initEditForm();
+            //$jq("#dvContactDuplicateResult").html('');
+            //$jq("#btnSaveContact").show();
+            //$jq('#btnReEdit').hide();
+            //return false;
+
+            e.preventDefault();
+            var msg = 'ต้องการ Re-Edit ใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'doReEdit()', 'Confirm');
+            }
+            return false;
+        });
+
+        initEditForm();
+
+        $jq("#ddlSubscriptType").change(function (event) {
+            if ($jq(this).val() == '') {
+                $jq("#reqCardNo").hide();
+                $jq('#txtCardNo').val('').prop('disabled', true);
+            }
+            else {
+                $jq("#reqCardNo").show();
+                $jq('#txtCardNo').prop('disabled', false);
+            }
+            return false;
+        });
+
+        $jq("#btnCancelAll").click(function (e) {
+            e.preventDefault();
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'doCancelAll()', 'Confirm');
+            }
+            return false;
+        });
+
+    });
+
+    function doCancelAll() {
+        hideModal('modalWindow');
+        $jq('#editCustomerContactModal').modal('hide');
+        return false;
+    }
+
+    function doReEdit() {
+        hideModal('modalWindow');
+        $jq("#dvCustomerContactForm input[type='text'],#dvCustomerContactForm select").prop('disabled', false);
+        initEditForm();
+        $jq("#dvContactDuplicateResult").html('');
+        $jq("#btnSaveContact").show();
+        $jq('#btnReEdit').hide();
+        return false;
+    }
+
+    function initEditForm() {
+
+        if ($jq('#hddContactIsEdit').val() == '0') {
+            $jq("#dvCustomerContactForm input[type='text'],#dvCustomerContactForm select").prop('disabled', true);
+        }
+
+        if ($jq('#hddIsConfirm').val() == '1') {
+            $jq('#dvAddEditCustomerContact').show();
+            $jq("#btnSaveContact").hide();
+            $jq("#btnSaveContactAll").show();
+        }
+
+        if ($jq("#ddlSubscriptType").val() == "") {
+            $jq("#reqCardNo").hide();
+            $jq('#txtCardNo').prop('disabled', true);
+        }
+
+        initContactPhoneType();
+    }
+
+    function initContactPhoneType() {
+
+        if ($jq("#hddContactIsEdit").val() == false) {
+            $jq("#txtPhoneNo1").prop('disabled', true);
+            $jq("#txtPhoneNo2").prop('disabled', true);
+            $jq("#txtPhoneNo3").prop('disabled', true);
+        }
+        else {
+            $jq("#txtPhoneNo1").prop('disabled', ($jq("#ddlPhoneType1").val() == ''));
+            $jq("#txtPhoneNo2").prop('disabled', ($jq("#ddlPhoneType2").val() == ''));
+            $jq("#txtPhoneNo3").prop('disabled', ($jq("#ddlPhoneType3").val() == ''));
+        }
+
+        $jq("#ddlPhoneType1").change(function (event) {
+            if ($jq(this).val() == '') {
+                $jq("#txtPhoneNo1").val('').prop('disabled', true);
+            }
+            else {
+                $jq("#txtPhoneNo1").val('').prop('disabled', false);
+            }
+            return false;
+        });
+        $jq("#ddlPhoneType2").change(function (event) {
+            if ($jq(this).val() == '') {
+                $jq("#txtPhoneNo2").val('').prop('disabled', true);
+            }
+            else {
+                $jq("#txtPhoneNo2").val('').prop('disabled', false);
+            }
+            return false;
+        });
+        $jq("#ddlPhoneType3").change(function (event) {
+            if ($jq(this).val() == '') {
+                $jq("#txtPhoneNo3").val('').prop('disabled', true);
+            }
+            else {
+                $jq("#txtPhoneNo3").val('').prop('disabled', false);
+            }
+            return false;
+        });
+    }
+
+    function saveContact() {
+        clearServerErrors();
+        $jq('#hddIsConfirm').val('0');
+        //var formData = new FormData($jq('#form2').get(0));
+        var formData = $jq('#form2').serialize();
+
+        $jq.ajax({
+            url: '@Url.Action("ManageContactRlat", "Contact")',
+            type: "POST",
+            data: addAntiForgeryToken(formData),
+            //contentType: false,
+            //processData: false,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == null) {
+                    $jq("#dvContactDuplicateResult").html('');
+                    $jq("#dvContactDuplicateResult").html(result);
+                    $jq("#btnSaveContact").hide();
+                    $jq('#btnReEdit').show();
+                    //initContactPhoneType();
+                    initEditForm();
+                }
+                else if (result.Valid === true) {
+                    $jq('#hddContactIdEdit').val(result.contactId);
+                    $jq('#dvAddEditCustomerContact').show();
+                    $jq("#btnSaveContact").hide();
+                    $jq("#btnSaveContactAll").show();
+                    //initContactPhoneType();
+                    initEditForm();
+
+                } else {
+                    console.log(JSON.stringify(result));
+                    showServerErrors(result);
+                    //initContactPhoneType();
+                    initEditForm();
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+
+    function saveContactAll() {
+        clearServerErrors();
+        $jq('#hddIsConfirm').val('1');
+        //var formData = new FormData($jq('#form2').get(0));
+        var formData = $jq('#form2').serialize();
+        $jq.ajax({
+            url: '@Url.Action("ManageContactRlat", "Contact")',
+            type: "POST",
+            data: addAntiForgeryToken(formData),
+            //contentType: false,
+            //processData: false,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid === true) {
+                    loadData();
+                    $jq('#editCustomerContactModal').modal('hide');
+                } else {
+                    showServerErrors(result);
+                    //initContactPhoneType();
+                    initEditForm();
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+</script>

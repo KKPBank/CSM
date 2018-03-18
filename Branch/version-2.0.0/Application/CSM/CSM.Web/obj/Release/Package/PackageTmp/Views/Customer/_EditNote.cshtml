@@ -1,0 +1,226 @@
+﻿@model CSM.Web.Models.NoteViewModel
+<div class="modal-dialog modal-sm" style="min-width:800px;">
+    <div id="dvBrForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">บันทึก Note</h5>
+            @Html.HiddenFor(model => model.NoteId, new { @id = "hddNoteId" })
+            @Html.HiddenFor(model => model.CustomerId, new { @id = "hddCustomerId" })
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                วันที่มีผล <span class="required-field-block">*</span>:
+                            </p>
+                        </div>
+                        <div class="col-md-6 nopadding">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        @Html.TextBoxFor(model => model.EffectiveDate, new
+                                        {
+                                            @class = "form-control input-sm input-small",
+                                            @style = "min-width:100px",
+                                            @id = "EffectiveDate",
+                                            onchange = "validateDateValue($jq(this));"
+                                        })
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.EffectiveDate)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                วันที่หมดอายุ <span class="required-field-block">*</span>:
+                            </p>
+                        </div>
+                        <div class="col-md-6 nopadding">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        @Html.TextBoxFor(model => model.ExpiryDate, new
+                                        {
+                                            @class = "form-control input-sm input-small",
+                                            @style = "min-width:100px",
+                                            @id = "ExpiryDate",
+                                            onchange = "validateDateValue($jq(this));"
+                                        })
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.ExpiryDate)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <p class="form-control-static">
+                                รายละเอียด <span class="required-field-block">*</span>:
+                            </p>
+                        </div>
+                        <div class="col-md-7 nopadding">
+                            @Html.TextAreaFor(model => model.Detail, new 
+                            { 
+                                @id = "txtDetail", 
+                                @class = "form-control input-sm", 
+                                @style = "min-width:550px;min-height:150px;"
+                            })
+                            @Html.ValidationMessageFor(model => model.Detail)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                สร้างโดย :
+                            </p>
+                        </div>
+                        <div class="col-md-6 nopadding">
+                            @Html.TextBoxFor(model => model.CreateUser, new { @class = "form-control input-sm readonly", @style = "width:223px!important", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                วันที่สร้าง :
+                            </p>
+                        </div>
+                        <div class="col-md-6 nopadding">
+                            @Html.TextBoxFor(model => model.CreateDate, new { @class = "form-control input-sm readonly", @style = "width:165px!important", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                แก้ไขโดย :
+                            </p>
+                        </div>
+                        <div class="col-md-6 nopadding">
+                            @Html.TextBoxFor(model => model.UpdateUser, new { @class = "form-control input-sm readonly", @style = "width:223px!important", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 nopadding">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <p class="form-control-static">
+                                วันที่แก้ไข :
+                            </p>
+                        </div>
+                        <div class="col-md-6 nopadding">
+                            @Html.TextBoxFor(model => model.UpdateDate, new { @class = "form-control input-sm readonly", @style = "width:165px!important", @disabled = "disabled" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-blue btn-sm btn-xsmall" onclick="" id="btnNoteSave">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+                @*<button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" aria-hidden="true">Cancel</button>*@
+                <button type="button" class="btn btn-gray btn-sm btn-xsmall" onclick="" id="btnCancelEditNote">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $jq(function () {
+
+        var dateFormat = 'dd/mm/yyyy';
+
+        // DateTime Picker From Date
+        $jq('#datetimepicker1').datepicker({
+            format: dateFormat,
+            showOnFocus: "false",
+            language: 'th'
+        }).on('changeDate', function (ev) {
+            $jq(this).datepicker('hide');
+        });
+
+        // DateTime Picker To Date
+        $jq('#datetimepicker2').datepicker({
+            format: dateFormat,
+            showOnFocus: "false",
+            language: 'th'
+        }).on('changeDate', function (ev) {
+            $jq(this).datepicker('hide');
+        });
+        
+        $jq('#btnNoteSave').click(function (e) {
+            e.preventDefault();
+            saveNote();
+            return false;
+        });
+
+        $jq("#btnCancelEditNote").click(function (e) {
+            e.preventDefault();
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'doCancelEditNote()', 'Confirm');
+            }
+            return false;
+        });
+    });
+
+    function doCancelEditNote() {
+        hideModal('modalWindow');
+        $jq('#editNoteModal').modal('hide');
+        return false;
+    }
+
+    function saveNote() {
+        clearServerErrors();
+        var objNote = $jq("#form2").serialize();
+
+        $jq.ajax({
+            url: '@Url.Action("SaveNote", "Customer")',
+            type: "POST",
+            data: objNote,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid === true) {
+                    loadNoteData();
+                    $jq('#editNoteModal').modal('hide');
+                } else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+</script>

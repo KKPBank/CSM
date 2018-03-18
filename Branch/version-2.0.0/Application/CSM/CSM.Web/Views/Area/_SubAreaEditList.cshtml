@@ -1,0 +1,128 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using MvcPaging
+@model CSM.Web.Models.AreaEditViewModel
+@helper LabelForSort(string headerText, string fieldName, string sortField, string sortOrder)
+{
+    <a href="javascript:;" onclick="sortField('@fieldName');return false;">
+        @headerText
+        @if (fieldName.ToLower().Equals(sortField.ToLower()))
+        {
+            if (sortOrder.Equals("ASC"))
+            {<i class="fa fa-sort-asc"></i>}
+            else
+            {<i class="fa fa-sort-desc"></i> }
+        }
+        else
+        {<i class="fa fa-sort"></i>}
+    </a>
+}
+
+<hr class="dashed-line clear" />
+@if (Model.SubAreaList == null || Model.SubAreaSearchFilter.TotalRecords == 0)
+{
+    string sortField = Model.SubAreaSearchFilter.SortField;
+    string sortOrder = Model.SubAreaSearchFilter.SortOrder;
+
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="center" style="width: 10% !important;">Action</th>
+                    <th>Sub Area Name</th>
+                    <th>Sub Area Code</th>
+                    <th style="width: 10% !important;">สถานะ</th>
+                    <th style="width: 10% !important;">แก้ไขโดย</th>
+                    <th style="width: 10% !important;">วันที่แก้ไข</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string sortField = Model.SubAreaSearchFilter.SortField;
+    string sortOrder = Model.SubAreaSearchFilter.SortOrder;
+
+@*    <div class="form-inline nopadding">*@
+@*        <div class="form-group">*@
+@*            @Html.Raw(Html.Pager(*@
+@*                new Options*@
+@*                {*@
+@*                    PageSize = Model.SubAreaSearchFilter.PageSize,*@
+@*                    TotalItemCount = Model.SubAreaSearchFilter.TotalRecords,*@
+@*                    CurrentPage = Model.SubAreaSearchFilter.PageNo,*@
+@*                    ItemTexts = new ItemTexts*@
+@*                    {*@
+@*                        First = "<i class='fa fa-step-backward' style='font-size: 0.8em'></i>",*@
+@*                        Previous = "<i class='fa fa-caret-left'></i>",*@
+@*                        Next = "<i class='fa fa-caret-right'></i>",*@
+@*                        Last = "<i class='fa fa-step-forward' style='font-size: 0.8em'></i>"*@
+@*                    },*@
+@*                    IsShowFirstLast = true,*@
+@*                    CssClass = "pager",*@
+@*                    IsShowInputPage = true*@
+@*                },*@
+@*                new { PageSize = ViewBag.PageSize }))*@
+@*        </div>*@
+@*        <div class="form-group">*@
+@*            @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "15", 15 }, { "30", 30 } }, "Key", "Value"), new { @class = "form-control input-xs", id = "pagesizelist" })*@
+@*        </div>*@
+@*        <div class="form-group text-nowrap margin-left-8">*@
+@*            <strong>*@
+@*                @MvcHtmlString.Create(string.Format(Resource.Lbl_Paging, @Model.SubAreaSearchFilter.FirstPageIndex, @Model.SubAreaSearchFilter.LastPageIndex, @Model.SubAreaSearchFilter.TotalRecords))*@
+@*            </strong>*@
+@*        </div>*@
+@*    </div>*@
+    <div class="clearfix"></div>
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th class="center" style="width: 5% !important;">Action</th>
+                    <th>Sub Area</th>
+                    <th>Sub Area Code</th>
+                    <th>สถานะ</th>
+                    <th>แก้ไขโดย</th>
+                    <th>วันที่แก้ไข</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.SubAreaList)
+            {
+                var isActive = item.IsActive ? "Active" : "Inactive";
+                var fullName = item.CreateUser != null ? item.CreateUser.FullName : "";
+                <tr>
+                    <td class="center">
+                        <input type="hidden" class="hiddenSubAreaData"
+                               subarea_id="@item.SubAreaId"
+                               name="@item.SubAreaName"
+                               code="@item.SubAreaCode"
+                               isactive="@isActive"
+                               update_name="@fullName"
+                               update_time="@DateUtil.ToStringAsDateTime(item.UpdateDateTime)" />
+                        <input type="hidden" class="hiddenSubAreaId" subarea_id="@item.SubAreaId" />
+                        <a href='javascript:;' class="delete-active" title="edit" onclick='onDeleteSubAreaRow(@item.SubAreaId)'></a>
+                    </td>
+                    <td>@item.SubAreaName</td>
+                    <td class="center">
+                        @item.SubAreaCode
+                    </td>
+                    <td class="center">
+                        @isActive
+                    </td>
+                    <td>@fullName</td>
+                    <td>@DateUtil.ToStringAsDateTime(item.UpdateDateTime)</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+

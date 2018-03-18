@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd1" namespace="UpdateCustomerFlags" />
+  <xs:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd3" namespace="CampaignByCustomer" />
+  <xs:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd5" namespace="CampaignByCustomers" />
+  <xs:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd7" namespace="CampaignByTeam" />
+  <xs:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd9" namespace="CampaignSearch" />
+  <xs:element name="UpdateCustomerFlagsRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="UpdateCustomerFlags" minOccurs="0" maxOccurs="1" ref="q1:UpdateCustFlag" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CampaignByCustomerRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="CampaignByCustomer" minOccurs="0" maxOccurs="1" ref="q2:CampByCitizenIdBody" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CampaignByCustomersRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="CampaignByCustomers" minOccurs="0" maxOccurs="1" ref="q3:CampByCitizenIdBody" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CampaignByTeamRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="CampaignByTeam" minOccurs="0" maxOccurs="1" ref="q4:CampByTeamBody" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CampaignByStatusRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="CampaignSearch" minOccurs="0" maxOccurs="1" ref="q5:CampaignSearchBody" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

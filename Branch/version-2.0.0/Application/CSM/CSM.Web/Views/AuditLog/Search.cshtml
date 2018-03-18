@@ -1,0 +1,360 @@
+﻿@model CSM.Web.Models.AuditLogViewModel
+@using CSM.Common.Resources;
+@{
+    ViewBag.Title = Resource.Lbl_SearchAuditLogBatchMonitoring;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" })</strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_SearchAuditLogBatchMonitoring</strong>
+}
+
+@using (Html.BeginForm("Search", "AuditLog", FormMethod.Post, new { @class = "form-horizontal", @id = "form1", @DefaultButton = "btnSearch" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">@Resource.Lbl_SearchAuditLogBatchMonitoring</h5>
+        <div class="row margin-top-10">
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">ชื่อ-นามสกุลพนักงาน</p>
+                    </div>
+                    <div class="col-md-8 nopadding">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.SearchFilter.FirstName, new { @class = "form-control input-sm", @id = "txtFirstName" })
+                                @Html.ValidationMessageFor(model => model.SearchFilter.FirstName)
+                            </div>
+                            <div class="form-group margin-left-5 margin-right-5">
+                                -
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.SearchFilter.LastName, new { @class = "form-control input-sm", @id = "txtLastName" })
+                                @Html.ValidationMessageFor(model => model.SearchFilter.LastName)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">วันที่เริ่มต้น</p>
+                    </div>
+                    <div class="col-md-8 nopadding">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker1'>
+                                    <input type="text" id="txtFromDate" class="form-control input-sm" style="width:100px!important;" onchange="validateDateValue($jq(this));" />
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.SearchFilter.DateFrom)
+                            </div>
+                            <div class="form-group margin-left-5 margin-right-5">
+                                วันที่สิ้นสุด
+                            </div>
+                            <div class="form-group">
+                                <div class='input-group date input-small' id='datetimepicker2'>
+                                    <input type="text" id="txtToDate" class="form-control input-sm" style="width:100px!important;" onchange="validateDateValue($jq(this));" />
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.SearchFilter.DateTo)
+                            </div>
+                        </div>
+                        <div class="dvDateRange"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            Module
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.DropDownListFor(model => model.SearchFilter.Module, new SelectList(ViewBag.Module, "Value", "Text"),
+                            Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @id = "ddlModlule" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">Action</p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.DropDownListFor(model => model.SearchFilter.Module, new SelectList(ViewBag.Action, "Value", "Text"),
+                            Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @id = "ddlAction" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            สถานะ
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.DropDownListFor(model => model.SearchFilter.Status, new SelectList(ViewBag.Status, "Value", "Text"),
+                            Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @id = "ddlStatus" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="panel-actions">
+        <div class="pull-right">
+            <div class="form-inline">
+                <div class="form-group">
+                    <button id="btnSearch" type="button" class="btn btn-blue btn-sm btn-xsmall">
+                        <i class="fa fa-search"></i>&nbsp;Search
+                    </button>
+                </div>
+                <div class="form-group">
+                    <button id="btnReset" type="button" class="btn btn-gray btn-sm btn-xsmall">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="dvSearchResult">
+        @if (Model.AuditLogList != null)
+        {
+            Html.RenderPartial("~/Views/AuditLog/_AuditLogList.cshtml", Model);
+        }
+    </div>
+}
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        var searchFilter;
+        var successFilter;
+
+        $jq(function () {
+            initializeSearchFilter();
+
+            $jq("#ddlAction").prop('disabled', true);
+
+            $jq("#form1").keypress(function (e) {
+                var kCode = e.keyCode || e.charCode; //for cross browser
+                if (kCode == 13) {
+                    var defaultbtn = $jq(this).attr("DefaultButton");
+                    $jq("#" + defaultbtn).focus();
+                    $jq("#" + defaultbtn).click();
+                    return false;
+                }
+            });
+
+            $jq("#btnSearch").click(function (e) {
+                e.preventDefault();
+                clearServerErrors();
+                searchFilter.FirstName = $jq("#txtFirstName").val().trim(),
+                    searchFilter.LastName = $jq("#txtLastName").val().trim(),
+                    searchFilter.DateFrom = $jq("#txtFromDate").val(),
+                    searchFilter.DateTo = $jq("#txtToDate").val(),
+                    searchFilter.Module = $jq("#ddlModlule").val(),
+                    searchFilter.Action = $jq("#ddlAction").val(),
+                    searchFilter.Status = $jq("#ddlStatus").val(),
+                    searchFilter.PageNo = 1;
+                loadData();
+                return false;
+            });
+
+            $jq("#btnReset").click(function (e) {
+                e.preventDefault();
+                //$jq('[id^=datetimepicker]').datepicker("setDate", new Date());
+                $jq('#datetimepicker1').datepicker("setDate", (new Date()).toDateString());
+                $jq('#datetimepicker2').datepicker("setDate", (new Date()).toDateString());
+                $jq("#dvForm input[type='text'],#dvForm select").val('');
+                $jq('#datetimepicker1').datepicker("update");
+                $jq('#datetimepicker2').datepicker("update");
+
+                initializeSearchFilter();
+                $jq("#dvSearchResult").html('');
+                $jq("#ddlAction").prop('disabled', true);
+                clearServerErrors();
+                return false;
+            });
+
+            var dateFormat = 'dd/mm/yyyy';
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker1').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker To Date
+            $jq('#datetimepicker2').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            $jq('#ddlModlule').change(function () {
+                if ($jq(this).val() == "") {
+                    $jq("#ddlAction").prop('disabled', true);
+                } else {
+                    $jq("#ddlAction").prop('disabled', false);
+                }
+                InitialDropdownModluleChange();
+            });
+
+        });
+
+        function initializeSearchFilter() {
+            searchFilter = {
+                FirstName: $jq("#txtFirstName").val(),
+                LastName: $jq("#txtLastName").val(),
+                DateFrom: $jq("#txtFromDate").val(),
+                DateTo: $jq("#txtToDate").val(),
+                Module: $jq("#ddlModlule").val(),
+                Action: $jq("#ddlAction").val(),
+                Status: $jq("#ddlStatus").val(),
+                PageNo: '@Model.SearchFilter.PageNo',
+                PageSize: '@Model.SearchFilter.PageSize',
+                SortField: '@Model.SearchFilter.SortField',
+                SortOrder: '@Model.SearchFilter.SortOrder'
+            };
+            successFilter = searchFilter;
+        };
+
+        function initializePaging() {
+            $jq("#dvSearchResult .input-page").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = $jq(this).val();
+                loadData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchResult #pagesizelist").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadData();
+                return false;
+            });
+
+            $jq('#dvSearchResult .pagination ul li a').on('click', function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadData();
+                return false;
+            });
+
+            try {
+                $jq("#tblAuditLog").tableHeadFixer({ "head": false, "left": 4 });
+            }
+            catch (e) { }
+        };
+
+        function sortField(selectedSortField) {
+            if (selectedSortField == searchFilter.SortField)
+                searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            loadData();
+        }
+
+        function loadData() {
+            if (searchFilter.FirstName == "" && searchFilter.LastName == "" && searchFilter.DateFrom == "" && searchFilter.DateTo == ""
+                && searchFilter.Module == "" && searchFilter.Action == "" && searchFilter.Status == "") {
+                var warningMsg = '@Resource.Msg_EnteredAtLeastOneCriteria';
+                doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+                return false;
+            }
+
+            $jq.ajax({
+                url: '@Url.Action("AuditLogList", "AuditLog")',
+                type: "POST",
+                data: addAntiForgeryToken(searchFilter),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResult").html('');
+                        successFilter = searchFilter;
+                        $jq("#dvSearchResult").html(result);
+                        initializePaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+            return false;
+        }
+
+        function InitialDropdownModluleChange() {
+
+            var param = { module: $jq("#ddlModlule").val() }
+            $jq.ajax({
+                url: '@Url.Action("LoadActionByModule", "AuditLog")',
+                type: "POST",
+                data: addAntiForgeryToken(param),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == true) {
+                        lstAction = result.lstAction;
+                        bindAction();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+            return false;
+        }
+
+        var lstAction
+
+        function bindAction() {
+            var options = $jq('#ddlAction');
+            options.empty();
+            options.append($jq("<option />").val("").text('@Resource.Ddl_PleaseSelect'));
+            $jq.each(lstAction, function () {
+                options.append($jq("<option />").val(this.Value).text(this.Text));
+            });
+        }
+    </script>
+}

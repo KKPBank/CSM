@@ -1,0 +1,75 @@
+﻿@model CSM.Web.Models.ExistingLeadViewModel
+@using CSM.Common.Resources
+@using CSM.Common.Securities
+@using CSM.Common.Utilities
+@using CSM.Web.Models
+
+@{
+    var usernameEncrypt = string.Empty;
+    if (!string.IsNullOrEmpty(ViewBag.Username))
+    {
+        var encrypt = StringCipher.Encrypt(ViewBag.Username, ViewBag.SLMEncryptPassword);
+        usernameEncrypt = HttpUtility.UrlEncode(encrypt);
+    }
+
+    var subscriptionTypeCode = string.Empty;
+    if (Model.CustomerInfo.SubscriptType != null)
+    {
+        subscriptionTypeCode = Model.CustomerInfo.SubscriptType.SubscriptTypeCode;
+    }
+
+    //if (TempData["CustomerInfo"] != null)
+    //{
+    //    var model = (CustomerInfoViewModel)TempData["CustomerInfo"];
+    //    subscriptionTypeCode = model.SubscriptType.SubscriptTypeCode;
+    //}
+}
+
+<div class="table-responsive margin-top-10">
+    
+
+    <table class="table table-hover datatable">
+        <thead>
+        <tr>
+            <th style="width: 5% !important;">Action</th>
+            <th style="width: 10% !important;">Ticket ID</th>
+            <th style="width: 20% !important;">ชื่อลูกค้า</th>
+            <th style="width: 20% !important;">นามสกุลลูกค้า</th>
+            <th style="width: 10% !important;">สถานะของ Lead</th>
+            <th style="width: 10% !important;">Campaign</th>
+            <th style="width: 5% !important;">ช่องทาง</th>
+            <th style="width: 10% !important;">Owner Lead</th>
+            <th style="width: 10% !important;">วันที่สร้าง Lead</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (Model.Ticket == null || Model.Ticket.Items == null || !Model.Ticket.Items.Any())
+        {
+            <tr>
+                <td colspan="9" class="center">@Resource.Msg_NoRecords</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model.Ticket.Items)
+            {
+                <tr>
+                    <td class="center">
+                        <a href="@string.Format(ViewBag.SLMUrlNewLead, usernameEncrypt, item.FirstName, item.LastName, item.ChannelId, item.TelNo1, item.CampaignCode, subscriptionTypeCode, item.CardNo)" class="add" title="New Lead" target="_blank"></a>
+                        <span class="line-space"></span>
+                        <a href="@string.Format(ViewBag.SLMUrlViewLead, usernameEncrypt, item.TicketId)" class="view" title="View" target="_blank"></a>
+                    </td>
+                    <td>@item.TicketId</td>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.StatusDesc</td>
+                    <td>@item.CampaignCode</td>
+                    <td>@item.ChannelId</td>
+                    <td>@item.OwnerLead</td>
+                    <td class="center">@item.CreatedDate.FormatDateTime(Constants.DateTimeFormat.DefaultFullDateTime)</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>

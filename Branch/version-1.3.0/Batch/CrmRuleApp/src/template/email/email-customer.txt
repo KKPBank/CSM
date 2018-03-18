@@ -1,0 +1,7 @@
+ขอบคุณค่ะ ธนาคารได้รับข้อมูลท่านแล้ว จะติดต่อกลับภายในวันเวลาทำการถัดไปค่ะ ( Service Request ID;%SR_ID% ) สอบถามโทร 02-680-3333
+Email Message:
+Service Request ID : %SR_ID%
+Customer Name: %CUSTOMOER_NAME%
+เลขบัตรประชาชน/เลขนิติบุคคล : %SUBSCRIPTION_ID%
+Created By : %CREATE_BY%
+Created Date : %CREATE_DATE%

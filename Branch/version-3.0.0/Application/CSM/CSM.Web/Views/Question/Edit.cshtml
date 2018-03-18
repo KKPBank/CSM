@@ -1,0 +1,161 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.QuestionViewModel
+
+@{
+    ViewBag.Title = "Edit Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    @*<strong class="font-blue">Question &rsaquo;&rsaquo;</strong>*@
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink("Search Question", "Index", "Question", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; Edit Question</strong>
+}
+<form id="form1" method="post">
+    <div class="form-horizontal">
+        <h5 class="form-title">Edit Question</h5>
+        <hr class="dotted-line" />
+        <div class="bs-example">
+            <div class="row margin-top-15">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">คำถาม <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        @Html.HiddenFor(model => model.QuestionId, new { @class = "form-control", @id = "hdnQuestionId" })
+                        @Html.TextAreaFor(model => model.QuestionName, new { @class = "form-control input-sm", @id = "txtQuestionName", @maxlength = "8000" })
+                        @Html.ValidationMessageFor(model => model.QuestionName)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">สถานะ <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(model => model.Status, Model.QuestionIsActiveList, new { @class = "form-control input-sm", id = "selectStatus" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">สร้างโดย :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.HiddenFor(model => model.CreateUser, new { @class = "form-control input-sm", @id = "hdnCreateUser" })
+                        @Html.TextBoxFor(model => model.CreateUserName.FullName, new { @class = "form-control input-sm", @id = "txtCreateUser", @disabled = "disabled", @value = "" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">วันที่สร้าง :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.HiddenFor(model => model.CreateDate, new { @class = "form-control input-sm", @id = "hdnCreateDate" })
+                        @Html.TextBoxFor(model => model.CreateDate, new { @class = "form-control input-sm", @id = "txtCreateDate", @disabled = "disabled", @value = "" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">แก้ไขโดย :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.HiddenFor(model => model.UpdateUser, new { @class = "form-control input-sm", @id = "hdnUpdateUser" })
+                        @Html.TextBoxFor(model => model.UpdateUserName.FullName, new { @class = "form-control input-sm", @id = "txtUpdateUser", @disabled = "disabled", @value = "" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">วันที่แก้ไข :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.HiddenFor(model => model.UpdateDate, new { @class = "form-control input-sm", @id = "hdnUpdateDate" })
+                        @Html.TextBoxFor(model => model.UpdateDate, new { @class = "form-control input-sm", @id = "txtUpdateDate", @disabled = "disabled", @value = "" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-12 text-right">
+                        <button id="btnSave" type="button" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Save</button>
+                        <button id="btnBack" type="button" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@Html.Partial("_Antiforgery")
+@section masterjs
+{
+    <script type="text/javascript">
+        $jq(document).ready(function () {
+            $jq('#btnBack').click(onBtnBackClick);
+            $jq('#btnSave').click(onBtnSaveClick);
+        });
+
+        function onBtnBackClick() {
+            location.replace('@Url.Action("Index", "Question")');
+        }
+
+        function onBtnSaveClick() {
+
+            if ($jq("#form1").valid()) {
+                var questionName = $jq("#txtQuestionName").val();
+                var status = $jq("#selectStatus").val();
+                var questionId = $jq("#hdnQuestionId").val();
+                var createDate = $jq("#hdnCreateDate").val();
+                var createUser = $jq("#hdnCreateUser").val();
+                var updateDate = $jq("#hdnUpdateDate").val();
+                var updateUser = $jq("#hdnUpdateUser").val();
+
+                $jq.ajax({
+                    url: "@Url.Action("SaveQuestion", "Question")",
+                    method: "POST",
+                    data: {
+                        __RequestVerificationToken: getAntiForgeryToken(),
+                        QuestionName: questionName,
+                        Status: status,
+                        QuestionId: questionId,
+                        CreateDate: createDate,
+                        CreateUser: createUser
+                    }
+                })
+                    .done(function (result) {
+                        if (typeof (result) == "string") {
+                            if (isLoginForm(result)) {
+                                location.replace('@FormsAuthentication.LoginUrl');
+                                return;
+                            }
+                        }
+                        if (result.is_success) {
+                            doModalWithCloseEvent("dvAlertMsg", "Message Dialog", result.message, "onSaveSuccess()");
+                            return false;
+                        } else {
+                            var warningMsg = result.message;
+                            doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                        }
+                    }).fail(function () {
+
+                    });
+            }
+        }
+
+        function onSaveSuccess() {
+            location.replace('@Url.Action("Index", "Question")');
+        }
+
+        function onBtnBackClick(event) {
+            event.preventDefault();
+            location.replace('@Url.Action("Index", "Question")');
+        }
+</script>
+
+}

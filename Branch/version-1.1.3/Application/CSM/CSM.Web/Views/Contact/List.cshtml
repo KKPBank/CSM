@@ -1,0 +1,302 @@
+﻿@using CSM.Entity
+@using CSM.Common.Resources
+@model CSM.Web.Models.CustomerContactViewModel
+@{
+    ViewBag.Title = Resource.Lbl_CustomerInformation;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink(Resource.Lbl_SearchCustomer, "Search", "Customer", new { @skip = "1" }, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_CustomerInformation </strong>
+}
+
+@if (Model != null)
+{
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">@Resource.Lbl_CustomerInformation</h5>
+        @Html.HiddenFor(model => model.CustomerInfo.CustomerId, new { @id = "hddCustomerId" })
+        @if (Model.CustomerInfo != null)
+        {
+            Html.RenderPartial("~/Views/Customer/_CustomerInfo.cshtml", Model.CustomerInfo);
+        }
+        <div class="clearfix"></div>
+
+        @Html.Action("CustomerTab", "MenuNavigator", new { selectedTab = CustomerTabCode.Contact, customerId = @Model.CustomerInfo.CustomerId })
+
+        <div class="pull-left padding-top-10">
+            <button id="btnAddContact" type="button" class="btn btn-green btn-sm">
+                <i class="fa fa-plus"></i>&nbsp;New Contact
+            </button>
+        </div>
+        <div class="clearfix"></div>
+        <div class="tab-content clear">
+            <div id="tabContact" class="tab-pane fade in active">
+                <div id="dvSearchResult">
+                    @if (Model.ContactList != null)
+                    {
+                        Html.RenderPartial("~/Views/Contact/_CustomerContactList.cshtml", Model);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="clearfix"></div>
+<!-- Edit CustomerContact -->
+<div id="editCustomerContactModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("InitEditCustomerContact", "Contact")'>
+    @using (Html.BeginForm("EditCustomerContact", "Contact", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", @id = "form2" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div id='customerContactContainer'>
+        </div>
+    }
+</div>
+<!-- Edit ContactRelationship -->
+<div id="editContactRelationshipModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("InitEditContactRelationship", "Contact")'>
+    @using (Html.BeginForm("EditContactRelationship", "Contact", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", @id = "form3" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div id='contactRelationshipContainer'>
+        </div>
+    }
+</div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        var searchFilter;
+        var successFilter;
+
+        $jq(document).ready(function () {
+            initializeSearchFilter();
+            initializePaging();
+
+            $jq('#btnAddContact').click(function () {
+                editCustomerContact();
+            });
+        });
+
+        function initializeSearchFilter() {
+            searchFilter = {
+                CustomerId: $jq("#hddCustomerId").val(),
+                PageNo: '@Model.SearchFilter.PageNo',
+                PageSize: '@Model.SearchFilter.PageSize',
+                SortField: '@Model.SearchFilter.SortField',
+                SortOrder: '@Model.SearchFilter.SortOrder'
+            };
+            successFilter = searchFilter;
+        };
+
+        function initializePaging() {
+            $jq("#dvSearchResult .input-page").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = $jq(this).val();
+                loadData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchResult #pagesizelist").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadData();
+                return false;
+            });
+
+            $jq('#dvSearchResult .pagination ul li a').on('click', function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadData();
+                return false;
+            });
+
+            try {
+                $jq("#tblContactList").tableHeadFixer({ "head": false, "left": 3 });
+            }
+            catch (e) { }
+        };
+
+        function loadData() {
+            $jq.ajax({
+                url: '@Url.Action("CustomerContactList", "Contact")',
+                type: "POST",
+                data: addAntiForgeryToken(searchFilter),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResult").html('');
+                        successFilter = searchFilter;
+                        $jq("#dvSearchResult").html(result);
+                        initializePaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        };
+
+        function sortField(selectedSortField) {
+            if (selectedSortField == searchFilter.SortField)
+                searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            loadData();
+        }
+
+        var CustomerContactIdDel;
+        function deleteCustomerContact(customerContactId) {
+            CustomerContactIdDel = customerContactId;
+            doModal('dvAlertMsg', 'Confirm Dialog', 'ต้องการลบข้อมูลใช่หรือไม่?', 'doDeleteCustomerContact()', 'Confirm');
+        }
+
+        function doDeleteCustomerContact() {
+            $jq("#modalWindow").modal('hide');
+            // set data
+            var paramData = {
+                customerContactId: CustomerContactIdDel
+            }
+
+            $jq.ajax({
+                url: '@Url.Action("DeleteCustomerContact", "Contact")',
+                type: "POST",
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == true) {
+                        loadData();
+                    } else {
+                        //var errorMsg = String.format('<strong></strong>&nbsp;{0}', result.Error);
+                        //doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function editCustomerContact(contactId) {
+            var url = $jq('#editCustomerContactModal').data('url');
+
+            // set data
+            var paramData = {
+                contactId: contactId,
+                customerId: $jq('#hddCustomerId').val()
+            }
+
+            $jq.ajax({
+                type: 'POST',
+                url: url,
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    $jq('#customerContactContainer').html(result);
+                    $jq('#editCustomerContactModal').modal('show');
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function loadContactRelationship() {
+            var objContact = $jq("#form2").serialize();
+
+            $jq.ajax({
+                url: '@Url.Action("ContactRelationshipList", "Contact")',
+                type: "POST",
+                data: objContact,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvRelationship").html('');
+                        $jq("#dvRelationship").html(result);
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        };
+
+        function editContactRelationship(rowId) {
+            var url = $jq('#editContactRelationshipModal').data('url');
+            var jsonObj = {};
+            jsonObj["JsonContactRelationship"] = $jq('#hddJsonContactRelationship').val();
+            jsonObj["CustomerId"] = $jq('#hddCustomerId').val();
+            jsonObj["ListIndex"] = rowId;
+
+            $jq.ajax({
+                type: 'POST',
+                url: url,
+                data: { jsonData: JSON.stringify(jsonObj) },
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    $jq('#contactRelationshipContainer').html(result);
+                    $jq('#editContactRelationshipModal').modal('show');
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function initNewSR(customerId, accountId, customerContactId) {
+            var actionUrl = '@Url.Action("Create", "ServiceRequest")';
+            $jq('#dvTarget').html('');
+            var inputCustomerId = $jq("<input>").attr("type", "hidden").attr("name", "CustomerId").val(customerId);
+            var inputAccountId = $jq("<input>").attr("type", "hidden").attr("name", "AccountId").val(accountId);
+            var inputCustomerContactId = $jq("<input>").attr("type", "hidden").attr("name", "CustomerContactId").val(customerContactId);
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').append($jq(inputCustomerId));
+            $jq('#dvTarget form').append($jq(inputAccountId));
+            $jq('#dvTarget form').append($jq(inputCustomerContactId));
+            $jq('#dvTarget form').submit();
+        }
+    </script>
+}

@@ -1,0 +1,154 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using MvcPaging
+@model CSM.Web.Models.AreaViewModel
+@helper LabelForSort(string headerText, string fieldName, string sortField, string sortOrder)
+{
+    <a href="javascript:;" onclick="sortField('@fieldName');return false;">
+        @headerText
+        @if (fieldName.ToLower().Equals(sortField.ToLower()))
+        {
+            if (sortOrder.Equals("ASC"))
+            {<i class="fa fa-sort-asc"></i>}
+            else
+            {<i class="fa fa-sort-desc"></i> }
+        }
+        else
+        {<i class="fa fa-sort"></i>}
+    </a>
+}
+
+<hr class="dashed-line clear"/>
+@if (Model.SelectSubAreaList == null || Model.SelectSearchFilter.TotalRecords == 0)
+{
+    string sortField = Model.SelectSearchFilter.SortField;
+    string sortOrder = Model.SelectSearchFilter.SortOrder;
+
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+            <tr>
+                <th></th>
+                <th class="center" style="width: 10% !important;">Action</th>
+                <th>Sub Area Name</th>
+                <th>Sub Area Code</th>
+                <th style="width: 10% !important;">สถานะ</th>
+                <th style="width: 10% !important;">แก้ไขโดย</th>
+                <th style="width: 10% !important;">วันที่แก้ไข</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string sortField = Model.SelectSearchFilter.SortField;
+    string sortOrder = Model.SelectSearchFilter.SortOrder;
+
+    <div class="form-inline nopadding">
+        <div class="form-group">
+            @Html.Raw(Html.Pager(
+                new Options
+                {
+                    PageSize = Model.SelectSearchFilter.PageSize,
+                    TotalItemCount = Model.SelectSearchFilter.TotalRecords,
+                    CurrentPage = Model.SelectSearchFilter.PageNo,
+                    ItemTexts = new ItemTexts
+                    {
+                        First = "<i class='fa fa-step-backward' style='font-size: 0.8em'></i>",
+                        Previous = "<i class='fa fa-caret-left'></i>",
+                        Next = "<i class='fa fa-caret-right'></i>",
+                        Last = "<i class='fa fa-step-forward' style='font-size: 0.8em'></i>"
+                    },
+                    IsShowFirstLast = true,
+                    CssClass = "pager",
+                    IsShowInputPage = true
+                },
+                new { PageSize = ViewBag.PageSize }))
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "15", 15 }, { "30", 30 } }, "Key", "Value"), new { @class = "form-control input-xs", id = "pagesizelist" })
+        </div>
+        <div class="form-group text-nowrap margin-left-8">
+            <strong>
+                @MvcHtmlString.Create(string.Format(Resource.Lbl_Paging, @Model.SelectSearchFilter.FirstPageIndex, @Model.SelectSearchFilter.LastPageIndex, @Model.SelectSearchFilter.TotalRecords))
+            </strong>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+            <tr>
+                <th class="center" style="width: 30px !important;">
+                    <input id="ckbAll" type="checkbox" onclick='onCkbAllClick()'/>
+                </th>
+                <th class="center" style="width: 5% !important;">Action</th>
+                <th>@LabelForSort("Sub Area Name", "SubAreaName", sortField, sortOrder)</th>
+                <th>Sub Area Code</th>
+                <th>สถานะ</th>
+                <th>แก้ไขโดย</th>
+                <th>วันที่แก้ไข</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.SelectSubAreaList)
+            {
+                var isActive = item.IsActive ? "Active" : "Inactive";
+                var fullName = item.UpdateUser != null ? item.UpdateUser.FullName : "";
+                var subAreaCode = string.IsNullOrEmpty(item.SubAreaCode) ? item.SubAreaCode : item.SubAreaCode.Trim();
+
+                <tr>
+                    <td class="center">
+                        <input type="checkbox" class="ckb" subarea_id="@item.SubAreaId"
+                               name="@item.SubAreaName"
+                               code="@subAreaCode"
+                               isactive="@isActive"
+                               update_name="@fullName"
+                               update_time="@DateUtil.ToStringAsDateTime(item.UpdateDateTime)" />
+                    </td>
+                    <td class="center">
+                        <a href='javascript:;' class="edit-active" title="edit" onclick='onBtnEditSubArea(@item.SubAreaId)'></a>
+                    </td>
+                    <td>@item.SubAreaName</td>
+                    <td class="center">@item.SubAreaCode</td>
+                    <td class="center">
+                        @isActive
+                    </td>
+                    <td>@fullName</td>
+                    <td>@DateUtil.ToStringAsDateTime(item.UpdateDateTime)</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+
+<script type="text/javascript">
+    
+    $jq(function () {
+        $jq(".ckb").change(function () {
+            var checkboxList = $jq(".ckb");
+            for (var i = 0; i < checkboxList.length; i++) {
+                if (!checkboxList[i].checked) {
+                    $jq("#ckbAll")[0].checked = false;
+                    return;
+                }
+            }
+
+            $jq("#ckbAll")[0].checked = true;
+        });
+    });
+
+    function onCkbAllClick() {
+        $jq(".ckb").each(function () {
+            $jq(this)[0].checked = $jq("#ckbAll")[0].checked;
+        })
+    }
+
+</script>

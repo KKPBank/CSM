@@ -1,0 +1,725 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.SlaCreateModel
+@{
+    ViewBag.Title = "New SLA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    @*<strong class="font-blue">SLA &rsaquo;&rsaquo;</strong>*@
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink("Search SLA", "Search", "Sla", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; New SLA </strong>
+}
+
+<form id="form1" class="form-horizontal">
+    @Html.AntiForgeryToken()
+    <h5 class="form-title">New SLA</h5>
+    <hr class="dotted-line" />
+    <div class="collapse_container">
+        <div class="bs-example">
+            <input type="hidden" id="hiddenSlaId" />
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">Product Group <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.ProductGroupId, new { @id = "txtProductGroupId", @class = "form-control input-sm", placeholder = "Auto complete" })
+                        @Html.ValidationMessageFor(m => m.ProductGroupId)
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">Product <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.ProductId, new { @id = "txtProductId", @class = "form-control input-sm", placeholder = "Auto complete" })
+                        @Html.ValidationMessageFor(m => m.ProductId)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">Campaign :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.CampaignId, new { @id = "txtCampaignServiceId", @class = "form-control input-sm", placeholder = "Auto complete" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">Area <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.AreaId, new { @id = "txtAreaId", @class = "form-control input-sm", placeholder = "Auto complete" })
+                        @Html.ValidationMessageFor(m => m.AreaId)
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">Sub Area:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.SubAreaId, new { @id = "txtSubAreaId", @class = "form-control input-sm", placeholder = "Auto complete" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">Type <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.TypeId, new { @id = "txtTypeId", @class = "form-control input-sm", placeholder = "Auto complete" })
+                        @Html.ValidationMessageFor(m => m.TypeId)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">SR State :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.SrStateId, new { @id = "txtSRStateId", @class = "form-control input-sm" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">SR Status <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.SrStatusId, new { @id = "txtSRStatusId", @class = "form-control input-sm" })
+                        @Html.ValidationMessageFor(m => m.SrStatusId)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">SR Channel <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(m => m.SrChannelId, Model.SrChannelList, new { @class = "form-control input-sm" })
+                        @Html.ValidationMessageFor(m => m.SrChannelId)
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">SLA ผบ.เบื้องต้น(Times):</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.AlertChiefTimes, new { @id = "txtAlertChiefTimes", @class = "form-control input-sm money", @data_a_sep = "", @data_m_dec = "0", data_v_min = "0" })
+                        @Html.ValidationMessageFor(m => m.AlertChiefTimes)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">SLA (Minute) <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.SlaMunite, new { @class = "form-control input-sm money", @id = "txtSlaMinute", @data_a_sep = "", @data_m_dec = "0", data_v_min = "0" })
+                        @Html.ValidationMessageFor(m => m.SlaMunite)
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">SLA ผบ.1(Times):</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.AlertChief1Times, new { @id = "txtAlertChief1Times", @class = "form-control input-sm money", @data_a_sep = "", @data_m_dec = "0", data_v_min = "0" })
+                        @Html.ValidationMessageFor(m => m.AlertChief1Times)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">SLA (Times) <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.SlaTimes, new { @class = "form-control input-sm money", @id = "txtSlaTimes", @data_a_sep = "", @data_m_dec = "0", data_v_min = "0" })
+                        @Html.ValidationMessageFor(m => m.SlaTimes)
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">SLA ผบ.2(Times):</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.AlertChief2Times, new { @id = "txtAlertChief2Times", @class = "form-control input-sm money", @data_a_sep = "", @data_m_dec = "0", data_v_min = "0" })
+                        @Html.ValidationMessageFor(m => m.AlertChief2Times)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">SLA (Days) <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.SlaDays, new { @class = "form-control input-sm money", @id = "txtSlaDay", @data_a_sep = "", @data_m_dec = "0", data_v_min = "0" })
+                        @Html.ValidationMessageFor(m => m.SlaDays)
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">SLA ประธานสาย(Times):</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.AlertChief3Times, new { @id = "txtAlertChief3Times", @class = "form-control input-sm money", @data_a_sep = "", @data_m_dec = "0", data_v_min = "0" })
+                        @Html.ValidationMessageFor(m => m.AlertChief3Times)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">สร้างโดย :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="txtCreateBy" value="@ViewBag.CreateUsername" class="form-control input-sm readonly" disabled="disabled" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">วันที่สร้าง :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="txtCreateDate" value="@ViewBag.CreateDate" class="form-control input-sm readonly" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">แก้ไขโดย :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="txtUpdateBy" value="@ViewBag.UpdateUsername" class="form-control input-sm readonly" disabled="disabled" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">วันที่แก้ไข :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="txtUpdateDate" value="@ViewBag.UpdateDate" class="form-control input-sm readonly" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-12 text-right">
+                <button id="btnSave" type="button" class="btn btn-primary btn-sm"><i class="fa fa-floppy-o"></i> Save</button>
+                <button id="btnBack" type="button" class="btn btn-default btn-sm"><i class="fa fa-times"></i> Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
+@Html.Partial("_Antiforgery")
+
+@section masterjs{
+    <script type="text/javascript">
+
+        //enable validate hidden field
+        $jq.validator.setDefaults({ ignore: null });
+
+        $jq(document).ready(function () {
+            $jq("#btnSave").click(onBtnSaveClick);
+            $jq("#btnBack").click(onBtnBackClick);
+            initAutoComplete();
+        });
+
+
+        function onBtnSaveClick() {
+            //validate textbox
+            var productGroupId = $jq("#txtProductGroupId").val();
+            var productId = $jq("#txtProductId").val();
+            var areaId = $jq("#txtAreaId").val();
+            var subAreaId = $jq("#txtSubAreaId").val();
+            var typeId = $jq("#txtTypeId").val();
+            var campaignId = $jq("#txtCampaignServiceId").val();
+
+            var srChannel = $jq("#SrChannelId").val();
+            var srStatus = $jq("#txtSRStatusId").val();
+            var slaMinute = $jq("#txtSlaMinute").val();
+            var slaTime = $jq("#txtSlaTimes").val();
+            var slaDay = $jq("#txtSlaDay").val();
+
+            var warningMsg;
+
+            if ($jq("#form1").valid()) {
+
+                var slaId = $jq("#hiddenSlaId").val();
+
+                var alertChief = $jq("#txtAlertChiefTimes").val();
+                var alertChief1 = $jq("#txtAlertChief1Times").val();
+                var alertChief2 = $jq("#txtAlertChief2Times").val();
+                var alertChief3 = $jq("#txtAlertChief3Times").val();
+
+                $jq.ajax({
+                    url: '@Url.Action("Save", "Sla")',
+                    type: "POST",
+                    data: {
+                        __RequestVerificationToken: getAntiForgeryToken(),
+                        SlaId: slaId,
+                        ProductId: productId,
+                        CampaignServiceId: campaignId,
+                        AreaId: areaId,
+                        SubAreaId: subAreaId,
+                        TypeId: typeId,
+                        ChannelId: srChannel,
+                        SrStatusId: srStatus,
+                        SlaMinute: slaMinute,
+                        SlaTimes: slaTime,
+                        SlaDay: slaDay,
+                        AlertChiefTimes: alertChief,
+                        AlertChief1Times: alertChief1,
+                        AlertChief2Times: alertChief2,
+                        AlertChief3Times: alertChief3
+                    },
+                    beforeSend: function () { $jq("#dvLoading").show(); },
+                    complete: function () { $jq("#dvLoading").hide(); },
+                    success: function (result) {
+                        if (typeof (result) == "string") {
+                            if (isLoginForm(result)) {
+                                location.replace('@FormsAuthentication.LoginUrl');
+                                return;
+                            }
+                        }
+                        if (result.Valid == null) {
+                            doModalWithCloseEvent("dvAlertMsg", "Message Dialog", "บันทึกข้อมูลเรียบร้อยแล้ว", "onSaveSuccess()");
+                            return false;
+                        } else {
+                            showServerErrors(result);
+                        }
+                    },
+                    error: function (xhr) {
+                        if (xhr.status === 401) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        } else {
+                            var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                        }
+                    }
+                });
+            }
+        }
+
+        function onSaveSuccess() {
+            location.replace('@Url.Action("Search", "Sla")');
+        }
+
+        function onBtnBackClick(event) {
+            event.preventDefault();
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateSla()', 'Confirm');
+            }
+            return false;
+        }
+
+        function closeCreateSla() {
+            location.replace('@Url.Action("Search", "Sla")');
+        }
+
+    </script>
+
+    <!-- Start of AutoComplete -->
+    <script type="text/javascript">
+
+    // [START] AutoComplete
+
+    function initAutoComplete() {
+        initAutoCompleteProductGroup();
+        initAutoCompleteProduct();
+        initAutoCompleteCampaignService();
+
+        initAutoCompleteArea();
+        initAutoCompleteSubArea();
+        initAutoCompleteType();
+
+        initAutoCompleteState();
+        initAutoCompleteStatus();
+    }
+
+    function initAutoCompleteProductGroup() {
+
+        $jq("#txtProductGroupId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchProductGroup", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            productId: $jq("#txtProductId").select2("val"),
+                            campaignServiceId: $jq("#txtCampaignServiceId").select2("val")
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.ProductGroupName,
+                                    id: item.ProductGroupId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });
+        }
+
+        function initAutoCompleteProduct() {
+
+            $jq("#txtProductId").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchProduct", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        productGroupId: $jq("#txtProductGroupId").select2("val"),
+                        campaignServiceId: $jq("#txtCampaignServiceId").select2("val")
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.ProductName,
+                                id: item.ProductId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteCampaignService() {
+
+        $jq("#txtCampaignServiceId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchCampaignService", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        productGroupId: $jq("#txtProductGroupId").select2("val"),
+                        productId: $jq("#txtProductId").select2("val")
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.CampaignServiceName,
+                                id: item.CampaignServiceId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteArea() {
+
+        $jq("#txtAreaId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchArea", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        subAreaId: $jq("#txtSubAreaId").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.AreaName,
+                                id: item.AreaId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteSubArea() {
+
+        $jq("#txtSubAreaId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchSubArea", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        areaId: $jq("#txtAreaId").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.SubAreaName,
+                                id: item.SubAreaId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteType() {
+
+        $jq("#txtTypeId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchType", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 50,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.TypeName,
+                                id: item.TypeId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteState() {
+
+        $jq("#txtSRStateId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteState", "Status")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        statusId: $jq("#txtSRStatusId").val(),
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.SRStateName,
+                                id: item.SRStateId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        }).on("change", function (evt) {
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("AutoCompleteStatus", "Status")",
+                    method: "POST",
+                    data: {
+                        keyword: '',
+                        stateId: $jq(this).val(),
+                        isAllStatus: false
+                    }
+                }).done(function (result) {
+                    if (result.length == 1) {
+                        $jq("#txtSRStatusId").select2("data", { id: result[0].SRStatusId, text: result[0].SRStatusName });
+                    } else {
+                        $jq("#txtSRStatusId").select2('val', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            }
+        });
+    }
+
+    function initAutoCompleteStatus() {
+
+        $jq("#txtSRStatusId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteStatus", "Status")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        stateId: $jq("#txtSRStateId").val(),
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.SRStatusName,
+                                id: item.SRStatusId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        }).on("change", function (evt) {
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("AutoCompleteState", "Status")",
+                    method: "POST",
+                    data: {
+                        keyword: '',
+                        statusId: $jq(this).val(),
+                        isAllStatus: false
+                    }
+                }).done(function (result) {
+                    if (result.length == 1) {
+                        $jq("#txtSRStateId").select2("data", { id: result[0].SRStateId, text: result[0].SRStateName });
+                    } else {
+                        $jq("#txtSRStateId").select2('val', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+
+            }
+        });
+    }
+    </script>
+    <!-- End of AutoComplete -->
+}

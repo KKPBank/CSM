@@ -1,0 +1,2049 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@model CSM.Web.Models.CreateServiceRequestViewModel
+@{
+    ViewBag.Title = "New Service Request";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.ServiceRequest })
+}
+@section Breadcrumb {
+    <strong class="font-blue">Service Request &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink("Search Service Request", "Index", "ServiceRequest", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; New Service Request</strong>
+}
+<style type="text/css">
+    .form input[type="text"].input-sr,
+    .input-sr {
+        width: 300px;
+    }
+
+    .phone-readonly {
+        background: #eee none repeat scroll 0 0 !important;
+        cursor: not-allowed;
+    }
+</style>
+<h5 class="form-title">New Service Request</h5>
+<hr class="dotted-line" />
+
+@using (Html.BeginForm("Create", "ServiceRequest", FormMethod.Post, new { @id = "form1", @class = "sr" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    if (ViewData.ModelState["ErrorMessage"] != null && ViewData.ModelState["ErrorMessage"].Errors != null && ViewData.ModelState["ErrorMessage"].Errors.Count > 0)
+    {
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Warning!</strong> @ViewData.ModelState["ErrorMessage"].Errors[0].ErrorMessage
+        </div>
+    }
+
+    <div style="overflow: auto">
+        <div style="width: 1150px;">
+            <div class="collapse_container">
+                <div class="collapse_header"><span class="collapse_sign">[&mdash;]</span> Customer Profile Information</div>
+                <div class="collapse_body">
+                    <table class="form">
+                        <tbody>
+                            <tr>
+                                <td class="text" style="width:200px">
+                                    Subscription Type <span>*</span>:
+                                </td>
+                                <td class="input">
+                                    @Html.HiddenFor(model => model.CustomerId, new { @id = "hiddenCustomerId" })
+                                    <span class="value" id="spanCustomerSubscriptionName">@Model.CustomerSubscriptionName</span> <span class="view" title="View" id="btnSearchCustomer"></span>
+                                    @Html.ValidationMessageFor(model => model.CustomerId)
+                                </td>
+                                <td class="text" style="width:180px;padding:3px" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                                    Subscription ID:
+                                </td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerCardNo">@Model.CustomerCardNo</span>
+                                </td>
+                                <td class="text" style="width:170px">วันเกิด:</td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerBirthDate">@Model.CustomerBirthDate</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">คำนำหน้า:</td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerTitleTh">@Model.CustomerTitleTh</span>
+                                </td>
+                                <td class="text" title="ชื่อลูกค้า/Employee Name">ชื่อลูกค้า:</td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerFirstNameTh" title="ชื่อลูกค้า/Employee Name">@Model.CustomerFirstNameTh</span>
+                                </td>
+                                <td class="text">นามสกุลลูกค้า:</td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerLastNameTh">@Model.CustomerLastNameTh</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Title:</td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerTitleEn">@Model.CustomerTitleEn</span>
+                                </td>
+                                <td class="text">First Name:</td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerFirstNameEn">@Model.CustomerFirstNameEn</span>
+                                </td>
+                                <td class="text">Last Name:</td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerLastNameEn">@Model.CustomerLastNameEn</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #1:</td>
+                                <td class="input" colspan="5">
+                                    <span class="value w100" id="spanCustomerPhoneType1">@Model.CustomerPhoneTypeName1</span>
+                                    <span class="value" id="spanCustomerPhoneNo1">@Model.CustomerPhoneNo1</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #2:</td>
+                                <td class="input" colspan="5">
+                                    <span class="value w100" id="spanCustomerPhoneType2">@Model.CustomerPhoneTypeName2</span>
+                                    <span class="value" id="spanCustomerPhoneNo2">@Model.CustomerPhoneNo2</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #3:</td>
+                                <td class="input" colspan="5">
+                                    <span class="value w100" id="spanCustomerPhoneType3">@Model.CustomerPhoneTypeName3</span>
+                                    <span class="value" id="spanCustomerPhoneNo3">@Model.CustomerPhoneNo3</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์แฟกซ์:</td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerFax">@Model.CustomerFax</span>
+                                </td>
+                                <td class="text">อีเมล์:</td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerEmail">@Model.CustomerEmail</span>
+                                </td>
+                                <td class="text">รหัสพนักงาน:</td>
+                                <td class="input">
+                                    <span class="value" id="spanCustomerEmployeeCode">@Model.CustomerEmployeeCode</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="collapse_container">
+                <div class="collapse_header"><span class="collapse_sign">[&mdash;]</span> Contact Profile Information</div>
+                <div class="collapse_body">
+                    <table class="form">
+                        <tbody>
+                            <tr>
+                                <td class="text" style="width:200px">
+                                    เลขที่บัญชี/สัญญา<span>*</span>:
+                                </td>
+                                <td class="input">
+                                    @Html.HiddenFor(model => model.AccountId, new { @id = "hiddenAccountId" })
+                                    <span class="value" id="spanAccountNo">@Model.AccountNo</span> <span id="btnSearchAccount" class="view" title="View"></span>
+                                    @Html.ValidationMessageFor(model => model.AccountId)
+                                </td>
+                                <td class="text" style="width:180px">
+                                    สถานะบัญชี:
+                                </td>
+                                <td class="input">
+                                    <span class="value" id="spanAccountStatus">@Model.AccountStatus</span>
+                                </td>
+                                <td class="text" style="width:170px">
+                                    ทะเบียนรถ:
+                                </td>
+                                <td class="input">
+                                    <span class="value" id="spanCarNo">@Model.AccountCarNo</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Product Group:</td>
+                                <td class="input">
+                                    <span class="value" id="spanProductGroupName">@Model.AccountProductGroupName</span>
+                                </td>
+                                <td class="text">Product:</td>
+                                <td class="input">
+                                    <span class="value" id="spanProductName">@Model.AccountProductName</span>
+                                </td>
+                                <td class="text">ชื่อสาขา:</td>
+                                <td class="input">
+                                    <span class="value" id="spanBranchName">@Model.AccountBranchName</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text">
+                                    Subscription Type <span>*</span>:
+                                </td>
+                                <td class="input">
+                                    @Html.HiddenFor(model => model.ContactId, new { @id = "hiddenContactId" })
+                                    <span class="value" id="spanContact">@Model.ContactSubscriptionName</span> <span id="btnSearchContact" class="view" title="View"></span>
+                                    @Html.ValidationMessageFor(model => model.ContactId)
+                                </td>
+                                <td class="text" style="padding:3px" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                                    Subscription ID:
+                                </td>
+                                <td class="input">
+                                    <span id="spanContactCardNo" class="value">@Model.ContactCardNo</span>
+                                </td>
+                                <td class="text">วันเกิด:</td>
+                                <td class="input">
+                                    <span id="spanContactBirthDay" class="value">@Model.ContactBirthDate</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">คำนำหน้า:</td>
+                                <td class="input">
+                                    <span id="spanContactTitleTh" class="value">@Model.ContactTitleTh</span>
+                                </td>
+                                <td class="text">ชื่อลูกค้า:</td>
+                                <td class="input">
+                                    <span id="spanContactFirstNameTh" class="value">@Model.ContactFirstNameTh</span>
+                                </td>
+                                <td class="text">นามสกุลลูกค้า:</td>
+                                <td class="input">
+                                    <span id="spanContactLastNameTh" class="value">@Model.ContactLastNameTh</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Title:</td>
+                                <td class="input">
+                                    <span id="spanContactTitleEn" class="value">@Model.ContactTitleEn</span>
+                                </td>
+                                <td class="text">First Name:</td>
+                                <td class="input">
+                                    <span id="spanContactFirstNameEn" class="value">@Model.ContactFirstNameEn</span>
+                                </td>
+                                <td class="text">Last Name:</td>
+                                <td class="input">
+                                    <span id="spanContactLastNameEn" class="value">@Model.ContactLastNameEn</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #1:</td>
+                                <td class="input" colspan="5">
+                                    <span class="value w100" id="spanCustomerContactPhoneType1">@Model.ContactPhoneTypeName1</span>
+                                    <span class="value" id="spanCustomerContactPhone1">@Model.ContactPhoneNo1</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #2:</td>
+                                <td class="input" colspan="5">
+                                    <span class="value w100" id="spanCustomerContactPhoneType2">@Model.ContactPhoneTypeName2</span>
+                                    <span class="value" id="spanCustomerContactPhone2">@Model.ContactPhoneNo2</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #3:</td>
+                                <td class="input" colspan="5">
+                                    <span class="value w100" id="spanCustomerContactPhoneType3">@Model.ContactPhoneTypeName3</span>
+                                    <span class="value" id="spanCustomerContactPhone3">@Model.ContactPhoneNo3</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์แฟกซ์:</td>
+                                <td class="input">
+                                    <span id="spanContactFaxNo" class="value">@Model.ContactFax</span>
+                                </td>
+                                <td class="text">อีเมล์:</td>
+                                <td class="input">
+                                    <span id="spanContactEmail" class="value">@Model.ContactEmail</span>
+                                </td>
+                                <td class="text"></td>
+                                <td class="input"></td>
+                            </tr>
+                            <tr>
+                                <td class="text">เลขที่สัญญาที่เกี่ยวข้องกับผู้ติดต่อ:</td>
+                                <td class="input">
+                                    <span id="spanContactAccountNo" class="value">@Model.ContactAccountNo</span>
+                                    <div id="divAccountNoNotMatch" style="color:red;display:none;">เลขที่สัญญาที่เกี่ยวข้องกับผู้ติดต่อ ไม่ตรงกับ เลขที่บัญชี/สัญญา</div>
+                                </td>
+                                <td class="text">ความสัมพันธ์:</td>
+                                <td class="input">
+                                    <input type="hidden" id="hiddenContactRelationshipId" name="ContactRelationshipId" value="@(Model.ContactRelationshipId.HasValue?Model.ContactRelationshipId.Value.ToString():string.Empty)" />
+                                    <span id="spanContactRelationName" class="value">@Model.ContactRelationshipName</span>
+                                </td>
+                                <td class="text"></td>
+                                <td class="input"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="collapse_container">
+                <div class="collapse_header"><span class="collapse_sign">[&mdash;]</span> Service Request Information</div>
+                <div class="collapse_body">
+                    <div>
+                        <span id="btnClearMapping" class="btn btn-sm btn-primary"><i class="fa fa-file-o"></i> Clear Mapping</span>
+                    </div>
+                    <table class="form">
+                        <tbody>
+                            <tr>
+                                <td class="text" style="width: 200px">Campaign / Service <span>*</span>:</td>
+                                <td class="input" style="width: 350px">
+                                    @Html.TextBoxFor(model => model.CampaignServiceId, new { @id = "ddlCampaignServiceId", @class = "form-control input-sm input-sr" })
+                                    @Html.ValidationMessageFor(model => model.CampaignServiceId)
+                                    @Html.HiddenFor(model => model.CampaignServiceName, new { @id = "hiddenCampaignServiceName" })
+                                </td>
+                                <td class="text" style="width: 150px">SR Channel<span>*</span>:</td>
+                                <td class="input">
+                                    @Html.DropDownListFor(model => model.ChannelId, Model.Channels, Resource.Ddl_PleaseSelect, new { @id = "ddlChannelId", @class = "form-control input-sm input-sr" })
+                                    @Html.ValidationMessageFor(model => model.ChannelId)
+                                    @Html.HiddenFor(model => model.ChannelName, new { @id = "hiddenChannelName" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Product Group:</td>
+                                <td class="input">
+                                    @Html.HiddenFor(model => model.ProductGroupId, new { @id = "hiddenProductGroupId" })
+                                    @Html.TextBoxFor(model => model.ProductGroupName, new { @id = "txtProductGroupName", @class = "form-control input-sm input-sr", @readonly = "readonly", tabindex = "-1" })
+                                </td>
+                                <td class="text">Product:</td>
+                                <td class="input">
+                                    @Html.HiddenFor(model => model.ProductId, new { @id = "hiddenProductId" })
+                                    @Html.TextBoxFor(model => model.ProductName, new { @id = "txtProductName", @class = "form-control input-sm input-sr", @readonly = "readonly", tabindex = "-1" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Area <span>*</span>:</td>
+                                <td class="input">
+                                    @Html.TextBoxFor(model => model.AreaId, new { @id = "ddlAreaId", @class = "form-control input-sm input-sr" })
+                                    @Html.ValidationMessageFor(model => model.AreaId)
+                                    @Html.HiddenFor(model => model.AreaName, new { @id = "hiddenAreaName" })
+                                </td>
+                                <td class="text">Sub Area <span>*</span>:</td>
+                                <td class="input">
+                                    @Html.TextBoxFor(model => model.SubAreaId, new { @id = "ddlSubAreaId", @class = "form-control input-sm input-sr" })
+                                    @Html.ValidationMessageFor(model => model.SubAreaId)
+                                    @Html.HiddenFor(model => model.SubAreaName, new { @id = "hiddenSubAreaName" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Type <span>*</span>:</td>
+                                <td class="input">
+                                    @Html.TextBoxFor(model => model.TypeId, new { @id = "ddlTypeId", @class = "form-control input-sm input-sr" })
+                                    @Html.ValidationMessageFor(model => model.TypeId)
+                                    @Html.HiddenFor(model => model.TypeName, new { @id = "hiddenTypeName" })
+                                </td>
+                                <td class="text">Media Source:</td>
+                                <td class="input">
+                                    @Html.DropDownListFor(model => model.MediaSourceId, Model.MediaSources, Resource.Ddl_PleaseSelect, new { @id = "ddlMediaSourceId", @class = "form-control input-sm input-sr" })
+                                    @Html.ValidationMessageFor(model => model.MediaSourceId)
+                                    @Html.HiddenFor(model => model.MediaSourceName, new { @id = "hiddenMediaSourceName" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Subject <span>*</span>:</td>
+                                <td class="input" colspan="3">
+                                    @Html.TextBoxFor(model => model.Subject, new { @id = "txtSubject", @class = "form-control input-sm input-sr-long", maxlength = Constants.MaxLength.MailSubject })
+                                    @Html.ValidationMessageFor(model => model.Subject)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text vtop">Remark:</td>
+                                <td class="input" colspan="3">
+                                    @if (!string.IsNullOrWhiteSpace(Model.Remark) && Model.Remark.Length > WebConfig.GetRemarkDisplayMaxLength())
+                                    {
+                                        @Html.TextArea("Remark", "<p><br></p>&nbsp;&nbsp;" + Constants.RemarkLink + "&nbsp;&nbsp;", new { @id = "Remark", @class = "summernote" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextAreaFor(model => model.Remark, new { @id = "txtRemark", @class = "summernote" })
+                                        @Html.ValidationMessageFor(model => model.Remark)
+                                    }
+                                    @Html.HiddenFor(model => model.RemarkOriginal, new { @id = "RemarkOriginal" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="text-right">
+                <button id="btnNext" name="CommandButton" class="btn btn-sm btn-primary" value="NextOnStep1">Next <i class="fa fa-arrow-right"></i></button>
+@*                <a href="@Url.Action("Index")" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</a>*@
+                <span class="btn btn-sm btn-default" id="btnSrCancel"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.SrId)
+    @Html.HiddenFor(model => model.PhoneNo)
+    @Html.HiddenFor(model => model.CallId)
+
+    @Html.HiddenFor(model => Model.SrPageId)
+    @Html.HiddenFor(model => Model.SrPageCode)
+
+    @Html.HiddenFor(model => model.CreatorBranchId)
+    @Html.HiddenFor(model => model.CreatorBranchCode)
+    @Html.HiddenFor(model => model.CreatorBranchName)
+    @Html.HiddenFor(model => model.CreatorUserId)
+    @Html.HiddenFor(model => model.CreatorUserFullName)
+
+    <input type="hidden" name="DefaultOwnerUserId" value="@Model.DefaultOwnerUserId" />
+    <input type="hidden" name="DefaultOwnerUserFullName" value="@Model.DefaultOwnerUserFullName" />
+    <input type="hidden" name="DefaultOwnerBranchId" value="@Model.DefaultOwnerBranchId" />
+    <input type="hidden" name="DefaultOwnerBranchName" value="@Model.DefaultOwnerBranchName" />
+
+    <input type="hidden" name="MappingProductId" id="hiddenMappingProductId" value="@Model.MappingProductId" />
+    <input type="hidden" name="IsVerify" value="@Model.IsVerify.ToString()" />
+    @Html.HiddenFor(model => model.IsVerifyPass, new { @id = "hiddenIsVerifyPass" })
+
+    @Html.HiddenFor(model => model.CampaignServiceId, new { @id = "hiddenCampaignServiceIdOld" })
+
+    <input type="hidden" id="hiddenAreaIdOld" value="@Model.AreaId" />
+    <input type="hidden" id="hiddenSubAreaIdOld" value="@Model.SubAreaId" />
+    <input type="hidden" id="hiddenTypeIdOld" value="@Model.TypeId" />
+
+    @Html.HiddenFor(model => model.AddressSendDocId)
+    @Html.HiddenFor(model => model.AddressSendDocText)
+
+    @Html.HiddenFor(model => model.AfsAssetId, new { @id = "hiddenAfsAssetId" })
+    @Html.HiddenFor(model => model.AfsAssetNo)
+    @Html.HiddenFor(model => model.AfsAssetDesc)
+
+    @Html.HiddenFor(model => model.NCBBirthDate, new { @id = "hiddenNCBBirthDate" })
+    @Html.HiddenFor(model => model.NCBCheckStatus, new { @id = "hiddenNCBCheckStatus" })
+    <input type="hidden" name="NCBMarketingUserId" value="@Model.NCBMarketingUserId" />
+    <input type="hidden" name="NCBMarketingName" value="@Model.NCBMarketingName" />
+    <input type="hidden" name="NCBMarketingBranchId" value="@Model.NCBMarketingBranchId" />
+    <input type="hidden" name="NCBMarketingBranchName" value="@Model.NCBMarketingBranchName" />
+    <input type="hidden" name="NCBMarketingBranchUpper1Id" value="@Model.NCBMarketingBranchUpper1Id" />
+    <input type="hidden" name="NCBMarketingBranchUpper1Name" value="@Model.NCBMarketingBranchUpper1Name" />
+    <input type="hidden" name="NCBMarketingBranchUpper2Id" value="@Model.NCBMarketingBranchUpper2Id" />
+    <input type="hidden" name="NCBMarketingBranchUpper2Name" value="@Model.NCBMarketingBranchUpper2Name" />
+
+    @Html.HiddenFor(model => model.OwnerBranchId, new { @id = "hiddenOwnerBranchId" })
+    @Html.HiddenFor(model => model.OwnerBranchName)
+    @Html.HiddenFor(model => model.OwnerUserId, new { @id = "hiddenOwnerUserId" })
+    @Html.HiddenFor(model => model.OwnerUserFullName)
+    @Html.HiddenFor(model => model.DelegateBranchId)
+    @Html.HiddenFor(model => model.DelegateBranchName)
+    @Html.HiddenFor(model => model.DelegateUserId)
+    @Html.HiddenFor(model => model.DelegateUserFullName)
+
+    @Html.HiddenFor(model => model.IsEmailDelegate)
+    @Html.HiddenFor(model => model.IsClose)
+
+    @Html.HiddenFor(model => model.SrEmailTemplateId, new { @id = "hiddenSrEmailTemplateId" })
+    @Html.HiddenFor(model => model.ActivityTypeId, new { @id = "hiddenActivityTypeId" })
+
+    @Html.HiddenFor(model => model.ActivityDescription, new { @id = "hiddenActivityDescription" })
+
+    @Html.HiddenFor(model => model.SendMailSender, new { @id = "hiddenSendMailSender" })
+    @Html.HiddenFor(model => model.SendMailTo, new { @id = "hiddenSendMailTo" })
+    @Html.HiddenFor(model => model.SendMailCc)
+    @Html.HiddenFor(model => model.SendMailSubject, new { @id = "hiddenSendMailSubject" })
+    <div style="display: none">
+        @Html.TextAreaFor(model => model.SendMailBody, new { @id = "txtSendMailBody" })
+    </div>
+    <input type="hidden" name="AttachmentJson" value="@Model.AttachmentJson" />
+
+    @Html.HiddenFor(model => model.CustomerSubscriptionName, new { @id = "hiddenCustomerSubscriptionName" })
+    @Html.HiddenFor(model => model.CustomerCardNo, new { @id = "hiddenCustomerCardNo" })
+    @Html.HiddenFor(model => model.CustomerBirthDate, new { @id = "hiddenCustomerBirthDate" })
+    @Html.HiddenFor(model => model.CustomerTitleTh, new { @id = "hiddenCustomerTitleTh" })
+    @Html.HiddenFor(model => model.CustomerFirstNameTh, new { @id = "hiddenCustomerFirstNameTh" })
+    @Html.HiddenFor(model => model.CustomerLastNameTh, new { @id = "hiddenCustomerLastNameTh" })
+    @Html.HiddenFor(model => model.CustomerTitleEn, new { @id = "hiddenCustomerTitleEn" })
+    @Html.HiddenFor(model => model.CustomerFirstNameEn, new { @id = "hiddenCustomerFirstNameEn" })
+    @Html.HiddenFor(model => model.CustomerLastNameEn, new { @id = "hiddenCustomerLastNameEn" })
+    @Html.HiddenFor(model => model.CustomerPhoneTypeName1, new { @id = "hiddenCustomerPhoneTypeName1" })
+    @Html.HiddenFor(model => model.CustomerPhoneTypeName2, new { @id = "hiddenCustomerPhoneTypeName2" })
+    @Html.HiddenFor(model => model.CustomerPhoneTypeName3, new { @id = "hiddenCustomerPhoneTypeName3" })
+    @Html.HiddenFor(model => model.CustomerPhoneNo1, new { @id = "hiddenCustomerPhoneNo1" })
+    @Html.HiddenFor(model => model.CustomerPhoneNo2, new { @id = "hiddenCustomerPhoneNo2" })
+    @Html.HiddenFor(model => model.CustomerPhoneNo3, new { @id = "hiddenCustomerPhoneNo3" })
+    @Html.HiddenFor(model => model.CustomerFax, new { @id = "hiddenCustomerFax" })
+    @Html.HiddenFor(model => model.CustomerEmail, new { @id = "hiddenCustomerEmail" })
+    @Html.HiddenFor(model => model.CustomerEmployeeCode, new { @id = "hiddenCustomerEmployeeCode" })
+
+    @Html.HiddenFor(model => model.AccountNo, new { @id = "hiddenAccountNo" })
+    @Html.HiddenFor(model => model.AccountStatus, new { @id = "hiddenAccountStatus" })
+    @Html.HiddenFor(model => model.AccountCarNo, new { @id = "hiddenAccountCarNo" })
+    @Html.HiddenFor(model => model.AccountProductGroupName, new { @id = "hiddenAccountProductGroupName" })
+    @Html.HiddenFor(model => model.AccountProductName, new { @id = "hiddenAccountProductName" })
+    @Html.HiddenFor(model => model.AccountBranchName, new { @id = "hiddenAccountBranchName" })
+
+
+    @Html.HiddenFor(model => model.ContactSubscriptionName, new { @id = "hiddenContactSubscriptionName" })
+    @Html.HiddenFor(model => model.ContactCardNo, new { @id = "hiddenContactCardNo" })
+    @Html.HiddenFor(model => model.ContactBirthDate, new { @id = "hiddenContactBirthDate" })
+    @Html.HiddenFor(model => model.ContactTitleTh, new { @id = "hiddenContactTitleTh" })
+    @Html.HiddenFor(model => model.ContactFirstNameTh, new { @id = "hiddenContactFirstNameTh" })
+    @Html.HiddenFor(model => model.ContactLastNameTh, new { @id = "hiddenContactLastNameTh" })
+    @Html.HiddenFor(model => model.ContactTitleEn, new { @id = "hiddenContactTitleEn" })
+    @Html.HiddenFor(model => model.ContactFirstNameEn, new { @id = "hiddenContactFirstNameEn" })
+    @Html.HiddenFor(model => model.ContactLastNameEn, new { @id = "hiddenContactLastNameEn" })
+    @Html.HiddenFor(model => model.ContactPhoneTypeName1, new { @id = "hiddenContactPhoneTypeName1" })
+    @Html.HiddenFor(model => model.ContactPhoneTypeName2, new { @id = "hiddenContactPhoneTypeName2" })
+    @Html.HiddenFor(model => model.ContactPhoneTypeName3, new { @id = "hiddenContactPhoneTypeName3" })
+    @Html.HiddenFor(model => model.ContactPhoneNo1, new { @id = "hiddenContactPhoneNo1" })
+    @Html.HiddenFor(model => model.ContactPhoneNo2, new { @id = "hiddenContactPhoneNo2" })
+    @Html.HiddenFor(model => model.ContactPhoneNo3, new { @id = "hiddenContactPhoneNo3" })
+    @Html.HiddenFor(model => model.ContactFax, new { @id = "hiddenContactFax" })
+    @Html.HiddenFor(model => model.ContactEmail, new { @id = "hiddenContactEmail" })
+    @Html.HiddenFor(model => model.ContactAccountNo, new { @id = "hiddenContactAccountNo" })
+    @Html.HiddenFor(model => model.ContactRelationshipName, new { @id = "hiddenContactRelationshipName" })
+
+    <!-- Clear Value when Open Draft -->
+    <input type="hidden" name="VerifyAnswerJson" value="@Model.VerifyAnswerJson" id="hiddenVerifyAnswerJson" />
+
+    <div id="divVerifyAnswer">
+        @{
+    var verifyAnswers = Request.Form.AllKeys.Where(r => r.StartsWith("answer_")).ToList();
+    foreach (var verifyAnswer in verifyAnswers)
+    {
+        <input type="hidden" name='@verifyAnswer' value='@Request.Form[@verifyAnswer]' />
+    }
+        }
+    </div>
+}
+
+<div id="modalSearchCustomer" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title">Search Customer</h4>
+            </div>
+            <div class="modal-body" id="modalSearchCustomerBody">
+            </div>
+            <div class="modal-footer">
+                <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalSearchAccount" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title">Search Contract/Account</h4>
+            </div>
+            <div class="modal-body" id="modalSearchAccountBody"></div>
+            <div class="modal-footer">
+                <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalSearchContact" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title">Search Contact</h4>
+            </div>
+            <div class="modal-body" id="modalSearchContactBody"></div>
+            <div class="modal-footer">
+                <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCreateCustomer" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <form id="formCreateCustomer" method="post">
+        <div class="modal-dialog modal-lg" style="width: 1250px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                    <h4 class="modal-title">Create Customer</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.ValidationSummary(true)
+                    <div class="form-horizontal">
+                        <div id="divBasicSearch">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-1 left-label">Subscription Type:</label>
+                                    <div class="col-sm-3">
+                                        @Html.DropDownListFor(model => model.SubscriptType, Model.SubscriptTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                            new { @class = "form-control input-sm input-small", id = "ddlSubscriptType", @style = "width:280px!important" })
+                                    </div>
+                                    <label class="control-label col-sm-1 left-label" id="labelCustomerCardNo" style="padding:0" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">Subscription ID:</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.CardNo, new
+                                        {
+                                            @class = "form-control input-sm",
+                                            @id = "txtCardNo",
+                                            @maxlength = Constants.MaxLength.CardNo
+                                        })
+                                        @Html.ValidationMessageFor(model => model.CardNo)
+                                    </div>
+                                    <label class="control-label col-sm-1 left-label">วันเกิด:</label>
+                                    <div class="col-sm-3">
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <div class='input-group date' id='customerBirthDatetimepicker'>
+                                                    @Html.TextBoxFor(model => model.ModalCustomerBirthDate, new
+                                                    {
+                                                        @class = "form-control input-sm input-small",
+                                                        @id = "txtBirthDate",
+                                                        onchange = "validateDateValue($jq(this));"
+                                                    })
+                                                    <span class="input-group-addon">
+                                                        <span class="fa fa-calendar"></span>
+                                                    </span>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.ModalCustomerBirthDate)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-1 left-label">คำนำหน้า:</label>
+                                    <div class="col-sm-3">
+                                        @Html.DropDownListFor(model => model.TitleThai, Model.TitleThaiList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                                     new { @class = "form-control input-sm input-small", id = "ddlTitleThai", @style = "width:280px!important" })
+                                    </div>
+                                    <label class="control-label col-sm-1 left-label" style="padding:6px 0 0">ชื่อลูกค้า<span class="required-field-block">*</span>:</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.FirstNameThai, new { @class = "form-control input-sm", @id = "txtFirstNameThai", @maxlength = 50 })
+                                        @Html.ValidationMessageFor(model => model.FirstNameThai)
+                                    </div>
+                                    <label class="control-label col-sm-1 left-label">นามสกุลลูกค้า:</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.LastNameThai, new { @class = "form-control input-sm", @id = "txtLastNameThai", @maxlength = 50 })
+                                        @Html.ValidationMessageFor(model => model.LastNameThai)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-1 left-label">Title:</label>
+                                    <div class="col-sm-3">
+                                        @Html.DropDownListFor(model => model.TitleEnglish, Model.TitleEnglishList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                                     new { @class = "form-control input-sm input-small", id = "ddlTitleEnglish", @style = "width:280px!important" })
+                                    </div>
+                                    <label class="control-label col-sm-1 left-label" style="padding:6px 0 0">First Name:</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.FirstNameEnglish, new { @class = "form-control input-sm", @id = "txtFirstNameEnglish", @maxlength = 50 })
+                                        @Html.ValidationMessageFor(model => model.FirstNameEnglish)
+                                    </div>
+                                    <label class="control-label col-sm-1 left-label">Last Name:</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.LastNameEnglish, new { @class = "form-control input-sm", @id = "txtLastNameEnglish", @maxlength = 50 })
+                                        @Html.ValidationMessageFor(model => model.LastNameEnglish)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-1 left-label">เบอร์โทรศัพท์ #1 <span class="required-field-block">*</span>:</label>
+                                    <div class="col-sm-2">
+                                        @Html.DropDownListFor(model => model.PhoneType1, Model.PhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                            new { @class = "form-control input-sm input-small", id = "ddlPhoneType1", @style = "width:200px !important" })
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.PhoneNo1, new
+                                        {
+                                            @class = "form-control input-sm input-large",
+                                            @id = "txtPhoneNo1",
+                                            @maxlength = Constants.MaxLength.PhoneNo
+                                        })
+                                        @Html.ValidationMessageFor(model => model.PhoneNo1)
+                                    </div>
+                                    <div class="col-sm-3" style="float:left; position:relative; top:5px; left:36px;">
+                                        @Html.CheckBox("NotValidatePhone1")&nbsp;Not Validate Phone Number
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-1 left-label">เบอร์โทรศัพท์ #2:</label>
+                                    <div class="col-sm-2">
+                                        @Html.DropDownListFor(model => model.PhoneType2, Model.PhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                                     new { @class = "form-control input-sm input-small", id = "ddlPhoneType2", @style = "width:200px !important" })
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.PhoneNo2, new
+                                        {
+                                            @class = "form-control input-sm input-large",
+                                            @id = "txtPhoneNo2",
+                                            @maxlength = Constants.MaxLength.PhoneNo,
+                                            @disabled = ""
+                                        })
+                                        @Html.ValidationMessageFor(model => model.PhoneNo2)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-1 left-label">เบอร์โทรศัพท์ #3:</label>
+                                    <div class="col-sm-2">
+                                        @Html.DropDownListFor(model => model.PhoneType3, Model.PhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                                     new { @class = "form-control input-sm input-small", id = "ddlPhoneType3", @style = "width:200px !important" })
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.PhoneNo3, new
+                                        {
+                                            @class = "form-control input-sm input-large",
+                                            @id = "txtPhoneNo3",
+                                            @maxlength = Constants.MaxLength.PhoneNo,
+                                            @disabled = ""
+                                        })
+                                        @Html.ValidationMessageFor(model => model.PhoneNo3)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-1 left-label">เบอร์แฟกซ์:</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.Fax, new { @class = "form-control input-sm", @id = "txtFax", @maxlength = 20 })
+                                        @Html.ValidationMessageFor(model => model.Fax)
+                                    </div>
+                                    <label class="control-label col-sm-1 left-label">อีเมล์:</label>
+                                    <div class="col-sm-3">
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control input-sm input-large", @id = "txtEmail", @maxlength = 50 })
+                                        @Html.ValidationMessageFor(model => model.Email)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span id="btnModalCustomerSave" class="btn btn-blue btn-sm btn-xsmall" style="display: none;"><i class="fa fa-save"></i> Save</span>
+                    <span id="btnModalCustomerComfirm" class="btn btn-blue btn-sm btn-xsmall" style="display: none;"><i class="fa fa-save"></i> Confirm</span>
+                    <span class="btn btn-sm btn-default" id="btnModalCustomerCancel"><i class="fa fa-times"></i> Cancel</span>
+                </div>
+                <div id="duplicate_customer_wrapper" style="display:none;padding:0 20px 20px;">
+                    <div style="color:red;padding-bottom:10px;">พบข้อมูลลูกค้าในระบบซ้ำกับลูกค้าใหม่ กรุณาตรวจสอบข้อมูล หากต้องการเพิ่มลูกค้ากดปุ่ม Confirm</div>
+                    <div id="duplicate_customer"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="modalCreateAccount" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="divAccountRelation">
+    </div>
+</div>
+
+<div id="modalRemark" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="overflow-y:auto;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" id="modalRemarkBody">
+                <br />
+                @Html.Raw(Model.RemarkOriginal)
+            </div>
+            <div class="modal-footer">
+                <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+    <script type="text/javascript">
+
+        var isFirstValidate = true;
+        var isConfirm = false;
+
+        // To Validate Hidden Fields
+        $jq.validator.setDefaults({ ignore: null });
+
+        $jq(function () {
+
+            $jq('.summernote').summernote({
+                height: 200,
+                codemirror: {
+                    theme: 'monokai'
+                }
+            });
+
+            $jq('#btnSearchCustomer').click(onBtnSearchCustomerClick);
+            $jq("#btnSearchAccount").click(onBtnSearchAccountClick);
+
+            $jq(".btnSelectAccount").click(onBtnSelectAccountClick);
+
+            $jq("#btnSearchContact").click(onBtnSearchContactClick);
+            $jq(".btnSelectContact").click(onBtnSelectContactClick);
+
+            $jq("#btnClearMapping").click(onBtnClearMappingClick);
+            $jq("#btnNext").click(onBtnNextClick);
+            $jq("#btnSrCancel").click(onBtnCancelClick);
+
+            //Modal Customer Function
+            $jq("#btnModalCustomerSave").click(onbtnModalCustomerSaveClick);
+            $jq("#btnModalCustomerComfirm").click(onBtnModalCustomerComfirmClick);
+            $jq("#btnModalCustomerCancel").click(onBtnCustomerCancelClick);
+            $jq("#ddlPhoneType1").change(onPhoneType1Change);
+            $jq("#ddlPhoneType2").change(onPhoneType2Change);
+            $jq("#ddlPhoneType3").change(onPhoneType3Change);
+
+            $jq("#ddlSubscriptType").change(onDdlCustomerSubscriptType);
+
+            initAutoCompleteCampaignService();
+            initAutoCompleteArea();
+            initAutoCompleteSubArea();
+            initAutoCompleteType();
+
+            initAutoCompleteChannel();
+            initAutoCompleteMediaSource();
+
+            checkAccountNoIsMatch();
+
+            var srEmailTemplateId = $jq("#hiddenSrEmailTemplateId").val();
+            if (srEmailTemplateId != null && srEmailTemplateId.length > 0) {
+                $jq("#txtSendMailBody").summernote({ height: 300 });
+            }
+
+            resetValidation();
+
+            initVerifyAnswerForOpenDraft();
+
+            var dateFormat = 'dd/mm/yyyy';
+
+            // DateTime Picker for customer birthdate
+            $jq('#customerBirthDatetimepicker').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            var errorMsg = '@ViewBag.ErrorMessage';
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+
+
+            // DateTime Picker for account birthdate
+            $jq('#accountBirthDatetimepicker').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            if ($jq.trim(@ViewBag.ErrorMessage) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+
+            $jq("#ddlCampaignServiceId").change(onAutoCompleteChange);
+            $jq("#ddlAreaId").change(onAutoCompleteChange);
+            $jq("#ddlSubAreaId").change(onAutoCompleteChange);
+            $jq("#ddlTypeId").change(onAutoCompleteChange);
+
+        });
+
+        function onBtnCancelClick() {
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateSr()', 'Confirm');
+            }
+            return false;
+        }
+
+        function closeCreateSr() {
+            window.location = "@Url.Action("Index")";
+        }
+
+        //function autoComplete change
+
+        function onAutoCompleteChange(evt) {
+            var value = $jq(this).val().trim();
+
+            if (value.length != 0) {
+                var campaignServiceId = $jq("#ddlCampaignServiceId").select2("val");
+                var areaId = $jq("#ddlAreaId").select2("val");
+                var subAreaId = $jq("#ddlSubAreaId").select2("val");
+                var typeId = $jq("#ddlTypeId").select2("val");
+
+                $jq.ajax({
+                        url: "@Url.Action("GetSingleMapProduct", "ServiceRequest")",
+                        type: "POST",
+                        data: {
+                            campaignServiceId: campaignServiceId,
+                            areaId: areaId,
+                            subAreaId: subAreaId,
+                            typeId: typeId,
+                            __RequestVerificationToken: getAntiForgeryToken()
+                        }
+                    })
+                    .done(function(result) {
+                        if (result.IsSuccess) {
+                            if (result.data.IsSingleQuery) {
+                                $jq("#ddlCampaignServiceId").select2("data", { id: result.data.CampaignServiceId, text: result.data.CampaignServiceName });
+                                $jq("#ddlAreaId").select2("data", { id: result.data.AreaId, text: result.data.AreaName });
+                                $jq("#ddlSubAreaId").select2("data", { id: result.data.SubAreaId, text: result.data.SubAreaName });
+                                $jq("#ddlTypeId").select2("data", { id: result.data.TypeId, text: result.data.TypeName });
+
+                                $jq("#txtProductGroupName").val(result.data.ProductGroupName);
+                                $jq("#hiddenProductGroupId").val(result.data.ProductGroupId);
+                                $jq("#txtProductName").val(result.data.ProductName);
+                                $jq("#hiddenProductId").val(result.data.ProductId);
+
+                                $jq("#hiddenCampaignServiceName").val(result.data.CampaignServiceName);
+                                $jq("#hiddenAreaName").val(result.data.AreaName);
+                                $jq("#hiddenSubAreaName").val(result.data.SubAreaName);
+                                $jq("#hiddenTypeName").val(result.data.TypeName);
+                            }
+                        }
+                    })
+                    .fail(function() {
+                        doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+                    });
+            }
+        }
+
+        //function autoComplete change
+
+        //==Modal Customer Function==
+
+        function onBtnModalCustomerComfirmClick() {
+            isConfirm = true;
+            onbtnModalCustomerSaveClick();
+        }
+
+        function onbtnModalCustomerSaveClick() {
+
+            var countError = 0;
+
+            if ($jq("#txtFirstNameThai").val().trim() == "" && $jq("#txtFirstNameEnglish").val().trim() == "") {
+                addValidateError("#formCreateCustomer #txtFirstNameThai", "กรุณาระบุ ชื่อลูกค้า");
+                countError++;
+            }
+            else {
+                removeValidateError("#txtFirstNameThai");
+            }
+
+            if ($jq("#NotValidatePhone1").is(":checked")) {
+                removeValidateError("#txtPhoneNo1");
+            }
+            else {
+                if ($jq("#txtPhoneNo1").val().trim() == "") {
+                    addValidateError("#formCreateCustomer #txtPhoneNo1", "กรุณาระบุ เบอร์โทรศัพท์");
+                    countError++;
+                }
+                else {
+                    removeValidateError("#txtPhoneNo1");
+                }
+            }
+
+            if ($jq("#ddlSubscriptType").val() != "" && $jq("#txtCardNo").val().trim() == "") {
+                alert($jq("#txtCardNo").val());
+                addValidateError("#formCreateCustomer #txtCardNo", "กรุณากรอกข้อมูล Subscription ID");
+                countError++;
+            }
+            else {
+                removeValidateError("#txtCardNo");
+            }
+
+            //var regexThai = new RegExp("([\-ก-๙0-9(). ]+)");
+            var regexThai = /^[\-ก-๙0-9(),. ]{0,}$/;
+
+            var firstNameThai = $jq("#txtFirstNameThai").val().trim();
+
+            if (firstNameThai != "") {
+                if (regexThai.test(firstNameThai)) {
+                    removeValidateError("#txtFirstNameThai");
+                } else {
+                    addValidateError("#formCreateCustomer #txtFirstNameThai", "@Resource.ValErr_NoSpecialCharacterThai");
+                    countError++;
+                }
+            }
+
+            var lastNameThai = $jq("#txtLastNameThai").val().trim();
+
+            if (lastNameThai != "") {
+                if (regexThai.test(lastNameThai)) {
+                    removeValidateError("#txtLastNameThai");
+                } else {
+                    addValidateError("#formCreateCustomer #txtLastNameThai", "@Resource.ValErr_NoSpecialCharacterThai");
+                    countError++;
+                }
+            }
+
+            //var regexEng = new RegExp("([\-a-zA-Z0-9(). ]+)");
+            var regexEng = /^[\-a-zA-Z0-9(),. ]{0,}$/;
+
+            var firstNameEng = $jq("#txtFirstNameEnglish").val().trim();
+
+            if (firstNameEng != "") {
+                if (regexEng.test(firstNameEng)) {
+                    removeValidateError("#txtFirstNameEnglish");
+                } else {
+                    addValidateError("#formCreateCustomer #txtFirstNameEnglish", "@Resource.ValErr_NoSpecialCharacterEnglish");
+                    countError++;
+                }
+            }
+
+            var lastNameEng = $jq("#txtLastNameEnglish").val().trim();
+
+            if (lastNameEng != "") {
+                if (regexEng.test(lastNameEng)) {
+                    removeValidateError("#txtLastNameEnglish");
+                } else {
+                    addValidateError("#formCreateCustomer #txtLastNameEnglish", "@Resource.ValErr_NoSpecialCharacterEnglish");
+                    countError++;
+                }
+            }
+
+            //var regexPhone = new RegExp("([0-9]+)");
+            var regexPhone = /^[0-9]{0,}$/;
+
+            var fax = $jq("#txtFax").val().trim();
+
+            if (fax != "") {
+                if (regexPhone.test(fax)) {
+                    removeValidateError("#txtFax");
+                } else {
+                    addValidateError("#formCreateCustomer #txtFax", "@Resource.ValErr_NumericOnly");
+                    countError++;
+                }
+            }
+
+            @*var regexEmail = new RegExp("^([\\w\\.\\-]+)@@([\\w\\-]+)((\\.(\\w){2,3})+)$");
+
+            var email = $jq("#txtEmail").val().trim();
+
+            if (email != "") {
+                if (regexEmail.test(email)) {
+                    removeValidateError("#txtEmail");
+                } else {
+                    addValidateError("#formCreateCustomer #txtEmail", "@Resource.ValErr_InvalidEmail");
+                    countError++;
+                }
+            }*@
+
+            if (countError > 0)
+                return;
+
+            if (countError == 0) {
+
+                //validate phone is digit
+                var phone1 = $jq("#txtPhoneNo1").val();
+                var phone2 = $jq("#txtPhoneNo2").val();
+                var phone3 = $jq("#txtPhoneNo3").val();
+
+                //var regexPhone2 = new RegExp("([0-9#]+)");
+                var regexPhone2 = /^[0-9#]{0,}$/;
+
+                if (phone1.trim().length > 0) {
+                    if (!regexPhone2.test(phone1)) {
+                        doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์#1 ข้อมูลที่กรอกต้องเป็นตัวเลขเท่านั้น', '', '');
+                        return false;
+                    }
+                }
+
+                if (phone2.trim().length > 0) {
+                    if (!regexPhone2.test(phone2)) {
+                        doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์#2 ข้อมูลที่กรอกต้องเป็นตัวเลขเท่านั้น', '', '');
+                        return false;
+                    }
+                }
+
+                if (phone3.trim().length) {
+                    if (!regexPhone2.test(phone3)) {
+                        doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์#3 ข้อมูลที่กรอกต้องเป็นตัวเลขเท่านั้น', '', '');
+                        return false;
+                    }
+                }
+
+                //validate duplicate phone
+                if (phone1.trim().length > 0 && phone2.trim().length > 0) {
+                    if (phone1 == phone2) {
+                        doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์ ซ้ำกัน', '', '');
+                        return false;
+                    }
+                }
+
+                if (phone1.trim().length > 0 && phone3.trim().length > 0) {
+                    if (phone1 == phone3) {
+                        doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์ ซ้ำกัน', '', '');
+                        return false;
+                    }
+                }
+
+                if (phone2.trim().length > 0 && phone3.trim().length > 0) {
+                    if (phone2 == phone3) {
+                        doModal('dvAlertMsg', 'Message Dialog', 'เบอร์โทรศัพท์ ซ้ำกัน', '', '');
+                        return false;
+                    }
+                }
+
+                $jq.ajax({
+                    url: "@Url.Action("SaveCustomer", "ServiceRequest")",
+                    method: "POST",
+                    data: {
+                        SubscriptType: $jq("#ddlSubscriptType").val(),
+                        CardNo: $jq("#txtCardNo").val(),
+                        BirthDate: $jq("#txtBirthDate").val(),
+                        TitleThai: $jq("#ddlTitleThai").val(),
+                        FirstNameThai: $jq("#txtFirstNameThai").val(),
+                        LastNameThai: $jq("#txtLastNameThai").val(),
+                        TitleEnglish: $jq("#ddlTitleEnglish").val(),
+                        FirstNameEnglish: $jq("#txtFirstNameEnglish").val(),
+                        LastNameEnglish: $jq("#txtLastNameEnglish").val(),
+                        PhoneType1: $jq("#ddlPhoneType1").val(),
+                        PhoneNo1: $jq("#txtPhoneNo1").val(),
+                        PhoneType2: $jq("#ddlPhoneType2").val(),
+                        PhoneNo2: $jq("#txtPhoneNo2").val(),
+                        PhoneType3: $jq("#ddlPhoneType3").val(),
+                        PhoneNo3: $jq("#txtPhoneNo3").val(),
+                        Fax: $jq("#txtFax").val(),
+                        Email: $jq("#txtEmail").val(),
+                        IsConfirm: isConfirm,
+                        NotValidatePhone1: $jq("#NotValidatePhone1").is(":checked"),
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                })
+            .done(function (result) {
+                if (result.RedirectUrl != undefined) {
+                    topLocation(result.RedirectUrl);
+                } else {
+                    if (result.IsSuccess) {
+                        onSelectCustomerClick(result.CustomerId, result.DummyAccountId);
+                        getCustomerContactData(result.DummyCustomerContactId);
+                        $jq("#modalCreateCustomer").modal("hide");
+                    } else {
+                        if (result.IsDuplicate) {
+                            $jq("#btnModalCustomerSave").hide();
+                            $jq("#btnModalCustomerComfirm").show();
+                            getCustomerDuplicate();
+                            //$jq("#duplicate_customer_wrapper").show();
+                            //$jq("#duplicate_customer").html(result.ExistingCustomerAccounts);
+
+                            //doModal('dvAlertMsg', 'Message Dialog', result.Message, '', '');
+
+                        } else {
+                            doModal('dvAlertMsg', 'Message Dialog', result.Message, '', '');
+                        }
+                    }
+                }
+            }).fail(function () {
+                doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+            })
+            .error(function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            });
+
+                isConfirm = false;
+            }
+        }
+
+        function getCustomerDuplicate() {
+            debugger;
+            var PhoneNumber = {
+                PhoneNo1: $jq("#txtPhoneNo1").val(),
+                PhoneNo2: $jq("#txtPhoneNo2").val(),
+                PhoneNo3: $jq("#txtPhoneNo3").val(),
+                FirstNameThai: $jq("#txtFirstNameThai").val(),
+            };
+            $jq.ajax({
+                url: "@Url.Action("GetCustomerDuplicate", "ServiceRequest")",
+                type: "POST",
+            data: PhoneNumber,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            }).done(function (result) {
+                if (result.Valid == null) {
+                    $jq("#duplicate_customer").html('');
+                    $jq("#duplicate_customer").html(result);
+                    $jq("#duplicate_customer_wrapper").show();
+                } else {
+                    showServerErrors(result);
+                }
+            });
+        }
+
+        function getCustomerContactData(customerContactId) {
+            $jq.ajax({
+                url: "@Url.Action("GetCustomerContactById", "ServiceRequest")",
+                method: "POST",
+                data: {
+                    customerContactId: customerContactId
+                },
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+            })
+                .done(function (result) {
+                    $jq("#hiddenContactId").val(result.ContactId);
+                    $jq("#spanContact").html(result.SubscriptionType);
+                    $jq("#spanContactCardNo").html(result.CardNo);
+                    $jq("#spanContactBirthDay").html(result.BirthDay);
+                    $jq("#spanContactTitleTh").html(result.TitleTh);
+                    $jq("#spanContactFirstNameTh").html(result.FirstNameTh);
+                    $jq("#spanContactLastNameTh").html(result.LastNameTh);
+                    $jq("#spanContactTitleEn").html(result.TitleEn);
+                    $jq("#spanContactFirstNameEn").html(result.FirstNameEn);
+                    $jq("#spanContactLastNameEn").html(result.LastNameEn);
+                    $jq("#spanCustomerContactPhoneType1").html(result.phoneType1);
+                    $jq("#spanCustomerContactPhoneType2").html(result.phoneType2);
+                    $jq("#spanCustomerContactPhoneType3").html(result.phoneType3);
+                    $jq("#spanCustomerContactPhone1").html(result.phoneNo1);
+                    $jq("#spanCustomerContactPhone2").html(result.phoneNo2);
+                    $jq("#spanCustomerContactPhone3").html(result.phoneNo3);
+                    $jq("#spanContactFaxNo").html(result.faxNo);
+                    $jq("#spanContactEmail").html(result.Email);
+
+                    $jq("#spanContactAccountNo").html(result.AccountNo);
+                    $jq("#hiddenContactRelationshipId").val(result.RelationshipId);
+                    $jq("#spanContactRelationName").html(result.RelationName);
+
+                    // Hidden Field
+                    $jq("#hiddenContactSubscriptionName").val(result.SubscriptionType);
+                    $jq("#hiddenContactCardNo").val(result.CardNo);
+                    $jq("#hiddenContactBirthDate").val(result.BirthDay);
+                    $jq("#hiddenContactTitleTh").val(result.TitleTh);
+                    $jq("#hiddenContactFirstNameTh").val(result.FirstNameTh);
+                    $jq("#hiddenContactLastNameTh").val(result.LastNameTh);
+                    $jq("#hiddenContactTitleEn").val(result.TitleEn);
+                    $jq("#hiddenContactFirstNameEn").val(result.FirstNameEn);
+                    $jq("#hiddenContactLastNameEn").val(result.LastNameEn);
+                    $jq("#hiddenContactPhoneTypeName1").val(result.phoneType1);
+                    $jq("#hiddenContactPhoneTypeName2").val(result.phoneType2);
+                    $jq("#hiddenContactPhoneTypeName3").val(result.phoneType3);
+                    $jq("#hiddenContactPhoneNo1").val(result.phoneNo1);
+                    $jq("#hiddenContactPhoneNo2").val(result.phoneNo2);
+                    $jq("#hiddenContactPhoneNo3").val(result.phoneNo3);
+                    $jq("#hiddenContactFax").val(result.faxNo);
+                    $jq("#hiddenContactEmail").val(result.Email);
+
+                    $jq("#hiddenContactAccountNo").val(result.AccountNo);
+                    $jq("#hiddenContactRelationshipName").val(result.RelationName);
+                })
+                .fail(function () {
+                    doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+                });
+        }
+
+        function onBtnCustomerCancelClick() {
+            //            $jq("#modalCreateCustomer").modal("hide");
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateCustomerModal()', 'Confirm');
+            }
+            return false;
+        }
+
+        function closeCreateCustomerModal() {
+            $jq("#modalWindow").modal('hide');
+            $jq("#modalCreateCustomer").modal('hide');
+        }
+
+        function onPhoneType1Change() {
+            if ($jq("#ddlPhoneType1").val() == "") {
+                $jq("#txtPhoneNo1").val("");
+                $jq("#txtPhoneNo1").attr("readonly", "readonly");
+            } else {
+                $jq("#txtPhoneNo1").removeAttr("readonly");
+            }
+        }
+
+        function onPhoneType2Change() {
+            if ($jq("#ddlPhoneType2").val() == "") {
+                $jq("#txtPhoneNo2").val("");
+                $jq("#txtPhoneNo2").attr("disabled", true);
+            } else {
+                $jq("#txtPhoneNo2").removeAttr("disabled");
+            }
+        }
+
+        function onPhoneType3Change() {
+            if ($jq("#ddlPhoneType3").val() == "") {
+                $jq("#txtPhoneNo3").val("");
+                $jq("#txtPhoneNo3").attr("disabled", true);
+            } else {
+                $jq("#txtPhoneNo3").removeAttr("disabled");
+            }
+        }
+
+        function onDdlCustomerSubscriptType() {
+            if ($jq("#ddlSubscriptType").val() == "") {
+                $jq("#labelCustomerCardNo").html("Subscription ID:");
+                $jq("#txtCardNo").val("");
+                $jq("#txtCardNo").attr("readonly", "readonly");
+                removeValidateError("#txtCardNo");
+            }
+            else {
+                $jq("#labelCustomerCardNo").html("Subscription ID <span class='required-field-block'>*</span>:");
+                $jq("#txtCardNo").removeAttr("readonly");
+            }
+        }
+
+        //==End Modal Customer Function==
+
+        function onBtnSearchCustomerClick() {
+
+            $jq.ajax({
+                url: "@Url.Action("SearchCustomer", "ServiceRequest")",
+                method: "GET",
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.RedirectUrl != undefined) {
+                        topLocation(result.RedirectUrl);
+                    } else {
+                        $jq("#modalSearchCustomerBody").html('');
+                        $jq("#modalSearchCustomerBody").html(result);
+                        $jq("#modalSearchCustomer").modal("show");
+                        $jq("#modalSearchCustomer").on('shown.bs.modal', function () {
+                            $jq('#txtSearchCustomerFirstname').focus();
+                        });
+                    }
+                }
+            });
+        }
+
+        function onSelectCustomerClick(customerId, accountId) {
+            $jq.ajax({
+                url: "@Url.Action("GetCustomerAccount", "ServiceRequest")",
+                data: {
+                    accountId: accountId,
+                    __RequestVerificationToken: getAntiForgeryToken()
+                },
+                method: "post"
+            }).done(function (result) {
+                if (result.RedirectUrl != undefined) {
+                    topLocation(result.RedirectUrl);
+                } else {
+                    if (result.IsSuccess) {
+                        var data = result.Data;
+                        $jq("#hiddenAccountId").val(data.AccountId);
+                        $jq("#hiddenCustomerId").val(data.CustomerId);
+                        $jq("#spanCustomerSubscriptionName").html(data.CustomerSubscriptionName);
+                        $jq("#spanCustomerCardNo").html(data.CustomerCardNo);
+                        $jq("#spanCustomerBirthDate").html(data.CustomerBirthDate);
+                        $jq("#spanCustomerTitleTh").html(data.CustomerTitleTh);
+                        $jq("#spanCustomerFirstNameTh").html(data.CustomerFirstNameTh);
+                        $jq("#spanCustomerLastNameTh").html(data.CustomerLastNameTh);
+                        $jq("#spanCustomerTitleEn").html(data.CustomerTitleEn);
+                        $jq("#spanCustomerFirstNameEn").html(data.CustomerFirstNameEn);
+                        $jq("#spanCustomerLastNameEn").html(data.CustomerLastNameEn);
+                        $jq("#spanCustomerPhoneType1").html(data.CustomerPhoneTypeName1);
+                        $jq("#spanCustomerPhoneType2").html(data.CustomerPhoneTypeName2);
+                        $jq("#spanCustomerPhoneType3").html(data.CustomerPhoneTypeName3);
+                        $jq("#spanCustomerPhoneNo1").html(data.CustomerPhoneNo1);
+                        $jq("#spanCustomerPhoneNo2").html(data.CustomerPhoneNo2);
+                        $jq("#spanCustomerPhoneNo3").html(data.CustomerPhoneNo3);
+                        $jq("#spanCustomerFax").html(data.CustomerFax);
+                        $jq("#spanCustomerEmail").html(data.CustomerEmail);
+                        $jq("#spanCustomerEmployeeCode").html(data.CustomerEmployeeCode);
+                        $jq("#spanAccountNo").html(data.AccountNo);
+
+                        if (data.AccountStatus == null || (data.AccountStatus.toUpperCase() != "ACTIVE" && data.AccountStatus.toUpperCase() != "A")) {
+                            $jq("#spanAccountStatus").html("Inactive");
+                            $jq("#hiddenAccountStatus").val("Inactive");
+                        } else {
+                            $jq("#spanAccountStatus").html("Active");
+                            $jq("#hiddenAccountStatus").val("Active");
+                        }
+
+                        $jq("#spanCarNo").html(data.CarNo);
+                        $jq("#spanProductGroupName").html(data.ProductGroupName);
+                        $jq("#spanProductName").html(data.ProductName);
+                        $jq("#spanBranchName").html(data.BranchName);
+
+                        $jq("#hiddenCustomerSubscriptionName").val(data.CustomerSubscriptionName);
+                        $jq("#hiddenCustomerCardNo").val(data.CustomerCardNo);
+                        $jq("#hiddenCustomerBirthDate").val(data.CustomerBirthDate);
+                        $jq("#hiddenCustomerTitleTh").val(data.CustomerTitleTh);
+                        $jq("#hiddenCustomerFirstNameTh").val(data.CustomerFirstNameTh);
+                        $jq("#hiddenCustomerLastNameTh").val(data.CustomerLastNameTh);
+                        $jq("#hiddenCustomerTitleEn").val(data.CustomerTitleEn);
+                        $jq("#hiddenCustomerFirstNameEn").val(data.CustomerFirstNameEn);
+                        $jq("#hiddenCustomerLastNameEn").val(data.CustomerLastNameEn);
+                        $jq("#hiddenCustomerPhoneTypeName1").val(data.CustomerPhoneTypeName1);
+                        $jq("#hiddenCustomerPhoneTypeName2").val(data.CustomerPhoneTypeName2);
+                        $jq("#hiddenCustomerPhoneTypeName3").val(data.CustomerPhoneTypeName3);
+                        $jq("#hiddenCustomerPhoneNo1").val(data.CustomerPhoneNo1);
+                        $jq("#hiddenCustomerPhoneNo2").val(data.CustomerPhoneNo2);
+                        $jq("#hiddenCustomerPhoneNo3").val(data.CustomerPhoneNo3);
+                        $jq("#hiddenCustomerFax").val(data.CustomerFax);
+                        $jq("#hiddenCustomerEmail").val(data.CustomerEmail);
+                        $jq("#hiddenCustomerEmployeeCode").val(data.CustomerEmployeeCode);
+                        $jq("#hiddenAccountNo").val(data.AccountNo);
+                        $jq("#hiddenAccountCarNo").val(data.CarNo);
+                        $jq("#hiddenAccountProductGroupName").val(data.ProductGroupName);
+                        $jq("#hiddenAccountProductName").val(data.ProductName);
+                        $jq("#hiddenAccountBranchName").val(data.BranchName);
+
+                        onClearContactProfile();
+
+                    } else {
+                        doModal('dvAlertMsg', 'Message Dialog', result.ErrorMessage, '', '');
+                    }
+                }
+            }).fail(function () {
+                doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+            });
+
+            hideModal("modalSearchCustomer");
+            hideModal("modalCreateCustomer");
+        }
+
+        function onClearContactProfile() {
+            $jq("#hiddenContactId").val("");
+            $jq("#spanContact").html("");
+            $jq("#spanContactCardNo").html("");
+            $jq("#spanContactBirthDay").html("");
+            $jq("#spanContactTitleTh").html("");
+            $jq("#spanContactFirstNameTh").html("");
+            $jq("#spanContactLastNameTh").html("");
+            $jq("#spanContactTitleEn").html("");
+            $jq("#spanContactFirstNameEn").html("");
+            $jq("#spanContactLastNameEn").html("");
+            $jq("#spanCustomerContactPhoneType1").html("");
+            $jq("#spanCustomerContactPhone1").html("");
+            $jq("#spanCustomerContactPhoneType2").html("");
+            $jq("#spanCustomerContactPhone2").html("");
+            $jq("#spanCustomerContactPhoneType3").html("");
+            $jq("#spanCustomerContactPhone3").html("");
+            $jq("#spanContactFaxNo").html("");
+            $jq("#spanContactEmail").html("");
+            $jq("#spanContactAccountNo").html("");
+            $jq("#spanContactRelationName").html("");
+
+
+            $jq("#hiddenContactSubscriptionName").val("");
+            $jq("#hiddenContactCardNo").val("");
+            $jq("#hiddenContactBirthDate").val("");
+            $jq("#hiddenContactTitleTh").val("");
+            $jq("#hiddenContactFirstNameTh").val("");
+            $jq("#hiddenContactLastNameTh").val("");
+            $jq("#hiddenContactTitleEn").val("");
+            $jq("#hiddenContactFirstNameEn").val("");
+            $jq("#hiddenContactLastNameEn").val("");
+            $jq("#hiddenContactPhoneTypeName1").val("");
+            $jq("#hiddenContactPhoneTypeName2").val("");
+            $jq("#hiddenContactPhoneTypeName3").val("");
+            $jq("#hiddenContactPhoneNo1").val("");
+            $jq("#hiddenContactPhoneNo2").val("");
+            $jq("#hiddenContactPhoneNo3").val("");
+            $jq("#hiddenContactFax").val("");
+            $jq("#hiddenContactEmail").val("");
+
+            $jq("#hiddenContactAccountNo").val("");
+            $jq("#hiddenContactRelationshipName").val("");
+
+            checkAccountNoIsMatch();
+        }
+
+        function onBtnSearchAccountClick() {
+
+            if ($jq("#hiddenCustomerId").val().length == 0) {
+                doModal('dvAlertMsg', 'Message Dialog', 'ต้องเลือกลูกค้าก่อน จึงจะสามารถค้นหาสัญญาได้', '', '');
+                return;
+            }
+
+            $jq.ajax({
+                url: "@Url.Action("SearchAccount", "ServiceRequest")",
+                method: "GET",
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.RedirectUrl != undefined) {
+                        topLocation(result.RedirectUrl);
+                    } else {
+                        $jq("#modalSearchAccountBody").html('');
+                        $jq("#modalSearchAccountBody").html(result);
+                        $jq("#modalSearchAccount").modal("show");
+                        $jq("#modalSearchAccount").on('shown.bs.modal', function () {
+                            $jq('#txtSearchAccountAccountNo').focus();
+                        });
+                    }
+                }
+            });
+        }
+
+        function onSelectAccountClick(accountId, accountNo, accountStatus, carNo, productGroupName, productName, branchName) {
+
+            $jq("#hiddenAccountId").val(accountId);
+            $jq("#spanAccountNo").html(accountNo);
+            $jq("#spanAccountStatus").html(accountStatus);
+            $jq("#spanCarNo").html(carNo);
+            $jq("#spanProductGroupName").html(productGroupName);
+            $jq("#spanProductName").html(productName);
+            $jq("#spanBranchName").html(branchName);
+
+            $jq("#hiddenAccountNo").val(accountNo);
+            $jq("#hiddenAccountStatus").val(accountStatus);
+            $jq("#hiddenAccountCarNo").val(carNo);
+            $jq("#hiddenAccountProductGroupName").val(productGroupName);
+            $jq("#hiddenAccountProductName").val(productName);
+            $jq("#hiddenAccountBranchName").val(branchName);
+
+            checkAccountNoIsMatch();
+
+            hideModal("modalSearchAccount");
+        }
+
+        function onSelectContactClick(contactId, subScriptionType, cardNo, birthDay, titleTh, firstNameTh, lastNameTh, titleEn, firstNameEn, lastNameEn, faxNo, email, accountNo, relationName, phoneNo1, phoneNo2, phoneNo3, phoneType1, phoneType2, phoneType3, contactRelationshipId) {
+            $jq("#hiddenContactId").val(contactId);
+            $jq("#spanContact").html(subScriptionType);
+            $jq("#spanContactCardNo").html(cardNo);
+            $jq("#spanContactBirthDay").html(birthDay);
+            $jq("#spanContactTitleTh").html(titleTh);
+            $jq("#spanContactFirstNameTh").html(firstNameTh);
+            $jq("#spanContactLastNameTh").html(lastNameTh);
+            $jq("#spanContactTitleEn").html(titleEn);
+            $jq("#spanContactFirstNameEn").html(firstNameEn);
+            $jq("#spanContactLastNameEn").html(lastNameEn);
+            $jq("#spanCustomerContactPhoneType1").html(phoneType1);
+            $jq("#spanCustomerContactPhoneType2").html(phoneType2);
+            $jq("#spanCustomerContactPhoneType3").html(phoneType3);
+            $jq("#spanCustomerContactPhone1").html(phoneNo1);
+            $jq("#spanCustomerContactPhone2").html(phoneNo2);
+            $jq("#spanCustomerContactPhone3").html(phoneNo3);
+            $jq("#spanContactFaxNo").html(faxNo);
+            $jq("#spanContactEmail").html(email);
+
+            $jq("#spanContactAccountNo").html(accountNo);
+            $jq("#hiddenContactRelationshipId").val(contactRelationshipId);
+            $jq("#spanContactRelationName").html(relationName);
+
+            $jq("#hiddenContactSubscriptionName").val(subScriptionType);
+            $jq("#hiddenContactCardNo").val(cardNo);
+            $jq("#hiddenContactBirthDate").val(birthDay);
+            $jq("#hiddenContactTitleTh").val(titleTh);
+            $jq("#hiddenContactFirstNameTh").val(firstNameTh);
+            $jq("#hiddenContactLastNameTh").val(lastNameTh);
+            $jq("#hiddenContactTitleEn").val(titleEn);
+            $jq("#hiddenContactFirstNameEn").val(firstNameEn);
+            $jq("#hiddenContactLastNameEn").val(lastNameEn);
+            $jq("#hiddenContactPhoneTypeName1").val(phoneType1);
+            $jq("#hiddenContactPhoneTypeName2").val(phoneType2);
+            $jq("#hiddenContactPhoneTypeName3").val(phoneType3);
+            $jq("#hiddenContactPhoneNo1").val(phoneNo1);
+            $jq("#hiddenContactPhoneNo2").val(phoneNo2);
+            $jq("#hiddenContactPhoneNo3").val(phoneNo3);
+            $jq("#hiddenContactFax").val(faxNo);
+            $jq("#hiddenContactEmail").val(email);
+
+            $jq("#hiddenContactAccountNo").val(accountNo);
+            $jq("#hiddenContactRelationshipName").val(relationName);
+
+            checkAccountNoIsMatch();
+
+            hideModal("modalSearchContact");
+        }
+
+        function onBtnSearchContactClick() {
+
+            if ($jq("#hiddenCustomerId").val().length == 0) {
+                doModal('dvAlertMsg', 'Message Dialog', 'ต้องเลือกลูกค้าก่อน จึงจะสามารถค้นหาผู้ติดต่อได้', '', '');
+                return;
+            }
+
+            $jq.ajax({
+                url: "@Url.Action("SearchContact", "ServiceRequest")",
+                method: "GET",
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.RedirectUrl != undefined) {
+                        topLocation(result.RedirectUrl);
+                    } else {
+                        $jq("#modalSearchContactBody").html('');
+                        $jq("#modalSearchContactBody").html(result);
+                        $jq("#modalSearchContact").modal("show");
+                        $jq("#modalSearchContact").on('shown.bs.modal', function () {
+                            $jq('#txtSearchContactFirstName').focus();
+                        });
+                    }
+                }
+            });
+        }
+
+        function onBtnClearMappingClick() {
+
+            $jq("#ddlCampaignServiceId").select2("val", "");
+            $jq("#ddlAreaId").select2("val", "");
+            $jq("#ddlSubAreaId").select2("val", "");
+            $jq("#ddlTypeId").select2("val", "");
+
+
+            $jq("#txtProductGroupName").val("");
+            $jq("#txtProductName").val("");
+
+        }
+
+        function onBtnNextClick(ev) {
+
+            clearRequiredField();
+
+            if ($jq("#form1").valid()) {
+
+                var isMappingTypeChanged = false;
+
+                if ($jq("#hiddenCampaignServiceIdOld").val() != $jq("#ddlCampaignServiceId").val()
+                    || $jq("#hiddenAreaIdOld").val() != $jq("#ddlAreaId").val()
+                    || $jq("#hiddenSubAreaIdOld").val() != $jq("#ddlSubAreaId").val()
+                    || $jq("#hiddenTypeIdOld").val() != $jq("#ddlTypeId").val()) {
+                    isMappingTypeChanged = true;
+                }
+
+                if (isMappingTypeChanged) {
+                    // Clear All Answer
+                    $jq("#hiddenMappingProductId").val("");
+                    $jq("#divVerifyAnswer").html("");
+                    $jq("#hiddenIsVerifyPass").val("NOT VERIFY");
+
+                    // Clear Owner
+                    $jq("#hiddenOwnerBranchId").val("-1");
+                    $jq("#hiddenOwnerUserId").val("-1");
+                }
+            } else {
+                // alert("Not Valid");
+
+                var input = $jq('.input-validation-error:first');
+                if (input) {
+                    $jq('html, body').animate({ scrollTop: input.offset().top - 130 }, 'slow');
+                    input.focus();
+                }
+            }
+
+            isFirstValidate = false;
+        }
+
+        function clearRequiredField() {
+            if ($jq("#hiddenIsVerifyPass").val().length == 0) {
+                $jq("#hiddenIsVerifyPass").val("NOT VERIFY");
+            }
+
+            if ($jq("#hiddenOwnerBranchId").val().length == 0) {
+                $jq("#hiddenOwnerBranchId").val("-1");
+            }
+
+            if ($jq("#hiddenOwnerUserId").val().length == 0) {
+                $jq("#hiddenOwnerUserId").val("-1");
+            }
+
+            if ($jq("#hiddenActivityTypeId").val().length == 0) {
+                $jq("#hiddenActivityTypeId").val("-1");
+            }
+
+            if ($jq("#hiddenAfsAssetId").val().length == 0) {
+                $jq("#hiddenAfsAssetId").val("-1");
+            }
+
+            if ($jq("#hiddenNCBBirthDate").val().length == 0) {
+                $jq("#hiddenNCBBirthDate").val("-1");
+            }
+
+            if ($jq("#hiddenNCBCheckStatus").val().length == 0) {
+                $jq("#hiddenNCBCheckStatus").val("-1");
+            }
+
+            if ($jq("#hiddenActivityDescription").val().length == 0) {
+                $jq("#hiddenActivityDescription").val("-1");
+            }
+
+            if ($jq("#hiddenSendMailSender").val().length == 0) {
+                $jq("#hiddenSendMailSender").val("-1");
+            }
+
+            if ($jq("#hiddenSendMailTo").val().length == 0) {
+                $jq("#hiddenSendMailTo").val("-1");
+            }
+
+            if ($jq("#hiddenSendMailSubject").val().length == 0) {
+                $jq("#hiddenSendMailSubject").val("-1");
+            }
+
+            if ($jq("#txtSendMailBody").val().length == 0) {
+                $jq("#txtSendMailBody").val("-1");
+            }
+        }
+
+        function onBtnSelectAccountClick() {
+            hideModal("modalSearchAccount");
+        }
+
+        function onBtnSelectContactClick() {
+            hideModal("modalSearchContact");
+        }
+
+        function initAutoCompleteChannel() {
+
+            $jq("#ddlChannelId").select2({
+                placeholder: 'Auto complete'
+            }).on("change", function (evt) {
+
+                if (!isFirstValidate)
+                    $jq("#form1").valid();
+
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+                    // On Selected
+                    var text = $jq('#ddlChannelId').select2('data').text.trim();
+                    $jq("#hiddenChannelName").val(text);
+                } else {
+                    // On Clear
+                    $jq("#hiddenChannelName").val("");
+                }
+            });
+        }
+
+        function initAutoCompleteMediaSource() {
+
+            $jq("#ddlMediaSourceId").select2({
+                placeholder: 'Auto complete'
+            }).on("change", function (evt) {
+
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+                    // On Selected
+                    var text = $jq('#ddlMediaSourceId').select2('data').text.trim();
+                    $jq("#hiddenMediaSourceName").val(text);
+                } else {
+                    // On Clear
+                    $jq("#hiddenMediaSourceName").val("");
+                }
+            });
+        }
+
+        function initAutoCompleteCampaignService() {
+
+            $jq("#ddlCampaignServiceId").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: "@Url.Action("AutoCompleteSearchCampaignServiceOnMapping", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            areaId: $jq("#ddlAreaId").val(),
+                            subAreaId: $jq("#ddlSubAreaId").val(),
+                            typeId: $jq("#ddlTypeId").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.CampaignServiceName,
+                                    id: item.CampaignServiceId
+                                }
+                            })
+                        };
+
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: "@Model.CampaignServiceId", text: "@Model.CampaignServiceName" };
+
+                    if (data.text == null || data.text.trim().length == 0) {
+                        var text = $jq("#hiddenCampaignServiceName").val();
+                        if (text != null && text.trim().length > 0) {
+                            data.text = text;
+                        }
+                    }
+
+                    callback(data);
+                }
+            }).on("change", function (evt) {
+
+                if (!isFirstValidate)
+                    $jq("#form1").valid();
+
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+
+                    // On Selected
+                    $jq.ajax({
+                        url: "@Url.Action("GetCampaignService", "ServiceRequest")",
+                        method: "POST",
+                        data: {
+                            campaignserviceId: $jq(this).val(),
+                            __RequestVerificationToken: getAntiForgeryToken()
+                        }
+                    }).done(function (result) {
+                        if (result.IsSuccess) {
+
+                            $jq("#hiddenProductId").val(result.ProductId);
+                            $jq("#hiddenProductGroupId").val(result.ProductGroupId);
+
+                            $jq("#txtProductName").val(result.ProductName);
+                            $jq("#txtProductGroupName").val(result.ProductGroupName);
+
+                            var campaignserviceName = $jq('#ddlCampaignServiceId').select2('data').text.trim();
+                            $jq("#hiddenCampaignServiceName").val(campaignserviceName);
+
+                        } else {
+                            doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                        }
+                    }).fail(function () {
+                        if (xhr.status === 401) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        } else {
+                            var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                        }
+                    });
+                } else {
+
+                    // On Clear
+                    $jq("#hiddenProductId").val("");
+                    $jq("#hiddenProductGroupId").val("");
+
+                    $jq("#txtProductName").val("");
+                    $jq("#txtProductGroupName").val("");
+                }
+            });
+        }
+
+        function initAutoCompleteArea() {
+
+            $jq("#ddlAreaId").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchAreaOnMapping", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            campaignServiceId: $jq("#ddlCampaignServiceId").val(),
+                            subAreaId: $jq("#ddlSubAreaId").val(),
+                            typeId: $jq("#ddlTypeId").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.AreaName,
+                                    id: item.AreaId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: "@Model.AreaId", text: "@Model.AreaName" };
+
+                    if (data.text == null || data.text.trim().length == 0) {
+                        var text = $jq("#hiddenAreaName").val();
+                        if (text != null && text.trim().length > 0) {
+                            data.text = text;
+                        }
+                    }
+
+                    callback(data);
+                }
+            }).on("change", function (evt) {
+
+                if (!isFirstValidate)
+                    $jq("#form1").valid();
+
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+                    // On Selected
+                    var text = $jq('#ddlAreaId').select2('data').text.trim();
+                    $jq("#hiddenAreaName").val(text);
+                } else {
+                    // On Clear
+                    $jq("#hiddenAreaName").val("");
+                }
+            });
+        }
+
+        function initAutoCompleteSubArea() {
+
+            $jq("#ddlSubAreaId").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchSubAreaOnMapping", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            campaignServiceId: $jq("#ddlCampaignServiceId").val(),
+                            areaId: $jq("#ddlAreaId").val(),
+                            typeId: $jq("#ddlTypeId").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.SubAreaName,
+                                    id: item.SubAreaId
+                                }
+                            })
+                        };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: "@Model.SubAreaId", text: "@Model.SubAreaName" };
+
+                    if (data.text == null || data.text.trim().length == 0) {
+                        var text = $jq("#hiddenSubAreaName").val();
+                        if (text != null && text.trim().length > 0) {
+                            data.text = text;
+                        }
+                    }
+
+                    callback(data);
+                }
+            }).on("change", function (evt) {
+
+                if (!isFirstValidate)
+                    $jq("#form1").valid();
+
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+                    // On Selected
+                    var text = $jq('#ddlSubAreaId').select2('data').text.trim();
+                    $jq("#hiddenSubAreaName").val(text);
+                } else {
+                    // On Clear
+                    $jq("#hiddenSubAreaName").val("");
+                }
+            });
+        }
+
+        function initAutoCompleteType() {
+
+            $jq("#ddlTypeId").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchTypeOnMapping", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            campaignServiceId: $jq("#ddlCampaignServiceId").val(),
+                            areaId: $jq("#ddlAreaId").val(),
+                            subAreaId: $jq("#ddlSubAreaId").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.TypeName,
+                                    id: item.TypeId
+                                }
+                            })
+                        };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: "@Model.TypeId", text: "@Model.TypeName" };
+
+                    if (data.text == null || data.text.trim().length == 0) {
+                        var text = $jq("#hiddenTypeName").val();
+                        if (text != null && text.trim().length > 0) {
+                            data.text = text;
+                        }
+                    }
+
+                    callback(data);
+                }
+            }).on("change", function (evt) {
+
+                if (!isFirstValidate)
+                    $jq("#form1").valid();
+
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+                    // On Selected
+                    var text = $jq('#ddlTypeId').select2('data').text.trim();
+                    $jq("#hiddenTypeName").val(text);
+
+                } else {
+                    // On Clear
+                    $jq("#hiddenTypeName").val("");
+                }
+            });
+        }
+
+        function initVerifyAnswerForOpenDraft() {
+
+            var verifyAnswerJson = $jq("#hiddenVerifyAnswerJson").val();
+            if (verifyAnswerJson.length > 0) {
+
+                var vaArray = eval(decodeURIComponent(verifyAnswerJson));
+
+                var str = "";
+                for (var i = 0; i < vaArray.length; i++) {
+                    var item = vaArray[i];
+                    str += "<input type='hidden' name='answer_" + item.GroupId + "_" + item.QuestionId + "' value='" + item.Value + "'/>";
+                }
+
+                $jq("#divVerifyAnswer").html(str);
+                $jq("#hiddenVerifyAnswerJson").val("");
+            }
+
+        }
+
+        function onlinkRemarkClick() {
+            $jq("#modalRemark").modal("show");
+        }
+    </script>
+}

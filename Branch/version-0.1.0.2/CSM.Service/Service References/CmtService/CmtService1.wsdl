@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CmtService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd1" namespace="UpdateCustomerFlags" />
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd2" namespace="www.kiatnakinbank.com/services/CMTService/UpdateCustomerFlags" />
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd3" namespace="CampaignByCustomer" />
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd4" namespace="www.kiatnakinbank.com/services/CMTService/CampaignByCustomer" />
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd6" namespace="www.kiatnakinbank.com/services/CMTService/CampaignByCustomers" />
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd5" namespace="CampaignByCustomers" />
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd7" namespace="CampaignByTeam" />
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd8" namespace="www.kiatnakinbank.com/services/CMTService/CampaignByTeam" />
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd9" namespace="CampaignSearch" />
+      <xsd:import schemaLocation="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd10" namespace="www.kiatnakinbank.com/services/CMTService/CampaignSearch" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="UpdateCustomerFlagsRequest">
+    <wsdl:part name="parameters" element="tns:UpdateCustomerFlagsRequest" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustomerFlagsRequest_Headers">
+    <wsdl:part xmlns:q1="UpdateCustomerFlags" name="header" element="q1:header" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustomerFlagsResponse">
+    <wsdl:part xmlns:q2="www.kiatnakinbank.com/services/CMTService/UpdateCustomerFlags" name="parameters" element="q2:UpdateCustomerFlagsResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustomerFlagsResponse_Headers">
+    <wsdl:part xmlns:q3="www.kiatnakinbank.com/services/CMTService/UpdateCustomerFlags" name="UpdateCustomerFlagsHeader" element="q3:header" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByCustomerRequest">
+    <wsdl:part name="parameters" element="tns:CampaignByCustomerRequest" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByCustomerRequest_Headers">
+    <wsdl:part xmlns:q4="CampaignByCustomer" name="header" element="q4:header" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByCustomerResponse">
+    <wsdl:part xmlns:q5="www.kiatnakinbank.com/services/CMTService/CampaignByCustomer" name="parameters" element="q5:CampaignByCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByCustomerResponse_Headers">
+    <wsdl:part xmlns:q6="www.kiatnakinbank.com/services/CMTService/CampaignByCustomer" name="CampaignByCustomerHeader" element="q6:header" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByCustomersRequest">
+    <wsdl:part name="parameters" element="tns:CampaignByCustomersRequest" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByCustomersRequest_Headers">
+    <wsdl:part xmlns:q7="CampaignByCustomer" name="header" element="q7:header" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByCustomersResponse">
+    <wsdl:part xmlns:q8="www.kiatnakinbank.com/services/CMTService/CampaignByCustomers" name="parameters" element="q8:CampaignByCustomersResponse" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByCustomersResponse_Headers">
+    <wsdl:part xmlns:q9="www.kiatnakinbank.com/services/CMTService/CampaignByCustomers" name="CampaignByCustomerHeader" element="q9:header" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByTeamRequest">
+    <wsdl:part name="parameters" element="tns:CampaignByTeamRequest" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByTeamRequest_Headers">
+    <wsdl:part xmlns:q10="CampaignByTeam" name="header" element="q10:header" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByTeamResponse">
+    <wsdl:part xmlns:q11="www.kiatnakinbank.com/services/CMTService/CampaignByTeam" name="parameters" element="q11:CampaignByTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByTeamResponse_Headers">
+    <wsdl:part xmlns:q12="www.kiatnakinbank.com/services/CMTService/CampaignByTeam" name="SearchByTeamNameHeader" element="q12:header" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByStatusRequest">
+    <wsdl:part name="parameters" element="tns:CampaignByStatusRequest" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByStatusRequest_Headers">
+    <wsdl:part xmlns:q13="CampaignSearch" name="header" element="q13:header" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByStatusResponse">
+    <wsdl:part xmlns:q14="www.kiatnakinbank.com/services/CMTService/CampaignSearch" name="parameters" element="q14:CampaignByStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="CampaignByStatusResponse_Headers">
+    <wsdl:part xmlns:q15="www.kiatnakinbank.com/services/CMTService/CampaignSearch" name="CampaignByStatusHeader" element="q15:header" />
+  </wsdl:message>
+  <wsdl:portType name="ICmtService">
+    <wsdl:operation name="UpdateCustomerFlags">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICmtService/UpdateCustomerFlags" name="UpdateCustomerFlagsRequest" message="tns:UpdateCustomerFlagsRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICmtService/UpdateCustomerFlagsResponse" name="UpdateCustomerFlagsResponse" message="tns:UpdateCustomerFlagsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="CampaignByCustomer">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICmtService/CampaignByCustomer" name="CampaignByCustomerRequest" message="tns:CampaignByCustomerRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICmtService/CampaignByCustomerResponse" name="CampaignByCustomerResponse" message="tns:CampaignByCustomerResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="CampaignByCustomers">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICmtService/CampaignByCustomers" name="CampaignByCustomersRequest" message="tns:CampaignByCustomersRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICmtService/CampaignByCustomersResponse" name="CampaignByCustomersResponse" message="tns:CampaignByCustomersResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="CampaignByTeam">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICmtService/CampaignByTeam" name="CampaignByTeamRequest" message="tns:CampaignByTeamRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICmtService/CampaignByTeamResponse" name="CampaignByTeamResponse" message="tns:CampaignByTeamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="CampaignSearch">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICmtService/CampaignSearch" name="CampaignByStatusRequest" message="tns:CampaignByStatusRequest" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICmtService/CampaignSearchResponse" name="CampaignByStatusResponse" message="tns:CampaignByStatusResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ICmtService" type="tns:ICmtService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UpdateCustomerFlags">
+      <soap:operation soapAction="http://tempuri.org/ICmtService/UpdateCustomerFlags" style="document" />
+      <wsdl:input name="UpdateCustomerFlagsRequest">
+        <soap:header message="tns:UpdateCustomerFlagsRequest_Headers" part="header" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="UpdateCustomerFlagsResponse">
+        <soap:header message="tns:UpdateCustomerFlagsResponse_Headers" part="UpdateCustomerFlagsHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CampaignByCustomer">
+      <soap:operation soapAction="http://tempuri.org/ICmtService/CampaignByCustomer" style="document" />
+      <wsdl:input name="CampaignByCustomerRequest">
+        <soap:header message="tns:CampaignByCustomerRequest_Headers" part="header" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CampaignByCustomerResponse">
+        <soap:header message="tns:CampaignByCustomerResponse_Headers" part="CampaignByCustomerHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CampaignByCustomers">
+      <soap:operation soapAction="http://tempuri.org/ICmtService/CampaignByCustomers" style="document" />
+      <wsdl:input name="CampaignByCustomersRequest">
+        <soap:header message="tns:CampaignByCustomersRequest_Headers" part="header" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CampaignByCustomersResponse">
+        <soap:header message="tns:CampaignByCustomersResponse_Headers" part="CampaignByCustomerHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CampaignByTeam">
+      <soap:operation soapAction="http://tempuri.org/ICmtService/CampaignByTeam" style="document" />
+      <wsdl:input name="CampaignByTeamRequest">
+        <soap:header message="tns:CampaignByTeamRequest_Headers" part="header" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CampaignByTeamResponse">
+        <soap:header message="tns:CampaignByTeamResponse_Headers" part="SearchByTeamNameHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CampaignSearch">
+      <soap:operation soapAction="http://tempuri.org/ICmtService/CampaignSearch" style="document" />
+      <wsdl:input name="CampaignByStatusRequest">
+        <soap:header message="tns:CampaignByStatusRequest_Headers" part="header" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="CampaignByStatusResponse">
+        <soap:header message="tns:CampaignByStatusResponse_Headers" part="CampaignByStatusHeader" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CmtService">
+    <wsdl:port name="BasicHttpBinding_ICmtService" binding="tns:BasicHttpBinding_ICmtService">
+      <soap:address location="http://10.3.112.46/CMTService/CmtService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

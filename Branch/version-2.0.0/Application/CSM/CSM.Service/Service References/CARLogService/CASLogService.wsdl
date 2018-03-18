@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.kiatnakinbank.com/services/CAS/CASLogService" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.kiatnakinbank.com/services/CAS/CASLogService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.kiatnakinbank.com/services/CAS/CASLogService">
+      <s:element name="CreateActivityLog">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Header" type="tns:LogServiceHeader" />
+            <s:element minOccurs="0" maxOccurs="1" name="CreateActivityLog" type="tns:CreateActivityLogData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LogServiceHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ReferenceNo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TransactionDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SystemCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SecurityKey" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CreateActivityLogData">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChannelID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SubscriptionTypeID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubscriptionID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeadID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TicketID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SrID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContractID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductGroupID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CampaignID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TypeID" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="AreaID" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="SubAreaID" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityTypeID" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="TypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AreaName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubAreaName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityTypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="KKCISID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CISID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TrxSeqID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NoncustomerID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OfficerInfoList" type="tns:ArrayOfDataItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContractInfoList" type="tns:ArrayOfDataItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductInfoList" type="tns:ArrayOfDataItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerInfoList" type="tns:ArrayOfDataItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityInfoList" type="tns:ArrayOfDataItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDataItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataItem" nillable="true" type="tns:DataItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="SeqNo" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataLabel" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataValue" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreateActivityLogResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateActivityLogResult" type="tns:CreateActivityLogResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CreateActivityLogResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Header" type="tns:LogServiceHeader" />
+          <s:element minOccurs="0" maxOccurs="1" name="ResponseStatus" type="tns:ResponseData" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ResponseData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ResponseCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ResponseMessage" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InquiryActivityLog">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Header" type="tns:LogServiceHeader" />
+            <s:element minOccurs="0" maxOccurs="1" name="InquiryActivityLog" type="tns:InqueryActivityLogData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InqueryActivityLogData">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityStartDateTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityEndDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChannelID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SubscriptionTypeID" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubscriptionID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeadID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TicketID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SrID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContractID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductGroupID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CampaignID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TypeID" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="AreaID" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="SubAreaID" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityTypeID" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="SystemID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AreaName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubAreaName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityTypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="KKCISID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CISID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TrxSeqID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NoncustomerID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubStatus" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InquiryActivityLogResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InquiryActivityLogResult" type="tns:InqueryActivytyLogResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="InqueryActivytyLogResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Header" type="tns:LogServiceHeader" />
+          <s:element minOccurs="0" maxOccurs="1" name="InquiryActivityDataList" type="tns:ArrayOfActivityDataItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="ResponseStatus" type="tns:ResponseData" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfActivityDataItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ActivityDataItem" nillable="true" type="tns:ActivityDataItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ActivityDataItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityID" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="SystemID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SystemName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CISID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductGroupID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CampaignID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TypeID" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="AreaID" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="SubAreaID" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChannelID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SubscriptionTypeID" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActivityTypeID" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductGroupName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CampaignName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AreaName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubAreaName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChannelName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubscriptionTypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityTypeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubscriptonID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LeadID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TicketID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SrID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContractID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="KKCISID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TrxSeqID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NoneCustomerID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SubStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OfficerInfoList" type="tns:ArrayOfDataItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="ContractInfoList" type="tns:ArrayOfDataItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductInfoList" type="tns:ArrayOfDataItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerInfoList" type="tns:ArrayOfDataItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="ActivityInfoList" type="tns:ArrayOfDataItem" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CreateActivityLogSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateActivityLog" />
+  </wsdl:message>
+  <wsdl:message name="CreateActivityLogSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateActivityLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="InquiryActivityLogSoapIn">
+    <wsdl:part name="parameters" element="tns:InquiryActivityLog" />
+  </wsdl:message>
+  <wsdl:message name="InquiryActivityLogSoapOut">
+    <wsdl:part name="parameters" element="tns:InquiryActivityLogResponse" />
+  </wsdl:message>
+  <wsdl:portType name="CASLogServiceSoap">
+    <wsdl:operation name="CreateActivityLog">
+      <wsdl:input message="tns:CreateActivityLogSoapIn" />
+      <wsdl:output message="tns:CreateActivityLogSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InquiryActivityLog">
+      <wsdl:input message="tns:InquiryActivityLogSoapIn" />
+      <wsdl:output message="tns:InquiryActivityLogSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CASLogServiceSoap" type="tns:CASLogServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateActivityLog">
+      <soap:operation soapAction="http://www.kiatnakinbank.com/services/CAS/CASLogService/CreateActivityLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InquiryActivityLog">
+      <soap:operation soapAction="http://www.kiatnakinbank.com/services/CAS/CASLogService/InquiryActivityLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CASLogServiceSoap12" type="tns:CASLogServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateActivityLog">
+      <soap12:operation soapAction="http://www.kiatnakinbank.com/services/CAS/CASLogService/CreateActivityLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InquiryActivityLog">
+      <soap12:operation soapAction="http://www.kiatnakinbank.com/services/CAS/CASLogService/InquiryActivityLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CASLogService">
+    <wsdl:port name="CASLogServiceSoap" binding="tns:CASLogServiceSoap">
+      <soap:address location="http://10.3.112.46/CARLogService/CASLogService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="CASLogServiceSoap12" binding="tns:CASLogServiceSoap12">
+      <soap12:address location="http://10.3.112.46/CARLogService/CASLogService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

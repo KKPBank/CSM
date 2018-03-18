@@ -1,0 +1,184 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.TypeViewModel
+
+@{
+    ViewBag.Title = "Edit Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    @*<strong class="font-blue">Type &rsaquo;&rsaquo;</strong>*@
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink("Search Type", "Index", "Type", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; Edit Type</strong>
+}
+<div class="form-horizontal">
+    <h3>Edit Type</h3>
+    <hr class="dotted-line" />
+    <div class="bs-example">
+        <div class="row margin-top-15">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label left-label">Type <span class="require">*</span>:</label>
+                </div>
+                <div class="col-sm-9">
+                    @Html.HiddenFor(model => model.TypeId, new {@class = "form-control", @id = "hdnTypeId"})
+                    @Html.TextBoxFor(model => model.TypeName, new {@class = "form-control input-sm", @id = "txtTypeName", @maxlength = "100"})
+                    @Html.ValidationMessageFor(model => model.TypeName)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label left-label">Type Code <span class="require">*</span>:</label>
+                </div>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.TypeCode, new { @class = "form-control input-sm money", @maxlength = 15, data_m_dec = "0", data_a_sep = "", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.TypeCode)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label left-label">สถานะ <span class="require">*</span>:</label>
+                </div>
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(model => model.Status, Model.TypeIsActiveList, new { @class = "form-control input-sm", id = "selectStatus" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label left-label">สร้างโดย :</label>
+                </div>
+                <div class="col-sm-3">
+                    @Html.HiddenFor(model => model.CreateUser, new { @class = "form-control input-sm", @id = "hdnCreateUser" })
+                    @Html.TextBoxFor(model => model.CreateUserName.FullName , new { @class = "form-control input-sm", @id = "txtCreateUser", @disabled = "disabled", @value=""})
+                </div>
+                <div class="col-sm-3">
+                    <label class="control-label left-label">วันที่สร้าง :</label>
+                </div>
+                <div class="col-sm-3">
+                    
+                    <input type="text" class="form-control input-sm" id="hdnUpdateUser" value="@Model.CreateDate" readonly="readonly" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label left-label">แก้ไขโดย :</label>
+                </div>
+                <div class="col-sm-3">
+                    @Html.HiddenFor(model => model.UpdateUser, new { @class = "form-control input-sm", @id = "hdnUpdateUser" })
+                    @Html.TextBoxFor(model => model.UpdateUserName.FullName, new { @class = "form-control input-sm", @id = "txtUpdateUser", @disabled = "disabled", @value = "" })
+                </div>
+                <div class="col-sm-3">
+                    <label class="control-label left-label">วันที่แก้ไข :</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm" id="hdnUpdateUser" value="@Model.UpdateDate" readonly="readonly" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-12 text-right">
+                    <button id="btnSave" type="button" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Save</button>
+                    <button id="btnBack" type="button" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_Antiforgery")
+@section masterjs
+{
+    <script type="text/javascript">
+        $jq(document).ready(function () {
+            $jq('#btnBack').click(onBtnBackClick);
+            $jq('#btnSave').click(onBtnSaveClick);
+            //$jq("#TypeCode").keydown(onCodeToggleCheckNum);
+        });
+
+        /*function onCodeToggleCheckNum(e) {
+            if ($jq.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        }*/
+
+        function onBtnBackClick() {
+            location.replace('@Url.Action("Index", "Type")');
+        }
+
+        function onBtnSaveClick() {
+
+            var typeName = $jq("#txtTypeName").val();
+            var typeCode = $jq("#TypeCode").val();
+            var status = $jq("#selectStatus").val();
+            var typeId = $jq("#hdnTypeId").val();
+            var createDate = $jq("#hdnCreateDate").val();
+            var createUser = $jq("#hdnCreateUser").val();
+            var updateDate = $jq("#hdnUpdateDate").val();
+            var updateUser = $jq("#hdnUpdateUser").val();
+
+            if (typeName.trim().length === 0 || typeName.trim().length > 100) {
+                var warningMsg = "ชื่อ Type ต้องมากกว่าหรือเท่ากับ 1 ตัวอักษร และไม่เกิน 100 ตัวอักษร";
+                doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                return false;
+            }
+            if (typeCode.trim().length === 0 || typeCode.trim().length > 15) {
+                var warningMsg = "Type Code ต้องมากกว่าหรือเท่ากับ 1 ตัวอักษร และไม่เกิน 15 ตัวอักษร";
+                doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                return false;
+            }
+
+            $jq.ajax({
+                    url: "@Url.Action("SaveType", "Type")",
+                    method: "POST",
+                    data: {
+                        __RequestVerificationToken: getAntiForgeryToken(),
+                        TypeName: typeName,
+                        TypeCode: typeCode,
+                        Status: status,
+                        TypeId: typeId,
+                        CreateDate: createDate,
+                        CreateUser: createUser
+                    }
+                })
+                .done(function (result) {
+                    if (typeof (result) == "string") {
+                        if (isLoginForm(result)) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        }
+                    }
+                    if (result.is_success) {
+                        alert(result.message);
+                        window.location = '@Url.Action("Index", "Type")';
+                    } else {
+                        var warningMsg = result.message;
+                        doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                    }
+                })
+                .fail(function() {
+
+                });
+        }
+
+
+    </script>
+}

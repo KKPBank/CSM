@@ -1,0 +1,39 @@
+SR ID;%SR_ID%; ได้มอบหมายให้คุณดำเนินการ;%AREA_NAME%;Contract No./ Account No. : %CONTRACT_NO%/%ACCOUNT_NO%
+Email Message :
+<br>Service Request ID : %SR_ID%
+<br>Contract No./ Account No. : %CONTRACT_NO%/%ACCOUNT_NO%
+<br>Customer Name : %CUSTOMER_NAME%
+<br>เลขบัตรประชาชน/เลขนิติบุคคล : %SUBSCRIPTION_ID%
+<br>เบอร์โทรศัพท์ลูกค้า : %CUSTOMER_PHONE_NO%
+<br>Contact Name : %CONTACT_NAME%
+<br>เบอร์โทรศัพท์ผู้ติดต่อ : %CONTACT_PHONE_NO%
+<br>
+<br>Product Group : %PRODUCT_GROUP_NAME%
+<br>Product : %PRODUCT_NAME%
+<br>Campaign : %CAMPAIGN_NAME%
+<br>Type : %TYPE_NAME%
+<br>Area : %AREA_NAME%
+<br>Subarea : %SUBAREA_NAME%
+<br>วันเกิด/วันที่จดทะเบียน (พ.ศ.) : %REGISTER_DATE%
+<br>Marketing Branch Upper 1 : %MARKETING_1%
+<br>Marketing Branch Upper 2 : %MARKETING_2%
+<br>Subject : %SUBJECT%
+<br>Remark : %REMARK%
+<br>รายละเอียดการติดต่อ : %ACTIVITY_DESC%
+<br>Channel : %CHANNEL_NAME%
+<br>State : %STATE%
+<br>Status : %STATUS%
+<br>
+<br>Owner : %OWNER%
+<br>Assigned Date : %ASSIGNED_DATE%
+<br>Delegate : %DELEGATE%
+<br>Delegated Date : %DELEGATE_DATE%
+<br>Created By: %CREATE_BY%
+<br>Branch No : %BRANCH_CODE%
+<br>Branch Name : %BRANCH_NAME%
+<br>Created Date : %CREATE_DATE%
+<br>เวลาแจ้งเตือนครั้งถัดไป : %NEXTSLA%
+<br>Link : %LINK%
+<br><br>
+***สามารถ Action SR ได้ โดยการ Reply Mail แล้วใส่สถานะของ SR (Closed: CL , In Progress : IP , Route back : RB) ที่ Subject Mail ระบบจะบันทึก Action ดังกล่าวลง Activity และทำการ Update สถานะตามที่ระบุ Subject Mail ให้อัตโนมัติ
+ตัวอย่างเช่น  Re: SR ID;560000001889;  ได้มอบหมายให้คุณดำเนินการ (CL)

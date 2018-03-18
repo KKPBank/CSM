@@ -1,0 +1,514 @@
+﻿@using CSM.Common.Utilities
+@using CSM.Common.Resources
+@model CSM.Web.Models.CustomerViewModel
+@{
+    ViewBag.Title = (Model.CustomerId != null && Model.CustomerId > 0) ? Resource.Lbl_EditCustomer : Resource.Lbl_NewCustomer;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink(Resource.Lbl_SearchCustomer, "Search", "Customer", new { @skip = "1" }, new { @class = "font-blue" })
+    </strong>
+    @if (Model.CustomerId != null && Model.CustomerId > 0)
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_EditCustomer </strong>
+    }
+    else
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_NewCustomer </strong>
+    }
+    
+}
+
+@using (Html.BeginForm("Edit", "Customer", FormMethod.Post, new { @class = "form-horizontal", @id = "form1" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.CustomerId, new { @id = "hddCustomerId" })
+    @Html.HiddenFor(model => model.IsConfirm, new { @id = "hddIsConfirm" })
+    <input type="hidden" id="hddIsSubmit" value="@Model.IsSubmit" />
+    <input id="btnSubmitTrigger" type="submit" class="hidden"  />
+    <div id="dvForm" class="form-box">
+        @if (Model.CustomerId != null && Model.CustomerId > 0)
+        {
+            <h5 class="form-title">@Resource.Lbl_EditCustomer</h5>
+        }
+        else
+        {
+            <h5 class="form-title">@Resource.Lbl_NewCustomer</h5>
+        }
+        @*<h5 class="form-title">Edit Customer</h5>*@
+        <div class="row margin-top-15">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            Subscription Type:
+                        </p>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.SubscriptType, Model.SubscriptTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                            new { @class = "form-control input-sm input-small", id = "ddlSubscriptType", @style = "width:260px!important" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                            Subscription ID&nbsp;<span id="reqCardNo" class="required-field-block">*</span>:
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.CardNo, new
+                        {
+                            @class = "form-control input-sm",
+                            @id = "txtCardNo",
+                            @maxlength = Constants.MaxLength.CardNo
+                        })
+                        @Html.ValidationMessageFor(model => model.CardNo)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static">
+                            วันเกิด:
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker1'>
+                                    @Html.TextBoxFor(model => model.BirthDate, new
+                                    {
+                                        @class = "form-control input-sm input-small",
+                                        @id = "txtBirthDate",
+                                        onchange = "validateDateValue($jq(this));"
+                                    })
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.BirthDate)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            คำนำหน้า:
+                        </p>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.TitleThai, Model.TitleThaiList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                            new { @class = "form-control input-sm input-small", id = "ddlTitleThai", @style = "width:260px!important" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static">
+                            ชื่อลูกค้า&nbsp;<span class="required-field-block">*</span>:
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.FirstNameThai, new { @class = "form-control input-sm", @id = "txtFirstNameThai", @maxlength = Constants.MaxLength.FirstName })
+                        @Html.ValidationMessageFor(model => model.FirstNameThai)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static">
+                            นามสกุลลูกค้า:
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.LastNameThai, new { @class = "form-control input-sm", @id = "txtLastNameThai", @maxlength = Constants.MaxLength.LastName })
+                        @Html.ValidationMessageFor(model => model.LastNameThai)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            Title:
+                        </p>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.TitleEnglish, Model.TitleEnglishList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                            new { @class = "form-control input-sm input-small", id = "ddlTitleEnglish", @style = "width:260px!important" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static">
+                            First Name:
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.FirstNameEnglish, new { @class = "form-control input-sm", @id = "txtFirstNameEnglish", @maxlength = Constants.MaxLength.FirstName })
+                        @Html.ValidationMessageFor(model => model.FirstNameEnglish)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static">
+                            Last Name:
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.LastNameEnglish, new { @class = "form-control input-sm", @id = "txtLastNameEnglish", @maxlength = Constants.MaxLength.LastName })
+                        @Html.ValidationMessageFor(model => model.LastNameEnglish)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            เบอร์โทรศัพท์ #1&nbsp;<span class="required-field-block">*</span>:
+                        </p>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="clear"></div>
+                        <div class="pull-left">
+                            @Html.DropDownListFor(model => model.PhoneType1, Model.PhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                new { @class = "form-control input-sm input-small", id = "ddlPhoneType1" })
+                        </div>
+                        <div class="pull-left margin-left-5">
+                            @Html.TextBoxFor(model => model.PhoneNo1, new
+                            {
+                                @class = "form-control input-sm input-large",
+                                @id = "txtPhoneNo1",
+                                @maxlength = Constants.MaxLength.PhoneNo
+                            })
+                            @Html.ValidationMessageFor(model => model.PhoneNo1)
+                        </div>
+                        <div style="float:right; position:relative; top:5px; right:53px;">
+                            @Html.CheckBoxFor(model => model.NotValidatePhone1, new { @id = "NotValidatePhone1" })&nbsp;Not Validate Phone Number
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            เบอร์โทรศัพท์ #2:
+                        </p>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="clear"></div>
+                        <div class="pull-left">
+                            @Html.DropDownListFor(model => model.PhoneType2, Model.PhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                new { @class = "form-control input-sm input-small", id = "ddlPhoneType2" })
+                        </div>
+                        <div class="pull-left margin-left-5">
+                            @Html.TextBoxFor(model => model.PhoneNo2, new
+                            {
+                                @class = "form-control input-sm input-large",
+                                @id = "txtPhoneNo2",
+                                @maxlength = Constants.MaxLength.PhoneNo
+                            })
+                            @Html.ValidationMessageFor(model => model.PhoneNo2)
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            เบอร์โทรศัพท์ #3:
+                        </p>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="clear"></div>
+                        <div class="pull-left">
+                            @Html.DropDownListFor(model => model.PhoneType3, Model.PhoneTypeList, CSM.Common.Resources.Resource.Ddl_PleaseSelect,
+                                new { @class = "form-control input-sm input-small", id = "ddlPhoneType3", })
+                        </div>
+                        <div class="pull-left margin-left-5">
+                            @Html.TextBoxFor(model => model.PhoneNo3, new
+                            {
+                                @class = "form-control input-sm input-large",
+                                @id = "txtPhoneNo3",
+                                @maxlength = Constants.MaxLength.PhoneNo
+                            })
+                            @Html.ValidationMessageFor(model => model.PhoneNo3)
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            เบอร์แฟกซ์:
+                        </p>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.Fax, new { @class = "form-control input-sm", @id = "txtFax", @maxlength = Constants.MaxLength.PhoneNo })
+                        @Html.ValidationMessageFor(model => model.Fax)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            อีเมล์:
+                        </p>
+                    </div>
+                    <div class="col-md-9" style="padding-left:55px!important">
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control input-sm input-large", @id = "txtEmail", @maxlength = Constants.MaxLength.Email })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="pull-right margin-top-15">
+            <button id="btnSave" type="button" class="btn btn-blue btn-sm btn-xsmall">
+                <i class="fa fa-save"></i>&nbsp;Save
+            </button>
+            <button id="btnConfirm" type="button" class="btn btn-blue btn-sm btn-xsmall" style="display:none;">
+                <i class="fa fa-save"></i>&nbsp;Confirm
+            </button>
+            <button id="btnCancel" type="button" class="btn btn-gray btn-sm btn-xsmall">Cancel</button>
+            <button id="btnClear" type="button" class="btn btn-gray btn-sm btn-xsmall">Clear</button>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div id="dvSearchResult">
+        @if (Model.CustomerList != null && Model.CustomerList.Count() > 0)
+        {
+            <hr class="dashed-line clear" />
+            <div class="clearfix"></div>
+            <span class="required-field-block">พบข้อมูลลูกค้าในระบบซ้ำกับลูกค้าใหม่ กรุณาตรวจสอบข้อมูล หากต้องการเพิ่มลูกค้ากดปุ่ม Confirm</span>
+            <div class="table-responsive margin-top-10">
+                <table class="table table-hover datatable">
+                    <thead>
+                        <tr>
+                            <th class="center text-nowrap" style="width:10%!important;">Action</th>
+                            <th class="center text-nowrap" style="width:20%!important;" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">Subscription ID</th>
+                            <th class="center text-nowrap" style="width:20%!important;">ชื่อลูกค้า</th>
+                            <th class="center text-nowrap" style="width:20%!important;">นามสกุลลูกค้า</th>
+                            <th class="center text-nowrap" style="width:15%!important;">เลขที่บัญชี/สัญญา</th>
+                            <th class="center text-nowrap" style="width:15%!important;">เบอร์โทรศัพท์</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CustomerList)
+                        {
+                            <tr>
+                                <td class="center">
+                                    <a href="javascript:;" class="view" title="view customer" onclick="initCustomerNote('@item.CustomerId');"></a>
+                                </td>
+                                <td>@item.CardNo</td>
+                                <td>@item.FirstNameThaiEng</td>
+                                <td>@item.LastNameThaiEng</td>
+                                <td>@item.AccountNo</td>
+                                <td>@item.PhoneNo</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+}
+
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        $jq(function () {
+
+            $jq('#btnSave').click(function () {
+                $jq('#btnSubmitTrigger').click();
+            });
+
+            $jq('#btnConfirm').click(function () {
+                $jq("#dvForm input[type='text'],#dvForm select").prop('disabled', false);
+                $jq("#hddIsConfirm").val('1');
+                $jq('#btnSubmitTrigger').click();
+            });
+
+            $jq('#form1').submit(function () {
+                scrollToTop();
+                $jq("#dvLoading").show();
+            });
+
+            $jq("#btnCancel").click(function (e) {
+                e.preventDefault();
+                var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+                if ($jq.trim(msg) != '') {
+                    doModal('dvAlertMsg', 'Message Dialog', msg, 'initSearch()', 'Confirm');
+                }
+                return false;
+            });
+
+            $jq("#btnClear").click(function (e) {
+                e.preventDefault();
+                var msg = 'ต้องการล้างข้อมูลใช่หรือไม่?';
+                if ($jq.trim(msg) != '') {
+                    doModal('dvAlertMsg', 'Message Dialog', msg, 'doClearForm()', 'Confirm');
+                }
+                return false;
+            });
+
+            initPhoneType();
+
+            if ($jq("#hddIsSubmit").val() == '1') {
+                $jq("#btnSave").hide();
+                $jq("#btnConfirm").show();
+                setDisabledControl();
+            }
+
+            if ($jq("#ddlSubscriptType").val() == "") {
+                $jq("#reqCardNo").hide();
+                $jq('#txtCardNo').prop('disabled', true);                
+            }
+
+            $jq("#ddlSubscriptType").change(function (event) {
+                if ($jq(this).val() == '') {
+                    $jq("#reqCardNo").hide();
+                    $jq('#txtCardNo').val('').prop('disabled', true);
+                }
+                else {
+                    $jq("#reqCardNo").show();
+                    $jq('#txtCardNo').prop('disabled', false);
+                }
+                return false;
+            });
+
+            var dateFormat = 'dd/mm/yyyy';
+
+            // DateTime Picker
+            $jq('#datetimepicker1').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            var errorMsg = '@ViewBag.ErrorMessage';
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+
+        function initSearch() {
+            $jq("#dvLoading").show();
+            var actionUrl = '@Url.Action("Search", "Customer")';
+            $jq('#dvTarget').html('');
+            var input = $jq("<input>").attr("type", "hidden");
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+            $jq('#dvTarget form').append($jq(input));
+            $jq('#dvTarget form').submit();
+        }
+
+        function doClearForm() {
+            initCustomerEdit($jq("#hddCustomerId").val());
+        }
+
+        function initPhoneType() {
+            $jq("#txtPhoneNo1").prop('disabled', ($jq("#ddlPhoneType1").val() == ''));
+            $jq("#txtPhoneNo2").prop('disabled', ($jq("#ddlPhoneType2").val() == ''));
+            $jq("#txtPhoneNo3").prop('disabled', ($jq("#ddlPhoneType3").val() == ''));
+
+            $jq("#ddlPhoneType1").change(function (event) {
+                if ($jq(this).val() == '') {
+                    $jq("#txtPhoneNo1").val('').prop('disabled', true);
+                }
+                else {
+                    $jq("#txtPhoneNo1").val('').prop('disabled', false);
+                }
+                return false;
+            });
+            $jq("#ddlPhoneType2").change(function (event) {
+                if ($jq(this).val() == '') {
+                    $jq("#txtPhoneNo2").val('').prop('disabled', true);
+                }
+                else {
+                    $jq("#txtPhoneNo2").val('').prop('disabled', false);
+                }
+                return false;
+            });
+            $jq("#ddlPhoneType3").change(function (event) {
+                if ($jq(this).val() == '') {
+                    $jq("#txtPhoneNo3").val('').prop('disabled', true);
+                }
+                else {
+                    $jq("#txtPhoneNo3").val('').prop('disabled', false);
+                }
+                return false;
+            });
+        }
+
+        function initCustomerNote(customerId) {
+            var actionUrl = '@Url.Action("InitCustomerNote", "Customer")';
+            $jq('#dvTarget').html('');
+            var inputCustomerId = $jq("<input>").attr("type", "hidden").attr("name", "customerId").val(customerId);
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+            $jq('#dvTarget form').append($jq(inputCustomerId));
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').submit();
+        }
+
+        function initCustomerEdit(customerId) {
+            $jq("#dvLoading").show();
+            var actionUrl = '@Url.Action("InitEditCustomer", "Customer")';
+            $jq('#dvTarget').html('');
+            var inputCustomerId = $jq("<input>").attr("type", "hidden").attr("name", "customerId").val(customerId);
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+            $jq('#dvTarget form').append($jq(inputCustomerId));
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').submit();
+        }
+
+        function setDisabledControl() {
+            $jq("#dvForm input[type='text'],#dvForm input[type='checkbox'],#dvForm select").prop('disabled', true);
+        }
+    </script>
+}

@@ -1,0 +1,178 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.TypeViewModel
+
+@{
+    ViewBag.Title = "New Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    @*<strong class="font-blue">Type &rsaquo;&rsaquo;</strong>*@
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink("Search Type", "Index", "Type", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; New Type</strong>
+}
+<form id="form1">
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+        <h3>New Type</h3>
+        <hr class="dotted-line" />
+        <div class="bs-example">
+            <div class="row margin-top-15">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">Type <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.TypeName, new { @id = "txtTypeName", @class = "form-control input-sm", maxlength = "100" })
+                        @Html.ValidationMessageFor(model => model.TypeName)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">Type Code <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.TypeCode, new { @class = "form-control input-sm money", @maxlength = 15, data_m_dec = "0", data_a_sep = "", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.TypeCode)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">สถานะ <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(model => model.Status, Model.TypeIsActiveList, new { @class = "form-control input-sm", id = "selectStatus" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">สร้างโดย :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" value="@ViewBag.CreateUsername" disabled="disabled" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">วันที่สร้าง :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" value="@ViewBag.CreateDate" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">แก้ไขโดย :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" value="@ViewBag.UpdateUsername" disabled="disabled" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">วันที่แก้ไข :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-sm" value="@ViewBag.UpdateDate" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-12 text-right">
+                        <span id="btnSave" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Save</span>
+                        <span id="btnBack" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+    <script type="text/javascript">
+        $jq(document).ready(function () {
+
+            $jq('#btnBack').click(function (event) {
+                event.preventDefault();
+                var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+                if ($jq.trim(msg) != '') {
+                    doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateType()', 'Confirm');
+                }
+                return false;
+            });
+
+            $jq('#btnSave').click(onBtnSaveClick);
+            //$jq("#TypeCode").keydown(onCodeToggleCheckNum);
+        });
+
+        /*function onCodeToggleCheckNum(e) {
+            if ($jq.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        }*/
+
+        function closeCreateType() {
+            location.replace('@Url.Action("Index", "Type")');
+        }
+
+        function onBtnSaveClick() {
+            var typeName = $jq("#txtTypeName").val();
+            var typeCode = $jq("#TypeCode").val();
+            var status = $jq("#selectStatus").val();
+
+            if ($jq("#form1").valid()) {
+
+                $jq.ajax({
+                    url: "@Url.Action("SaveType", "Type")",
+                    method: "POST",
+                    data: {
+                        __RequestVerificationToken: getAntiForgeryToken(),
+                        TypeName: typeName,
+                        TypeCode: typeCode,
+                        Status: status
+                    }
+                })
+                .done(function (result) {
+                    if (typeof (result) == "string") {
+                        if (isLoginForm(result)) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        }
+                    }
+                    if (result.is_success) {
+                        alert(result.message);
+                        window.location = '@Url.Action("Index", "Type")';
+                    } else {
+                        var warningMsg = result.message;
+                        doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                    }
+                })
+                .fail(function () {
+
+                });
+            }
+
+        }
+
+
+    </script>
+}

@@ -1,0 +1,637 @@
+﻿@model CSM.Web.Models.JobViewModel
+@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@{
+    ViewBag.Title = Resource.Lbl_CommunicationPoolInformation;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.CommPool })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_JobCommPool &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_SearchCommunicationPool, "Search", "Job", null, new { @class = "font-blue" })</strong>    
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_CommunicationPoolInformation</strong>
+}
+
+@using (Html.BeginForm("CloseJob", "Job", FormMethod.Post, new { @class = "form-horizontal", @id = "form1" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <input id="btnSubmitTrigger" type="submit" class="hidden" />
+    if (Model != null)
+    {
+        @Html.HiddenFor(model => model.JobId, new { @id = "hddJobId" })
+        @Html.HiddenFor(model => model.JobStatus, new { @id = "hddJobStatus" })
+
+        <div id="dvForm" class="form-box">
+            <h5 class="form-title">@Resource.Lbl_CommunicationPoolInformation</h5>
+            <div id="pnlCommunication">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-3">
+                                <p class="form-control-static">
+                                    ชื่อลูกค้า:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.FirstNameThai)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    นามสกุลลูกค้า:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.LastNameThai)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-3">
+                                <p class="form-control-static">
+                                    Channel:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.Channel)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    Job Status:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.StatusDisplay)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    Job Date:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.CreatedDate)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-3">
+                                <p class="form-control-static">
+                                    From:
+                                </p>
+                            </div>
+                            <div class="col-md-8 ">
+                                <p class="form-control input-sm static-view">
+                                    @Html.Raw(StringHelpers.DisplayWithMaxLength(Model.Sender, Constants.DisplaySenderName))
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    Action By:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.ActionBy)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    Action Date:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.UpdatedDate)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-1">
+                                <p class="form-control-static">
+                                    Subject:
+                                </p>
+                            </div>
+                            <div class="col-md-11">
+                                <p class="form-control input-sm static-view" style="min-height:30px;height:auto!important;">
+                                    @Html.DisplayFor(model => model.Subject)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-1">
+                                <p class="form-control-static">
+                                    Body:
+                                </p>
+                            </div>
+                            <div class="col-md-11">
+                                @if (string.IsNullOrWhiteSpace(Model.Content))
+                                {
+                                    <div class="form-control input-sm static-view no-border-radius margin-bottom-5">
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-control input-sm static-view no-border-radius margin-bottom-5" style="height:auto!important;">
+                                        @Html.Raw(Model.Content)
+                                    </div>
+                                }
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-1">
+                                <p class="form-control-static">
+                                    Remark:
+                                </p>
+                            </div>
+                            <div class="col-md-11">
+                                <p class="form-control input-sm static-view" style="min-height:100px;height:auto!important;">
+                                    @Html.DisplayFor(model => model.Remark)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="pull-left">
+                <h6 class="form-title font-green-jungle margin-top-15 btn-toggle" data-toggle="collapse" data-target="#pnlService">
+                    <span class="minimize">[-]</span> Service Request Information
+                </h6>
+            </div>
+            <div class="pull-left padding-top-10 padding-left-20">
+                @if (Model.JobStatus == Constants.JobStatus.Open)
+                {
+                    <button id="btnNewSR" class="btn btn-green btn-sm btn-xsmall">
+                        <i class="fa fa-plus"></i>&nbsp;New SR
+                    </button>
+                    <button id="btnCloseSR" class="btn btn-gray btn-sm btn-xsmall">
+                        Close Job
+                    </button>
+                }
+            </div>
+            <div class="clear"></div>
+            <div id="pnlService" class="padding-top-10 collapse in">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-3">
+                                <p class="form-control-static">
+                                    SR ID:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.SrNo)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    SR Creator:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.SrCreateUser)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    SR Create Date:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.SrCreateDate)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-3">
+                                <p class="form-control-static">
+                                    Owner SR:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.SrOwner)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    Delegate SR:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.SrDelegator)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-3">
+                                <p class="form-control-static">
+                                    SR Channel:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.SrChannel)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                Media Source
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.SrMediaSource)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-3">
+                                <p class="form-control-static">
+                                    Product Group:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.ProductGroup)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    Product:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.Product)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-3">
+                                <p class="form-control-static">
+                                    Type:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.Type)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-4">
+                                <p class="form-control-static">
+                                    Sub Area:
+                                </p>
+                            </div>
+                            <div class="col-md-8">
+                                <p class="form-control input-sm static-view">
+                                    @Html.DisplayFor(model => model.SubArea)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-1">
+                                <p class="form-control-static">
+                                    Question :
+                                </p>
+                            </div>
+                            <div class="col-md-11">
+                                <p class="form-control input-sm static-view" style="min-height:30px;height:auto!important;">
+                                    @Html.DisplayFor(model => model.SrSubject)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-group-static">
+                            <div class="col-md-1">
+                                <p class="form-control-static">
+                                    Description:
+                                </p>
+                            </div>
+                            <div class="col-md-11">
+                                @*<p class=" form-control input-sm static-view " style="min-height:100px;height:auto!important;">
+                                    @Html.DisplayFor(model => model.SrRemark)
+                                </p>*@
+                                @if (string.IsNullOrWhiteSpace(Model.SrRemark))
+                                {
+                                    <div class="form-control input-sm static-view no-border-radius margin-bottom-5">
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-control input-sm static-view no-border-radius margin-bottom-5" style="height:auto!important;">
+                                        @Html.Raw(Model.SrRemark)
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h6 class="form-title font-green-jungle margin-top-15 btn-toggle" data-toggle="collapse" data-target="#pnlAttachFile">
+                <span class="minimize">[-]</span> Attach File
+            </h6>
+            <div id="pnlAttachFile" class="collapse in">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive margin-top-10">
+                            <table class="table table-hover datatable">
+                                <thead>
+                                    <tr>
+                                        <th class="center text-nowrap" style="width:5%!important;">Action</th>
+                                        <th class="center text-nowrap" style="width:20%!important;">ชื่อเอกสาร</th>
+                                        <th class="center text-nowrap" style="width:5%!important;">วันที่นำเข้า</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Attachments.Count == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="center">@Resource.Msg_NoRecords</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in Model.Attachments)
+                                        {
+                                            <tr>
+                                                <td class="center">
+                                                    <a href="javascript:;" class="view" title="View" onclick="previewAttachment('@item.AttachmentId');"></a>
+                                                </td>
+                                                <td>@item.Filename</td>
+                                                <td>@item.CreateDate.FormatDateTime(Constants.DateTimeFormat.DefaultFullDateTime)</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix margin-top-10"></div>
+        <div class="pull-right">
+            <button id="btnClose" class="btn btn-gray btn-sm btn-xsmall">
+                Back
+            </button>
+        </div>
+    }
+}
+<div class="clearfix"></div>
+<!-- Remark CloseJob -->
+<div id="remarkCloseJobModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("initCloseJob", "Job")'>
+    @using (Html.BeginForm("SaveRemarkCloseJob", "Job", FormMethod.Post, new { @class = "form-horizontal", @id = "form2" }))
+    {
+        @Html.AntiForgeryToken()
+        <div id='dataContainer'>
+        </div>
+    }
+</div>
+<div id="dvTarget"></div>
+@section masterjs
+    {
+    <script type="text/javascript">
+        $jq(function () {
+            //$jq('#btnCloseSR').click(function () {
+            //    var msg = 'ต้องการ close job ใช่หรือไม่';
+            //    if ($jq.trim(msg) != '') {
+            //        doModal('dvAlertMsg', 'Message Dialog', msg, 'doSubmit();', 'Confirm');
+            //        return false;
+            //    }
+            //});
+
+            $jq('#btnCloseSR').click(function () {
+                var url = $jq('#remarkCloseJobModal').data('url');
+                var paramData = { jobId: $jq("#hddJobId").val(), jobStatus: $jq('#hddJobStatus').val() };
+                $jq.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: addAntiForgeryToken(paramData),
+                    beforeSend: function () { $jq("#dvLoading").show(); },
+                    complete: function () { $jq("#dvLoading").hide(); },
+                    success: function (result) {
+                        $jq('#dataContainer').html(result);
+                        $jq('#remarkCloseJobModal').modal('show');
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                });
+
+                return false;
+            });
+
+            $jq('.btn-toggle').click(function () {
+                var o = $jq(this).find('span');
+                if (o.hasClass('minimize')) {
+                    o.removeClass('minimize').addClass('expand').text('[+]');
+                } else {
+                    o.removeClass('expand').addClass('minimize').text('[-]');
+                }
+            });
+
+            $jq("#btnClose").click(function (e) {
+                var msg = 'ต้องการปิดหน้าจอใช่หรือไม่?';
+                if ($jq.trim(msg) != '') {
+                    doModal('dvAlertMsg', 'Message Dialog', msg, 'initSearch()', 'Confirm');
+                    return false;
+                }
+            });
+
+            $jq("#btnNewSR").click(function (e) {
+                var msg = '@Resource.Msg_ConfirmCreateNewSR';
+                if ($jq.trim(msg) != '') {
+                    doModal('dvAlertMsg', 'Message Dialog', msg, 'initNewSR();', 'Confirm');
+                    return false;
+                }
+            });
+
+            var errorMsg = '@ViewBag.ErrorMessage';
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+
+        function doSubmit() {
+            $jq('#btnSubmitTrigger').click();
+        }
+
+        function initSearch() {
+            $jq("#dvLoading").show();
+            var actionUrl = '@Url.Action("Search", "Job")';
+            $jq('#dvTarget').html('');
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+            $jq('#dvTarget form').submit();
+        }
+
+        function initNewSR() {
+            $jq.ajax({
+                url: '@Url.Action("NewSR", "Job")',
+                type: "POST",
+                data: addAntiForgeryToken({ JobId: $jq("#hddJobId").val() }),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == true) {
+                        var actionUrl = '@Url.Action("Edit", "ServiceRequest")';
+                        $jq('#dvTarget').html('');
+                        var inputSrId = $jq("<input>").attr("type", "hidden").attr("name", "srId").val(result.SrId);
+                        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+                        $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+                        $jq('#dvTarget form').append($jq(inputSrId));
+                        $jq('#dvTarget form').append($jq(inputToken));
+                        $jq('#dvTarget form').submit();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+            return false;
+        }
+
+
+        function previewAttachment(attachmentId) {
+            // set data
+            var paramData = {
+                attachmentId: attachmentId
+            }
+
+            $jq.ajax({
+                url: '@Url.Action("LoadFileAttachment", "Job")',
+                type: "POST",
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == true) {
+                        $jq('#dvTarget').html('');
+                        var url = '@Url.Action("PreviewAttachment", "Job")';
+                        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+                        $jq('#dvTarget').append('<form action="' + url + '" method="POST" class="hidden"></form>');
+                        $jq('#dvTarget form').append($jq(inputToken));
+                        $jq('#dvTarget form').submit();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+    </script>
+}

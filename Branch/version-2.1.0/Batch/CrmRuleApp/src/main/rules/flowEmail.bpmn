@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_accountItem" structureRef="com.motiftech.icollection.model.Account" />
+
+  <process processType="Private" isExecutable="true" id="flowEmail" name="flowEmail" tns:packageName="com.motiftech.icollection.model" >
+
+    <extensionElements>
+     <tns:import name="com.motiftech.icollection.model.Account" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="account" itemSubjectRef="_accountItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <scriptTask id="_2" name="assign" >
+      <script>account.sendEmail("assign");
+</script>
+    </scriptTask>
+    <inclusiveGateway id="_7" name="start" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_9" name="end" gatewayDirection="Converging" />
+    <endEvent id="_10" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_7-_2" sourceRef="_7" targetRef="_2" name="owner != null &amp;&amp; ruleEmailFlag = 1" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >account.ownerUserId != null &amp;&amp; account.ruleEmailFlag != null &amp;&amp; account.ruleEmailFlag ==1</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_1-_7" sourceRef="_1" targetRef="_7" />
+    <sequenceFlow id="_2-_9" sourceRef="_2" targetRef="_9" />
+    <sequenceFlow id="_7-_9" sourceRef="_7" targetRef="_9" name="else" tns:priority="100" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_9-_10" sourceRef="_9" targetRef="_10" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="flowEmail" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="492" y="12" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="84" y="204" width="97" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="492" y="84" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_9" >
+        <dc:Bounds x="492" y="324" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="492" y="396" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_7-_2" >
+        <di:waypoint x="516" y="108" />
+        <di:waypoint x="132" y="108" />
+        <di:waypoint x="132" y="228" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_7" >
+        <di:waypoint x="516" y="36" />
+        <di:waypoint x="516" y="108" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_9" >
+        <di:waypoint x="132" y="228" />
+        <di:waypoint x="132" y="348" />
+        <di:waypoint x="516" y="348" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_9" >
+        <di:waypoint x="516" y="108" />
+        <di:waypoint x="516" y="348" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9-_10" >
+        <di:waypoint x="516" y="348" />
+        <di:waypoint x="516" y="420" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

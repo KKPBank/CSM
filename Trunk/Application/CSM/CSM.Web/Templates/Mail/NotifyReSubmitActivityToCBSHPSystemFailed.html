@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Email แจ้งผลการ run scheduler ไม่สำเร็จ</title>
+    <link rel="shortcut icon" href='../../Images/favicon.ico' />
+    <style>
+        td.label {
+            color: #333;
+            font-weight: 700;
+        }
+
+        th.top {
+            background-color: #009dd9;
+            font-weight: 700;
+            color: #fff;
+            padding: 10px 5px;
+            text-align: center;
+        }
+
+        .data-list td {
+            border-top: solid 1px #e0e0e0;
+            border-bottom: solid 1px #e0e0e0;
+            border-left: 1px solid #D0D0D0;
+            border-right: 1px solid #D0D0D0;
+            line-height: 15px;
+            vertical-align: middle;
+            padding: 3px 4px;
+            text-align: left;
+        }
+
+        .data-list th {
+            background: #E8E8E8;
+            border-bottom: solid 1px #e0e0e0;
+            border-left: 1px solid #D0D0D0;
+            border-right: 1px solid #D0D0D0;
+            color: #666;
+            line-height: 1.4em;
+            text-align: left;
+            vertical-align: middle;
+            padding: 3px 4px;
+        }
+
+        .data-list {
+            font-family: Arial;
+            background-color: #fff;
+            border: solid 1px #D0D0D0;
+            border-collapse: collapse;
+            color: #333;
+            font-size: 12px;
+        }
+
+            .data-list tbody {
+                color: #333;
+            }
+
+            .data-list tfoot, .data-list tfoot td, .data-list tfoot th {
+                background-color: #FFF;
+                border: 0;
+            }
+
+        .table {
+            font-family: Arial;
+            background-color: #fff;
+            border-collapse: collapse;
+            color: #333;
+            font-size: 12px;
+        }
+
+            .table tbody {
+                color: #333;
+            }
+
+                .table tbody td {
+                    color: #333;
+                    padding-top: 5px;
+                }
+
+            .table tfoot, .table tfoot td, .table tfoot th {
+                background-color: #FFF;
+                border: 0;
+            }
+
+        div {
+            font-family: Arial;
+            background-color: #fff;
+            color: #333;
+            font-size: 12px;
+        }
+
+        #exception-string {
+            background-color: #F5F5F5;
+            color: #E00;
+            padding: 1em;
+            width: 100%;
+        }
+
+        .padding-top-5 {
+            margin-top: 15px !important;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+    </style>
+</head>
+<body>
+    <table class="table" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>เรียนผู้ที่เกี่ยวข้อง</td>
+        </tr>
+        <tr>
+            <td>เรื่อง "CSM fail to Re-Submit Activity to CBS-HP System – [SCHEDULE_DATETIME]"</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>ระบบ CSM ไม่สามารถ Re-Submit Activity to CBS-HP System ได้เนื่องจากมี error ดังนี้</td>
+        </tr>
+        <tr>
+            <td>
+                <div id="exception-string" class="padding-top-5">
+                    [ERROR_MESSAGE]
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <br />
+                <div id="ThaiFooter">
+                    จึงเรียนมาเพื่อทราบ<br />
+                    ระบบ CSM<br /><br />
+                </div>
+                <br />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

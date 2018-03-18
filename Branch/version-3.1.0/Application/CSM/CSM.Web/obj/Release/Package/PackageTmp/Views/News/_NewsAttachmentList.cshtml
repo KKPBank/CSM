@@ -1,0 +1,41 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.NewsViewModel
+<div class="table-responsive">
+    <table class="table datatable">
+        <thead>
+            <tr>
+                <th style="width:10%!important;">Action</th>
+                <th style="width:45%!important;">ชื่อเอกสาร</th>
+                <th style="width:45%!important;">คำอธิบายเอกสาร</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.AttachmentList == null || Model.AttachmentList.Count(x => x.IsDelete == false) == 0)
+            {
+                <tr>
+                    <td colspan="3" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            }
+            else
+            {
+                var rowIndex = 0;
+                foreach (var item in Model.AttachmentList)
+                {
+                    if (item.IsDelete == false)
+                    {
+                        <tr>
+                            <td class="center" style="width: 10% !important;">
+                                <a href="javascript:;" onclick="editAttach('@rowIndex')" class="edit-active" title="Edit"></a>
+                                <span class="line-space"></span>
+                                <a href="javascript:;" onclick="deleteAttach('@rowIndex')" class="delete-active" title="Delete"></a>
+                            </td>
+                            <td style="width: 45% !important;">@item.Name</td>
+                            <td style="width: 45% !important;">@item.Description</td>
+                        </tr>
+                    }
+                    ++rowIndex;
+                }
+            }
+        </tbody>
+    </table>
+</div>

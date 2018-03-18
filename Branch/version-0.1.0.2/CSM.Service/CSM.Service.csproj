@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A2D8F87B-929D-428C-B7D8-C0C2EC4B2445}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSM.Service</RootNamespace>
+    <AssemblyName>CSM.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Messages\Activity\CreateActivityLogResponse.cs" />
+    <Compile Include="Messages\Activity\InquiryActivityLogResponse.cs" />
+    <Compile Include="Messages\Campaign\CampaignSearchFilter.cs" />
+    <Compile Include="Messages\Campaign\RecommendCampaignResponse.cs" />
+    <Compile Include="Messages\Campaign\UpdateCampaignFlagsResponse.cs" />
+    <Compile Include="Messages\Common\Header.cs" />
+    <Compile Include="Messages\Common\StatusResponse.cs" />
+    <Compile Include="Messages\Common\Ticket.cs" />
+    <Compile Include="Messages\Master\CreateProductMasterRequest.cs" />
+    <Compile Include="Messages\Master\CreateProductMasterResponse.cs" />
+    <Compile Include="Messages\SchedTask\CreateSrFromReplyEmailTaskResponse.cs" />
+    <Compile Include="Messages\SchedTask\ExportAFSTaskResponse.cs" />
+    <Compile Include="Messages\SchedTask\ExportCISTaskResponse.cs" />
+    <Compile Include="Messages\SchedTask\ExportNCBTaskResponse.cs" />
+    <Compile Include="Messages\SchedTask\ImportAFSTaskResponse.cs" />
+    <Compile Include="Messages\SchedTask\ImportBDWTaskResponse.cs" />
+    <Compile Include="Messages\SchedTask\ImportCISTaskResponse.cs" />
+    <Compile Include="Messages\SchedTask\ImportHpTaskResponse.cs" />
+    <Compile Include="Messages\SchedTask\JobTaskResponse.cs" />
+    <Compile Include="Messages\SchedTask\ReSubmitActivityToCARSystemTaskResponse.cs" />
+    <Compile Include="Messages\SchedTask\ReSubmitActivityToCBSHPSystemTaskResponse.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\CARLogService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\CBSHPService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\CentralizeOperationCenterService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\CmtService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\LeadService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CSM.Common\CSM.Common.csproj">
+      <Project>{CEB384CC-D77A-4FA9-A22F-03FCC9FDAB5A}</Project>
+      <Name>CSM.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Service References\CARLogService\CASLogService.wsdl" />
+    <None Include="Service References\CARLogService\CSM.Service.CARLogService.CreateActivityLogResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CARLogService\CSM.Service.CARLogService.InqueryActivytyLogResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CBSHPService\CSM.Service.CBSHPService.SiebelMessage1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CBSHPService\CSM.Service.CBSHPService.SR_RequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CBSHPService\Service.wsdl" />
+    <None Include="Service References\CentralizeOperationCenterService\CSM.Service.CentralizeOperationCenterService.Header.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CentralizeOperationCenterService\CSM.Service.CentralizeOperationCenterService.ServiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CentralizeOperationCenterService\Service.wsdl" />
+    <None Include="Service References\CentralizeOperationCenterService\Service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CentralizeOperationCenterService\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CentralizeOperationCenterService\Service2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService1.wsdl" />
+    <None Include="Service References\CmtService\CmtService11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService111.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService1110.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService112.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService113.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService114.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService115.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService116.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService117.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService118.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CmtService119.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.CampaignByCustomerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.CampaignByCustomersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.CampaignByStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.CampaignByTeamResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.CampaignSearchResponseEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.Header1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.Header3.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.Header4.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.Header6.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.Header8.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.SearchByCusEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.SearchByIdEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.SearchByTeamEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.StatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.StatusResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.StatusResponse2.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.StatusResponse3.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.StatusResponse4.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.UpdateCustomerFlagsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CmtService\CSM.Service.CmtService.UpdCustFlagEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\LeadService\CSM.Service.LeadService.Header.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\LeadService\CSM.Service.LeadService.InsertLeadResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\LeadService\CSM.Service.LeadService.SearchLeadResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\LeadService\CSM.Service.LeadService.UpdateLeadResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\LeadService\LeadService.wsdl" />
+    <None Include="Service References\LeadService\LeadService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\LeadService\LeadService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\LeadService\LeadService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\LeadService\LeadService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\LeadService\LeadService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\CARLogService\" />
+    <WCFMetadataStorage Include="Service References\CBSHPService\" />
+    <WCFMetadataStorage Include="Service References\CentralizeOperationCenterService\" />
+    <WCFMetadataStorage Include="Service References\CmtService\" />
+    <WCFMetadataStorage Include="Service References\LeadService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CmtService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CmtService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CmtService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\LeadService\LeadService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\LeadService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\LeadService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\LeadService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CentralizeOperationCenterService\Service.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CentralizeOperationCenterService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CentralizeOperationCenterService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CentralizeOperationCenterService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CARLogService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CARLogService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CARLogService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CmtService\CmtService1.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CBSHPService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CBSHPService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CBSHPService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

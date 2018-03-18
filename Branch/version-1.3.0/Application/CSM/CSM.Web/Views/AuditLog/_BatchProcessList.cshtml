@@ -1,0 +1,61 @@
+﻿@model CSM.Web.Models.BatchMonitoringViewModel
+@using CSM.Common.Resources;
+@using CSM.Common.Utilities
+
+
+<div class="row ">
+    <div class="col-md-4">
+        <div class="form-group">
+            <div class="col-md-4">
+                <p class="form-control-static">
+                    Date
+                </p>
+            </div>
+            <div class="col-md-7 nopadding">
+                <p class="form-control-static">
+                    @Html.DisplayFor(model => model.MonitorDateTime, new { @class = "form-control" })
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="table-responsive">
+    <table id="tblBatchMonitoring" class="table datatable">
+        <thead>
+            <tr>
+                <th class="center text-nowrap" style="width:5%!important;">No</th>
+                <th class="center text-nowrap" style="width:15%!important;">Batch Name</th>
+                <th class="center text-nowrap" style="width:10%!important;">Start Time</th>
+                <th class="center text-nowrap" style="width:10%!important;">End Time</th>
+                <th class="center text-nowrap" style="width:5%!important;">Process Time(Minute)</th>
+                <th class="center text-nowrap" style="width:10%!important;">Status</th>
+                <th class="center text-nowrap" style="width:25%!important;">Detail</th>
+                <th class="center text-nowrap" style="width:5%!important;">Re-Run</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int rowIndex = 1;
+            }
+            @foreach (var item in Model.BatchProcessList)
+            {
+                <tr>
+                    <td class="center">@(rowIndex++)</td>
+                    <td>@item.ProcessName</td>
+                    <td class="center">@item.StartTimeDisplay</td>
+                    <td class="center">@item.EndTimeDisplay</td>
+                    <td class="center">@item.ProcessTimeDisplay</td>
+                    <td class="center">@item.StatusDisplay</td>
+                    <td>@Html.Raw(item.DetailDisplay)</td>
+                    <td class="center">
+                        @if (item.IsRerunable.HasValue && item.IsRerunable.Value && item.Status != Constants.BatchProcessStatus.Processing)
+                        {
+                            <a href="javascript:;" class="btn btn-success btn-xs" title="Re-Run" onclick="initRerunBatch('@item.ProcessCode');">Run</a>
+                        }
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

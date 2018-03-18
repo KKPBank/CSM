@@ -1,0 +1,121 @@
+﻿@using CSM.Common.Utilities
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href='@Href("~/Images/favicon.ico")' />
+    <title>CSM - @ViewBag.Title</title>
+    @Styles.Render("~/Content/bootstrap/base")
+    @Styles.Render("~/Content/bootstrap-datepicker.min.css")
+    @Styles.Render("~/Content/font-awesome")
+    @Styles.Render("~/Content/select2")
+    @Styles.Render("~/Content/summernote.css")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/sr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/app")
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        @Scripts.Render("~/Scripts/html5shiv.js")
+        @Scripts.Render("~/Scripts/respond.min.js")
+    <![endif]-->
+</head>
+<body>
+    <div id="header">
+        @if (IsSectionDefined("MainMenu"))
+        {
+            @RenderSection("MainMenu")
+        }
+        <div class="clear"></div>
+        <hr class="solid-line" />
+    </div>
+
+    <div id="content">
+        <div class="content-panel">
+            <div class="container-fluid">
+                <div class="nav-panel">
+                    <div class="pull-left">
+                        @RenderSection("Breadcrumb", required: false)
+                    </div>
+                    <div class="pull-right font-red-thunderbird bold-text">
+                        <div class="pull-left">
+                            Tel: @ViewBag.PhoneNo
+                        </div>
+                        <div class="pull-left padding-left-25">
+                            Call ID: @ViewBag.CallId
+                        </div>
+                        @if (!Constants.NotKnown.Equals(ViewBag.CallId))
+                        {
+                            <div class="pull-left padding-left-25">
+                                <i class="fa fa-info-circle" onclick="viewCallInfo('@ViewBag.CallId');"></i>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="clear"></div>
+
+                @RenderBody()
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <!-- Footer -->
+        <div id="footer">
+            @Html.Raw(ApplicationHelpers.GetCopyright())<text> | CSM Version </text>@ApplicationHelpers.GetDisplayDllLastUpdatedDate()<text> | </text>@ApplicationHelpers.GetDisplayMinimunRequirement()
+        </div>
+    </div>
+
+    <div id="dvLoading" class="ajax-loader"></div>
+    <div id="dvAlertMsg"></div>
+    <div id="viewCallInfo" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+         role="dialog" data-url='@Url.Action("ViewCallInfo", "IVR")'>
+        <div id='callInfoContainer'>
+        </div>
+    </div>
+    @{ Html.RenderPartial("_Antiforgery");  }
+    <!-- /#wrapper -->
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/select2.min.js")
+    @Scripts.Render("~/Scripts/Select2-locales/select2_locale_th.js")
+    @Scripts.Render("~/Scripts/summernote.min.js")
+    @if (ViewBag.ShowThaiBuddhistCalendar == null)
+    {
+        @Scripts.Render("~/Scripts/bootstrap-datepicker.min.js")
+        @Scripts.Render("~/Scripts/locales/bootstrap-datepicker.th.min.js")
+    }
+    @Scripts.Render("~/Scripts/tableHeadFixer.js")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/sr")
+    @RenderSection("masterjs", required: false)
+    <script type="text/javascript">
+        function viewCallInfo(callId) {
+            var paramData = { callId: callId };
+            var url = $jq('#viewCallInfo').data('url');
+            $jq.ajax({
+                type: 'POST',
+                url: url,
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq('#callInfoContainer').html(result);
+                        $jq('#viewCallInfo').modal('show');
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

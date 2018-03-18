@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EE39EFC2-7F0A-4B19-BBA0-FAC715DB83E1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSM.Entity</RootNamespace>
+    <AssemblyName>CSM.Entity</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountAddressEntity.cs" />
+    <Compile Include="AccountEmailEntity.cs" />
+    <Compile Include="AccountEntity.cs" />
+    <Compile Include="AccountPhoneEntity.cs" />
+    <Compile Include="ActionEntity.cs" />
+    <Compile Include="ActivityDataItemEntity.cs" />
+    <Compile Include="ActivitySearchFilter.cs" />
+    <Compile Include="ActivityTypeEntity.cs" />
+    <Compile Include="AfsAssetEntity.cs" />
+    <Compile Include="AfsexportEntity.cs" />
+    <Compile Include="AfsMarketingEntity.cs" />
+    <Compile Include="AreaEntity.cs" />
+    <Compile Include="AttachmentEntity.cs" />
+    <Compile Include="AuditLogEntity.cs" />
+    <Compile Include="BatchProcessEntity.cs" />
+    <Compile Include="BdwContactEntity.cs" />
+    <Compile Include="BranchEntity.cs" />
+    <Compile Include="CallInfoEntity.cs" />
+    <Compile Include="CampaignserviceEntity.cs" />
+    <Compile Include="ChannelEntity.cs" />
+    <Compile Include="CisAddressTypeEntity.cs" />
+    <Compile Include="CisCorporateEntity.cs" />
+    <Compile Include="CisCountryEntity.cs" />
+    <Compile Include="CisCustomerEmailEntity.cs" />
+    <Compile Include="CisCustomerPhoneEntity.cs" />
+    <Compile Include="CisDistrictEntity.cs" />
+    <Compile Include="CisEmailTypeEntity.cs" />
+    <Compile Include="CisIndividualEntity.cs" />
+    <Compile Include="CisPhoneTypeEntity.cs" />
+    <Compile Include="CisProductGroupEntity.cs" />
+    <Compile Include="CisProvinceEntity.cs" />
+    <Compile Include="CisSubDistrictEntity.cs" />
+    <Compile Include="CisSubscribeAddressEntity.cs" />
+    <Compile Include="CisSubscribeMailEntity.cs" />
+    <Compile Include="CisSubscribePhoneEntity.cs" />
+    <Compile Include="CisSubscriptionEntity.cs" />
+    <Compile Include="CisSubscriptionTypeEntity.cs" />
+    <Compile Include="CisTitleEntity.cs" />
+    <Compile Include="Common\CheckBoxes.cs" />
+    <Compile Include="Common\Pager.cs" />
+    <Compile Include="Common\SearchFilter.cs" />
+    <Compile Include="Common\Select2PagedResult.cs" />
+    <Compile Include="Common\SFtpConfig.cs" />
+    <Compile Include="CommunicationPoolEntity.cs" />
+    <Compile Include="ComplaintEntity.cs" />
+    <Compile Include="ConfigureUrlEntity.cs" />
+    <Compile Include="ContactEntity.cs" />
+    <Compile Include="CustomerContactEntity.cs" />
+    <Compile Include="CustomerEntity.cs" />
+    <Compile Include="CustomerLogEntity.cs" />
+    <Compile Include="DefaultSearchEntity.cs" />
+    <Compile Include="DocumentTypeEntity.cs" />
+    <Compile Include="ExistingProductEntity.cs" />
+    <Compile Include="ExportJobsEntity.cs" />
+    <Compile Include="ExportNcbEntity.cs" />
+    <Compile Include="ExportSREntity.cs" />
+    <Compile Include="ExportVerifyDetailEntity.cs" />
+    <Compile Include="ExportVerifyEntity.cs" />
+    <Compile Include="HpActivityEntity.cs" />
+    <Compile Include="HRIEmployeeEntity.cs" />
+    <Compile Include="MappingProductTypeEntity.cs" />
+    <Compile Include="MediaSourceEntity.cs" />
+    <Compile Include="MenuEntity.cs" />
+    <Compile Include="MessageEntity.cs" />
+    <Compile Include="ModuleEntity.cs" />
+    <Compile Include="NewsEntity.cs" />
+    <Compile Include="NoteEntity.cs" />
+    <Compile Include="ParameterEntity.cs" />
+    <Compile Include="PhoneEntity.cs" />
+    <Compile Include="PoolEntity.cs" />
+    <Compile Include="ProductEntity.cs" />
+    <Compile Include="ProductSREntity.cs" />
+    <Compile Include="ProductGroupEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyEntity.cs" />
+    <Compile Include="QuestionEntity.cs" />
+    <Compile Include="QuestionGroupEntity.cs" />
+    <Compile Include="ReadNewsEntity.cs" />
+    <Compile Include="RelationshipEntity.cs" />
+    <Compile Include="SaleZoneEntity.cs" />
+    <Compile Include="RoleEntity.cs" />
+    <Compile Include="ScreenEntity.cs" />
+    <Compile Include="ServiceRequestEntity.cs" />
+    <Compile Include="SlaEntity.cs" />
+    <Compile Include="SrChannelEntity.cs" />
+    <Compile Include="SrDocumentTypeEntity.cs" />
+    <Compile Include="SrEmailTemplateEntity.cs" />
+    <Compile Include="SrEntity.cs" />
+    <Compile Include="SrPageEntity.cs" />
+    <Compile Include="SRStatusEntity.cs" />
+    <Compile Include="SRValidateResult.cs" />
+    <Compile Include="StatusEntity.cs" />
+    <Compile Include="SubAreaEntity.cs" />
+    <Compile Include="SubscriptTypeEntity.cs" />
+    <Compile Include="TitleEntity.cs" />
+    <Compile Include="TypeEntity.cs" />
+    <Compile Include="UserEntity.cs" />
+    <Compile Include="UserMarketingEntity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CSM.Common\CSM.Common.csproj">
+      <Project>{ceb384cc-d77a-4fa9-a22f-03fcc9fdab5a}</Project>
+      <Name>CSM.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

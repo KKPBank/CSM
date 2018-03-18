@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="www.kiatnakinbank.com/services/CMTService/UpdateCustomerFlags" elementFormDefault="qualified" targetNamespace="www.kiatnakinbank.com/services/CMTService/UpdateCustomerFlags" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="UpdateCustomerFlagsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="detail" type="tns:UpdCustFlagEntity" />
+        <xs:element minOccurs="0" maxOccurs="1" name="status" type="tns:StatusResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="UpdCustFlagEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CitizenId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Result" type="tns:UpdateCustFlag" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="UpdateCustFlag">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="UpdateStatus" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="StatusResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="status" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="error_code" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="description" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="header" type="tns:Header" />
+  <xs:complexType name="Header">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="transaction_date" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="user_name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="service_name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="system_code" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="reference_no" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

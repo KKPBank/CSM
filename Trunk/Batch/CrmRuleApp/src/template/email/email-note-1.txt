@@ -1,0 +1,22 @@
+SR ID;%SR_ID%; %SUBJECT_ACTIVITY%
+Email Message : 
+<br>Service Request ID : %SR_ID%
+<br>Branch No : %BRANCH_CODE%
+<br>Contract No. : %CONTRACT_NO%
+<br>Product Group : %PRODUCT_GROUP_NAME%
+<br>Product : %PRODUCT_NAME%
+<br>Campaign : %CAMPAIGN_NAME%
+<br>Type : %TYPE_NAME%
+<br>Area : %AREA_NAME%
+<br>Subarea : %SUBAREA_NAME%
+<br>Channel : %CHANNEL_NAME%
+<br>Status : %STATUS%
+<br>Customer Name : %CUSTOMER_NAME%
+<br>Subscription ID : %SUBSCRIPTION_ID%
+<br>Note Description: %NOTE%
+<br>Owner : %OWNER%
+<br>Assigned Date : %ASSIGNED_DATE%
+<br>Delegate : %DELEGATE%
+<br>Delegated Date : %DELEGATE_DATE%
+<br>Created By: %CREATE_BY%
+<br>Created Date : %CREATE_DATE%

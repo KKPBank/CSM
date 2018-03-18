@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:5300/CSMSRService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Branch" />
+  <xs:complexType name="CreateSRRequest">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Branch" minOccurs="0" name="Header" nillable="true" type="q1:WebServiceHeader" />
+      <xs:element minOccurs="0" name="CustomerSubscriptionTypeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerCardNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccountNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactSubscriptionTypeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactCardNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactAccountNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactRelationshipName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Subject" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remark" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CallID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ANo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CampaignServiceCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AreaCode" type="xs:decimal" />
+      <xs:element minOccurs="0" name="SubAreaCode" type="xs:decimal" />
+      <xs:element minOccurs="0" name="TypeCode" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ChannelCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MediaSourceName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatorEmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OwnerEmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DelegateEmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SRStatusCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsVerifyPass" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultHouseNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultVillage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultBuilding" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultFloorNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultRoomNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultMoo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultSoi" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultStreet" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultTambol" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultAmphur" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultProvince" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultZipCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AFSAssetNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBCustomerBirthDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="NCBMarketingEmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBCheckStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ActivityDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ActivityTypeId" type="xs:int" />
+      <xs:element minOccurs="0" name="IsSendDelegateEmail" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsSendEmail" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SendEmailSender" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendEmailTo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendEmailCc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendEmailSubject" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendEmailBody" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateSRRequest" nillable="true" type="tns:CreateSRRequest" />
+  <xs:complexType name="CreateSRResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsSuccess" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SRNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateSRResponse" nillable="true" type="tns:CreateSRResponse" />
+  <xs:complexType name="UpdateSRRequest">
+    <xs:sequence>
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Branch" minOccurs="0" name="Header" nillable="true" type="q2:WebServiceHeader" />
+      <xs:element minOccurs="0" name="SRNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsUpdateInfo" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Subject" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remark" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OwnerEmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DelegateEmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SRStatusCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultHouseNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultVillage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultBuilding" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultFloorNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultRoomNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultMoo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultSoi" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultStreet" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultTambol" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultAmphur" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultProvince" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultZipCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AFSAssetNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBCustomerBirthDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="NCBMarketingEmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBCheckStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ActivityDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ActivityTypeId" type="xs:int" />
+      <xs:element minOccurs="0" name="IsSendDelegateEmail" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsSendEmail" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SendEmailSender" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendEmailTo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendEmailCc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendEmailSubject" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendEmailBody" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdateByEmployeeCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateSRRequest" nillable="true" type="tns:UpdateSRRequest" />
+  <xs:complexType name="UpdateSRResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsSuccess" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SRNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateSRResponse" nillable="true" type="tns:UpdateSRResponse" />
+  <xs:complexType name="SearchSRRequest">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Branch" minOccurs="0" name="Header" nillable="true" type="q3:WebServiceHeader" />
+      <xs:element minOccurs="0" name="CustomerCardNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerSubscriptionTypeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccountNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactCardNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactSubscriptionTypeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductGroupCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CampaignServiceCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AreaCode" type="xs:decimal" />
+      <xs:element minOccurs="0" name="SubAreaCode" type="xs:decimal" />
+      <xs:element minOccurs="0" name="TypeCode" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ChannelCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EmployeeCodeforOwnerSR" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EmployeeCodeforDelegateSR" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SRStatusCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ActivityTypeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StartPageIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="PageSize" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchSRRequest" nillable="true" type="tns:SearchSRRequest" />
+  <xs:complexType name="SearchSRResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsSuccess" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ErrorCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StartPageIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="PageSize" type="xs:int" />
+      <xs:element minOccurs="0" name="TotalRecords" type="xs:int" />
+      <xs:element minOccurs="0" name="SearchSRResponseItems" nillable="true" type="tns:ArrayOfSearchSRResponseItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchSRResponse" nillable="true" type="tns:SearchSRResponse" />
+  <xs:complexType name="ArrayOfSearchSRResponseItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SearchSRResponseItem" nillable="true" type="tns:SearchSRResponseItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSearchSRResponseItem" nillable="true" type="tns:ArrayOfSearchSRResponseItem" />
+  <xs:complexType name="SearchSRResponseItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AFSAssetDesc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AFSAssetNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ANo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccountNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ActivityTypeName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AreaCode" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="AreaName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CallId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CampaignServiceCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CampaignServiceName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ChannelCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ChannelName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClosedDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ContactCardNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactSubscriptionTypeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreateDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CustomerCardNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerFirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerFirstNameEn" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerFirstNameTh" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerLastName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerLastNameEn" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerLastNameTh" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerSubscriptionTypeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerSubscriptionTypeName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultAmphur" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultBuilding" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultFloorNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultHouseNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultMoo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultProvince" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultRoomNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultSoi" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultStreet" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultTambol" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultVillage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultZipCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DelegateBranchName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DelegateUserEmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DelegateUserFirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DelegateUserFullName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DelegateUserLastName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DelegateUserPosition" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsVerifyQuestion" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MediaSourceName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBCheckStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBCustomerBirthDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="NCBMarkeingBranchName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBMarkeingBranchUpper1Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBMarkeingBranchUpper2Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBMarkeingFullName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NextSLA" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="OwnerBranchName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OwnerUserEmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OwnerUserFirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OwnerUserFullName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OwnerUserLastName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OwnerUserPositionCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductGroupCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductGroupName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remark" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SrId" type="xs:int" />
+      <xs:element minOccurs="0" name="SrNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SrStatusCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SrStatusName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubAreaCode" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="SubAreaName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Subject" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ThisAlert" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="TotalWorkingHours" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="TypeCode" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="TypeName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VerifyQuestionPass" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchSRResponseItem" nillable="true" type="tns:SearchSRResponseItem" />
+  <xs:complexType name="GetSRRequest">
+    <xs:sequence>
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Branch" minOccurs="0" name="Header" nillable="true" type="q4:WebServiceHeader" />
+      <xs:element minOccurs="0" name="SrNo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetSRRequest" nillable="true" type="tns:GetSRRequest" />
+  <xs:complexType name="GetSRResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsSuccess" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsFound" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ErrorCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SRId" type="xs:int" />
+      <xs:element minOccurs="0" name="SRNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SLA" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AlertNo" type="xs:int" />
+      <xs:element minOccurs="0" name="NextSLA" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="TotalWorkingHours" type="xs:int" />
+      <xs:element minOccurs="0" name="CustomerSubscriptionType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerCardNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccountNO" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactSubscriptionType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactCardNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Subject" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remark" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ANo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductGroupName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CampaignServiceName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AreaName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubAreaName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TypeName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SRChannelName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MediaSourceName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentSRStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreateDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CloseDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreateDateDt" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CloseDateDt" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="OwnerSREmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DelegateSREmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsVerifyQuestion" type="xs:boolean" />
+      <xs:element minOccurs="0" name="VerifyQuestionPass" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultHouseNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultVillage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultBuilding" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultFloorNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultRoomNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultMoo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultSoi" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultStreet" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultTambol" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultAmphur" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultProvince" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DefaultZipCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AFSAssetNo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBCustomerBirthDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="NCBMarketingEmployeeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NCBCheckStatus" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetSRResponse" nillable="true" type="tns:GetSRResponse" />
+</xs:schema>

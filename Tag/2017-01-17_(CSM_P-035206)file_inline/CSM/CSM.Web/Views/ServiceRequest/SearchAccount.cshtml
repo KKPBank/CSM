@@ -1,0 +1,208 @@
+﻿@model CSM.Web.Models.LookupContractViewModel
+@{Layout = null;}
+<div class="form-horizontal">
+    <div id="divBasicSearch">
+        <div style="color:red;padding:0 0 10px;">
+            * หากต้องการค้นหาบางส่วนของคำ ให้ใส่ * ไว้ด้านหน้าหรือด้านหลังของคำค้นหาที่ Field
+            <strong class="text-primary">ตัวอักษรสี น้ำเงิน</strong>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label">เลขที่บัญชี/สัญญา :</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchAccount" id="txtSearchAccountAccountNo" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="control-label text-primary">ทะเบียนรถยนต์:</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchAccount" id="txtSearchAccountCarNo" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label">Product Group:</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchAccount" id="txtSearchAccountProductGroupName" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="control-label">ชื่อสาขา:</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchAccount" id="txtSearchAccountBranchName" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label">Product: </label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-sm searchAccount" id="txtSearchAccountProductName" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="control-label">สถานะบัญชี/สัญญา:</label>
+                </div>
+                <div class="col-sm-3">
+                    <select class="form-control input-sm searchAccount" id="txtSearchAccountStatus">
+                        <option value="0">All</option>
+                        <option value="1">Active</option>
+                        <option value="2">Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-12 text-right">
+                    <span class="btn btn-sm btn-primary" id="btnSearchAccountSearch"><i class="fa fa-search"></i> Search</span>
+                    <span class="btn btn-sm btn-default" id="btnSearchAccountClear"><i class="fa fa-file-o"></i> Clear</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive" id="divSearchAccount" style="display: none">
+    <div id="dvSearchContractTable"></div>
+</div>
+
+
+
+<script type="text/javascript">
+    var contactSearchFilter;
+    var contactSuccessFilter;
+
+    $jq(function () {
+        initializeSearchFilter();
+        initializePaging();
+
+        $jq("#btnSearchAccountSearch").click(onBtnSearchAccountSearchClick);
+        $jq("#btnSearchAccountClear").click(onBtnSearchAccountClearClick);
+
+        $jq(".searchAccountInput").keypress(onSearchAccountKeyPressEnter);
+
+        onBtnSearchAccountSearchClick();
+    });
+
+    function onSearchAccountKeyPressEnter(e) { if (e.which == 13) onBtnSearchAccountSearchClick(); }
+
+
+    function onBtnSearchAccountSearchClick() {
+        if ($jq("#hiddenCustomerId").val().trim().length == 0)
+        {
+            doModal('dvAlertMsg', 'Message Dialog', 'โปรดเลือกลูกค้าก่อน', '', '');
+            return;
+        }
+
+        $jq("#divSearchAccount").show();
+        loadContactTable();
+    }
+
+    //data table
+    function loadContactTable() {
+        //get criteria
+        getSearchFilterCriteria();
+
+        $jq.ajax({
+                url: "@Url.Action("SearchAccount", "ServiceRequest")",
+                method: "POST",
+                data: contactSearchFilter,
+                beforeSend: function() { $jq("#dvLoading").show(); },
+                complete: function() { $jq("#dvLoading").hide(); }
+            })
+            .done(function(result) {
+                if (result.Valid == null) {
+                    $jq("#dvSearchContractTable").html('');
+                    contactSuccessFilter = contactSearchFilter;
+                    $jq("#dvSearchContractTable").html(result);
+                    initializePaging();
+                } else {
+                    showServerErrors(result);
+                }
+            })
+            .fail(function() {
+                if (xhr.status === 401) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                } else {
+                    var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+    }
+
+    function getSearchFilterCriteria() {
+        contactSearchFilter.CustomerId = $jq("#hiddenCustomerId").val();
+        contactSearchFilter.AccountNo = $jq("#txtSearchAccountAccountNo").val();
+        contactSearchFilter.Status = $jq("#txtSearchAccountStatus").val();
+        contactSearchFilter.CarNo = $jq("#txtSearchAccountCarNo").val();
+        contactSearchFilter.ProductGroupName = $jq("#txtSearchAccountProductGroupName").val();
+        contactSearchFilter.ProductName = $jq("#txtSearchAccountProductName").val();
+        contactSearchFilter.BranchName = $jq("#txtSearchAccountBranchName").val();
+    }
+
+    function initializeSearchFilter() {
+        contactSearchFilter = {
+            CustomerId: $jq("#hiddenCustomerId").val(),
+            AccountNo: $jq("#txtSearchCustomerLastname").val(),
+            Status: $jq("#txtSearchAccountStatus").val(),
+            CarNo: $jq("#txtSearchAccountCarNo").val(),
+            ProductGroupName: $jq("#txtSearchAccountProductGroupName").val(),
+            ProductName: $jq("#txtSearchAccountProductName").val(),
+            BranchName: $jq("#txtSearchAccountBranchName").val(),
+            PageNo: '@Model.ContactSearchFilter.PageNo',
+            PageSize: '@Model.ContactSearchFilter.PageSize',
+            SortField: '@Model.ContactSearchFilter.SortField',
+            SortOrder: '@Model.ContactSearchFilter.SortOrder',
+            __RequestVerificationToken: getAntiForgeryToken()
+        };
+        contactSuccessFilter = contactSearchFilter;
+    }
+
+    function initializePaging() {
+        $jq("#dvSearchContractTable .input-page").change(function (event) {
+            contactSearchFilter = contactSuccessFilter;
+            contactSearchFilter.PageNo = $jq(this).val();
+            loadContactTable();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchContractTable #pagesizelist").change(function (event) {
+            contactSearchFilter = contactSuccessFilter;
+            contactSearchFilter.PageNo = "1";
+            contactSearchFilter.PageSize = $jq(this).val();
+            loadContactTable();
+            return false;
+        });
+
+        $jq('#dvSearchContractTable .pagination ul li a').on('click', function (event) {
+            contactSearchFilter = contactSuccessFilter;
+            contactSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadContactTable();
+            return false;
+        });
+    }
+
+    function onBtnSearchAccountClearClick() {
+        $jq("#txtSearchAccountAccountNo").val("");
+        $jq("#txtSearchAccountCarNo").val("");
+        $jq("#txtSearchAccountProductGroupName").val("");
+        $jq("#txtSearchAccountBranchName").val("");
+        $jq("#txtSearchAccountProductName").val("");
+        $jq("#txtSearchAccountStatus").val("");
+
+        $jq("#txtSearchAccountAccountNo").focus();
+        loadContactTable();
+
+    }
+
+</script>

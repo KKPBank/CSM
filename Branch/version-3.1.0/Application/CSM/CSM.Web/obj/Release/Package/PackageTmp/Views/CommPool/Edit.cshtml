@@ -1,0 +1,392 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@model CSM.Web.Models.PoolViewModel
+@{
+    ViewBag.Title = (Model.PoolId != null && Model.PoolId > 0) ? Resource.Lbl_EditCommPoolConfiguration : Resource.Lbl_NewCommPoolConfiguration;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isNew = Model.PoolId == null ? true : false;
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" })</strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink(Resource.Lbl_SearchCommPoolConfiguration, "Search", "CommPool", null, new { @class = "font-blue" })
+    </strong>
+    @if (Model.PoolId != null && Model.PoolId > 0)
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_EditCommPoolConfiguration</strong>
+    }
+    else
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_NewCommPoolConfiguration</strong>
+    }
+}
+
+@using (Html.BeginForm("Edit", "CommPool", FormMethod.Post, new { @class = "form-horizontal", @id = "form1" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.PoolId, new { @id = "hddPoolId" })
+    @Html.HiddenFor(model => model.JsonBranch, new { @id = "hddJsonBranch" })
+    <input id="btnSubmitTrigger" type="submit" class="hidden" />
+    <div id="dvForm" class="form-box">
+        @if (Model.PoolId != null && Model.PoolId > 0)
+        {
+            <h5 class="form-title">@Resource.Lbl_EditCommPoolConfiguration</h5>            
+        }
+        else
+        {
+            <h5 class="form-title">@Resource.Lbl_NewCommPoolConfiguration</h5>            
+        }
+        @*<h5 class="form-title">Edit Config Comunication Pool</h5>*@        
+        <div class="row margin-top-15">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            Pool Name <span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-5 nopadding">
+                        @Html.TextBoxFor(model => model.PoolName, new
+                        {
+                            @class = "form-control input-sm input-xlarge",
+                            @id = "txtPoolName",
+                            @maxlength = Constants.MaxLength.PoolName
+                        })
+                        @Html.ValidationMessageFor(model => model.PoolName)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            Pool Description
+                        </p>
+                    </div>
+                    <div class="col-md-5 nopadding">
+                        @Html.TextBoxFor(model => model.PoolDesc, new
+                        {
+                            @class = "form-control input-sm input-xlarge",
+                            @id = "txtPoolDesc",
+                            @maxlength = Constants.MaxLength.PoolDesc
+                        })
+                        @Html.ValidationMessageFor(model => model.PoolDesc)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            Email&nbsp;<span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-5 nopadding">
+                        @Html.TextBoxFor(model => model.Email, new
+                        {
+                            @class = "form-control input-sm input-xlarge",
+                            @id = "txtEmail",
+                            @maxlength = Constants.MaxLength.Email
+                        })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            Password&nbsp;@if (@isNew)
+                                          {<span class="required-field-block">*</span>}
+                        </p>
+                    </div>
+                    <div class="col-md-5 nopadding">
+                        @Html.PasswordFor(model => model.Password, new
+                        {
+                            @class = "form-control input-sm input-xlarge",
+                            @id = "txtPassword",
+                            @Value = Model.Password,
+                            @maxlength = Constants.MaxLength.Password
+                        })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            Confirm Password&nbsp;@if (@isNew)
+                                                  {<span class="required-field-block">*</span>}
+                        </p>
+                    </div>
+                    <div class="col-md-5 nopadding">
+                        @Html.PasswordFor(model => model.ConfirmPasswd, new
+                        {
+                            @class = "form-control input-sm input-xlarge",
+                            @id = "txtConfirmPasswd",
+                            @Value = Model.ConfirmPasswd,
+                            @maxlength = Constants.MaxLength.Password
+                        })
+                        @Html.ValidationMessageFor(model => model.ConfirmPasswd)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            Status <span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-10 nopadding">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                @Html.DropDownListFor(model => model.Status, Model.StatusList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @style = "width:223px!important;display:block" })
+                                @Html.ValidationMessageFor(model => model.Status)
+                            </div>
+                            <div class="form-group padding-left-20 padding-right-35">
+                                <p class="form-control-static">
+                                    No. Job in pool
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm readonly" style="width:180px!important" disabled="disabled" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            สร้างโดย
+                        </p>
+                    </div>
+                    <div class="col-md-10 nopadding">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.CreateUser, new { @class = "form-control input-sm readonly", @style = "width:223px!important", @disabled = "disabled" })
+                            </div>
+                            <div class="form-group padding-left-20 padding-right-35">
+                                <p class="form-control-static">
+                                    วันที่สร้าง&nbsp;&nbsp;&nbsp;
+                                </p>
+                            </div>
+                            <div class="form-group padding-left-25">
+                                @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            แก้ไขโดย
+                        </p>
+                    </div>
+                    <div class="col-md-10 nopadding">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.UpdateUser, new { @class = "form-control input-sm readonly", @style = "width:223px!important", @disabled = "disabled" })
+                            </div>
+                            <div class="form-group padding-left-20 padding-right-35">
+                                <p class="form-control-static">
+                                    วันที่แก้ไข&nbsp;&nbsp;&nbsp;
+                                </p>
+                            </div>
+                            <div class="form-group padding-left-20">
+                                @Html.TextBoxFor(model => model.UpdateDate, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="pull-left padding-left-20">
+        <p class="form-control-static">
+            สาขา/ทีม <span class="required-field-block">*</span>
+        </p>
+    </div>
+    <div class="pull-right">
+        <button id="btnSearch" type="button" class="btn btn-green btn-sm">
+            Select Branch
+        </button>
+    </div>
+    <div class="clear"></div>
+    <div id="dvSearchResult">
+        @{ Html.RenderPartial("~/Views/CommPool/_PoolBranchList.cshtml", Model); }
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="pull-right">
+        <button id="btnSave" type="button" class="btn btn-blue btn-sm btn-xsmall">
+            <i class="fa fa-save"></i>&nbsp;Save
+        </button>
+        <button id="btnCancel" class="btn btn-gray btn-sm btn-xsmall">
+            Cancel
+        </button>
+    </div>
+    <div class="clearfix"></div>
+}
+<!-- Branch Search -->
+<div id="branchModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("SearchBranch", "Branch")'>
+    @using (Html.BeginForm("SelectBranch", "Branch", FormMethod.Post, new { @class = "form-horizontal", @id = "form2" }))
+    {
+        @Html.AntiForgeryToken()
+        <div id='dataContainer'>
+        </div>
+    }
+</div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        $jq(function () {
+            $jq('#btnSave').click(function () {
+                $jq('#btnSubmitTrigger').click();
+            });
+
+            $jq('#form1').submit(function () {
+                $jq("#dvLoading").show();
+            });
+
+            $jq('#form2').keypress(function (e) {
+                var kCode = e.keyCode || e.charCode; //for cross browser
+                if (kCode == 13) {
+                    $jq("#btnBrSearch").click();
+                    return false;
+                }
+            });
+
+            $jq('#btnSearch').click(function () {
+                var url = $jq('#branchModal').data('url');
+                $jq.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: addAntiForgeryToken({}),
+                    beforeSend: function () { $jq("#dvLoading").show(); },
+                    complete: function () { $jq("#dvLoading").hide(); },
+                    success: function (result) {
+                        $jq('#dataContainer').html(result);
+                        $jq('#branchModal').modal('show');
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                });
+
+                return false;
+            });
+
+            $jq("#btnCancel").click(function (e) {
+                var msg = 'ต้องการปิดหน้าจอใช่หรือไม่?';
+                if ($jq.trim(msg) != '') {
+                    doModal('dvAlertMsg', 'Message Dialog', msg, 'initSearch()', 'Confirm');
+                    return false;
+                }
+            });
+
+            var errorMsg = '@ViewBag.ErrorMessage';
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+
+        function initSearch() {
+            $jq("#dvLoading").show();
+            var actionUrl = '@Url.Action("Search", "CommPool")';
+            $jq('#dvTarget').html('');
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+            $jq('#dvTarget form').submit();
+        }
+
+        function loadPoolBranch() {
+            var objPool = $jq("#form1").serialize();
+
+            $jq.ajax({
+                url: '@Url.Action("PoolBranchList", "CommPool")',
+                type: "POST",
+                data: objPool,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResult").html('');
+                        $jq("#dvSearchResult").html(result);
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        };
+
+        var BranchIdDel;
+        function deleteBranch(branchId) {
+            BranchIdDel = branchId;
+            doModal('dvAlertMsg', 'Confirm Dialog', 'ต้องการลบข้อมูลใช่หรือไม่?', 'doDeleteBranch()', 'Confirm');
+        }
+
+        function doDeleteBranch() {
+            hideModal('modalWindow');
+            var objPool = $jq("#form1").serialize() + '&branchId=' + BranchIdDel;
+
+            $jq.ajax({
+                url: '@Url.Action("DeleteBranch", "CommPool")',
+                type: "POST",
+                data: objPool,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == true) {
+                        $jq('#hddJsonBranch').val(result.Data);
+                        loadPoolBranch();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+    </script>
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.SchedTask" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.SchedTask" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:5300/CSMMailService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" />
+  <xs:complexType name="JobTaskResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElapsedTime" type="xs:long" />
+      <xs:element minOccurs="0" name="JobTaskResults" nillable="true" type="tns:ArrayOfJobTaskResult" />
+      <xs:element minOccurs="0" name="SchedDateTime" type="xs:dateTime" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" minOccurs="0" name="StatusResponse" nillable="true" type="q1:StatusResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JobTaskResponse" nillable="true" type="tns:JobTaskResponse" />
+  <xs:complexType name="ArrayOfJobTaskResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="JobTaskResult" nillable="true" type="tns:JobTaskResult" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfJobTaskResult" nillable="true" type="tns:ArrayOfJobTaskResult" />
+  <xs:complexType name="JobTaskResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElapsedTime" type="xs:long" />
+      <xs:element minOccurs="0" name="NumFailedDelete" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfEmail" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfFax" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfKKWebSite" type="xs:int" />
+      <xs:element minOccurs="0" name="NumOfSR" type="xs:int" />
+      <xs:element minOccurs="0" name="SchedDateTime" type="xs:dateTime" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" minOccurs="0" name="StatusResponse" nillable="true" type="q2:StatusResponse" />
+      <xs:element minOccurs="0" name="TotalEmailRead" type="xs:int" />
+      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JobTaskResult" nillable="true" type="tns:JobTaskResult" />
+</xs:schema>

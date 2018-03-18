@@ -1,0 +1,144 @@
+﻿@model CSM.Web.Models.CustomerViewModel
+@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using MvcPaging;
+@helper LabelForSort(string headerText, string fieldName, string sortField, string sortOrder)
+{
+    <a href="javascript:;" onclick="sortField('@fieldName');return false;">
+        @headerText
+        @if (fieldName.ToLower().Equals(sortField.ToLower()))
+        {
+            if (sortOrder.Equals("ASC"))
+            {<i class="fa fa-sort-asc"></i>}
+            else
+            {<i class="fa fa-sort-desc"></i> }
+        }
+        else
+        {<i class="fa fa-sort"></i>}
+    </a>
+}
+
+@if (Model.CustomerList == null || Model.SearchFilter.TotalRecords == 0)
+{
+    string sortField = Model.SearchFilter.SortField;
+    string sortOrder = Model.SearchFilter.SortOrder;
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th class="center" style="width:10%!important;">Action</th>
+                    <th style="width:10%!important;">Product</th>
+                    <th style="width:10%!important;" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">Subscription ID</th>
+                    <th style="width:10%!important;">ชื่อลูกค้า</th>
+                    <th style="width:10%!important;">นามสกุลลูกค้า</th>
+                    <th style="width:10%!important;">เลขที่บัญชี/สัญญา</th>
+                    <th style="width:10%!important;">เบอร์โทรศัพท์</th>
+                    <th style="width:10%!important;">ทะเบียนรถยนต์</th>
+                    <th style="width:10%!important;">สถานะบัญชี/สัญญา</th>
+                    <th style="width:10%!important;">สถานะการใช้งาน</th>
+                    <th style="width:10%!important;">สาขา</th>
+                    <th style="width:5%!important;">Customer Type</th>
+                    <th style="width:5%!important;">Subscription Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="13" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string sortField = Model.SearchFilter.SortField;
+    string sortOrder = Model.SearchFilter.SortOrder;
+
+    <div class="form-inline nopadding">
+        <div class="form-group">
+            @Html.Raw(Html.Pager(
+                new Options
+                {
+                    PageSize = Model.SearchFilter.PageSize,
+                    TotalItemCount = Model.SearchFilter.TotalRecords,
+                    CurrentPage = Model.SearchFilter.PageNo,
+                    ItemTexts = new ItemTexts
+                    {
+                        First = "<i class='fa fa-step-backward' style='font-size: 0.8em'></i>",
+                        Previous = "<i class='fa fa-caret-left'></i>",
+                        Next = "<i class='fa fa-caret-right'></i>",
+                        Last = "<i class='fa fa-step-forward' style='font-size: 0.8em'></i>"
+                    },
+                    IsShowFirstLast = true,
+                    CssClass = "pager",
+                    IsShowInputPage = true
+                },
+                new { PageSize = ViewBag.PageSize }))
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("PageSize", new SelectList(ViewBag.PageSizeList, "Key", "Value"), new { @class = "form-control input-xs", id = "pagesizelist" })
+        </div>
+        <div class="form-group text-nowrap margin-left-8">
+            <strong>
+                @MvcHtmlString.Create(string.Format(Resource.Lbl_Paging, @Model.SearchFilter.FirstPageIndex, @Model.SearchFilter.LastPageIndex, @Model.SearchFilter.TotalRecordsDisplay))
+            </strong>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table id="tblCustomerList" class="table datatable" style="width:1890px!important;">
+            <thead>
+                <tr>
+                    <th class="center text-nowrap">Action</th>
+                    <th class="center text-nowrap">@LabelForSort("Product", "Product", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">@LabelForSort("Subscription ID", "CardNo", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("ชื่อลูกค้า", "FirstNameThai", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("นามสกุลลูกค้า", "LastNameThai", sortField, sortOrder)</th>    
+                    <th class="center text-nowrap">@LabelForSort("เลขที่บัญชี/สัญญา", "AccountNo", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">เบอร์โทรศัพท์</th>
+                    <th class="center text-nowrap">@LabelForSort("ทะเบียนรถยนต์", "Registration", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("สถานะบัญชี/สัญญา", "Grade", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("สถานะการใช้งาน", "Status", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("สาขา", "BranchName", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Customer Type", "CustomerType", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Subscription Type", "SubscriptTypeName", sortField, sortOrder)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CustomerList)
+                {
+                    var accountEntity = item.Account ?? new CSM.Entity.AccountEntity();
+                    var subscriptTypeEntity = item.SubscriptType ?? new CSM.Entity.SubscriptTypeEntity();
+                    <tr>
+                        <td class="center text-nowrap">
+                            <a href="javascript:;" class="add" title="New SR" onclick="initNewSR('@item.CustomerId','@accountEntity.AccountId')"></a>
+                            <span class="line-space"></span>
+                            @if (Constants.CustomerType.Prospect.Equals(item.CustomerType))
+                            {
+                                <a href="javascript:;" class="edit-active" title="edit" onclick="initCustomerEdit('@item.CustomerId');"></a>
+                                <span class="line-space"></span>
+                            }
+                            else
+                            {
+                                <a href="javascript:;" class="edit-disable" title="edit" onclick="return false;"></a>
+                                <span class="line-space"></span>
+                            }
+                            <a href="javascript:;" class="view" title="View" onclick="initCustomerNote('@item.CustomerId');"></a>
+                        </td>
+                        <td>@accountEntity.Product</td>
+                        <td>@item.CardNo</td>
+                        <td>@item.FirstNameThaiEng</td>
+                        <td>@item.LastNameThaiEng</td>                        
+                        <td>@accountEntity.AccountDescDisplay</td>
+                        <td>@item.PhoneNo</td>
+                        <td>@item.Registration</td>
+                        <td>@accountEntity.Grade</td>
+                        <td>@accountEntity.StatusDisplay</td>
+                        <td>@accountEntity.BranchDisplay</td>
+                        <td class="center">@item.CustomerTypeDisplay</td>
+                        <td class="center">@subscriptTypeEntity.SubscriptTypeName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,756 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@model CSM.Web.Models.CreateServiceRequestViewModel
+@{
+    ViewBag.Title = "Copy Service Request";
+    ViewBag.ShowThaiBuddhistCalendar = true;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.IsEditView = true;
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.ServiceRequest })
+}
+@section Breadcrumb {
+    <strong class="font-blue">Service Request &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink("Search Service Request", "Index", "ServiceRequest", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; Clone Service Request</strong>
+}
+<script src="~/Scripts/datepicker_th/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/datepicker_th/bootstrap-datepicker-thai.js"></script>
+<script src="~/Scripts/datepicker_th/bootstrap-datepicker.th.js"></script>
+<script type="text/javascript">
+
+    $jq(function () {
+        initDatePicker();
+    });
+
+    function initDatePicker() {
+        var dateFormat = 'dd/mm/yyyy';
+
+        $jq.extend($jq.fn.datepicker.defaults, {
+            format: dateFormat,
+            weekStart: 1,
+            autoclose: true,
+            todayHighlight: true,
+            language: "th-th"
+        });
+    }
+</script>
+
+<style type="text/css">
+    .modal-lg {
+        width: 1100px;
+    }
+</style>
+
+<h5 class="form-title sr-title">Clone Service Request 
+    <span class="label label-primary srno" oid="@Model.SrId"> SR ID: @Model.SrNo
+        @MvcHtmlString.Create(string.Format(" Tel: {0} Call ID: {1}", string.IsNullOrWhiteSpace(@Model.PhoneNo) ? "NA" : @Model.PhoneNo, string.IsNullOrWhiteSpace(@Model.CallId) ? "NA" : @Model.CallId))
+    </span> 
+</h5>
+<hr class="dotted-line" />
+
+    <div class="sr" style="overflow: auto">
+        <div style="width: 1150px;">
+            <div class="collapse_container">
+                <div class="collapse_header">
+                    <span class="collapse_sign">[-]</span> Customer Profile Information
+                </div>
+                <div class="collapse_body">
+                    <table class="form">
+                        <tbody>
+                            <tr>
+                                <td style="width: 200px" class="text">
+                                    Subscription Type:
+                                </td>
+                                <td class="input">
+                                    @Html.HiddenFor(model => model.CustomerId, new { @id = "hiddenCustomerId" })
+                                    <span class="value" id="spanCustomerSubscriptionName">@Model.CustomerSubscriptionName</span> <span class="view" title="View" id="btnSearchCustomer"></span>
+                                    @Html.ValidationMessageFor(model => model.CustomerId)
+                                </td>
+                                <td style="width: 180px; padding: 3px" class="text" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                                    Subscription ID :
+                                </td>
+                                <td class="input">
+                                    <span class="value">@Model.CustomerCardNo</span>
+                                </td>
+                                <td style="width: 170px" class="text">วันเกิด :</td>
+                                <td class="input">
+                                    <span class="value">@Model.CustomerBirthDate</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">คำนำหน้า: </td>
+                                <td class="input">
+                                    <span class="value">@Model.CustomerTitleTh</span>
+                                </td>
+                                <td class="text" title="ชื่อลูกค้า/Employee Name">ชื่อลูกค้า: </td>
+                                <td class="input">
+                                    <span class="value" title="ชื่อลูกค้า/Employee Name">@Model.CustomerFirstNameTh</span>
+                                </td>
+                                <td class="text">นามสกุลลูกค้า: </td>
+                                <td class="input">
+                                    <span class="value">@Model.CustomerLastNameTh</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Title: </td>
+                                <td class="input">
+                                    <span class="value">@Model.CustomerTitleEn</span>
+                                </td>
+                                <td class="text">First Name: </td>
+                                <td class="input">
+                                    <span class="value">@Model.CustomerFirstNameEn</span>
+                                </td>
+                                <td class="text">Last Name: </td>
+                                <td class="input">
+                                    <span class="value">@Model.CustomerLastNameEn</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #1: </td>
+                                <td colspan="5" class="input">
+                                    <span class="value w100">@Model.CustomerPhoneTypeName1</span>
+                                    <span class="value">@Model.CustomerPhoneNo1</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #2: </td>
+                                <td colspan="5" class="input">
+                                    <span class="value w100">@Model.CustomerPhoneTypeName2</span>
+                                    <span class="value">@Model.CustomerPhoneNo2</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #3: </td>
+                                <td colspan="5" class="input">
+                                    <span class="value w100">@Model.CustomerPhoneTypeName3</span>
+                                    <span class="value">@Model.CustomerPhoneNo3</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์แฟกซ์</td>
+                                <td class="input">
+                                    <span class="value">@Model.CustomerFax</span>
+                                </td>
+                                <td class="text">อีเมล์: </td>
+                                <td class="input">
+                                    <span class="value">@Model.CustomerEmail</span>
+                                </td>
+                                <td class="text">รหัสพนักงาน: </td>
+                                <td class="input">
+                                    <span class="value">@Model.CustomerEmployeeCode</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="collapse_container">
+                <div class="collapse_header">
+                    <span class="collapse_sign">[-]</span> Contact Profile Information
+                </div>
+                <div class="collapse_body">
+                    <table class="form">
+                        <tbody>
+                            <tr>
+                                <td style="width: 200px" class="text">
+                                    เลขที่บัญชี/สัญญา :
+                                </td>
+                                <td class="input">
+                                    <input type="hidden" id="hiddenAccountId" value="@Model.AccountId" />
+                                    <span class="value">@Model.AccountNo</span>
+                                </td>
+                                <td style="width: 180px" class="text">
+                                    สถานะบัญชี:
+                                </td>
+                                <td class="input">
+                                    @*@{
+                                        var accountStatus = @Model.AccountStatus;
+                                        if (string.IsNullOrEmpty(accountStatus))
+                                            accountStatus = "Inactive";
+                                        else if (accountStatus.ToUpper() == "A")
+                                            accountStatus = "Active";
+                                        else
+                                            accountStatus = "Inactive";
+                                    }*@
+                                    <span class="value">@Model.AccountStatus</span>
+                                </td>
+                                <td style="width: 170px" class="text">
+                                    ทะเบียนรถ:
+                                </td>
+                                <td class="input">
+                                    <span class="value">@Model.AccountCarNo</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Product Group:</td>
+                                <td class="input">
+                                    <span class="value">@Model.AccountProductGroupName</span>
+                                </td>
+                                <td class="text">Product: </td>
+                                <td class="input">
+                                    <span class="value">@Model.AccountProductName</span>
+                                </td>
+                                <td class="text">ชื่อสาขา: </td>
+                                <td class="input">
+                                    <span class="value">@Model.AccountBranchName</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text">
+                                    Subscription Type:
+                                </td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactSubscriptionName</span>
+                                </td>
+                                <td class="text" style="padding: 3px" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                                    Subscription ID :
+                                </td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactCardNo</span>
+                                </td>
+                                <td class="text">วันเกิด :</td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactBirthDate</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">คำนำหน้า: </td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactTitleTh</span>
+                                </td>
+                                <td class="text">ชื่อลูกค้า: </td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactFirstNameTh</span>
+                                </td>
+                                <td class="text">นามสกุลลูกค้า: </td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactLastNameTh</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Title: </td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactTitleEn</span>
+                                </td>
+                                <td class="text">First Name: </td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactFirstNameEn</span>
+                                </td>
+                                <td class="text">Last Name: </td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactLastNameEn</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #1: </td>
+                                <td colspan="5" class="input">
+                                    <span class="value w100">@Model.ContactPhoneTypeName1</span>
+                                    <span class="value">@Model.ContactPhoneNo1</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #2: </td>
+                                <td colspan="5" class="input">
+                                    <span class="value w100">@Model.ContactPhoneTypeName2</span>
+                                    <span class="value">@Model.ContactPhoneNo2</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์โทรศัพท์ #3: </td>
+                                <td colspan="5" class="input">
+                                    <span class="value w100">@Model.ContactPhoneTypeName3</span>
+                                    <span class="value">@Model.ContactPhoneNo3</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">เบอร์แฟกซ์</td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactFax</span>
+                                </td>
+                                <td class="text">อีเมล์: </td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactEmail</span>
+                                </td>
+                                <td class="text"></td>
+                                <td class="input"></td>
+                            </tr>
+                            <tr>
+                                <td class="text">เลขที่สัญญาที่เกี่ยวข้องกับผู้ติดต่อ:</td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactAccountNo</span>
+                                </td>
+                                <td class="text">ความสัมพันธ์:</td>
+                                <td class="input">
+                                    <span class="value">@Model.ContactRelationshipName</span>
+                                </td>
+                                <td class="text"></td>
+                                <td class="input"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="collapse_container">
+                <div class="collapse_header">
+                    <span class="collapse_sign">[-]</span> Service Request Information
+                </div>
+                <div class="collapse_body">
+                    <table class="form">
+                        <tbody>
+                            <tr>
+                                <td style="width: 200px" class="text">Campaign / Service:</td>
+                                <td class="input">
+                                    <span class="value">@Model.CampaignServiceName</span>
+                                </td>
+                                <td style="width: 170px" class="text">SR Channel: </td>
+                                <td class="input">
+                                    <span class="value">@Model.ChannelName</span>
+                                </td>
+                                <td style="width: 170px" class="text"></td>
+                                <td class="input"></td>
+                            </tr>
+                            <tr>
+                                <td class="text">Product Group:</td>
+                                <td class="input">
+                                    <span class="value">@Model.ProductGroupName</span>
+                                </td>
+                                <td class="text">Product: </td>
+                                <td class="input">
+                                    <span class="value">@Model.ProductName</span>
+                                </td>
+                                <td class="text"></td>
+                                <td class="input"></td>
+                            </tr>
+                            <tr>
+                                <td class="text">Area:</td>
+                                <td class="input">
+                                    <span class="value">@Model.AreaName</span>
+                                </td>
+                                <td class="text">Sub Area:</td>
+                                <td class="input">
+                                    <span class="value">@Model.SubAreaName</span>
+                                </td>
+                                <td class="text"></td>
+                                <td class="input"></td>
+                            </tr>
+                            <tr>
+                                <td class="text">Type:</td>
+                                <td class="input">
+                                    <span class="value">@Model.TypeName</span>
+                                </td>
+                                <td class="text">Media Source:</td>
+                                <td class="input">
+                                    <span class="value">@Model.MediaSourceName</span>
+                                </td>
+                                <td class="text"></td>
+                                <td class="input"></td>
+                            </tr>
+                            <tr>
+                                <td class="text">SR Status:</td>
+                                <td class="input">
+                                    <span class="value">@Model.SRStatusName</span>
+                                </td>
+                                <td class="text">วันที่ปิด SR:</td>
+                                <td class="input">
+                                    <span class="value">@Model.CloseDateDisplay</span>
+                                </td>
+                                <td class="text"></td>
+                                <td class="input"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @using (Html.BeginForm("CopyServiceRequest", "ServiceRequest", FormMethod.Post, new { @id = "form1" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                <input type="hidden" name="SrId" value="@Model.SrId" id="hdnSrId" />
+                <input type="hidden" name="SrPageId" value="@Model.SrPageId" />
+                <input type="hidden" name="SrPageCode" value="@Model.SrPageCode" />
+                <div>
+                    <table class="form form-long">
+                        <tbody>
+                            <tr>
+                                <td class="input">
+                                    <span class="btn btn-sm btn-primary" id="btnSave"><i class="fa fa-save"></i> SAVE</span>
+                                    <!--<input type="submit" class="btn btn-sm btn-primary" id="btnSave" value="SAVE" />-->
+                                </td>
+                                <td class="input">
+                                    <span class="btn btn-sm btn-default pull-left" id="btnEditSrCancel"><i class="fa fa-times"></i> Cancel</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+@Html.HiddenFor(m => m.CustomerId, new { @id = "hiddenCustomerId" })
+
+<div id="dvTarget"></div>
+
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+    <script type="text/javascript">
+
+        // To Validate Hidden Fields
+        $jq.validator.setDefaults({ ignore: null });
+
+        $jq(function () {
+
+            $jq('.summernote').summernote({
+                height: 200,
+                codemirror: {
+                    theme: 'monokai'
+                }
+            });
+
+            $jq("#btnSave").click(onBtnSaveClick);
+
+            $jq("#btnEditSrCancel").click(onBtnEditSrCancel);
+
+            resetValidation();
+        });
+
+        function onBtnEditSrCancel() {
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'cancelEditSr()', 'Confirm');
+            }
+            return false;
+        }
+
+        function cancelEditSr() {
+            window.location = "@Url.Action("Index", "ServiceRequest")";
+        }
+
+        function onBtnSaveClick() {
+            var msg = 'ต้องการคัดลอกและบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'confirmCopySr()', 'Confirm');
+            }
+            return false;
+        }
+
+        function confirmCopySr() {
+
+            var frm = $jq("#form1");
+
+            if (frm.valid()) {
+
+                $jq("#dvLoading").show();
+
+                var frmData = $jq("#form1").serialize();
+
+                $jq.ajax({
+                    url: "@Url.Action("CopyServiceRequest","ServiceRequest")",
+                    method: "POST",
+                    data: frmData
+                })
+                .done(function (result) {
+
+                    $jq("#dvLoading").hide();
+
+                    if (result.IsSuccess) {
+
+                        var msg = "<strong>Save Success</strong>";
+                        var msgWarning = "";
+                        if (result.WarningMessages != null && result.WarningMessages.length > 0) {
+                            msgWarning = "<br/><br/><span style='color:#b94a48'><strong>Warning Message:</strong><br/>"
+                            for (var i = 0; i < result.WarningMessages.length; i++) {
+                                msgWarning += (" - " + result.WarningMessages[i] + "<br/>");
+                            }
+                            msgWarning += "</span>";
+                        }
+
+                        doModalWithCloseEvent("dvAlertMsg", "Save Success", msg + msgWarning, "onSaveSuccess()");
+                        return false;
+                    }
+
+                    doModal("dvAlertMsg", "Message Dialog", result.ErrorMessage, "", "");
+                    return false;
+                })
+                .fail(function () {
+
+                    $jq("#dvLoading").hide();
+
+                    doModal("dvAlertMsg", "Message Dialog", "@Resource.Error_SaveFailed", "", "");
+                });
+            }
+
+            return true;
+        }
+
+        function onSaveSuccess() {
+            window.location = "@Url.Action("Index", "ServiceRequest")";
+        }
+
+        function initSrEdit(srId) {
+
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            var inputSrId = $jq("<input>").attr("type", "hidden").attr("name", "srId").val(srId);
+
+            $jq('#dvTarget').html('');
+            $jq('#dvTarget').append("<form action='@Url.Action("CopyServiceRequest", "ServiceRequest")' method='POST' class='hidden' target='_blank'>");
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').append($jq(inputSrId));
+            $jq('#dvTarget form').submit();
+        }
+
+        function onSelectCustomerClick(customerId, accountId) {
+            $jq.ajax({
+                url: "@Url.Action("GetCustomerAccount", "ServiceRequest")",
+                data: {
+                    accountId: accountId,
+                    __RequestVerificationToken: getAntiForgeryToken()
+                },
+                method: "post"
+            }).done(function (result) {
+                if (result.RedirectUrl != undefined) {
+                    topLocation(result.RedirectUrl);
+                } else {
+                    if (result.IsSuccess) {
+                        var data = result.Data;
+                        $jq("#hiddenAccountId").val(data.AccountId);
+                        $jq("#hiddenCustomerId").val(data.CustomerId);
+                        $jq("#spanCustomerSubscriptionName").html(data.CustomerSubscriptionName);
+                        $jq("#spanCustomerCardNo").html(data.CustomerCardNo);
+                        $jq("#spanCustomerBirthDate").html(data.CustomerBirthDate);
+                        $jq("#spanCustomerTitleTh").html(data.CustomerTitleTh);
+                        $jq("#spanCustomerFirstNameTh").html(data.CustomerFirstNameTh);
+                        $jq("#spanCustomerLastNameTh").html(data.CustomerLastNameTh);
+                        $jq("#spanCustomerTitleEn").html(data.CustomerTitleEn);
+                        $jq("#spanCustomerFirstNameEn").html(data.CustomerFirstNameEn);
+                        $jq("#spanCustomerLastNameEn").html(data.CustomerLastNameEn);
+                        $jq("#spanCustomerPhoneType1").html(data.CustomerPhoneTypeName1);
+                        $jq("#spanCustomerPhoneType2").html(data.CustomerPhoneTypeName2);
+                        $jq("#spanCustomerPhoneType3").html(data.CustomerPhoneTypeName3);
+                        $jq("#spanCustomerPhoneNo1").html(data.CustomerPhoneNo1);
+                        $jq("#spanCustomerPhoneNo2").html(data.CustomerPhoneNo2);
+                        $jq("#spanCustomerPhoneNo3").html(data.CustomerPhoneNo3);
+                        $jq("#spanCustomerFax").html(data.CustomerFax);
+                        $jq("#spanCustomerEmail").html(data.CustomerEmail);
+                        $jq("#spanCustomerEmployeeCode").html(data.CustomerEmployeeCode);
+                        $jq("#spanAccountNo").html(data.AccountNo);
+
+                        if (data.AccountStatus == null || (data.AccountStatus.toUpperCase() != "ACTIVE" && data.AccountStatus.toUpperCase() != "A")) {
+                            $jq("#spanAccountStatus").html("Inactive");
+                            $jq("#hiddenAccountStatus").val("Inactive");
+                        } else {
+                            $jq("#spanAccountStatus").html("Active");
+                            $jq("#hiddenAccountStatus").val("Active");
+                        }
+
+                        $jq("#spanCarNo").html(data.CarNo);
+                        $jq("#spanProductGroupName").html(data.ProductGroupName);
+                        $jq("#spanProductName").html(data.ProductName);
+                        $jq("#spanBranchName").html(data.BranchName);
+
+                        $jq("#hiddenCustomerSubscriptionName").val(data.CustomerSubscriptionName);
+                        $jq("#hiddenCustomerCardNo").val(data.CustomerCardNo);
+                        $jq("#hiddenCustomerBirthDate").val(data.CustomerBirthDate);
+                        $jq("#hiddenCustomerTitleTh").val(data.CustomerTitleTh);
+                        $jq("#hiddenCustomerFirstNameTh").val(data.CustomerFirstNameTh);
+                        $jq("#hiddenCustomerLastNameTh").val(data.CustomerLastNameTh);
+                        $jq("#hiddenCustomerTitleEn").val(data.CustomerTitleEn);
+                        $jq("#hiddenCustomerFirstNameEn").val(data.CustomerFirstNameEn);
+                        $jq("#hiddenCustomerLastNameEn").val(data.CustomerLastNameEn);
+                        $jq("#hiddenCustomerPhoneTypeName1").val(data.CustomerPhoneTypeName1);
+                        $jq("#hiddenCustomerPhoneTypeName2").val(data.CustomerPhoneTypeName2);
+                        $jq("#hiddenCustomerPhoneTypeName3").val(data.CustomerPhoneTypeName3);
+                        $jq("#hiddenCustomerPhoneNo1").val(data.CustomerPhoneNo1);
+                        $jq("#hiddenCustomerPhoneNo2").val(data.CustomerPhoneNo2);
+                        $jq("#hiddenCustomerPhoneNo3").val(data.CustomerPhoneNo3);
+                        $jq("#hiddenCustomerFax").val(data.CustomerFax);
+                        $jq("#hiddenCustomerEmail").val(data.CustomerEmail);
+                        $jq("#hiddenCustomerEmployeeCode").val(data.CustomerEmployeeCode);
+                        $jq("#hiddenAccountNo").val(data.AccountNo);
+                        $jq("#hiddenAccountCarNo").val(data.CarNo);
+                        $jq("#hiddenAccountProductGroupName").val(data.ProductGroupName);
+                        $jq("#hiddenAccountProductName").val(data.ProductName);
+                        $jq("#hiddenAccountBranchName").val(data.BranchName);
+
+                        onClearContactProfile();
+
+                    } else {
+                        doModal('dvAlertMsg', 'Message Dialog', result.ErrorMessage, '', '');
+                    }
+                }
+            }).fail(function () {
+                doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+            });
+
+            hideModal("modalSearchCustomer");
+            hideModal("modalCreateCustomer");
+        }
+
+        function onBtnSearchAccountClick() {
+
+            if ($jq("#hiddenCustomerId").val().length == 0) {
+                doModal('dvAlertMsg', 'Message Dialog', 'ต้องเลือกลูกค้าก่อน จึงจะสามารถค้นหาสัญญาได้', '', '');
+                return;
+            }
+
+            $jq.ajax({
+                url: "@Url.Action("SearchAccount", "ServiceRequest")",
+                method: "GET",
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.RedirectUrl != undefined) {
+                        topLocation(result.RedirectUrl);
+                    } else {
+                        $jq("#modalSearchAccountBody").html('');
+                        $jq("#modalSearchAccountBody").html(result);
+                        $jq("#modalSearchAccount").modal("show");
+                        $jq("#modalSearchAccount").on('shown.bs.modal', function () {
+                            $jq('#txtSearchAccountAccountNo').focus();
+                        });
+                    }
+                }
+            });
+        }
+
+        function onSelectContactClick(contactId, subScriptionType, cardNo, birthDay, titleTh, firstNameTh, lastNameTh, titleEn, firstNameEn, lastNameEn, faxNo, email, accountNo, relationName, phoneNo1, phoneNo2, phoneNo3, phoneType1, phoneType2, phoneType3, contactRelationshipId) {
+            $jq("#hiddenContactId").val(contactId);
+            $jq("#spanContact").html(subScriptionType);
+            $jq("#spanContactCardNo").html(cardNo);
+            $jq("#spanContactBirthDay").html(birthDay);
+            $jq("#spanContactTitleTh").html(titleTh);
+            $jq("#spanContactFirstNameTh").html(firstNameTh);
+            $jq("#spanContactLastNameTh").html(lastNameTh);
+            $jq("#spanContactTitleEn").html(titleEn);
+            $jq("#spanContactFirstNameEn").html(firstNameEn);
+            $jq("#spanContactLastNameEn").html(lastNameEn);
+            $jq("#spanCustomerContactPhoneType1").html(phoneType1);
+            $jq("#spanCustomerContactPhoneType2").html(phoneType2);
+            $jq("#spanCustomerContactPhoneType3").html(phoneType3);
+            $jq("#spanCustomerContactPhone1").html(phoneNo1);
+            $jq("#spanCustomerContactPhone2").html(phoneNo2);
+            $jq("#spanCustomerContactPhone3").html(phoneNo3);
+            $jq("#spanContactFaxNo").html(faxNo);
+            $jq("#spanContactEmail").html(email);
+
+            $jq("#spanContactAccountNo").html(accountNo);
+            $jq("#hiddenContactRelationshipId").val(contactRelationshipId);
+            $jq("#spanContactRelationName").html(relationName);
+
+            $jq("#hiddenContactSubscriptionName").val(subScriptionType);
+            $jq("#hiddenContactCardNo").val(cardNo);
+            $jq("#hiddenContactBirthDate").val(birthDay);
+            $jq("#hiddenContactTitleTh").val(titleTh);
+            $jq("#hiddenContactFirstNameTh").val(firstNameTh);
+            $jq("#hiddenContactLastNameTh").val(lastNameTh);
+            $jq("#hiddenContactTitleEn").val(titleEn);
+            $jq("#hiddenContactFirstNameEn").val(firstNameEn);
+            $jq("#hiddenContactLastNameEn").val(lastNameEn);
+            $jq("#hiddenContactPhoneTypeName1").val(phoneType1);
+            $jq("#hiddenContactPhoneTypeName2").val(phoneType2);
+            $jq("#hiddenContactPhoneTypeName3").val(phoneType3);
+            $jq("#hiddenContactPhoneNo1").val(phoneNo1);
+            $jq("#hiddenContactPhoneNo2").val(phoneNo2);
+            $jq("#hiddenContactPhoneNo3").val(phoneNo3);
+            $jq("#hiddenContactFax").val(faxNo);
+            $jq("#hiddenContactEmail").val(email);
+
+            $jq("#hiddenContactAccountNo").val(accountNo);
+            $jq("#hiddenContactRelationshipName").val(relationName);
+
+            checkAccountNoIsMatch();
+
+            hideModal("modalSearchContact");
+        }
+
+        function onBtnSearchContactClick() {
+
+            if ($jq("#hiddenCustomerId").val().length == 0) {
+                doModal('dvAlertMsg', 'Message Dialog', 'ต้องเลือกลูกค้าก่อน จึงจะสามารถค้นหาผู้ติดต่อได้', '', '');
+                return;
+            }
+
+            $jq.ajax({
+                url: "@Url.Action("SearchContact", "ServiceRequest")",
+                method: "GET",
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.RedirectUrl != undefined) {
+                        topLocation(result.RedirectUrl);
+                    } else {
+                        $jq("#modalSearchContactBody").html('');
+                        $jq("#modalSearchContactBody").html(result);
+                        $jq("#modalSearchContact").modal("show");
+                        $jq("#modalSearchContact").on('shown.bs.modal', function () {
+                            $jq('#txtSearchContactFirstName').focus();
+                        });
+                    }
+                }
+            });
+        }
+
+        function onBtnClearMappingClick() {
+
+            $jq("#ddlCampaignServiceId").select2("val", "");
+            $jq("#ddlAreaId").select2("val", "");
+            $jq("#ddlSubAreaId").select2("val", "");
+            $jq("#ddlTypeId").select2("val", "");
+
+
+            $jq("#txtProductGroupName").val("");
+            $jq("#txtProductName").val("");
+
+        }
+
+        function onBtnNextClick(ev) {
+
+            clearRequiredField();
+
+            if ($jq("#form1").valid()) {
+
+                var isMappingTypeChanged = false;
+
+                if ($jq("#hiddenCampaignServiceIdOld").val() != $jq("#ddlCampaignServiceId").val()
+                    || $jq("#hiddenAreaIdOld").val() != $jq("#ddlAreaId").val()
+                    || $jq("#hiddenSubAreaIdOld").val() != $jq("#ddlSubAreaId").val()
+                    || $jq("#hiddenTypeIdOld").val() != $jq("#ddlTypeId").val()) {
+                    isMappingTypeChanged = true;
+                }
+
+                if (isMappingTypeChanged) {
+                    // Clear All Answer
+                    $jq("#hiddenMappingProductId").val("");
+                    $jq("#divVerifyAnswer").html("");
+                    $jq("#hiddenIsVerifyPass").val("NOT VERIFY");
+
+                    // Clear Owner
+                    $jq("#hiddenOwnerBranchId").val("-1");
+                    $jq("#hiddenOwnerUserId").val("-1");
+                }
+            } else {
+                // alert("Not Valid");
+
+                var input = $jq('.input-validation-error:first');
+                if (input) {
+                    $jq('html, body').animate({ scrollTop: input.offset().top - 130 }, 'slow');
+                    input.focus();
+                }
+            }
+
+            isFirstValidate = false;
+        }
+
+    </script>
+}

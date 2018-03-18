@@ -1,0 +1,233 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.AreaViewModel
+
+@{
+    ViewBag.Title = "Search Area";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    @*<strong class="font-blue">Area &rsaquo;&rsaquo;</strong>*@
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master , "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; Search Area</strong>
+}
+<div class="form-horizontal">
+    @Html.AntiForgeryToken()
+    <h5 class="form-title">Search Area</h5>
+    <hr class="dotted-line"/>
+    <div class="row margin-top-15">
+        <div class="form-group">
+            <div class="col-sm-3">
+                <label class="control-label">Area Name:</label>
+            </div>
+            <div class="col-sm-9">
+                <input type="text" id="txtSearchAreaName" class="form-control input-sm"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <label class="control-label">Area Code:</label>
+            </div>
+            <div class="col-sm-9">
+                <input type="text" id="txtSearchAreaCode" class="form-control input-sm " maxlength="15"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">
+                <label class="control-label">Status:</label>
+            </div>
+            <div class="col-sm-9">
+                <select id="selectStatus" class="form-control input-sm">
+                    <option value="" selected>-- กรุณาระบุ --</option>
+                    <option value="all">ทั้งหมด</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <hr class="dashed-line"/>
+    <div class="row">
+        <form action="@Url.Action("Create", "Area")" method="post">
+            <button id="btnCreate" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> New Area</button>
+            <div class="pull-right">
+                <span id="btnSearch" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Search</span>
+                <span id="btnClearForm" class="btn btn-sm btn-default"><i class="fa fa-file-o"></i> Clear</span>
+            </div>
+        </form>
+    </div>
+    <div class="clearfix"></div>
+    <hr class="dashed-line"/>
+    <div class="clear"></div>
+
+    <div id="dvSearchArea">
+        @if(Model.AreaList != null){
+            Html.RenderPartial("~/Views/Area/_AreaList.cshtml", Model);
+        }
+    </div>
+
+</div>
+<div id="dvTarget"></div>
+@Html.Partial("_Antiforgery")
+@section masterjs
+{
+    <style type="text/css">
+        .input-page {
+            width: 30px;
+        }
+    </style>
+    <script type="text/javascript">
+        var searchFilter;
+        var successFilter;
+
+        $jq(document).ready(function () {
+            initializeSearchFilter();
+            initializePaging();
+
+            $jq("#btnSearch").click(onBtnSearchClick);
+            $jq("#btnClearForm").click(onBtnClearClick);
+            //$jq("#txtSearchAreaCode").keydown(onCodeToggleCheckNum);
+
+            $jq("#btnCreate").click(onBtnCreateClick);
+        });
+
+        /*function onCodeToggleCheckNum(e) {
+            if ($jq.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        }*/
+
+        function loadAreaList() {
+            $jq.ajax({
+                    url: "@Url.Action("SearchAreaList", "Area")",
+                    method: "POST",
+                    data: searchFilter,
+                    beforeSend: function() { $jq("#dvLoading").show(); },
+                    complete: function() { $jq("#dvLoading").hide(); }
+                })
+                .done(function (result) {
+                    if (isLoginForm(result)) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    }
+                    if (result.Valid == null) {
+                        $jq("#dvSearchArea").html('');
+                        successFilter = searchFilter;
+                        $jq("#dvSearchArea").html(result);
+                        initializePaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                })
+                .fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+        }
+
+        function onBtnSearchClick() {
+            clearServerErrors();
+            var search = $jq("#txtSearchAreaName").val();
+            var code = $jq("#txtSearchAreaCode").val();
+            var status = $jq("#selectStatus").val();
+
+            if (search.trim().length === 0 && status.length === 0 && code.length === 0) {
+                var warningMsg = '@Resource.Msg_EnteredAtLeastOneCriteria';
+                doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+                return false;
+            }
+
+            searchFilter.AreaName = search;
+            searchFilter.AreaCode = code;
+            searchFilter.Status = status;
+            loadAreaList();
+        }
+
+        function onBtnCreateClick() {
+            window.location.href = "@Url.Action("Create","Area")";
+        }
+
+        function onBtnClearClick() {
+            clearServerErrors();
+            $jq("#txtSearchAreaName").val("");
+            $jq("#txtSearchAreaCode").val("");
+            $jq("#selectStatus").val("");
+
+            searchFilter.AreaName = $jq("#txtSearchAreaName").val();
+            $jq("#dvSearchArea").html("");
+        }
+
+        function onEditClick(areaId) {
+            var actionUrl = '@Url.Action("Edit", "Area")';
+            $jq('#dvTarget').html('');
+            var input = $jq("<input>").attr("type", "hidden").attr("name", "areaId").val(areaId);
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+            $jq('#dvTarget form').append($jq(input));
+            $jq('#dvTarget form').submit();
+        }
+
+        function initializePaging() {
+            $jq("#dvSearchArea .input-page").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = $jq(this).val();
+                loadAreaList();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchArea #pagesizelist").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadAreaList();
+                return false;
+            });
+
+            $jq('#dvSearchArea .pagination ul li a').on('click', function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadAreaList();
+                return false;
+            });
+        }
+
+        function initializeSearchFilter() {
+            searchFilter = {
+                AreaName: $jq("#txtSearchAreaName").val(),
+                AreaCode: $jq("#txtSearchAreaCode").val(),
+                Status: $jq("#selectStatus").val(),
+                PageNo: '@Model.SearchFilter.PageNo',
+                PageSize: '@Model.SearchFilter.PageSize',
+                SortField: '@Model.SearchFilter.SortField',
+                SortOrder: '@Model.SearchFilter.SortOrder',
+                __RequestVerificationToken: getAntiForgeryToken()
+            };
+            successFilter = searchFilter;
+        };
+
+        function sortField(selectedSortField) {
+            if (selectedSortField == searchFilter.SortField)
+                searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            loadAreaList();
+        }
+    </script>
+}

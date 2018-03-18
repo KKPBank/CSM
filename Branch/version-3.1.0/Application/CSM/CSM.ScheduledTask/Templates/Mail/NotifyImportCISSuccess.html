@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Email แจ้งผลการ run scheduler สำเร็จ</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <style>
+        td.label {
+            color: #333;
+            font-weight: 700;
+        }
+
+        th.top {
+            background-color: #009dd9;
+            font-weight: 700;
+            color: #fff;
+            padding: 10px 5px;
+            text-align: center;
+        }
+
+        .data-list td {
+            border-top: solid 1px #e0e0e0;
+            border-bottom: solid 1px #e0e0e0;
+            border-left: 1px solid #D0D0D0;
+            border-right: 1px solid #D0D0D0;
+            line-height: 15px;
+            vertical-align: middle;
+            padding: 3px 4px;
+            text-align: left;
+        }
+
+        .data-list th {
+            background: #E8E8E8;
+            border-bottom: solid 1px #e0e0e0;
+            border-left: 1px solid #D0D0D0;
+            border-right: 1px solid #D0D0D0;
+            color: #666;
+            line-height: 1.4em;
+            text-align: left;
+            vertical-align: middle;
+            padding: 3px 4px;
+        }
+
+        .data-list {
+            font-family: Arial;
+            background-color: #fff;
+            border: solid 1px #D0D0D0;
+            border-collapse: collapse;
+            color: #333;
+            font-size: 12px;
+        }
+
+            .data-list tbody {
+                color: #333;
+            }
+
+            .data-list tfoot, .data-list tfoot td, .data-list tfoot th {
+                background-color: #FFF;
+                border: 0;
+            }
+
+        .table {
+            font-family: Arial;
+            background-color: #fff;
+            border-collapse: collapse;
+            color: #333;
+            font-size: 12px;
+        }
+
+            .table tbody {
+                color: #333;
+            }
+
+                .table tbody td {
+                    color: #333;
+                    padding-top: 5px;
+                }
+
+            .table tfoot, .table tfoot td, .table tfoot th {
+                background-color: #FFF;
+                border: 0;
+            }
+
+        div {
+            font-family: Arial;
+            background-color: #fff;
+            color: #333;
+            font-size: 12px;
+        }
+
+        #exception-string {
+            background-color: #F5F5F5;
+            color: #E00;
+            padding: 1em;
+            width: 100%;
+        }
+
+        .padding-top-5 {
+            margin-top: 15px !important;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+    </style>
+</head>
+<body>
+    <table class="table" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>เรียนผู้ที่เกี่ยวข้อง</td>
+        </tr>
+        <tr>
+            <td>เรื่อง "CSM partial fail to import CIS files – [SCHEDULE_DATETIME]"</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>ระบบ CSM ไม่สามารถ import Customer data ได้ครบถ้วน ตามรายละเอียดดังนี้</td>
+        </tr>
+        <tr>
+            <td>วันที่: [SCHEDULE_DATE] เวลา [SCHEDULE_TIME] น.</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="padding-left:15px;" class="label">ElapsedTime:  [ELAPSED_TIME]</td>
+        </tr>
+        <tr>
+            <td style="padding-left:15px;">
+                <table class="table" style="width:100%!important;">
+                    <tr>
+                        <td style="width:30%!important;" class="label">Reading files</td>
+                        <td style="width:10%!important;" class="label">Total records</td>
+                        <td style="width:10%!important;" class="label">Complete records</td>
+                        <td style="width:10%!important;" class="label">Error records</td>
+                        <td style="width:40%!important;" class="label">Error message</td>
+                    </tr>
+                    [TASK_RESULT_TABLE]
+                    <!--<tr>
+                        <td>[FILE_NAME_0]</td>
+                        <td>[NUM_OF_TOTAL_0]</td>
+                        <td>[NUM_OF_COMPLETE_0]</td>
+                        <td>[NUM_OF_ERROR_0]</td>
+                        <td>[ERROR_MESSAGE_0]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_1]</td>
+                        <td>[NUM_OF_TOTAL_1]</td>
+                        <td>[NUM_OF_COMPLETE_1]</td>
+                        <td>[NUM_OF_ERROR_1]</td>
+                        <td>[ERROR_MESSAGE_1]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_2]</td>
+                        <td>[NUM_OF_TOTAL_2]</td>
+                        <td>[NUM_OF_COMPLETE_2]</td>
+                        <td>[NUM_OF_ERROR_2]</td>
+                        <td>[ERROR_MESSAGE_2]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_3]</td>
+                        <td>[NUM_OF_TOTAL_3]</td>
+                        <td>[NUM_OF_COMPLETE_3]</td>
+                        <td>[NUM_OF_ERROR_3]</td>
+                        <td>[ERROR_MESSAGE_3]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_4]</td>
+                        <td>[NUM_OF_TOTAL_4]</td>
+                        <td>[NUM_OF_COMPLETE_4]</td>
+                        <td>[NUM_OF_ERROR_4]</td>
+                        <td>[ERROR_MESSAGE_4]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_5]</td>
+                        <td>[NUM_OF_TOTAL_5]</td>
+                        <td>[NUM_OF_COMPLETE_5]</td>
+                        <td>[NUM_OF_ERROR_5]</td>
+                        <td>[ERROR_MESSAGE_5]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_6]</td>
+                        <td>[NUM_OF_TOTAL_6]</td>
+                        <td>[NUM_OF_COMPLETE_6]</td>
+                        <td>[NUM_OF_ERROR_6]</td>
+                        <td>[ERROR_MESSAGE_6]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_7]</td>
+                        <td>[NUM_OF_TOTAL_7]</td>
+                        <td>[NUM_OF_COMPLETE_7]</td>
+                        <td>[NUM_OF_ERROR_7]</td>
+                        <td>[ERROR_MESSAGE_7]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_8]</td>
+                        <td>[NUM_OF_TOTAL_8]</td>
+                        <td>[NUM_OF_COMPLETE_8]</td>
+                        <td>[NUM_OF_ERROR_8]</td>
+                        <td>[ERROR_MESSAGE_8]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_9]</td>
+                        <td>[NUM_OF_TOTAL_9]</td>
+                        <td>[NUM_OF_COMPLETE_9]</td>
+                        <td>[NUM_OF_ERROR_9]</td>
+                        <td>[ERROR_MESSAGE_9]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_10]</td>
+                        <td>[NUM_OF_TOTAL_10]</td>
+                        <td>[NUM_OF_COMPLETE_10]</td>
+                        <td>[NUM_OF_ERROR_10]</td>
+                        <td>[ERROR_MESSAGE_10]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_11]</td>
+                        <td>[NUM_OF_TOTAL_11]</td>
+                        <td>[NUM_OF_COMPLETE_11]</td>
+                        <td>[NUM_OF_ERROR_11]</td>
+                        <td>[ERROR_MESSAGE_11]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_12]</td>
+                        <td>[NUM_OF_TOTAL_12]</td>
+                        <td>[NUM_OF_COMPLETE_12]</td>
+                        <td>[NUM_OF_ERROR_12]</td>
+                        <td>[ERROR_MESSAGE_12]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_13]</td>
+                        <td>[NUM_OF_TOTAL_13]</td>
+                        <td>[NUM_OF_COMPLETE_13]</td>
+                        <td>[NUM_OF_ERROR_13]</td>
+                        <td>[ERROR_MESSAGE_13]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_14]</td>
+                        <td>[NUM_OF_TOTAL_14]</td>
+                        <td>[NUM_OF_COMPLETE_14]</td>
+                        <td>[NUM_OF_ERROR_14]</td>
+                        <td>[ERROR_MESSAGE_14]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_15]</td>
+                        <td>[NUM_OF_TOTAL_15]</td>
+                        <td>[NUM_OF_COMPLETE_15]</td>
+                        <td>[NUM_OF_ERROR_15]</td>
+                        <td>[ERROR_MESSAGE_15]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_16]</td>
+                        <td>[NUM_OF_TOTAL_16]</td>
+                        <td>[NUM_OF_COMPLETE_16]</td>
+                        <td>[NUM_OF_ERROR_16]</td>
+                        <td>[ERROR_MESSAGE_16]</td>
+                    </tr>
+                    <tr>
+                        <td>[FILE_NAME_17]</td>
+                        <td>[NUM_OF_TOTAL_17]</td>
+                        <td>[NUM_OF_COMPLETE_17]</td>
+                        <td>[NUM_OF_ERROR_17]</td>
+                        <td>[ERROR_MESSAGE_17]</td>
+                    </tr>-->
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <br />
+                <div id="ThaiFooter">
+                    จึงเรียนมาเพื่อทราบ<br />
+                    ระบบ CSM<br /><br />
+                </div>
+                <br />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

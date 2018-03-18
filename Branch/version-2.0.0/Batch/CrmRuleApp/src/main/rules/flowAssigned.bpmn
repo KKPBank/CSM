@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_accountItem" structureRef="com.motiftech.icollection.model.Account" />
+
+  <process processType="Private" isExecutable="true" id="flowAssigned" name="flowAssigned" tns:packageName="com.motiftech.icollection.model" >
+
+    <extensionElements>
+     <tns:import name="com.motiftech.icollection.model.Account" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="account" itemSubjectRef="_accountItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <scriptTask id="_16" name="SR UPDATE" >
+      <script>account.updateSR();</script>
+    </scriptTask>
+    <inclusiveGateway id="_2" name="Owner != null" gatewayDirection="Diverging" />
+    <inclusiveGateway id="_19" name="[Condition] C-P-E" gatewayDirection="Diverging" />
+    <endEvent id="_3" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <exclusiveGateway id="_4" name="End loop" gatewayDirection="Converging" />
+    <inclusiveGateway id="_23" name="Gateway" gatewayDirection="Diverging" />
+    <scriptTask id="_22" name="AutoForward" >
+      <script>account.autoForward();</script>
+    </scriptTask>
+    <scriptTask id="_24" name="Error" >
+      <script>System.out.println("sr Id : " + account.srId+" can not find owner");</script>
+    </scriptTask>
+    <scriptTask id="_10" name="Consolidate" >
+      <script>account.consolidate();
+
+</script>
+    </scriptTask>
+    <inclusiveGateway id="_12" name="Owner ==null" gatewayDirection="Diverging" />
+    <scriptTask id="_13" name="CheckMapProduct" >
+      <script>account.checkMapProduct();</script>
+    </scriptTask>
+    <exclusiveGateway id="_15" name="Update Lead" gatewayDirection="Converging" />
+
+    <!-- connections -->
+    <sequenceFlow id="_15-_16" sourceRef="_15" targetRef="_16" />
+    <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
+    <sequenceFlow id="_13-_19" sourceRef="_13" targetRef="_19" />
+    <sequenceFlow id="_4-_3" sourceRef="_4" targetRef="_3" />
+    <sequenceFlow id="_2-_4" sourceRef="_2" targetRef="_4" name="else" tns:priority="100" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_16-_4" sourceRef="_16" targetRef="_4" />
+    <sequenceFlow id="_24-_4" sourceRef="_24" targetRef="_4" />
+    <sequenceFlow id="_22-_23" sourceRef="_22" targetRef="_23" />
+    <sequenceFlow id="_19-_22" sourceRef="_19" targetRef="_22" name="owner = null" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >account.ownerUserId==null</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_23-_24" sourceRef="_23" targetRef="_24" name="error" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >account.ownerUserId ==null</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_2-_10" sourceRef="_2" targetRef="_10" name="owner = null" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >account.ownerUserId == null
+</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_10-_12" sourceRef="_10" targetRef="_12" />
+    <sequenceFlow id="_12-_13" sourceRef="_12" targetRef="_13" name="owner = null" tns:priority="100" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_2-_15" sourceRef="_2" targetRef="_15" name="owner != null" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >account.ownerUserId != null
+</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_12-_15" sourceRef="_12" targetRef="_15" name="owner!=null" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >account.ownerUserId !=null</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_19-_15" sourceRef="_19" targetRef="_15" name="default user" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >account.ownerUserId!=null</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_23-_15" sourceRef="_23" targetRef="_15" name="forward to user" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >account.ownerUserId !=null</conditionExpression>
+    </sequenceFlow>
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="flowAssigned" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="876" y="12" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_16" >
+        <dc:Bounds x="516" y="552" width="145" height="37" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="876" y="84" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_19" >
+        <dc:Bounds x="264" y="288" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="564" y="792" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="564" y="696" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23" >
+        <dc:Bounds x="264" y="444" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_22" >
+        <dc:Bounds x="240" y="372" width="97" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_24" >
+        <dc:Bounds x="240" y="696" width="104" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="504" y="84" width="169" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="565" y="193" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="216" y="192" width="145" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15" >
+        <dc:Bounds x="565" y="444" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_15-_16" >
+        <di:waypoint x="589" y="468" />
+        <di:waypoint x="588" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_2" >
+        <di:waypoint x="900" y="36" />
+        <di:waypoint x="900" y="108" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13-_19" >
+        <di:waypoint x="288" y="216" />
+        <di:waypoint x="288" y="312" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_3" >
+        <di:waypoint x="588" y="720" />
+        <di:waypoint x="588" y="816" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_4" >
+        <di:waypoint x="900" y="108" />
+        <di:waypoint x="996" y="108" />
+        <di:waypoint x="996" y="531" />
+        <di:waypoint x="995" y="719" />
+        <di:waypoint x="588" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16-_4" >
+        <di:waypoint x="588" y="570" />
+        <di:waypoint x="588" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_24-_4" >
+        <di:waypoint x="292" y="720" />
+        <di:waypoint x="588" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_22-_23" >
+        <di:waypoint x="288" y="396" />
+        <di:waypoint x="288" y="468" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19-_22" >
+        <di:waypoint x="288" y="312" />
+        <di:waypoint x="288" y="396" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_23-_24" >
+        <di:waypoint x="288" y="468" />
+        <di:waypoint x="292" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_10" >
+        <di:waypoint x="900" y="108" />
+        <di:waypoint x="588" y="108" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-_12" >
+        <di:waypoint x="588" y="108" />
+        <di:waypoint x="589" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_13" >
+        <di:waypoint x="589" y="217" />
+        <di:waypoint x="288" y="216" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_15" >
+        <di:waypoint x="900" y="108" />
+        <di:waypoint x="900" y="467" />
+        <di:waypoint x="589" y="468" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_15" >
+        <di:waypoint x="589" y="217" />
+        <di:waypoint x="589" y="468" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19-_15" >
+        <di:waypoint x="288" y="312" />
+        <di:waypoint x="486" y="309" />
+        <di:waypoint x="589" y="468" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_23-_15" >
+        <di:waypoint x="288" y="468" />
+        <di:waypoint x="589" y="468" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

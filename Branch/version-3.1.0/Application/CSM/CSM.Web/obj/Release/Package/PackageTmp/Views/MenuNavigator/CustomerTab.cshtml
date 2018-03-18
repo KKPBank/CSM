@@ -1,0 +1,26 @@
+﻿@model List<CSM.Entity.MenuEntity>
+@{
+    Layout = null;
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    <ul id="customerTab" class="nav nav-tabs margin-top-15">
+        @foreach (var item in Model)
+        {
+            string className = item.IsSelected ? "active" : "";
+            <li class="@className">
+                @if (item.IsSelected)
+                {
+                    <a data-toggle="tab" href='@item.TabContent'>@Html.DisplayFor(modelItem => item.MenuName)</a>
+                }
+                else
+                {
+                    <a href="@Url.Action(item.ActionName, item.ControllerName, new { encryptedString = item.CustomerEncrypted })">
+                        @Html.DisplayFor(modelItem => item.MenuName)
+                    </a>
+                }
+            </li>
+        }
+    </ul>
+}

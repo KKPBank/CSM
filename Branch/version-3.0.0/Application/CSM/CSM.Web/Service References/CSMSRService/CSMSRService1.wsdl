@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://www.kiatnakinbank.com/services/CSM/CSMSRService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.kiatnakinbank.com/services/CSM/CSMSRService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.kiatnakinbank.com/services/CSM/CSMSRService/Imports">
+      <xsd:import schemaLocation="http://localhost:5300/CSMSRService.svc?xsd=xsd0" namespace="http://www.kiatnakinbank.com/services/CSM/CSMSRService" />
+      <xsd:import schemaLocation="http://localhost:5300/CSMSRService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:5300/CSMSRService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Sr" />
+      <xsd:import schemaLocation="http://localhost:5300/CSMSRService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Branch" />
+      <xsd:import schemaLocation="http://localhost:5300/CSMSRService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.SchedTask" />
+      <xsd:import schemaLocation="http://localhost:5300/CSMSRService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Common" />
+      <xsd:import schemaLocation="http://localhost:5300/CSMSRService.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ICSMSRService_CreateSR_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSR" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_CreateSR_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSRResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_UpdateSR_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateSR" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_UpdateSR_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateSRResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_SearchSR_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchSR" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_SearchSR_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchSRResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_GetSR_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSR" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_GetSR_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSRResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_CreateSRActivityFromReplyEmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSRActivityFromReplyEmail" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_CreateSRActivityFromReplyEmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSRActivityFromReplyEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_ReSubmitActivityToCARSystem_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReSubmitActivityToCARSystem" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_ReSubmitActivityToCARSystem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReSubmitActivityToCARSystemResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_ReSubmitActivityToCBSHPSystem_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReSubmitActivityToCBSHPSystem" />
+  </wsdl:message>
+  <wsdl:message name="ICSMSRService_ReSubmitActivityToCBSHPSystem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReSubmitActivityToCBSHPSystemResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ICSMSRService">
+    <wsdl:operation name="CreateSR">
+      <wsdl:input wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/CreateSR" message="tns:ICSMSRService_CreateSR_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/CreateSRResponse" message="tns:ICSMSRService_CreateSR_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateSR">
+      <wsdl:input wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/UpdateSR" message="tns:ICSMSRService_UpdateSR_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/UpdateSRResponse" message="tns:ICSMSRService_UpdateSR_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchSR">
+      <wsdl:input wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/SearchSR" message="tns:ICSMSRService_SearchSR_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/SearchSRResponse" message="tns:ICSMSRService_SearchSR_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSR">
+      <wsdl:input wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/GetSR" message="tns:ICSMSRService_GetSR_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/GetSRResponse" message="tns:ICSMSRService_GetSR_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateSRActivityFromReplyEmail">
+      <wsdl:input wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/CreateSRActivityFromReplyEmail" message="tns:ICSMSRService_CreateSRActivityFromReplyEmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/CreateSRActivityFromReplyEmailResponse" message="tns:ICSMSRService_CreateSRActivityFromReplyEmail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReSubmitActivityToCARSystem">
+      <wsdl:input wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/ReSubmitActivityToCARSystem" message="tns:ICSMSRService_ReSubmitActivityToCARSystem_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/ReSubmitActivityToCARSystemResponse" message="tns:ICSMSRService_ReSubmitActivityToCARSystem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReSubmitActivityToCBSHPSystem">
+      <wsdl:input wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/ReSubmitActivityToCBSHPSystem" message="tns:ICSMSRService_ReSubmitActivityToCBSHPSystem_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.kiatnakinbank.com/services/CSM/CSMSRService/ICSMSRService/ReSubmitActivityToCBSHPSystemResponse" message="tns:ICSMSRService_ReSubmitActivityToCBSHPSystem_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

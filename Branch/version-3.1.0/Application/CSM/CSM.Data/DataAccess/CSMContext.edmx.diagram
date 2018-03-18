@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="29459c4e4dd64c0f8e2c306b99f1a774" Name="Diagram1" ZoomLevel="69">
+        <EntityTypeShape EntityType="CSMModel.TB_C_ERROR" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_FONT" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_JOB_STATUS" Width="1.5" PointX="0.75" PointY="3.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_MENU" Width="1.5" PointX="5.25" PointY="125.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_PARAMETER" Width="1.5" PointX="2.75" PointY="2.5" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_ROLE" Width="1.5" PointX="8.25" PointY="122.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_ROLE_SCREEN" Width="1.5" PointX="9.75" PointY="126.5" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_ROLE_SR_PAGE" Width="1.5" PointX="18.75" PointY="123" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_RULE_OPTION" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SCREEN" Width="1.5" PointX="7.5" PointY="126.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SR_ACTIVITY_TYPE" Width="1.5" PointX="8.25" PointY="100.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SR_EMAIL_TEMPLATE" Width="1.5" PointX="8.25" PointY="88" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SR_PAGE" Width="1.5" PointX="13.5" PointY="133.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SR_STATUS" Width="2.5" PointX="8.25" PointY="83.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SR_STATUS_CHANGE" Width="1.5" PointX="12.75" PointY="142.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_HP_ACTIVITY" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_PROPERTY" Width="1.5" PointX="7.5" PointY="163" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_SALE_ZONE" Width="1.5" PointX="7.5" PointY="95.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_L_AUDIT_LOG" Width="1.5" PointX="7.5" PointY="159.5" />
+        <EntityTypeShape EntityType="CSMModel.TB_L_LOGIN" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_L_SR_LOGGING" Width="1.5" PointX="21" PointY="125.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_ACCOUNT" Width="1.5" PointX="15.75" PointY="114.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_ACCOUNT_ADDRESS" Width="1.5" PointX="15.75" PointY="120.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_ACCOUNT_EMAIL" Width="1.5" PointX="15.75" PointY="159.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_ACCOUNT_PHONE" Width="1.5" PointX="15.75" PointY="155.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_ADDRESS" Width="1.5" PointX="15.75" PointY="101.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_AREA" Width="1.5" PointX="7.5" PointY="172" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_AREA_SUBAREA" Width="1.5" PointX="12.75" PointY="147.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_CONFIG_ROLE" Width="1.5" PointX="10.5" PointY="113.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_CONFIG_URL" Width="1.5" PointX="7.5" PointY="117.375" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_CONTACT_PHONE" Width="1.5" PointX="12.75" PointY="120" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_DOCUMENT_TYPE" Width="1.5" PointX="18.75" PointY="103.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_MAP_AUTO_FORWARD" Width="1.5" PointX="2.75" PointY="13.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_MAP_PRODUCT" Width="2.25" PointX="9.75" PointY="143.5" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_MAP_PRODUCT_QUESTIONGROUP" Width="1.5" PointX="12" PointY="125.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_MEDIA_SOURCE" Width="1.5" PointX="13.5" PointY="130.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_PHONE" Width="1.5" PointX="18.75" PointY="112.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_PHONE_TYPE" Width="1.5" PointX="16.5" PointY="98.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_POOL" Width="1.5" PointX="3" PointY="91.375" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_POOL_BRANCH" Width="1.5" PointX="5.25" PointY="95.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_QUESTION" Width="1.5" PointX="7.5" PointY="188.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_QUESTIONGROUP" Width="1.5" PointX="7.5" PointY="112.375" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_QUESTIONGROUP_QUESTION" Width="1.5" PointX="9.75" PointY="150.5" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_SLA" Width="2.125" PointX="9.75" PointY="136" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_SUBAREA" Width="1.5" PointX="7.5" PointY="183.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_TYPE" Width="1.5" PointX="7.5" PointY="104.5" />
+        <EntityTypeShape EntityType="CSMModel.TB_R_BRANCH" Width="1.5" PointX="3" PointY="95.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_R_BRANCH_CALENDAR" Width="1.5" PointX="5.25" PointY="76.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_R_CAMPAIGNSERVICE" Width="1.5" PointX="7.5" PointY="144.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_R_CHANNEL" Width="1.5" PointX="0.75" PointY="98.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_R_PRODUCT" Width="1.5" PointX="5.25" PointY="143.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_R_PRODUCTGROUP" Width="1.5" PointX="3" PointY="144.375" />
+        <EntityTypeShape EntityType="CSMModel.TB_R_USER" Width="1.5" PointX="5.25" PointY="104.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_R_USER_PHONE" Width="1.5" PointX="7.5" PointY="168.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_ATTACHMENT_TYPE" Width="1.5" PointX="21" PointY="116.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_CALL_INFO" Width="1.5" PointX="7.5" PointY="92.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_DEFAULT_SEARCH" Width="1.5" PointX="7.5" PointY="180.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_JOB_ATTACHMENT" Width="1.5" PointX="15.75" PointY="104.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_NEWS" Width="1.5" PointX="3" PointY="104.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_NEWS_ATTACHMENT" Width="1.5" PointX="18.75" PointY="98.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_NEWS_BRANCH" Width="1.5" PointX="5.25" PointY="98.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_READ_NEWS" Width="1.5" PointX="7.5" PointY="109.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR_ACTIVITY" Width="1.875" PointX="10.5" PointY="102.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR_ATTACHMENT" Width="1.5" PointX="18" PointY="125.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR_ATTACHMENT_DOCUMENT_TYPE" Width="1.5" PointX="23.25" PointY="118.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR_PREPARE_EMAIL" Width="1.5" PointX="12.75" PointY="98.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR_REPLY_EMAIL" Width="1.5" PointX="21" PointY="132.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR_VERIFY_RESULT_GROUP" Width="1.5" PointX="18" PointY="133" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR_VERIFY_RESULT_QUESTION" Width="1.5" PointX="20.25" PointY="160.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SEQUENCE" Width="1.5" PointX="13.375" PointY="9.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SEQUENCE_SR" Width="1.5" PointX="11.75" PointY="10.25" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_MENU_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SCREEN_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_ROLE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_ROLE_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SCREEN_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_PAGE_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_SR_ACTIVITY_TYPE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_SR_EMAIL_TEMPLATE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_PAGE_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_STATUS_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_STATUS_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_STATUS_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_STATUS_5" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_STATUS_6" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_STATUS_7" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_STATUS_8" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_STATUS_9" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_AREA_5" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_SUBAREA_5" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_TYPE_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_CAMPAIGNSERVICE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_PRODUCT_5" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_PRODUCTGROUP_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_52" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_40" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_13" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_61" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_62" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_63" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_64" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_AREA_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_AREA_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_AREA_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_23" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_SUBAREA_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_22" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CONFIG_URL_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_54" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_55" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_56" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_57" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_PHONE_TYPE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_5" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_DOCUMENT_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_ATTACHMENT_DOCUMENT_TYPE_TB_M_DOCUMENT_TYPE" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_MAP_PRODUCT_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_SUBAREA_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_TYPE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_CAMPAIGNSERVICE_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_PRODUCT_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_10" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_48" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_50" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_QUESTIONGROUP_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_24" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_27" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_PHONE_TYPE_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_19" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_20" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_POOL_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_QUESTION_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_46" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_47" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_VERIFY_RESULT_QUESTION_TB_M_QUESTION" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_QUESTIONGROUP_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_QUESTIONGROUP_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_PRODUCT_6" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_34" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_37" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_28" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_29" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_SUBAREA_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_TYPE_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_CAMPAIGNSERVICE_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_CHANNEL_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_PRODUCT_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_35" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_36" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_32" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_33" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_25" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_26" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_10" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_7" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_8" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_CHANNEL_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_PRODUCT_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_PRODUCTGROUP_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_14" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_30" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_38" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_39" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_41" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_42" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_69" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_70" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_8" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_ATTACHMENT_DOCUMENT_TYPE_TB_R_USER" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_JOB_ATTACHMENT_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_NEWS_ATTACHMENT_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_ATTACHMENT_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_NEWS_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_NEWS_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_NEWS_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_ACTIVITY_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_ACTIVITY_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_ATTACHMENT_DOCUMENT_TYPE_TB_T_SR_ATTACHMENT" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_VERIFY_RESULT_QUESTION_TB_T_SR_VERIFY_RESULT_GROUP" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_72" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_73" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_59" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_71" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_74" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_75" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_PROCESS" Width="1.5" PointX="6.625" PointY="13.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_ADDRESS_TYPE" Width="1.5" PointX="6.625" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_CORPORATE" Width="1.5" PointX="6.625" PointY="3" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_COUNTRY" Width="1.5" PointX="0.75" PointY="5.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_CUSTOMER_EMAIL" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_CUSTOMER_PHONE" Width="1.5" PointX="8.375" PointY="4.5" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_DISTRICT" Width="1.5" PointX="4.75" PointY="4.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_EMAIL_TYPE" Width="1.5" PointX="6.625" PointY="11.5" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_INDIVIDUAL" Width="1.5" PointX="10.125" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_PHONE_TYPE" Width="1.5" PointX="0.75" PointY="7.375" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_PRODUCT_GROUP" Width="1.5" PointX="2.75" PointY="5.125" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_PROVINCE" Width="1.5" PointX="11.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_SUBDISTRICT" Width="1.5" PointX="11.75" PointY="2.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_SUBSCRIPTION" Width="1.5" PointX="4.75" PointY="7.375" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_SUBSCRIPTION_TYPE" Width="1.5" PointX="8.375" PointY="8.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_TITLE" Width="1.5" PointX="8.375" PointY="12.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_BDW_CONTACT" Width="1.5" PointX="15" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_AFS_ASSET" Width="1.5" PointX="13.5" PointY="137.375" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_JOB" Width="1.5" PointX="13.5" PointY="103.75" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_POOL_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_CHANNEL_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_58" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_JOB_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_JOB_2" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_SUBSCRIPTION_ADDRESS" Width="1.5" PointX="0.75" PointY="12" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_SUBSCRIPTION_EMAIL" Width="1.5" PointX="2.75" PointY="8.25" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_CIS_SUBSCRIPTION_PHONE" Width="1.5" PointX="11.75" PointY="5.375" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_ACCOUNT_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_ACCOUNT_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_ACCOUNT_5" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR" Width="2.625" PointX="24" PointY="122.5" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_ACTIVITY_TYPE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_EMAIL_TEMPLATE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_PAGE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_C_SR_STATUS_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_5" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_ACCOUNT_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_ACCOUNT_ADDRESS_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_AFS_ASSET_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_AREA_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_MAP_PRODUCT_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_MEDIA_SOURCE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_SUBAREA_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_TYPE_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_11" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_12" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_13" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_5" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_6" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_BRANCH_9" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_CAMPAIGNSERVICE_4" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_CHANNEL_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_PRODUCT_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_PRODUCTGROUP_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_43" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_44" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_45" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_65" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_66" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_67" />
+        <AssociationConnector Association="CSMModel.FK_TB_R_USER_68" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_4" />
+        <EntityTypeShape EntityType="CSMModel.TB_I_HR_EMPLOYEE" Width="1.5" PointX="14.375" PointY="14.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_COMPLAINT_BU_GROUP" Width="1.5" PointX="15.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_COMPLAINT_CAUSE_SUMMARY" Width="1.5" PointX="9.375" PointY="15.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_COMPLAINT_ISSUES" Width="1.5" PointX="16.375" PointY="11.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_COMPLAINT_MAPPING" Width="1.5" PointX="11.375" PointY="16.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_COMPLAINT_ROOT_CAUSE" Width="1.5" PointX="16.375" PointY="14.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_COMPLAINT_SUBJECT" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_COMPLAINT_SUMMARY" Width="1.5" PointX="17.375" PointY="3.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_COMPLAINT_TYPE" Width="1.5" PointX="5.375" PointY="17.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_HP_STATUS" Width="1.5" PointX="17.375" PointY="6.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_HR_BU" Width="1.5" PointX="7.375" PointY="18.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_MSH_BRANCH" Width="1.5" PointX="19.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_OTP_TEMPLATE" Width="1.5" PointX="19.375" PointY="3.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SEND_OTP" Width="1.5" PointX="9.375" PointY="19.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_HR_EMPLOYEE" Width="1.5" PointX="18.375" PointY="9.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SEQ_SEND_OTP" Width="1.5" PointX="16.375" PointY="17.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SR_PAGE_STATUS" Width="1.5" PointX="18.375" PointY="15.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_SR_STATE" Width="1.5" PointX="11.375" PointY="13.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR_ACCOUNT" Width="1.5" PointX="27.375" PointY="142.875" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR_CUSTOMER_PHONE" Width="1.5" PointX="29.625" PointY="113.75" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_CUSTOMER_PHONE_TB_M_PHONE_TYPE" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_CUSTOMER_PHONE_TB_R_USER" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_CUSTOMER_PHONE_TB_R_USER1" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_ACCOUNT_TB_T_SR" />
+        <EntityTypeShape EntityType="CSMModel.TB_L_CUSTOMER_LOG" Width="1.5" PointX="19.375" PointY="6.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_CUSTOMER_CONTACT" Width="1.5" PointX="15.75" PointY="147.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_NOTE" Width="1.5" PointX="15.75" PointY="109.625" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_CUSTOMER_ATTACHMENT" Width="1.5" PointX="15.75" PointY="128.125" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CUST_ATTACHMENT_1" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_BANK" Width="1.5" PointX="18.375" PointY="19.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_C_IGNORE_PRODUCT" Width="1.5" PointX="20.75" PointY="17.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_SUBSCRIPT_TYPE" Width="1.5" PointX="11.375" PointY="20" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_TITLE" Width="1.5" PointX="21.375" PointY="14.375" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_ACCOUNT_STATUS" Width="1.5" PointX="21.375" PointY="3.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_CARD_TYPE" Width="1.5" PointX="21.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_ADDRESS_FORMAT" Width="1.5" PointX="2.75" PointY="20.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_ADDRESS_TYPE" Width="1.5" PointX="4.75" PointY="20.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_AREA_CODE" Width="1.5" PointX="20.375" PointY="9.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_CUST_TYPE" Width="1.5" PointX="21.375" PointY="6.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_ELECTRONIC_ADDRESS" Width="1.5" PointX="22.375" PointY="9.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_CUSTOMER" Width="1.5" PointX="24.625" PointY="5.25" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CUSTOMER_5" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CUSTOMER_10" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CUSTOMER_12" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CUSTOMER_11" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CUSTOMER_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CUSTOMER_TB_M_CARD_TYPE" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CUSTOMER_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CUSTOMER_6" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CUSTOMER_8" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_TITLE_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_TITLE_2" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_CONTACT" Width="1.5" PointX="27.625" PointY="5.875" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CONTACT_TB_M_CARD_TYPE" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CONTACT_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CONTACT_2" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_CONTACT_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_TITLE_3" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_TITLE_4" />
+        <EntityTypeShape EntityType="CSMModel.TB_T_SR_CUSTOMER" Width="1.5" PointX="27.375" PointY="126.75" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_CUSTOMER_ID_TB_R_USER" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_CUSTOMER_ID_TB_R_USER1" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_CUSTOMER_ID_TB_R_USER2" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_CUSTOMER_ID_TB_T_SR" />
+        <AssociationConnector Association="CSMModel.FK_TB_T_SR_CUSTOMER_PHONE_TB_T_SR_CUSTOMER" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_BRANCH" Width="1.5" PointX="20.375" PointY="20.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_RELATIONSHIP" Width="1.5" PointX="22.375" PointY="21" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_RELATIONSHIP_1" />
+        <AssociationConnector Association="CSMModel.FK_TB_M_RELATIONSHIP_2" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_DISTRICT" Width="1.5" PointX="23.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_PROVINCE" Width="1.5" PointX="11.375" PointY="23.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_SUBDISTRICT" Width="1.5" PointX="23.375" PointY="14.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_COUNTRY" Width="1.5" PointX="16.375" PointY="23.75" />
+        <EntityTypeShape EntityType="CSMModel.TB_M_ACCOUNT_TYPE" Width="1.5" PointX="23.375" PointY="17.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,678 @@
+﻿@model CSM.Web.Models.CustomerViewModel
+@using CSM.Common.Resources;
+@{
+    ViewBag.Title = Resource.Lbl_SearchCustomer;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer</strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_SearchCustomer</strong>
+}
+
+@using (Html.BeginForm("Search", "Customer", FormMethod.Post, new { @class = "form-horizontal", @id = "form1", @DefaultButton = "btnSearch" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.IsSelected, new { @id = "hddIsSelectd" })
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">Search Customer</h5>
+        <div class="row margin-top-15">
+            <div class="col-md-12">
+                <div style="color:maroon;padding:0 0 10px;">
+                    * หากต้องการค้นหาบางส่วนของคำ ให้ใส่ * ไว้ด้านหน้าหรือด้านหลังของคำค้นหาที่ Field <strong class="text-primary">ตัวอักษรสี น้ำเงิน</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static text-primary">
+                            ชื่อลูกค้า
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(model => model.SearchFilter.FirstName, new
+                        {
+                            @class = "form-control input-sm input-medium",
+                            @id = "txtFirstName",
+                            @maxlength = 50
+                        })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.FirstName)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static text-primary">
+                            นามสกุลลูกค้า
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(model => model.SearchFilter.LastName, new
+                        {
+                            @class = "form-control input-sm input-medium",
+                            @id = "txtLastName",
+                            @maxlength = 50
+                        })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.LastName)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static">
+                            Customer Type
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.DropDownListFor(model => model.SearchFilter.CustomerType, Model.CustomerTypeList,
+                            Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm  input-medium", id = "ddlCustomerType" })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.CustomerType)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                            Subscription ID 
+                
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(model => model.SearchFilter.CardNo, new
+                        {
+                            @class = "form-control input-sm input-medium",
+                            @id = "txtCardNo",
+                            @maxlength = @CSM.Common.Utilities.Constants.MaxLength.CardNo
+                        })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.CardNo)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static text-primary">
+                            ทะเบียนรถยนต์
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(model => model.SearchFilter.Registration, new
+                        {
+                            @class = "form-control input-sm input-medium",
+                            @id = "txtRegistration",
+                            @maxlength = 50
+                        })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.Registration)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static">
+                            เลขที่บัญชี/สัญญา
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(model => model.SearchFilter.AccountNo, new
+                        {
+                            @class = "form-control input-sm input-medium",
+                            @id = "txtAccountNo",
+                            @maxlength = 100
+                        })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.AccountNo)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <p class="form-control-static" title="สามารถค้นหาแบบ Partial ได้">
+                            เบอร์โทรศัพท์<br />(Partial Searh 9 Digit)
+                        </p>
+                    </div>
+                    <div class="col-md-7 nopadding">
+                        @Html.TextBoxFor(model => model.SearchFilter.PhoneNo, new
+                        {
+                            @class = "form-control input-sm input-medium",
+                            @id = "txtPhoneNo"
+                        })
+                        @Html.ValidationMessageFor(model => model.SearchFilter.PhoneNo)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h6 class="form-title font-green-jungle btn-toggle" data-toggle="collapse" data-target="#pnlAdvSearch">
+            <span class="expand">[+]</span> Advance Search
+        </h6>
+        <div id="pnlAdvSearch" class="collapse">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                Product
+                            </p>
+                        </div>
+                        <div class="col-md-7 nopadding">
+                            @Html.TextBoxFor(model => model.SearchFilter.Product, new
+                            {
+                                @class = "form-control input-sm input-medium",
+                                @id = "txtProduct",
+                                @maxlength = 100
+                            })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.Product)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                สถานะบัญชี/สัญญา
+                            </p>
+                        </div>
+                        <div class="col-md-7 nopadding">
+                            @Html.TextBoxFor(model => model.SearchFilter.Grade, new
+                            {
+                                @class = "form-control input-sm input-medium",
+                                @id = "txtGrade",
+                                @maxlength = 100
+                            })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.Grade)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                สาขา
+                            </p>
+                        </div>
+                        <div class="col-md-7 nopadding">
+                            @Html.TextBoxFor(model => model.SearchFilter.BranchName, new
+                            {
+                                @class = "form-control input-sm input-medium",
+                                @id = "txtBranchName",
+                                @maxlength = 100
+                            })
+                            @Html.ValidationMessageFor(model => model.SearchFilter.BranchName)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                สถานะการใช้งาน
+                            </p>
+                        </div>
+                        <div class="col-md-7 nopadding">
+                            @Html.DropDownListFor(model => model.SearchFilter.Status, Model.StatusList,
+                            Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm  input-medium", id = "ddlStatus" })
+                            @Html.ValidationMessageFor(model => model.SearchFilter)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="panel-actions">
+        <div class="pull-left">
+            <button id="btnAdd" type="button" class="btn btn-green btn-sm">
+                <i class="fa fa-plus"></i>&nbsp;New Customer
+            </button>
+        </div>
+        <div class="pull-right">
+            <div class="form-inline">
+                <div class="form-group">
+                    <button id="btnSearch" type="button" class="btn btn-blue btn-sm btn-xsmall">
+                        <i class="fa fa-search"></i>&nbsp;Search
+                    </button>
+                </div>
+                <div class="form-group">
+                    <button id="btnReset" type="button" class="btn btn-gray btn-sm btn-xsmall">Clear</button>
+                </div>
+                <div class="form-group">
+                    <button id="btnClearIVR" type="button" class="btn btn-gray btn-sm btn-xsmall">Clear CallId</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="dvSearchResult">
+        @if (Model.CustomerList != null)
+        {
+            Html.RenderPartial("~/Views/Customer/_CustomerList.cshtml", Model);
+        }
+    </div>
+}
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+    var searchFilter;
+    var successFilter;
+    var pageSize = 20; // for autocomplete
+    var expandValue = 0;
+
+    $jq(document).ready(function () {
+        initializeSearchFilter();
+        initializeAutoComplete();
+
+        initDisabled();
+
+        $jq("#form1").keypress(function (e) {
+            var kCode = e.keyCode || e.charCode; //for cross browser
+            if (kCode == 13) {
+                var defaultbtn = $jq(this).attr("DefaultButton");
+                $jq("#" + defaultbtn).focus();
+                $jq("#" + defaultbtn).click();
+                return false;
+            }
+        });
+
+        $jq("#btnSearch").click(function (e) {
+            e.preventDefault();
+            clearServerErrors();
+            searchFilter.FirstName = $jq("#txtFirstName").val().trim(),
+                searchFilter.LastName = $jq("#txtLastName").val().trim(),
+                searchFilter.CardNo = $jq("#txtCardNo").val().trim(),
+                searchFilter.AccountNo = $jq("#txtAccountNo").val().trim(),
+                searchFilter.PhoneNo = $jq("#txtPhoneNo").val().trim(),
+                searchFilter.CustomerType = $jq("#ddlCustomerType").val(),
+                searchFilter.Registration = $jq("#txtRegistration").val().trim(),
+                searchFilter.Product = $jq("#txtProduct").val(),
+                searchFilter.Grade = $jq("#txtGrade").val(),
+                searchFilter.BranchName = $jq("#txtBranchName").val(),
+                searchFilter.Status = $jq("#ddlStatus").val(),
+                searchFilter.PageNo = 1;
+            loadData();
+            return false;
+        });
+
+        $jq("#btnReset").click(function (e) {
+            e.preventDefault();
+            $jq("#dvForm input[type='text'],#dvForm select").val('');
+            $jq("#txtProduct").select2("val", "");
+            $jq("#txtGrade").select2("val", "");
+            $jq("#txtBranchName").select2("val", "");
+            initializeSearchFilter();
+            initDisabled();
+            $jq("#dvSearchResult").html('');
+            clearServerErrors();
+            return false;
+        });
+
+        $jq('#btnAdd').click(function (e) {
+            e.preventDefault();
+            initCustomerEdit();
+            return false;
+        });
+
+        $jq('#btnClearIVR').click(function (e) {
+            e.preventDefault();
+            clearCallId();
+            return false;
+        });
+
+        initializePaging();
+
+        $jq('.btn-toggle').click(function () {
+            var o = $jq(this).find('span');
+            if (o.hasClass('minimize')) {
+                o.removeClass('minimize').addClass('expand').text('[+]');
+                expandValue = 0;
+            } else {
+                o.removeClass('expand').addClass('minimize').text('[-]');
+                expandValue = 1;
+            }
+            ShowhidePanel(expandValue);
+        });
+
+        //show hide panel
+        if ($jq("#hddIsSelectd").val() == "1") {
+            $jq('.btn-toggle').find('span').removeClass('expand').addClass('minimize').text('[-]');
+            $jq('#pnlAdvSearch').removeClass('collapse').addClass('collapse in');
+        }
+    });
+
+    function initializeSearchFilter() {
+        searchFilter = {
+            FirstName: $jq("#txtFirstName").val(),
+            LastName: $jq("#txtLastName").val(),
+            CardNo: $jq("#txtCardNo").val(),
+            AccountNo: $jq("#txtAccountNo").val(),
+            PhoneNo: $jq("#txtPhoneNo").val(),
+            CustomerType: $jq("#ddlCustomerType").val(),
+            Registration: $jq("#txtRegistration").val(),
+            Product: $jq("#txtProduct").val(),
+            Grade: $jq("#txtGrade").val(),
+            BranchName: $jq("#txtBranchName").val(),
+            Status: $jq("#ddlStatus").val(),
+            PageNo: '@Model.SearchFilter.PageNo',
+            PageSize: '@Model.SearchFilter.PageSize',
+            SortField: '@Model.SearchFilter.SortField',
+            SortOrder: '@Model.SearchFilter.SortOrder'
+        };
+        successFilter = searchFilter;
+    };
+
+    function initializePaging() {
+        $jq("#dvSearchResult .input-page").change(function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = $jq(this).val();
+            loadData();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchResult #pagesizelist").change(function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = "1";
+            searchFilter.PageSize = $jq(this).val();
+            loadData();
+            return false;
+        });
+
+        $jq('#dvSearchResult .pagination ul li a').on('click', function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadData();
+            return false;
+        });
+
+        try {
+            $jq("#tblCustomerList").tableHeadFixer({ "head": false, "left": 3 });
+        }
+        catch (e) { }
+    };
+
+    function loadData() {
+        if (searchFilter.FirstName == "" && searchFilter.LastName == "" && searchFilter.CardNo == ""
+             && searchFilter.AccountNo == "" && searchFilter.PhoneNo == "" && searchFilter.CustomerType == ""
+            && searchFilter.Registration == "" && searchFilter.Product == ""
+            && searchFilter.Grade == "" && searchFilter.BranchName == "" && searchFilter.Status == ""
+            ) {
+            var warningMsg = '@Resource.Msg_EnteredAtLeastOneCriteria';
+            doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+            return false;
+        }
+
+        $jq.ajax({
+            url: '@Url.Action("CustomerList", "Customer")',
+            type: "POST",
+            data: addAntiForgeryToken(searchFilter),
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == null) {
+                    $jq("#dvSearchResult").html('');
+                    successFilter = searchFilter;
+                    $jq("#dvSearchResult").html(result);
+                    initializePaging();
+                } else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    };
+
+    function sortField(selectedSortField) {
+        if (selectedSortField == searchFilter.SortField)
+            searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+        else
+            searchFilter.SortOrder = 'ASC';
+        searchFilter.SortField = selectedSortField;
+        searchFilter.PageNo = 1;
+        loadData();
+    }
+
+    function initCustomerEdit(customerId) {
+        var actionUrl = '@Url.Action("InitEditCustomer", "Customer")';
+        $jq('#dvTarget').html('');
+        var inputCustomerId = $jq("<input>").attr("type", "hidden").attr("name", "customerId").val(customerId);
+        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+        $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+        $jq('#dvTarget form').append($jq(inputCustomerId));
+        $jq('#dvTarget form').append($jq(inputToken));
+        $jq('#dvTarget form').submit();
+    }
+
+    function initCustomerNote(customerId) {
+        var actionUrl = '@Url.Action("InitCustomerNote", "Customer")';
+        $jq('#dvTarget').html('');
+        var inputCustomerId = $jq("<input>").attr("type", "hidden").attr("name", "customerId").val(customerId);
+        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+        $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+        $jq('#dvTarget form').append($jq(inputCustomerId));
+        $jq('#dvTarget form').append($jq(inputToken));
+        $jq('#dvTarget form').submit();
+    }
+
+    function initNewSR(customerId, accountId, contactId) {
+        var actionUrl = '@Url.Action("Create", "ServiceRequest")';
+        $jq('#dvTarget').html('');
+        var inputCustomerId = $jq("<input>").attr("type", "hidden").attr("name", "CustomerId").val(customerId);
+        var inputAccountId = $jq("<input>").attr("type", "hidden").attr("name", "AccountId").val(accountId);
+        var inputContactId = $jq("<input>").attr("type", "hidden").attr("name", "ContactId").val(contactId);
+        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+        $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+        $jq('#dvTarget form').append($jq(inputToken));
+        $jq('#dvTarget form').append($jq(inputCustomerId));
+        $jq('#dvTarget form').append($jq(inputAccountId));
+        $jq('#dvTarget form').append($jq(inputContactId));
+        $jq('#dvTarget form').submit();
+    }
+
+    function clearCallId() {
+        var actionUrl = '@Url.Action("ClearIVR", "Customer")';
+        $jq('#dvTarget').html('');
+        var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+        $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+        $jq('#dvTarget form').append($jq(inputToken));
+        $jq('#dvTarget form').submit();
+    }
+
+    function ShowhidePanel(expandValue) {
+        var data = {
+            expandValue: expandValue
+        };
+        $jq.ajax({
+            url: '@Url.Action("ShowhidePanel", "Customer")',
+            type: "POST",
+            data: addAntiForgeryToken(data),
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+
+    function initializeAutoComplete() {
+
+        $jq("#txtProduct").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByProduct", "Customer")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        branchId: $jq("#txtProduct").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+        @*$jq("#txtGrade").select2({
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                placeholder: '@Resource.Ddl_AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    quietMillis: 150,
+                    url: '@Url.Action("SearchByGrade", "Customer")',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            branchId: $jq("#txtGrade").val()
+                        };
+                    },
+                    results: function (data, page) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                }
+            });*@
+
+        $jq("#txtBranchName").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByBranchName", "Customer")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        branchId: $jq("#txtBranchName").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+
+    }
+
+    function bindGrade() {
+
+        $jq("#txtGrade").select2({
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            placeholder: '@Resource.Ddl_AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: '@Url.Action("SearchByGrade", "Customer")',
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term,
+                        product: $jq("#txtProduct").val()
+                    };
+                },
+                results: function (data, page) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        });
+    }
+
+    function initDisabled() {
+        $jq("#txtGrade").prop('disabled', true);
+        bindGrade();
+        $jq("#txtProduct").change(function (event) {
+            if ($jq(this).val() != '') {
+                $jq("#txtGrade").select2("val", "");
+                $jq("#txtGrade").prop("disabled", false);
+                bindGrade();
+            }
+            else {
+                $jq("#txtGrade").select2("val", "");
+                $jq("#txtGrade").prop("disabled", true);
+                bindGrade();
+            }
+            return false;
+        });
+    }
+    </script>
+}

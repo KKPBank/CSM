@@ -1,0 +1,660 @@
+﻿@using System.Web.UI.HtmlControls
+@using CSM.Common.Resources
+@model CSM.Web.Models.QuestionGroupEditViewModel
+
+@{
+    ViewBag.Title = "New Group Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    @*<strong class="font-blue">Group Question &rsaquo;&rsaquo;</strong>*@
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink("Search Group Question", "Index", "QuestionGroup", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; New Group Question</strong>
+}
+
+<form id="form1">
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+        <h5 class="form-title">New Group Question</h5>
+        <hr class="dotted-line" />
+        <div class="bs-example">
+            <div class="row margin-top-15">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">ชื่อกลุ่มคำถาม <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.QuestionGroupName, new { @class = "form-control input-sm", id = "txtQuestionGroupName" })
+                        @Html.ValidationMessageFor(m => m.QuestionGroupName)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">รายละเอียด :</label>
+                    </div>
+                    <div class="col-sm-9">
+                        @Html.TextAreaFor(m => m.QuestionGroupDescription, new { @class = "form-control input-sm", id = "txtQuestionGroupDescription" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input type="hidden" id="hdnQuestionGroupProductGroup" class="form-control input-sm" />
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">Product <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <div id="divProducts" style="overflow:auto;height:200px;border:1px solid #ddd;"></div>
+                        <input type="hidden" name="QuestionGroupProductIds" id="QuestionGroupProductIds">
+                        @Html.ValidationMessageFor(m => m.QuestionGroupProductIds)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">สถานะ <span class="require">*</span>:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <select id="selectStatus" class="form-control input-sm">
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">สร้างโดย :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="CreateUserName" value="@ViewBag.CreateUsername" class="form-control input-sm" disabled="disabled" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">วันที่สร้าง :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="CreateDate" value="@ViewBag.CreateDate" class="form-control input-sm" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">แก้ไขโดย :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="UpdateUserName" value="@ViewBag.UpdateUsername" class="form-control input-sm" disabled="disabled" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label left-label">วันที่แก้ไข :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" id="UpdateDate" value="@ViewBag.UpdateDate" class="form-control input-sm" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapse_container">
+                <div class="collapse_header">
+                    <span class="collapse_sign">[-]</span> Question in this Group
+                </div>
+                <div class="collapse_body">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <button id="btnSelect" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalSearchQuestion"><i class="fa fa-plus"></i> Add Question to Group</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="dvSearchQuestionGroupQuestion">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-12 text-right">
+                        <button id="btnSave" type="button" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Save</button>
+                        <button id="btnBack" type="button" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modalSearchQuestion">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <h5 class="header">Search Question</h5>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label class="control-label">คำถาม :</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="txtSearchQuestionName" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-9 pull-right">
+                                <button id="btnSearchQuestion" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Search</button>
+                                <button id="btnClearQuestion" class="btn btn-sm btn-default"><i class="fa fa-file-o"></i> Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr class="dashed-line" />
+                    <div class="clear"></div>
+
+                    <input type="hidden" id="hiddenQuestionIdList" />
+                    <div class="row">
+                        <div id="dvSearchQuestion">
+                            @{
+                                Html.RenderPartial("~/Views/QuestionGroup/_QuestionList.cshtml", Model);
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*                <span id="btnNewQ" class="btn btn-sm btn-success pull-left" data-toggle="modal" data-target="#modalAddEditSubArea"><i class="fa fa-plus"></i> New Sub Area</span>*@
+                <span id="btnSelectQuestion" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Select Question</span>
+                <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+    <style type="text/css">
+        .modal-body .header {
+            color: #008000;
+            font-weight: bold;
+        }
+
+        .input-page {
+            width: 30px;
+        }
+    </style>
+
+    <script type="text/javascript">
+    var questionSearchFilter;
+    var questionSuccessFilter;
+
+    $jq.validator.setDefaults({ ignore: null });
+
+    $jq(document).ready(function () {
+        initializeQuestionSearchFilter();
+        initializeQuestionPaging();
+
+        $jq('#btnSelect').click(onBtnSelectClick);
+        $jq('#btnBack').click(onBtnBackClick);
+        $jq('#btnSave').click(onBtnSaveClick);
+        $jq("#btnSearchQuestion").click(onBtnSearchQuestionClick);
+        $jq("#btnSelectQuestion").click(onSelectQuestionClick);
+        $jq("#btnClearQuestion").click(onClearQuestionClick);
+
+        initProducts();
+    });
+
+    function initProducts() {
+        $jq.ajax({
+            url: "@Url.Action("GetProductList", "QuestionGroup")",
+            method: "POST",
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); }
+        })
+        .done(function (result) {
+            if (result.Valid == null) {
+
+                var products = result.Products;
+
+                var str = "";
+                for (var i = 0; i < products.length; i++) {
+                    var product = products[i];
+                    str += "<div class='col-sm-3'><label><input class='chkProduct' type='checkbox' oid='" + product.ProductId + "'/> " + product.ProductName + "</label></div>";
+                }
+
+                $jq("#divProducts").html(str);
+
+            } else {
+                showServerErrors(result);
+            }
+        })
+        .fail(function () {
+            if (xhr.status === 401) {
+                location.replace('@FormsAuthentication.LoginUrl');
+                return;
+            } else {
+                var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+    }
+
+    function onBtnSelectClick(event) {
+        event.preventDefault();
+        clearModalSearchQuestion();
+    }
+
+    function clearModalSearchQuestion() {
+        $jq("#txtSearchQuestionName").val("");
+        $jq("#hiddenQuestionIdList").val("");
+
+        questionSearchFilter.QuestionName = $jq("#txtSearchQuestionName").val();
+        questionSearchFilter.QuestionIdList = $jq("#hiddenQuestionIdList").val();
+        loadQuestionList();
+    }
+
+    function loadQuestionList() {
+        var questionRows = $jq(".hiddenQuestionId");
+        var questionIdArray = new Array();
+
+        if (questionRows.length > 0) {
+            for (var i = 0; i < questionRows.length; i++) {
+                questionIdArray[i] = $jq(questionRows[i]).val();
+            }
+            var questionIdStr = questionIdArray.join(",");
+            $jq("#hiddenQuestionIdList").val(questionIdStr);
+            questionSearchFilter.QuestionIdList = $jq("#hiddenQuestionIdList").val();
+        }
+
+        $jq.ajax({
+            url: "@Url.Action("SearchQuestionList", "QuestionGroup")",
+            method: "POST",
+            data: questionSearchFilter,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); }
+        })
+        .done(function (result) {
+            if (isLoginForm(result)) {
+                location.replace('@FormsAuthentication.LoginUrl');
+                return;
+            }
+            if (result.Valid == null) {
+                $jq("#dvSearchQuestion").html('');
+                questionSuccessFilter = questionSearchFilter;
+                $jq("#dvSearchQuestion").html(result);
+                initializeQuestionPaging();
+            } else {
+                showServerErrors(result);
+            }
+        })
+        .fail(function () {
+            if (xhr.status === 401) {
+                location.replace('@FormsAuthentication.LoginUrl');
+                return;
+            } else {
+                var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+    }
+
+    function clearModalAddEditQuestion() {
+        $jq("#txtQuestionId").val("");
+        $jq("#txtQuestionName").val("");
+        $jq("#selectQuestionStatus").val("true");
+    }
+
+    function onBtnBackClick(event) {
+        event.preventDefault();
+        var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+        if ($jq.trim(msg) != '') {
+            doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateQuestionGroup()', 'Confirm');
+        }
+        return false;
+    }
+
+    function closeCreateQuestionGroup() {
+        location.replace('@Url.Action("Index", "QuestionGroup")');
+    }
+
+    function onBtnSaveClick() {
+
+        var chkProducts = $jq(".chkProduct:checked");
+        if (chkProducts.length == 0) {
+            doModal("dvAlertMsg", "Message Dialog", "กรุณาเลือก Product อย่างน้อย 1 รายการ", "", "");
+            return;
+        }
+
+        var frm = $jq("#form1");
+        if (frm.valid()) {
+            var questionGroupName = $jq("#txtQuestionGroupName").val();
+            var questionGroupDescription = $jq("#txtQuestionGroupDescription").val();
+            var status = $jq("#selectStatus").val();
+
+            var chkProducts = $jq(".chkProduct:checked");
+
+            //get question id
+            var rows = $jq(".hiddenQuestionId");
+
+            var idArray = [];
+            for (var i = 0; i < rows.length; i++) {
+                idArray[i] = $jq(rows[i]).val();
+            }
+
+            var ids = idArray.join(',');
+
+            var pidArray = [];
+            for (var i = 0; i < chkProducts.length; i++) {
+                pidArray[i] = $jq(chkProducts[i]).attr("oid");
+            }
+
+            var pids = pidArray.join(',');
+
+
+            $jq.ajax({
+                url: "@Url.Action("SaveQuestionGroup", "QuestionGroup")",
+                    method: "POST",
+                    data: {
+                        QuestionGroupName: questionGroupName,
+                        QuestionGroupProductIds: pids,
+                        Status: status,
+                        Description: questionGroupDescription,
+                        idQuestions: ids,
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                })
+                .done(function (result) {
+                    if (typeof (result) == "string") {
+                        if (isLoginForm(result)) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        }
+                    }
+
+                    if (result.Valid == null) {
+
+                        doModalWithCloseEvent("dvAlertMsg", "Message Dialog", result.message, "onSaveSuccess()");
+                        return false;
+
+                    } else {
+                        showServerErrors(result);
+                    }
+                })
+                .fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                } else {
+                    var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+        }
+    }
+
+    function onSaveSuccess() {
+        location.replace('@Url.Action("Index", "QuestionGroup")');
+    }
+
+    function onBtnSearchQuestionClick() {
+        var search = $jq("#txtSearchQuestionName").val();
+
+        if (search.trim().length === 0) {
+            var warningMsg = "โปรดใส่เงื่อนไขในการค้นหา";
+            doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+            return false;
+        }
+
+        questionSearchFilter.QuestionName = search;
+        loadQuestionList();
+    }
+
+    function onSelectQuestionClick() {
+        //get select question table
+        var questionRows = $jq("input.ckb:checked");
+
+        if (questionRows.length === 0) {
+            var warningMsg = "กรุณาเลือก Question อย่างน้อย 1 รายการ";
+            doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+            return false;
+        }
+
+        var questionData = new Array();
+        for (var i = 0; i < questionRows.length; i++) {
+            questionData.push({
+                id: $jq(questionRows[i]).attr("question_id"),
+                question_name: $jq(questionRows[i]).attr("name")
+            });
+        }
+
+        //get questiongroup table
+        var questionGroupRows = $jq(".hiddenQuestionId");
+
+        var questionGroupData = new Array();
+        for (var j = 0; j < questionGroupRows.length; j++) {
+            questionGroupData.push({
+                id: $jq(questionGroupRows[j]).val(),
+                question_name: $jq(questionGroupRows[j]).attr("question_name")
+            });
+        }
+
+        showSortQuestionGroupTable(questionGroupData, questionData);
+        $jq("#modalSearchQuestion").modal("hide");
+    }
+
+    function showSortQuestionGroupTable(questionGroupData, questionData) {
+        //render subarea table
+        $jq.ajax({
+            url: "@Url.Action("RenderQuestionGroupList", "QuestionGroup")",
+            method: "POST",
+            data: {
+                questionGroupList: JSON.stringify(questionGroupData),
+                questionList: JSON.stringify(questionData),
+                __RequestVerificationToken: getAntiForgeryToken()
+            },
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); }
+        })
+            .done(function (result) {
+                if (isLoginForm(result)) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                }
+                if (result.Valid == null) {
+                    $jq("#dvSearchQuestionGroupQuestion").html('');
+                    $jq("#dvSearchQuestionGroupQuestion").html(result);
+                } else {
+                    showServerErrors(result);
+                }
+            })
+            .fail(function () {
+                if (xhr.status === 401) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                } else {
+                    var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+    }
+
+    function showSortQuestionGroupTableAfterAddQuestion(questionGroupRows, questionId, questionName, status, updateBy, updateDate) {
+        var data = [];
+
+        for (var i = 0; i < questionGroupRows.length; i++) {
+            data.push({
+                id: questionGroupRows[i].id,
+                action: "<span style='cursor: pointer; color: red;' onclick='onDeleteQuestionRow(" + areaRows[i].id + ")'><i class='fa fa-trash-o'></i></span>",
+                question_name: questionGroupRows[i].question_name,
+                status: questionGroupRows[i].status,
+                update_name: questionGroupRows[i].update_name,
+                update_date: questionGroupRows[i].update_date
+            });
+        }
+
+        data.push({
+            id: questionId,
+            action: "<span style='cursor: pointer; color: red;' onclick='onDeleteQuestionRow(" + questionId + ")'><i class='fa fa-trash-o'></i></span>",
+            question_name: questionName,
+            status: status,
+            update_name: updateBy,
+            update_date: updateDate
+        });
+
+        //sort by name
+        data.sort(function (a, b) {
+            var str1 = a.question_name;
+            var str2 = b.question_name;
+            return str1.localeCompare(str2);
+        });
+
+        $jq("#tableQuestionGroup").bootstrapTable("removeAll");
+        $jq("#tableQuestionGroup").bootstrapTable('append', data);
+    }
+
+    function onClearQuestionClick() {
+        $jq("#txtSearchQuestionName").val("");
+
+        questionSearchFilter.QuestionName = $jq("#txtSearchQuestionName").val();
+
+        loadQuestionList();
+    }
+
+    function onDeleteQuestionRow(id) {
+        if (confirm("คุณต้องการยืนยันที่ลบ Question ออกจาก Group Question หรือไม่?")) {
+            $jq("#tableQuestionGroup").bootstrapTable("remove", {
+                field: 'id',
+                values: [id]
+            });
+        }
+    }
+
+    function initializeQuestionSearchFilter() {
+        questionSearchFilter = {
+            QuestionName: $jq("#txtSearchQuestionName").val(),
+            QuestionIdList: $jq("#hiddenQuestionIdList").val(),
+            PageNo: '@Model.SearchFilter.PageNo',
+            PageSize: '@Model.SearchFilter.PageSize',
+            SortField: '@Model.SearchFilter.SortField',
+            SortOrder: '@Model.SearchFilter.SortOrder',
+            __RequestVerificationToken: getAntiForgeryToken()
+        };
+        questionSuccessFilter = questionSearchFilter;
+    };
+
+    function initializeQuestionPaging() {
+        $jq("#dvSearchQuestion .input-page").change(function (event) {
+            questionSearchFilter = questionSuccessFilter;
+            questionSearchFilter.PageNo = $jq(this).val();
+            loadQuestionList();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchQuestion #pagesizelist").change(function (event) {
+            questionSearchFilter = questionSuccessFilter;
+            questionSearchFilter.PageNo = "1";
+            questionSearchFilter.PageSize = $jq(this).val();
+            loadQuestionList();
+            return false;
+        });
+
+        $jq('#dvSearchQuestion .pagination ul li a').on('click', function (event) {
+            questionSearchFilter = questionSuccessFilter;
+            questionSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadQuestionList();
+            return false;
+        });
+    }
+
+    function onDeleteRowClick(id) {
+        if (confirm("คุณต้องการยืนยันที่ลบ Question ออกจาก QuestionGroup หรือไม่?")) {
+            var rows = $jq(".hiddenQuestionId");
+
+            var data = new Array();
+            for (var i = 0; i < rows.length; i++) {
+                data.push({
+                    id: $jq(rows[i]).val(),
+                    question_name: $jq(rows[i]).attr("question_name")
+                });
+            }
+
+            $jq.ajax({
+                url: "@Url.Action("RenderQuestionGroupList", "QuestionGroup")",
+                method: "POST",
+                data: {
+                    questionList: JSON.stringify(data),
+                    deleteId: id,
+                    __RequestVerificationToken: getAntiForgeryToken()
+                },
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); }
+            })
+                .done(function (result) {
+                    if (isLoginForm(result)) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    }
+                    if (result.Valid == null) {
+                        $jq("#dvSearchQuestionGroupQuestion").html('');
+                        $jq("#dvSearchQuestionGroupQuestion").html(result);
+                    } else {
+                        showServerErrors(result);
+                    }
+                })
+                .fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+        }
+    }
+
+    function onMoveRowClick(itemSeq, type) {
+        var idStr = "#" + itemSeq;
+        var targetTr = $jq(idStr).closest("tr");
+
+        if (type == "down") {
+            $jq(targetTr).next().after($jq(targetTr));
+            reOrderSeq();
+
+        } else if (type == "up") {
+            $jq(targetTr).prev().insertAfter($jq(targetTr));
+            reOrderSeq();
+        }
+    }
+
+    function reOrderSeq() {
+        var targetTrSeq = $jq(".td_seq");
+
+        for (var i = 0; i < targetTrSeq.length; i++) {
+            $jq(targetTrSeq[i]).text(i + 1);
+        }
+    }
+
+    </script>
+}

@@ -1,0 +1,271 @@
+﻿@using CSM.Entity
+@using CSM.Common.Resources
+@model CSM.Web.Models.LoanAccountDetailViewModel
+@{
+    ViewBag.Title = Resource.Lbl_LoanAccountDetail;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink(Resource.Lbl_SearchCustomer, "Search", "Customer", new { @skip = "1" }, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_LoanAccountDetail </strong>
+}
+
+@if (Model != null)
+{
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">Loan Account Detail</h5>
+        @if (Model.CustomerNumber != null)
+        {
+            <div id="pnlCustInfo">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">วันเกิด</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control input-sm static-view">
+                                        @Html.DisplayFor(model => model.BirthDateDisplay)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">เลขที่บัตรประชาชน</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control input-sm static-view">
+                                        @Html.DisplayFor(model => model.IDNumber)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">เบอร์โทรศัพท์</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control input-sm static-view">
+                                        @Html.DisplayFor(model => model.PhoneNumber)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"> ที่อยู่ส่งเอกสาร</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control input-sm static-view">
+                                        @Html.DisplayFor(model => model.Address)
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-6">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">ธนาคารที่โอนเงิน</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control input-sm static-view">
+                                        @Html.DisplayFor(model => model.BankNumber)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">สาขาธนาคารที่โอนเงิน</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control input-sm static-view">
+                                        @Html.DisplayFor(model => model.BankNumber)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"> เลขที่บัญชีที่โอนเงิน</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control input-sm static-view">
+                                        @Html.DisplayFor(model => model.AccountNumber)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"> ชื่อผู้กู้หลักและผู้กู้ร่วมสินเชื่อบ้าน</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control input-sm static-view">
+                                        @Html.DisplayFor(model => model.AccountName)
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="pnlCustInfo">
+                <div class="row">
+                    <div class="col-lg-2">
+                    </div>
+                    <div class="col-lg-8">
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">เลขที่บัญชี</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.AccountNumber)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">วันที่สัญญามีผล</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.ApprovalDateDisplay)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">วงเงินกู้</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.DrawingLimit)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">ชำระทุกวันที่</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.PaymentDayOfMonth)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">วันที่ชำระครั้งแรก</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.FirstPaymentDateDisplay)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">อัตราดอกเบี้ย</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.LoanInterestRate)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">จำนวนงวดที่ชำระ</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.Term)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">ยอดที่ต้องชำระต่องวด</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.PaymentAmount)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">วันที่ลูกค้าครบกำหนดสัญญา</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.MaturityDateDisplay)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">สถานะของสัญญา</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.StatusAccountDisplay)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">เลขที่อ้างอิง Ref.1</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.Reference2)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">เลขที่อ้างอิง Ref.2</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.Reference2)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">สมัครตัดรับชำระผ่านบัญชีธนาคาร(DDS)</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.AFTLoan)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">สมัคร Loan Care หรือไม่</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.InsuranceFlag)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">สถานะบัญชีสินเชื่อบุคคล บัตรกดเงินสด</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control input-sm static-view">
+                                            @Html.DisplayFor(model => model.StatusAccountDisplay)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-2">
+                    </div>
+                </div>
+            </div>
+        }
+        
+    </div>
+}
+

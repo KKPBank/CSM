@@ -1,0 +1,145 @@
+﻿@model CSM.Web.Models.BatchMonitoringViewModel
+@using CSM.Common.Resources;
+@using CSM.Common.Utilities
+@{
+    ViewBag.Title = "Batch Monitoring";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" })</strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; Batch Monitoring</strong>
+}
+
+@using (Html.BeginForm("SetBatchInterval", "AuditLog", FormMethod.Post, new {@class = "form-horizontal", @id = "form1"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.IntervalTime, new { @id = "hddIntervalTime" })
+    <input id="btnSubmitTrigger" type="submit" class="hidden" />
+    <div id="dvForm" class="form-box">
+
+        <div class="row margin-top-10">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            Set Interval
+                        </p>
+                    </div>
+                    <div class="col-md-3 nopadding">
+                        @Html.TextBoxFor(model => model.IntervalTimeInput,
+                            new
+                            {
+                                @class = "form-control input-sm",
+                                @id = "txtIntervalTimeInput",
+                                @maxlength = 5
+                            })
+                        @Html.ValidationMessageFor(model => model.IntervalTimeInput)
+                    </div>
+                    <div class="col-md-2 nopadding">
+                        <p class="form-control-static">
+                            &nbsp;seconds
+                        </p>
+                    </div>
+                    <div class="col-md-3 nopadding">
+                        <button id="btnSetInterval" type="button" class="btn btn-blue btn-sm btn-small">
+                            <i class="fa fa-save"></i>&nbsp;Set Interval
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div id="dvSearchResult">
+            @if (Model.BatchProcessList != null)
+            {
+                Html.RenderPartial("~/Views/AuditLog/_BatchProcessList.cshtml", Model);
+            }
+        </div>
+    </div>
+}
+
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+
+        $jq(function() {
+            loadData();
+            if ($jq("#hddIntervalTime").val() != '') {
+                window.setInterval(loadData, $jq("#hddIntervalTime").val() * 1000); //in milliseconds
+            }
+
+            $jq("#btnSetInterval").click(function (e) {
+                $jq('#btnSubmitTrigger').click();
+            });
+        });
+
+        function loadData() {
+
+            $jq.ajax({
+                url: '@Url.Action("BatchProcessList", "AuditLog")',
+                type: "POST",
+                //beforeSend: function () { $jq("#dvLoading").show(); },
+                //complete: function () { $jq("#dvLoading").hide(); },
+                success: function(result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResult").html('');
+                        $jq("#dvSearchResult").html(result);
+
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function(xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+            return false;
+        }
+
+        var ProcessCode;
+        function initRerunBatch(code) {
+            ProcessCode = code;
+            doModal('dvAlertMsg', 'Confirm Dialog', 'ต้องการ Re-Run หรือไม่?', 'doRerunBatch()', 'Confirm');
+        }
+
+        function doRerunBatch() {
+            $jq("#modalWindow").modal('hide');
+            // set data
+            var paramData = {
+                processCode: ProcessCode
+            }
+
+            $jq.ajax({
+                url: '@Url.Action("RerunBatch", "AuditLog")',
+                type: "POST",
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function() { $jq("#dvLoading").show(); },
+                complete: function() { $jq("#dvLoading").hide(); },
+                success: function(result) {
+                    if (result.Valid == true) {
+                        loadData();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function(xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+    </script>
+}
+

@@ -1,0 +1,234 @@
+﻿@model CSM.Web.Models.JobViewModel
+@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using MvcPaging;
+@helper LabelForSort(string headerText, string fieldName, string sortField, string sortOrder)
+{
+    <a href="javascript:;" onclick="sortField('@fieldName');return false;">
+        @headerText
+        @if (fieldName.ToLower().Equals(sortField.ToLower()))
+        {
+            if (sortOrder.Equals("ASC"))
+            {<i class="fa fa-sort-asc"></i>}
+            else
+            {<i class="fa fa-sort-desc"></i> }
+        }
+        else
+        {<i class="fa fa-sort"></i>}
+    </a>
+}
+@if (Model.CommunicationPoolList == null || Model.SearchFilter.TotalRecords == 0)
+{
+    string sortField = Model.SearchFilter.SortField;
+    string sortOrder = Model.SearchFilter.SortOrder;
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th class="center text-nowrap" style="width:10%!important;">Action</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Attach File</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Channel</th>
+                    <th class="center text-nowrap" style="width:10%!important;">From</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Job Status</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Job Date</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Subject</th>
+                    <th class="center text-nowrap" style="width:10%!important;">ชื่อลูกค้า</th>
+                    <th class="center text-nowrap" style="width:10%!important;">นามสกุลลูกค้า</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Creator SR</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Owner SR</th>
+                    <th class="center text-nowrap" style="width:10%!important;">SR ID</th>
+                    <th class="center text-nowrap" style="width:10%!important;">SR State</th>
+                    <th class="center text-nowrap" style="width:10%!important;">SR Status</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Action By</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Action Date</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Pool name</th>
+                    <th class="center text-nowrap" style="width:10%!important;">Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="18" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string sortField = Model.SearchFilter.SortField;
+    string sortOrder = Model.SearchFilter.SortOrder;
+
+    <div class="form-inline nopadding">
+        <div class="form-group">
+            @Html.Raw(Html.Pager(
+                new Options
+                {
+                    PageSize = Model.SearchFilter.PageSize,
+                    TotalItemCount = Model.SearchFilter.TotalRecords,
+                    CurrentPage = Model.SearchFilter.PageNo,
+                    ItemTexts = new ItemTexts
+                    {
+                        First = "<i class='fa fa-step-backward' style='font-size: 0.8em'></i>",
+                        Previous = "<i class='fa fa-caret-left'></i>",
+                        Next = "<i class='fa fa-caret-right'></i>",
+                        Last = "<i class='fa fa-step-forward' style='font-size: 0.8em'></i>"
+                    },
+                    IsShowFirstLast = true,
+                    CssClass = "pager",
+                    IsShowInputPage = true
+                },
+                new { PageSize = ViewBag.PageSize }))
+
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("PageSize", new SelectList(ViewBag.PageSizeList, "Key", "Value"), new { @class = "form-control input-xs", id = "pagesizelist" })
+        </div>
+        <div class="form-group text-nowrap margin-left-8">
+            <strong>
+                @MvcHtmlString.Create(string.Format(Resource.Lbl_Paging, @Model.SearchFilter.FirstPageIndex, @Model.SearchFilter.LastPageIndex, @Model.SearchFilter.TotalRecordsDisplay))
+            </strong>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table id="tblJobList" class="table datatable" style="width:1890px!important;">
+            <thead>
+                <tr>
+                    <th class="center text-nowrap">Action</th>
+                    <th class="center text-nowrap">@LabelForSort("Attach File", "AttachFile", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Channel", "Channel", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("From", "From", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Job Status", "JobStatus", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Job Date", "JobDate", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Subject", "Subject", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("ชื่อลูกค้า", "FirstName", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("นามสกุลลูกค้า", "LastName", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Creator SR", "CreatorSR", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Owner SR", "OwnerSR", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("SR ID", "SRID", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("State", "State", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Status", "Status", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Action By", "ActionBy", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Action Date", "ActionDate", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">@LabelForSort("Pool name", "Poolname", sortField, sortOrder)</th>
+                    <th class="center text-nowrap">Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int rowIndex = 1;
+                }
+                @foreach (var item in Model.CommunicationPoolList)
+                {
+                    string rowId = "act_" + (rowIndex++);
+                    <tr>
+                        <td class="center text-nowrap">
+                            @if (item.Status == 0)
+                            {
+                                <a href="javascript:;" class="add" title="New SR" onclick="return confirmNewSR('@item.JobId');"></a>
+                                <span class="line-space"></span>
+                            }
+                            <a href="javascript:;" class="view" title="View" onclick="initCommPoolEdit('@item.JobId');"></a>
+                        </td>
+                        <td class="center">@item.AttachmentsDisplay</td>
+                        <td class="left text-nowrap">@item.ChannelEntity.Name</td>
+                        <td class="left text-nowrap">@Html.Raw(StringHelpers.DisplayWithMaxLength(item.SenderName, 50))</td>
+                        <td class="center text-nowrap">@item.StatusDisplay</td>
+                        <td class="center text-nowrap">@item.CreateDateDisplay</td>
+                        <td class="left text-nowrap">
+                            @*<div style="width:300px!important">@item.Subject</div>*@
+                            @if (item.Subject != null && item.Subject.Length > Constants.DisplayMaxLength)
+                            {
+                                @StringHelpers.DisplayLimitLength(item.Subject) <span onclick="$jq('#@rowId').toggle('slow')" style="cursor:pointer">...</span>
+                            }
+                            else
+                            {
+                                @item.Subject
+                            }
+                        </td>
+                        @if (item.ServiceRequest != null)
+                        {
+                            if (item.ServiceRequest.Customer != null)
+                            {
+                                <td class="left text-nowrap">@item.ServiceRequest.Customer.FirstNameThaiEng</td>
+                                <td class="left text-nowrap">@item.ServiceRequest.Customer.LastNameThaiEng</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+                            if (item.ServiceRequest.CreateUser != null)
+                            {
+                                <td class="left text-nowrap">@item.ServiceRequest.CreateUser.FullName</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            if (item.ServiceRequest.Owner != null)
+                            {
+                                <td class="left text-nowrap">@item.ServiceRequest.Owner.FullName</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <td class="center text-nowrap">@item.ServiceRequest.SrNo</td>
+                            <td class="center text-nowrap">@item.ServiceRequest.SRStateName</td>
+                            <td class="center text-nowrap">@item.ServiceRequest.StatusDisplay</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        }
+
+                        @if (item.UpdateUser != null)
+                        {
+                            <td class="left text-nowrap">@item.UpdateUser.FullName</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        <td class="center text-nowrap">@item.UpdateDateDisplay</td>
+                        <td class ="left text-nowrap">@item.PoolEntity.PoolName</td>
+                        <td class="left text-nowrap">
+                            @if (item.Remark != null && item.Remark.Length > Constants.DisplayMaxLength)
+                            {
+                                @StringHelpers.DisplayLimitLength(item.Remark) <span onclick="$jq('#@rowId').toggle('slow')" style="cursor:pointer">...</span>
+                            }
+                            else
+                            {
+                                @item.Remark
+                            }
+                        </td>
+                    </tr>
+                    if (@item.Remark != null || @item.Subject != null)
+                    {
+
+                        <tr id="@rowId" style="display:none">
+                            <td colspan="18">
+                                <table class="activity_detail">
+                                    <tr>
+                                        <td style="width:100px">Subject :</td>
+                                        <td>@item.Subject</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:100px">Remark :</td>
+                                        <td>@item.Remark</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}

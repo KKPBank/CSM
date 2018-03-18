@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="www.kiatnakinbank.com/services/CMTService/CampaignSearch" elementFormDefault="qualified" targetNamespace="www.kiatnakinbank.com/services/CMTService/CampaignSearch" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CampaignByStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="detail" type="tns:CampaignSearchResponseEntity" />
+        <xs:element minOccurs="0" maxOccurs="1" name="status" type="tns:StatusResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="CampaignSearchResponseEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CampaignStatus" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CampaignInfo" type="tns:ArrayOfCampaignDetail" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfCampaignDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CampaignDetail" nillable="true" type="tns:CampaignDetail" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CampaignDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CampaignId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CampaignName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CampaignDescription" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CampaignOffer" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CampaignCreiteria" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="StartDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ExpireDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Channel" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CampaignScore" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SaleToolKitUrl" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AttachFile" type="tns:ArrayOfAttachFileInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfAttachFileInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AttachFileInfo" nillable="true" type="tns:AttachFileInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AttachFileInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="FileInfo" type="tns:ArrayOfLFileInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfLFileInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="LFileInfo" nillable="true" type="tns:LFileInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LFileInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="FileType" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FilePath" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="StatusResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="status" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="error_code" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="description" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="header" type="tns:Header" />
+  <xs:complexType name="Header">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="transaction_date" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="user_name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="service_name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="system_code" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="reference_no" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

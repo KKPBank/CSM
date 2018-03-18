@@ -1,0 +1,812 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using CSM.Web.Models
+@using MvcPaging
+@model CSM.Web.Models.CreateServiceRequestViewModel
+@helper LabelForSort(string headerText, string fieldName, string sortField, string sortOrder)
+{
+    <a href="javascript:;" onclick="sortDocumentField('@fieldName');return false;">
+        @headerText
+        @if (!string.IsNullOrEmpty(fieldName) && !string.IsNullOrEmpty(sortField) && fieldName.ToLower().Equals(sortField.ToLower()))
+        {
+            if (sortOrder.Equals("ASC"))
+            {<i class="fa fa-sort-asc"></i>}
+            else
+            {<i class="fa fa-sort-desc"></i> }
+        }
+        else
+        {<i class="fa fa-sort"></i>}
+    </a>
+}
+
+<div class="form-inline" style="padding:5px 0">
+    <span id="btnDocumentCreate" class="btn btn btn-green btn-sm">
+        <i class="fa fa-plus"></i>
+        New Document
+    </span>
+    <label class="margin-left-8">
+        <input type="checkbox" id="chkDocOnlySr" checked="@Model.DocumentSearchFilter.SrOnly">
+        แสดงเฉพาะข้อมูล SR นี้
+    </label>
+</div>
+
+@if (Model.DocumentList == null || Model.DocumentSearchFilter.TotalRecords == 0)
+{
+    string sortField = Model.DocumentSearchFilter.SortField;
+    string sortOrder = Model.DocumentSearchFilter.SortOrder;
+
+    <hr class="dashed-line" style="margin-bottom:0">
+
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th style="width: 10% !important">Action</th>
+                    <th>ชื่อเอกสาร</th>
+                    <th>คำอธิบายเอกสาร</th>
+                    <th>Document Level</th>
+                    <th>SR Reference</th>
+                    <th>ประเภทเอกสาร</th>
+                    <th style="width: 150px">วันหมดอายุของเอกสาร</th>
+                    <th style="width: 150px">วันที่นำเข้า</th>
+                    <th style="width: 150px">สถานะ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="9" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string sortField = Model.DocumentSearchFilter.SortField;
+    string sortOrder = Model.DocumentSearchFilter.SortOrder;
+
+    <hr class="dashed-line" style="margin-bottom:0">
+
+    <div class="form-inline nopadding">
+        <div class="form-group">
+            @Html.Raw(Html.Pager(
+                new Options
+                {
+                    PageSize = Model.DocumentSearchFilter.PageSize,
+                    TotalItemCount = Model.DocumentSearchFilter.TotalRecords,
+                    CurrentPage = Model.DocumentSearchFilter.PageNo,
+                    ItemTexts = new ItemTexts
+                    {
+                        First = "<i class='fa fa-step-backward' style='font-size: 0.8em'></i>",
+                        Previous = "<i class='fa fa-caret-left'></i>",
+                        Next = "<i class='fa fa-caret-right'></i>",
+                        Last = "<i class='fa fa-step-forward' style='font-size: 0.8em'></i>"
+                    },
+                    IsShowFirstLast = true,
+                    CssClass = "pager",
+                    IsShowInputPage = true
+                },
+                new { PageSize = ViewBag.PageSize }))
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "15", 15 }, { "30", 30 } }, "Key", "Value"), new { @class = "form-control input-xs", id = "pagesizelist" })
+        </div>
+        <div class="form-group text-nowrap margin-left-8">
+            <strong>
+                @MvcHtmlString.Create(string.Format(Resource.Lbl_Paging, @Model.DocumentSearchFilter.FirstPageIndex, @Model.DocumentSearchFilter.LastPageIndex, @Model.DocumentSearchFilter.TotalRecords))
+            </strong>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th style="width: 10% !important">Action</th>
+                    <th>@LabelForSort("ชื่อเอกสาร", "FileName", sortField, sortOrder)</th>
+                    <th>@LabelForSort("คำอธิบายเอกสาร", "DescName", sortField, sortOrder)</th>
+                    <th>Document Level</th>
+                    <th>@LabelForSort("SR Reference", "SrRef", sortField, sortOrder)</th>
+                    <th>ประเภทเอกสาร</th>
+                    <th style="width:150px">@LabelForSort("วันหมดอายุของเอกสาร", "ExpireDate", sortField, sortOrder)</th>
+                    <th style="width:150px">@LabelForSort("วันที่นำเข้า", "CreateDate", sortField, sortOrder)</th>
+                    <th style="width:150px">@LabelForSort("สถานะ", "Status", sortField, sortOrder)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.DocumentList)
+                {
+                    <tr>
+                        @{
+                            
+                            var linkStr = "";
+                            if (item.CreateUserId == ViewBag.CurrentUserId)
+                            {
+                                linkStr = item.Status == 1 ? string.Format("<a class='delete-active' onclick='onDeleteSrDocClick({0})'></a>", item.SrAttachId) : "<a class='delete-disable' onclick='javascript:;'></a>";
+                            }
+                            else
+                            {
+                                linkStr = "<a class='delete-disable' onclick='javascript:;'></a>";
+                            }
+                            
+                        }
+                        <td class="center">
+                            @if (item.Status == 1)
+                            {
+                                if (item.CreateUserId == ViewBag.CurrentUserId)
+                                {
+                                    <a class="edit-active" onclick="onEditSrDocClick('@item.SrAttachId', '@item.DocumentLevel', true)"></a>
+                                }
+                                else
+                                {
+                                    <a class="view" onclick="onEditSrDocClick('@item.SrAttachId', '@item.DocumentLevel', false)"></a>
+                                }
+
+                            }
+                            else
+                            {
+                                <a class="view" onclick="onEditSrDocClick('@item.SrAttachId', '@item.DocumentLevel', false)"></a>
+                            }
+
+                            @Html.Raw(linkStr)
+                        </td>
+                        <td>@StringHelpers.DisplayWithMaxLength(item.AttachmentName)</td>
+                        <td>@StringHelpers.DisplayWithMaxLength(item.AttachmentDesc)</td>
+                        <td class="center">@item.DocumentLevel</td>
+                        <td>@item.SrReference</td>
+                        <td>
+                            @if (item.DocumentTypes != null)
+                            {
+                                foreach (var type in item.DocumentTypes)
+                                {
+                                    @Html.Raw(type.Name)
+                                    <br/>
+                                }
+                            }
+                        </td>
+                        <td class="center">@DateUtil.ToStringAsDate(item.ExpireDate)</td>
+                        <td class="center">@DateUtil.ToStringAsDateTime(item.CreateDate)</td>
+                        <td class="center">
+                            @if (item.Status != null)
+                            {
+                                if (item.Status == 1)
+                                {
+                                    @Html.Raw("Active")
+                                }
+                                else
+                                {
+                                    @Html.Raw("Inactive")
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<!-- Add Attachment -->
+<div id="addAttachmentModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title">New Document</h4>
+            </div>
+            <form id="formDoc">
+                <div class="modal-body">
+                    @Html.ValidationSummary(true)
+                    <div class="form-horizontal">
+                        <div id="row">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">เอกสารที่อัพโหลด <span class="required-field-block">*</span></label>
+                                <div class="col-sm-6 nopadding">
+                                    @Html.TextBoxFor(m => m.FileAttach, null, new
+                                    {
+                                        @id = "txtFileAttach",
+                                        type = "file",
+                                        @style = "min-width:550px;"
+                                    })
+                                    <p class="help-block" style="color: red;width:550px;">
+                                        @Model.AllowFileExtensionsDesc
+                                    </p>
+                                    @Html.ValidationMessageFor(m => m.FileAttach)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">ชื่อเอกสาร <span class="required-field-block">*</span></label>
+                                <div class="col-md-6 nopadding">
+                                    @Html.TextBoxFor(m => m.DocName, new
+                                    {
+                                        @id = "txtDocName",
+                                        @class = "form-control input-sm",
+                                        @style = "min-width:550px;",
+                                        @maxlength = Constants.MaxLength.AttachName
+                                    })
+                                    @Html.ValidationMessageFor(m => m.DocName)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">คำอธิบายเอกสาร</label>
+                                <div class="col-md-6 nopadding">
+                                    @Html.TextAreaFor(model => model.DocDesc, new
+                                    {
+                                        @id = "txtDocDesc",
+                                        @class = "form-control input-sm",
+                                        @style = "min-width:550px;min-height: 150px;"
+                                    })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">วันที่หมดอายุ</label>
+                                <div class="col-md-6 nopadding">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <div class='input-group date' id='datepickSrAttach'>
+                                                @Html.TextBoxFor(model => model.ExpiryDate, new
+                                                {
+                                                    @class = "form-control input-sm input-small",
+                                                    @style = "min-width:100px",
+                                                    @id = "txtExpiryDate",
+                                                    onchange = "validateDateValue($jq(this));"
+                                                })
+                                                <span class="input-group-addon">
+                                                    <span class="fa fa-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+@*                            <div class="form-group">*@
+@*                                <label class="control-label col-md-3 left-label">สถานะ <span class="required-field-block">*</span></label>*@
+@*                                <div class="col-md-6 nopadding">*@
+@*                                    @Html.DropDownListFor(m => m.Status, Model.StatusList, Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @style = "width:165px!important;display:block", id = "ddlStatus" })*@
+@*                                    @Html.ValidationMessageFor(model => model.Status)*@
+@*                                </div>*@
+@*                            </div>*@
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">ประเภทเอกสาร <span class="required-field-block">*</span></label>
+                                <div class="col-md-9 nopadding">
+                                    @if (Model.DocTypeCheckBoxes != null && Model.DocTypeCheckBoxes.Count > 0)
+                                    {
+                                        <table class="checkboxlist">
+                                            @for (int i = 0; i < Model.DocTypeCheckBoxes.Count(); i++)
+                                            {
+                                                <tr style="width: 42% !important">
+                                                    <td>
+                                                        @Html.CheckBoxFor(model => model.DocTypeCheckBoxes[i].Checked, new { @id = ("cblDocType_" + i), @class = "cblDocTypeAdd" })
+                                                        @Html.HiddenFor(model => model.DocTypeCheckBoxes[i].Value)
+                                                        @Html.HiddenFor(model => model.DocTypeCheckBoxes[i].Text)
+                                                    </td>
+                                                    <td class="padding-left-2"><label for="@("cblDocType_" + i)">@Model.DocTypeCheckBoxes[i].Text</label></td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="modal-footer">
+                        <span class="btn btn-blue btn-sm btn-xsmall" id="btnSaveAttach">Save</span>
+                        <span class="btn btn-gray btn-sm btn-xsmall" id="btnCancelAttach">Cancel</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Add Attachment-->
+<!-- Edit Attachment -->
+<div id="editAttachmentModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title" id="editAttachmentModalTitle">Edit Document</h4>
+            </div>
+            <form id="formEditDoc">
+                <div class="modal-body">
+                    @Html.ValidationSummary(true)
+                    <div class="form-horizontal">
+                        <div id="row">
+                            @Html.HiddenFor(m => m.SrAttachmentId)
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">เอกสารที่อัพโหลด <span class="required-field-block">*</span></label>
+                                <div class="col-sm-6 nopadding">
+                                    <div id="divDocLink">
+                                        <input type="hidden" id="hiddenAttachmentId" />
+                                        <input type="hidden" id="hiddenDocumentLevel" />
+                                        <span onclick="previewSrAttachment()" id="lnkDocLink" class="doc_link"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">ชื่อเอกสาร <span class="required-field-block">*</span></label>
+                                <div class="col-md-6 nopadding">
+                                    @Html.TextBoxFor(m => m.DocNameEdit, new { @class = "form-control input-sm", style = "min-width: 550px;", @readonly = true })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">คำอธิบายเอกสาร</label>
+                                <div class="col-md-6 nopadding">
+                                    @Html.TextAreaFor(model => model.DocDescEdit, new
+                                    {
+                                        @id = "txtDocDescEdit",
+                                        @class = "form-control input-sm",
+                                        @style = "min-width:550px;min-height: 150px;"
+                                    })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">วันที่หมดอายุ</label>
+                                <div class="col-md-6 nopadding">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <div class='input-group date' id='datepickSrAttachEdit'>
+                                                @Html.TextBoxFor(model => model.ExpireDateEdit, new
+                                                {
+                                                    @class = "form-control input-sm input-small",
+                                                    @style = "min-width:100px",
+                                                    @id = "txtExpiryDateEdit",
+                                                    onchange = "validateDateValue($jq(this));"
+                                                })
+                                                <span class="input-group-addon">
+                                                    <span class="fa fa-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+@*                            <div class="form-group">*@
+@*                                <label class="control-label col-md-3 left-label">สถานะ <span class="required-field-block">*</span></label>*@
+@*                                <div class="col-md-6 nopadding">*@
+@*                                    @Html.DropDownListFor(m => m.Status, Model.StatusList, Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @style = "width:165px!important;display:block", id = "ddlStatusEdit" })*@
+@*                                    @Html.ValidationMessageFor(model => model.Status)*@
+@*                                </div>*@
+@*                            </div>*@
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">ประเภทเอกสาร <span class="required-field-block">*</span></label>
+                                <div class="col-md-9 nopadding">
+                                    @if (Model.DocTypeCheckBoxesEdit != null && Model.DocTypeCheckBoxesEdit.Count > 0)
+                                    {
+                                        <table class="checkboxlist">
+                                            @for (int i = 0; i < Model.DocTypeCheckBoxesEdit.Count(); i++)
+                                            {
+                                                var docTypeId = Model.DocTypeCheckBoxesEdit[i].Value;
+                                                <tr style="width: 42% !important">
+                                                    <td>
+                                                        @Html.CheckBoxFor(model => model.DocTypeCheckBoxesEdit[i].Checked, new { @id = ("cblDocTypeEdit_" + i), @class = "cblDocTypeEdit", @oid = docTypeId })
+                                                        @Html.HiddenFor(model => model.DocTypeCheckBoxesEdit[i].Value)
+                                                        @Html.HiddenFor(model => model.DocTypeCheckBoxesEdit[i].Text)
+                                                    </td>
+                                                    <td class="padding-left-2"><label for="@("cblDocTypeEdit_" + i)">@Model.DocTypeCheckBoxesEdit[i].Text</label></td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="modal-footer">
+                        <span class="btn btn-blue btn-sm btn-xsmall" id="btnSaveEditAttach">Save</span>
+                        <span class="btn btn-gray btn-sm btn-xsmall" id="btnCancelEditAttach">Cancel</span>
+                        <span class="btn btn-gray btn-sm btn-xsmall" id="btnCloseEditAttach" style="display:none">Close</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Edit Attachment -->
+
+
+<script type="text/javascript">
+
+    // To Validate Hidden Fields
+    $jq.validator.setDefaults({ ignore: null });
+
+    $jq(function () {
+
+        //To Validate form
+        $jq.validator.unobtrusive.parse("#formDoc");
+
+        $jq('#txtFileAttach').change(onTxtFileAttachChange);
+
+        //Attachment function
+        $jq("#btnDocumentCreate").click(onBtnDocumentCreateClick);
+        $jq("#btnSaveAttach").click(onBtnSaveAttachClick);
+
+        $jq("#btnCancelAttach").click(onBtnCancelAttachClick);
+
+        $jq("#chkDocOnlySr").change(onChkDocOnlySrChange);
+
+        $jq("#btnSaveEditAttach").click(onBtnSaveEditAttachClick);
+        $jq("#btnCancelEditAttach").click(onBtnCancelEditAttachClick);
+        $jq("#btnCloseEditAttach").click(onBtnCloseEditAttachClick);
+
+        var dateFormat = 'dd/mm/yyyy';
+
+        // DateTime Picker From Date
+        $jq('#datepickSrAttach').datepicker({
+            format: dateFormat,
+            startDate: "0d",
+            showOnFocus: "false",
+            language: 'th'
+        }).on('changeDate', function (ev) {
+            $jq(this).datepicker('hide');
+        });
+
+        $jq('#datepickSrAttachEdit').datepicker({
+            format: dateFormat,
+            startDate: "0d",
+            showOnFocus: "false",
+            language: 'th'
+        }).on('changeDate', function (ev) {
+            $jq(this).datepicker('hide');
+        });
+    });
+
+    function onTxtFileAttachChange() {
+
+        var filename = $jq('#txtFileAttach').val().toLowerCase();
+
+        var regex = new RegExp("@Model.AllowFileExtensionsRegex");
+        if (regex.test(filename)) {
+            var filenameNoExt = filename.replace(/\.[^/.]+$/, "");
+
+            var oldeDocName = $jq("#txtDocName").val();
+            if (oldeDocName.trim().length == 0) {
+
+                var tokens = filenameNoExt.split("\\");
+                if (tokens.length > 1) {
+                    filenameNoExt = tokens[tokens.length - 1];
+                }
+
+                $jq("#txtDocName").val(filenameNoExt);
+            }
+        }
+        else {
+            alert("ระบบไม่รองรับไฟล์นามสกุล ." + filename.split('.').pop());
+            $jq('#txtFileAttach').val("");
+        }
+    }
+
+    function onChkDocOnlySrChange() {
+        documentSearchFilter.SrOnly = $jq("#chkDocOnlySr")[0].checked;
+        loadDocumentData();
+    }
+
+    //Attachment function
+    function onBtnDocumentCreateClick() {
+        //clear validate
+        clearServerErrors();
+
+        //clear data
+        clearEditAttachmentModelData();
+
+        var length = $jq(".cblDocTypeAdd").length;
+        for (var i = 0; i < length; i++) {
+            $jq($jq(".cblDocTypeAdd")[i]).prop("checked", false);
+        }
+
+        $jq("#addAttachmentModal").modal("show");
+    }
+
+    function onBtnSaveAttachClick() {
+
+        if ($jq(".cblDocTypeAdd:checked").length == 0) {
+            doModal("dvAlertMsg", "Message Dialog", "โปรดเลือกประเภทเอกสารอย่างน้อย 1 ประเภท", "", "");
+            return;
+        }
+
+        if (HasInValidScripts($jq("#txtDocName").val())) {
+            doModal("dvAlertMsg", "Message Dialog", "'ชื่อเอกสาร' อยู่ในรูปแบบที่ไม่ปลอดภัย เนื่องจากมีอักขระพิเศษ", "", "");
+            return;
+        }
+
+        if ($jq("#formDoc").valid()) {
+            var formData = new FormData($jq("#formDoc").get(0));
+
+            formData.append("CustomerId", $jq("#hiddenCustomerId").val());
+            formData.append("SrId", $jq("#hdnSrId").val());
+
+            $jq.ajax({
+                url: "@Url.Action("SaveDocumentTab", "ServiceRequest")",
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+
+                    if (result.IsSuccess == true) {
+                        hideModal("addAttachmentModal");
+                        loadDocumentData();
+
+                    }
+                    doModal('dvAlertMsg', 'Message Dialog', result.Message, '', '');
+                },
+                error: function (xhr) {
+
+                    if (xhr.status == 404 || xhr.status == 400) {
+
+                        var inputCtrl = $jq('#txtFileAttach');
+                        var spanCtrl = inputCtrl.parent().parent().find('span.field-validation-valid');
+                        inputCtrl.addClass('input-validation-error');
+                        spanCtrl.html('@CSM.Common.Resources.Resource.ValError_FileSizeExceedServerMaxLimit').removeClass('field-validation-valid').addClass('field-validation-error');
+                        return false;
+                    }
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+        }
+    }
+
+    function onBtnCancelAttachClick() {
+        var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+        if ($jq.trim(msg) != '') {
+            doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateAttach()', 'Confirm');
+        }
+        return false;
+    }
+
+    function closeCreateAttach() {
+        $jq("#modalWindow").modal('hide');
+        $jq("#addAttachmentModal").modal('hide');
+    }
+
+    function onBtnCancelEditAttachClick() {
+        var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+        if ($jq.trim(msg) != '') {
+            doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateEditAttach()', 'Confirm');
+        }
+        return false;
+    }
+
+    function onBtnCloseEditAttachClick() {
+        hideModal("editAttachmentModal");
+    }
+
+    function closeCreateEditAttach() {
+        $jq("#modalWindow").modal('hide');
+        $jq("#editAttachmentModal").modal('hide');
+    }
+
+    function clearEditAttachmentModelData() {
+        $jq("#txtFileAttach").val("");
+        $jq("#txtDocName").val("");
+        $jq("#txtDocDesc").val("");
+        $jq("#txtExpiryDate").val("");
+    }
+
+    function onDeleteSrDocClick(srAttachId) {
+        if (confirm("ต้องการลบ Document ใช่หรือไม่?")) {
+            $jq.ajax({
+                url: "@Url.Action("DeleteDocumentTab", "ServiceRequest")",
+                method: "POST",
+                data: {
+                    SrAttchId: srAttachId
+                },
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+
+                    if (result.IsSuccess == true) {
+                        loadDocumentData();
+                    }
+                    doModal('dvAlertMsg', 'Message Dialog', result.Message, '', '');
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+        }
+    }
+
+    function onEditSrDocClick(srAttachId, documentLevel, canEdit) {
+
+        clearEditSrDocModal();
+
+        $jq.ajax({
+            url: "@Url.Action("GetSrAttachmentById", "ServiceRequest")",
+            method: "POST",
+            data: {
+                srAttachId: srAttachId,
+                documentLevel: documentLevel
+            },
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+
+                if (result.IsSuccess == true) {
+                    //set data to modal
+                    $jq("#SrAttachmentId").val(result.AttachmentId);
+
+                    var pathFile = result.Url;
+
+                    $jq("#hiddenAttachmentId").val(result.AttachmentId);
+                    $jq("#hiddenDocumentLevel").val(result.DocumentLevel);
+
+                    $jq("#lnkDocLink").text(result.Filename);
+                    //$jq("#lnkDocLink").attr("href", result.Url);
+                    $jq("#DocNameEdit").val(result.Name);
+                    $jq("#txtDocDescEdit").val(result.Description);
+                    $jq("#txtExpiryDateEdit").val(result.ExpiryDateDisplay);
+
+                    var checkBoxTypeList = $jq(".cblDocTypeEdit");
+
+//                    $jq("#ddlStatusEdit").val(result.Status);
+
+                    // Clear All Check
+                    for (var i = 0; i < checkBoxTypeList.length; i++) {
+                        $jq(checkBoxTypeList[i]).prop("checked", false);
+                    }
+
+                    // Check Selected Attachment Type
+                    for (var i = 0; i < result.AttachTypeList.length; i++) {
+                        var selectedDocTypeId = result.AttachTypeList[i].DocTypeId;
+
+                        for (var j = 0; j < checkBoxTypeList.length; j++) {
+
+                            var checkbox = checkBoxTypeList[j];
+                            if ($jq(checkbox).attr("oid") == selectedDocTypeId) {
+                                $jq(checkbox).prop("checked", true);
+                            }
+                        }
+                    }
+
+                    if (canEdit) {
+
+                        $jq("#editAttachmentModalTitle").text("Edit Document");
+                        $jq("#btnSaveEditAttach").css("display", "");
+                        $jq("#btnCancelEditAttach").css("display", "");
+                        $jq("#btnCloseEditAttach").css("display", "none");
+
+                        $jq("#txtDocDescEdit").removeAttr("readonly");
+                        $jq("#txtExpiryDateEdit").removeAttr("disabled");
+                        $jq("#datepickSrAttachEdit .input-group-addon").css("display", "");
+                        $jq(".cblDocTypeEdit").removeAttr("disabled");
+                    }
+                    else {
+
+                        $jq("#editAttachmentModalTitle").text("View Document");
+                        $jq("#btnSaveEditAttach").css("display", "none");
+                        $jq("#btnCancelEditAttach").css("display", "none");
+                        $jq("#btnCloseEditAttach").css("display", "");
+
+                        $jq("#txtDocDescEdit").attr("readonly", "readonly");
+                        $jq("#txtExpiryDateEdit").attr("disabled", "disabled");
+                        $jq("#datepickSrAttachEdit .input-group-addon").css("display", "none");
+                        $jq(".cblDocTypeEdit").attr("disabled", "disabled");
+                    }
+
+                    $jq("#editAttachmentModal").modal("show");
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+    }
+
+    function clearEditSrDocModal() {
+        $jq("#lnkDocLink").text("");
+        $jq("#DocNameEdit").val("");
+        $jq("#txtDocDescEdit").val("");
+        $jq("#txtExpiryDateEdit").val("");
+//        $jq("#ddlStatusEdit").val("");
+
+        var checkBoxTypeList = $jq(".cblDocType");
+        for (var i = 0; i < checkBoxTypeList.length; i++) {
+            $jq(checkBoxTypeList[i]).prop("checked", false);
+        }
+    }
+
+    function previewSrAttachment() {
+
+        var data = {
+            __RequestVerificationToken: getAntiForgeryToken(),
+            attachmentId: $jq("#hiddenAttachmentId").val(),
+            documentLevel: $jq("#hiddenDocumentLevel").val()
+        };
+
+        $jq.ajax({
+            url: '@Url.Action("LoadFileAttachmentById", "ServiceRequest")',
+            type: "POST",
+            data: data,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == true) {
+                    var html = '<form action="@Url.Action("PreviewAttachmentById", "ServiceRequest")" method="POST" style="display:none">'
+                        + '<input type="hidden" name="__RequestVerificationToken" value="' + getAntiForgeryToken() + '"/>'
+                        + '<input type="hidden" name="attachmentId" value="' + $jq("#hiddenAttachmentId").val() + '"/>'
+                        + '<input type="hidden" name="documentLevel" value="' + $jq("#hiddenDocumentLevel").val() + '"/>'
+                        + '<input type="submit" id="btnPreviewAttachment"/>'
+                        + '</form>';
+                    $jq('#dvTarget').html(html);
+                    $jq('#btnPreviewAttachment').click();
+
+                } else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+
+    function onBtnSaveEditAttachClick() {
+
+        if ($jq(".cblDocTypeEdit:checked").length == 0) {
+            doModal("dvAlertMsg", "Message Dialog", "โปรดเลือกประเภทเอกสารอย่างน้อย 1 ประเภท", "", "");
+            return;
+        }
+
+//        if ($jq("#ddlStatusEdit").val().length == 0) {
+//            doModal("dvAlertMsg", "Message Dialog", "โปรดเลือกสถานะ", "", "");
+//            return;
+//        }
+
+        var docTypeIds = "";
+
+        var cblDocTypeEdits = $jq(".cblDocTypeEdit:checked");
+
+        for (var i = 0; i < cblDocTypeEdits.length; i++) {
+            if (docTypeIds != "")
+                docTypeIds += ",";
+
+            docTypeIds += $jq(cblDocTypeEdits[i]).attr("oid");
+        }
+
+        if ($jq("#formEditDoc").valid()) {
+            var formData = new FormData($jq("#formEditDoc").get(0));
+
+            formData.append("CustomerId", $jq("#hiddenCustomerId").val());
+            formData.append("SrId", $jq("#hdnSrId").val());
+            formData.append("DocumentLevel", $jq("#hiddenDocumentLevel").val());
+            formData.append("DocTypeIds", docTypeIds);
+
+            $jq.ajax({
+                url: "@Url.Action("SaveDocumentTab", "ServiceRequest")",
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+
+                    if (result.IsSuccess == true) {
+                        hideModal("editAttachmentModal");
+                        loadDocumentData();
+
+                    }
+                    doModal('dvAlertMsg', 'Message Dialog', result.Message, '', '');
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+        }
+    }
+
+</script>

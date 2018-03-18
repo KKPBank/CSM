@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="9ff3e818-8130-462c-85cc-7ea2d973fe4f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:5300/CSMMailService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CSMMailService.disco" MetadataType="Disco" ID="2a0ce8d8-212e-461e-a81f-4a84311a317d" SourceId="1" SourceUrl="http://localhost:5300/CSMMailService.svc?disco" />
+    <MetadataFile FileName="CSMMailService.wsdl" MetadataType="Wsdl" ID="4c382dbc-84bc-4703-9995-39c6477d5c6e" SourceId="1" SourceUrl="http://localhost:5300/CSMMailService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="CSMMailService.xsd" MetadataType="Schema" ID="6a39ee75-2025-4d1a-ae9c-8093a7b9e5ce" SourceId="1" SourceUrl="http://localhost:5300/CSMMailService.svc?xsd=xsd1" />
+    <MetadataFile FileName="CSMMailService1.xsd" MetadataType="Schema" ID="90063cfe-8a5b-4e51-a826-a34fa63c6f02" SourceId="1" SourceUrl="http://localhost:5300/CSMMailService.svc?xsd=xsd0" />
+    <MetadataFile FileName="CSMMailService2.xsd" MetadataType="Schema" ID="a5218ffb-a211-4a39-a823-3c5a206a80ed" SourceId="1" SourceUrl="http://localhost:5300/CSMMailService.svc?xsd=xsd3" />
+    <MetadataFile FileName="CSMMailService3.xsd" MetadataType="Schema" ID="174f6da3-3129-46cc-aa0e-03ae5448bd0a" SourceId="1" SourceUrl="http://localhost:5300/CSMMailService.svc?xsd=xsd2" />
+    <MetadataFile FileName="CSMMailService4.xsd" MetadataType="Schema" ID="f8f3cc83-3e5f-4406-b9bc-6b5a8aa80a3d" SourceId="1" SourceUrl="http://localhost:5300/CSMMailService.svc?xsd=xsd4" />
+    <MetadataFile FileName="CSMMailService1.wsdl" MetadataType="Wsdl" ID="69200b3b-9204-49d7-8adf-ef07cc6b520f" SourceId="1" SourceUrl="http://localhost:5300/CSMMailService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

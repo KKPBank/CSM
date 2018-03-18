@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SendNotification" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd0" namespace="www.kiatnakinbank.com/services/RegisterService/OTPResult" />
+      <xsd:import schemaLocation="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd4" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WS_ININ_SendNotification" />
+      <xsd:import schemaLocation="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KK.Service" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="RequestParameter">
+    <wsdl:part xmlns:q1="www.kiatnakinbank.com/services/RegisterService/OTPResult" name="parameters" element="q1:Params" />
+  </wsdl:message>
+  <wsdl:message name="RequestParameter_Headers">
+    <wsdl:part xmlns:q2="www.kiatnakinbank.com/services/RegisterService/OTPResult" name="header" element="q2:header" />
+  </wsdl:message>
+  <wsdl:message name="StatusResponse">
+    <wsdl:part name="parameters" element="tns:StatusResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ISendNotification">
+    <wsdl:operation name="VerifyOTPByKKT">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISendNotification/VerifyOTPByKKT" name="RequestParameter" message="tns:RequestParameter" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISendNotification/VerifyOTPByKKTResponse" name="StatusResponse" message="tns:StatusResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ISendNotification" type="tns:ISendNotification">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="VerifyOTPByKKT">
+      <soap:operation soapAction="http://tempuri.org/ISendNotification/VerifyOTPByKKT" style="document" />
+      <wsdl:input name="RequestParameter">
+        <soap:header message="tns:RequestParameter_Headers" part="header" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="StatusResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SendNotification">
+    <wsdl:port name="BasicHttpBinding_ISendNotification" binding="tns:BasicHttpBinding_ISendNotification">
+      <soap:address location="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

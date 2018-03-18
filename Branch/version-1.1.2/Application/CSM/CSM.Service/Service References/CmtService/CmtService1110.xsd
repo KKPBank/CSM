@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="CampaignByTeam" elementFormDefault="qualified" targetNamespace="CampaignByTeam" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CampByTeamBody" type="tns:ReqCampByTeamEntity" />
+  <xs:complexType name="ReqCampByTeamEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="TeamName" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RequestDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Command" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="header" type="tns:Header" />
+  <xs:complexType name="Header">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="transaction_date" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="user_name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="service_name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="system_code" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="reference_no" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

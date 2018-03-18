@@ -1,0 +1,191 @@
+﻿@using CSM.Entity
+@using CSM.Common.Resources
+@model CSM.Web.Models.ExistingProductViewModel
+@{
+    ViewBag.Title = Resource.Lbl_CustomerInformation;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink(Resource.Lbl_SearchCustomer, "Search", "Customer", new { @skip = "1" }, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_CustomerInformation </strong>
+}
+
+@if (Model != null)
+{
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">@Resource.Lbl_CustomerInformation</h5>
+        @Html.HiddenFor(model => model.CustomerInfo.CustomerId, new { @id = "hddCustomerId" })
+        @if (Model.CustomerInfo != null)
+        {
+            Html.RenderPartial("~/Views/Customer/_CustomerInfo.cshtml", Model.CustomerInfo);
+        }
+        <div class="clearfix"></div>
+
+        @Html.Action("CustomerTab", "MenuNavigator", new { selectedTab = CustomerTabCode.ExistingProduct, customerId = @Model.CustomerInfo.CustomerId })
+
+        <div class="clearfix"></div>
+        <div class="tab-content">
+            <div id="tabExistingProduct" class="tab-pane fade in active">
+                <div id="dvSearchResult">
+                    @if (Model.AccountList != null)
+                    {
+                        Html.RenderPartial("~/Views/ExistingProduct/_ExistingProductList.cshtml", Model);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="clearfix"></div>
+<!-- View Detail Product -->
+<div id="viewDetailProductModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("InitViewDetailProduct", "ExistingProduct")'>
+    @using (Html.BeginForm("InitViewDetailProduct", "ExistingProduct", FormMethod.Post, new { @class = "form-horizontal", @id = "form2" }))
+    {
+        @Html.AntiForgeryToken()
+        <div id='viewDataContainer'>
+        </div>
+    }
+</div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+    var searchFilter;
+    var successFilter;
+
+    $jq(document).ready(function () {
+        initializeSearchFilter();
+        initializePaging();
+        loadData();
+    });
+
+    function initializeSearchFilter() {
+        searchFilter = {
+            CustomerId: $jq("#hddCustomerId").val(),
+            PageNo: '@Model.SearchFilter.PageNo',
+            PageSize: '@Model.SearchFilter.PageSize',
+            SortField: '@Model.SearchFilter.SortField',
+            SortOrder: '@Model.SearchFilter.SortOrder'
+        };
+        successFilter = searchFilter;
+    };
+
+    function initializePaging() {
+
+        $jq("#dvSearchResult .input-page").change(function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = $jq(this).val();
+            loadData();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchResult #pagesizelist").change(function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = "1";
+            searchFilter.PageSize = $jq(this).val();
+            loadData();
+            return false;
+        });
+
+        $jq('#dvSearchResult .pagination ul li a').on('click', function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadData();
+            return false;
+        });
+    };
+
+    function loadData() {
+        $jq.ajax({
+            url: '@Url.Action("ExistingProductList", "ExistingProduct")',
+            type: "POST",
+            data: addAntiForgeryToken(searchFilter),
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == null) {
+                    $jq("#dvSearchResult").html('');
+                    successFilter = searchFilter;
+                    $jq("#dvSearchResult").html(result);
+                    initializePaging();
+                } else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    };
+
+    function sortField(selectedSortField) {
+        if (selectedSortField == searchFilter.SortField)
+            searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+        else
+            searchFilter.SortOrder = 'ASC';
+        searchFilter.SortField = selectedSortField;
+        searchFilter.PageNo = 1;
+        loadData();
+    }
+
+    function initNewSR(customerId, accountId, contactId) {
+        var actionUrl = '@Url.Action("Create", "ServiceRequest")';
+            $jq('#dvTarget').html('');
+            var inputCustomerId = $jq("<input>").attr("type", "hidden").attr("name", "CustomerId").val(customerId);
+            var inputAccountId = $jq("<input>").attr("type", "hidden").attr("name", "AccountId").val(accountId);
+            var inputContactId = $jq("<input>").attr("type", "hidden").attr("name", "ContactId").val(contactId);
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').append($jq(inputCustomerId));
+            $jq('#dvTarget form').append($jq(inputAccountId));
+            $jq('#dvTarget form').append($jq(inputContactId));
+            $jq('#dvTarget form').submit();
+        }
+
+        function initViewDetailProduct(customerId, product, productGroup, subscriptionCode, accountId) {
+            // set data
+            var paramData = {
+                customerId: customerId,
+                product: product,
+                productGroup: productGroup,
+                subscriptionCode: subscriptionCode,
+                accountId: accountId
+            }
+
+            var url = $jq('#viewDetailProductModal').data('url');
+            $jq.ajax({
+                type: 'POST',
+                url: url,
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    $jq('#viewDataContainer').html(result);
+                    $jq('#viewDetailProductModal').modal('show');
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+    </script>
+}

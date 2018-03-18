@@ -1,0 +1,857 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.AreaViewModel
+
+@{
+    ViewBag.Title = "New Area";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    @*<strong class="font-blue">Area &rsaquo;&rsaquo;</strong>*@
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink("Search Area", "Search", "Area", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; New Area</strong>
+}
+<div class="form-horizontal">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <h5 class="form-title">New Area</h5>
+    <hr class="dotted-line"/>
+    <div class="bs-example">
+        <div class="row margin-top-15">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label left-label">Area <span class="require">*</span>:</label>
+                </div>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(m => m.AreaName, new { @class = "form-control input-sm", @id = "txtAreaName", @maxlength=500 })
+                    @Html.ValidationMessageFor(m => m.AreaName)
+                    @*                    <input type="text" id="txtAreaName" class="form-control input-sm"/>*@
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label left-label">Area Code <span class="require">*</span>:</label>
+                </div>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(m => m.AreaCode, new { @class = "form-control input-sm money", @maxlength = 15, data_m_dec = "0", data_a_sep = "", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.AreaCode)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label left-label">สถานะ <span class="require">*</span>:</label>
+                </div>
+                <div class="col-sm-9">
+                    <select id="selectStatus" class="form-control input-sm">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label left-label">สร้างโดย :</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" value="@ViewBag.CreateUsername" class="form-control input-sm" disabled="disabled" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="control-label left-label">วันที่สร้าง :</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" value="@ViewBag.CreateDate" class="form-control input-sm" disabled="disabled"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <label class="control-label left-label">แก้ไขโดย :</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" value="@ViewBag.UpdateUsername" class="form-control input-sm" disabled="disabled"/>
+                </div>
+                <div class="col-sm-3">
+                    <label class="control-label left-label">วันที่แก้ไข :</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" value="@ViewBag.UpdateDate" class="form-control input-sm" disabled="disabled"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="collapse_container">
+            <div class="collapse_header"><span class="collapse_sign">[-]</span> Sub Area in this Area
+            </div>
+            <div class="collapse_body">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <button id="btnSelect" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalSearchSubArea"><i class="fa fa-plus"></i> Select SubArea</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="dvSearchSubArea">
+                        @{
+                            Html.RenderPartial("~/Views/Area/_SubAreaList.cshtml", Model);
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-12 text-right">
+                    <button id="btnSave" type="button" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Save</button>
+                    <span id="btnBack" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modalSearchSubArea">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title">Search Sub Area</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label class="control-label">Sub Area :</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="txtSearchSubAreaName" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label class="control-label">Sub Area Code :</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="SearchSubAreaCode" class="form-control input-sm " maxlength="15" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-9 pull-right">
+                                <button id="btnSearchSubArea" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr class="dashed-line" />
+                    <div class="clear"></div>
+
+                    <input type="hidden" id="hiddenSubAreaIdList" />
+                    <div class="row">
+                        <div id="dvSelectSearchSubArea">
+                            @{
+                                Html.RenderPartial("~/Views/Area/_SelectSubAreaList.cshtml", Model);
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="btnNewSubArea" class="btn btn-sm btn-success pull-left" data-toggle="modal" data-target="#modalAddEditSubArea"><i class="fa fa-plus"></i> New Sub Area</span>
+                <span id="btnSelectSubArea" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Select Sub Area</span>
+                <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modalAddEditSubArea">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title" id="model-add-edit-title">Create New Sub Area</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <h5 class="header" id="model-add-edit-title2">Create New Sub Area</h5>
+                    <div class="row">
+                        <input type="hidden" id="txtSubAreaId"/>
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="control-label">Sub Area Name <span class="require">*</span>:</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="txtSubAreaName" class="form-control input-sm"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="control-label">Sub Area Code <span class="require">*</span>:</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="SubAreaCode" class="form-control input-sm money" maxlength="15" data-m-dec="0" data-a-sep="" readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="control-label">Status <span class="require">*</span> :</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <select id="selectSubAreaStatus" class="form-control input-sm">
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span class="btn btn-sm btn-primary" id="btnSaveSubArea"><i class="fa fa-check"></i> Save</span>
+                <span class="btn btn-sm btn-default" id="btnCloseSubArea"><i class="fa fa-times"></i> Close</span>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+    <style type="text/css">
+        .modal-body .header {
+            color: #008000;
+            font-weight: bold;
+        }
+        .input-page {
+            width: 30px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var selectSearchFilter;
+        var selectSuccessFilter;
+
+        $jq(document).ready(function() {
+            initializeSelectSearchFilter();
+            initializeSelectPaging();
+
+            $jq('#btnSelect').click(onBtnSelectClick);
+            $jq('#btnNewSubArea').click(onBtnNewSubAreaClick);
+            $jq('#btnBack').click(onBtnBackClick);
+            $jq('#btnSave').click(onBtnSaveClick);
+            $jq("#btnSearchSubArea").click(onBtnSearchSubAreaClick);
+            $jq("#btnSaveSubArea").click(onBtnSaveSubAreaClick);
+            $jq("#btnCloseSubArea").click(onBtnCloseSubAreaClick);
+            $jq("#btnSelectSubArea").click(onSelectSubAreaClick);
+            //$jq("#AreaCode").keydown(onCodeToggleCheckNum);
+            //$jq("#SubAreaCode").keydown(onCodeToggleCheckNum);
+            //$jq("#SearchSubAreaCode").keydown(onCodeToggleCheckNum);
+        });
+
+        /*function onCodeToggleCheckNum(e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($jq.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+            /*var number = /^[0-9]*$/;
+            var code = $jq("#SubAreaCode").val();
+            for (var i = 0; i < code.length; i++) {
+                if (!number.test(code[i])) {
+                    //alert("rrr");
+                    var codeWithChar = code.slice(0, code.length-1);
+                    $jq("#SubAreaCode").val(codeWithChar);
+                    return;
+                }
+            }
+        }*/
+        function onBtnSelectClick(event) {
+            event.preventDefault();
+            clearModalSearchSubArea();
+        }
+
+        function clearModalSearchSubArea() {
+            $jq("#txtSearchSubAreaName").val("");
+            $jq("#SearchSubAreaCode").val("");
+            $jq("#hiddenSubAreaIdList").val("");
+
+            selectSearchFilter.SubAreaName = $jq("#txtSearchSubAreaName").val();
+            loadSelectSubAreaList();
+        }
+
+        function onBtnNewSubAreaClick(event) {
+            $jq("#model-add-edit-title").html("Create New Sub Area");
+            $jq("#model-add-edit-title2").html("Create New Sub Area");
+            event.preventDefault();
+            clearModalAddEditSubArea();
+        }
+
+        function clearModalAddEditSubArea() {
+            $jq("#txtSubAreaId").val("");
+            $jq("#txtSubAreaName").val("");
+            $jq("#SubAreaCode").val("");
+            $jq("#selectSubAreaStatus").val("true");
+            $jq.ajax({
+                    url: "@Url.Action("GetNextSubAreaCode", "SubArea")",
+                    method: "POST"
+                })
+                .done(function (result) {
+                    if (result.RedirectUrl == "/User/Login") {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                    }
+                    if (result.is_success) {
+                        $jq("#SubAreaCode").val(result.NextSubAreaCode);
+                        $jq("#modalAddEditSubArea").modal("show");
+                    } else {
+                        var warningMsg = result.message;
+                        doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                        return false;
+                    }
+                })
+                .fail(function() {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    }
+                });
+        }
+
+        function onBtnBackClick(event) {
+            event.preventDefault();
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateArea()', 'Confirm');
+            }
+            return false;
+        }
+
+        function closeCreateArea() {
+            location.replace('@Url.Action("Search", "Area")');
+        }
+
+        function onBtnSaveClick() {
+            var areaName = $jq("#txtAreaName").val();
+            var status = $jq("#selectStatus").val();
+            var areaCode = $jq("#AreaCode").val();
+
+            var rows = $jq(".hiddenSubAreaId");
+
+            var idArray = [];
+            for (var i = 0; i < rows.length; i++) {
+                idArray[i] = $jq(rows[i]).attr("subarea_id");
+            }
+
+            var ids = idArray.join(',');
+
+            if (areaName.trim().length === 0) {
+                var warningMsg = "โปรดใส่ Area";
+                doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                return false;
+            }
+            if (areaCode.trim().length === 0) {
+                var warningMsg = "โปรดใส่ Area Code";
+                doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                return false;
+            }
+
+            $jq.ajax({
+                    url: "@Url.Action("SaveArea", "Area")",
+                    method: "POST",
+                    data: {
+                        __RequestVerificationToken: getAntiForgeryToken(),
+                        AreaName: areaName,
+                        AreaCode: areaCode,
+                        Status: status,
+                        idSubAreas: ids
+                    }
+                })
+                .done(function (result) {
+                    if (typeof (result) == "string") {
+                        if (isLoginForm(result)) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        }
+                    }
+                    if (result.RedirectUrl != undefined) {
+                        topLocation(result.RedirectUrl);
+                    } else {
+                        if (result.is_success) {
+                            alert(result.message);
+                            window.location = '@Url.Action("Search", "Area")';
+                        } else {
+                            var warningMsg = result.message;
+                            doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                            return;
+                        }
+                    }
+                })
+                .fail(function () {
+
+                });
+        }
+
+        function onBtnSearchSubAreaClick() {
+            clearServerErrors();
+            var search = $jq("#txtSearchSubAreaName").val();
+            var subAreaCode = $jq("#SearchSubAreaCode").val();
+
+            if (search.trim().length === 0 && subAreaCode.trim().length === 0) {
+                var warningMsg = "โปรดใส่เงื่อนไขในการค้นหา";
+                doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                return false;
+            }
+
+            selectSearchFilter.SubAreaName = search;
+            selectSearchFilter.SubAreaCode = subAreaCode;
+            loadSelectSubAreaList();
+        }
+
+        function onBtnSaveSubAreaClick() {
+            var subAreaId = $jq("#txtSubAreaId").val();
+            var subAreaName = $jq("#txtSubAreaName").val();
+            var subAreaCode = $jq("#SubAreaCode").val();
+            var status = $jq("#selectSubAreaStatus").val();
+
+            if (subAreaName.trim().length === 0) {
+                var warningMsg = "โปรดใส่ Sub Area";
+                doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                return false;
+            }
+            if (subAreaCode.trim().length === 0) {
+                var warningMsg = "โปรดใส่ Sub Area Code";
+                doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                return false;
+            }
+
+            $jq.ajax({
+                    url: "@Url.Action("Save", "SubArea")",
+                    method: "POST",
+                    data: {
+                        __RequestVerificationToken: getAntiForgeryToken(),
+                        SubAreaId: subAreaId,
+                        SubAreaName: subAreaName,
+                        SubAreaCode: subAreaCode,
+                        Status: status
+                    }
+                })
+                .done(function (result) {
+                    if (typeof (result) == "string") {
+                        if (isLoginForm(result)) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        }
+                    }
+                    if (result.RedirectUrl != undefined) {
+                        topLocation(result.RedirectUrl);
+                    } else {
+                        if (result.is_success) {
+
+                            if (result.is_edit) {
+                                $jq("#modalAddEditSubArea").modal("hide");
+                                loadSelectSubAreaList();
+
+                                var warningMsg = "แก้ไข Sub Area สำเร็จ";
+                                doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                                return false;
+                            } else {
+                                $jq("#modalAddEditSubArea").modal("hide");
+                                $jq("#modalSearchSubArea").modal("hide");
+
+                                //get sub area table
+                                var subAreaRows = $jq("input.hiddenSubAreaData");
+
+                                var subAreaData = new Array();
+                                for (var j = 0; j < subAreaRows.length; j++) {
+                                    subAreaData.push({
+                                        id: $jq(subAreaRows[j]).attr("subarea_id"),
+                                        area_name: $jq(subAreaRows[j]).attr("name"),
+                                        area_code: $jq(subAreaRows[j]).attr("code"),
+                                        status: $jq(subAreaRows[j]).attr("isactive"),
+                                        update_name: $jq(subAreaRows[j]).attr("update_name"),
+                                        update_date: $jq(subAreaRows[j]).attr("update_time")
+                                    });
+                                }
+
+                                //render area table
+                                showSortAreaTable(subAreaData, null, result.subAreaId, result.subAreaName, result.subAreaCode, result.status, result.updateUser, result.updateDate);
+
+                                var warningMsg = "บันทึก Sub Area สำเร็จ";
+                                doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                                return false;
+                            }
+
+                        } else {
+                            var warningMsg = result.message;
+                            doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                            return false;
+                        }
+                    }
+
+                })
+                .fail(function() {
+
+                });
+        }
+
+        function onBtnCloseSubAreaClick(e) {
+            e.preventDefault();
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateSubArea()', 'Confirm');
+            }
+            return false;
+        }
+
+        function closeCreateSubArea() {
+            $jq("#modalWindow").modal('hide');
+            $jq("#modalAddEditSubArea").modal('hide');
+        }
+
+        function onBtnEditSubArea(id) {
+
+            $jq.ajax({
+                    url: "@Url.Action("GetSubArea", "SubArea")",
+                    method: "POST",
+                    data: {
+                        id: id
+                    }
+                })
+                .done(function (result) {
+                    if (result.RedirectUrl == "/User/Login") {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                    }
+                    if (result.is_success) {
+                        $jq("#txtSubAreaId").val(result.subAreaId);
+                        $jq("#txtSubAreaName").val(result.subAreaName);
+                        $jq("#selectSubAreaStatus").val(result.subAreaStatus.toString());
+                        $jq("#SubAreaCode").val(result.subAreaCode);
+                        $jq("#model-add-edit-title").html("Edit Sub Area");
+                        $jq("#model-add-edit-title2").html("Edit Sub Area");
+
+                        $jq("#modalAddEditSubArea").modal("show");
+                    } else {
+                        var warningMsg = result.message;
+                        doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                        return false;
+                    }
+                })
+                .fail(function() {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    }
+                });
+        }
+
+        function onSelectSubAreaClick() {
+            //get select sub area table
+            var selectSubAreaRows = $jq("input.ckb:checked");
+
+            if (selectSubAreaRows.length === 0) {
+                var warningMsg = "@Resource.ValErr_AtLeastOneItem";
+                doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                return false;
+            }
+
+            var selectSubAreaData = new Array();
+            for (var i = 0; i < selectSubAreaRows.length; i++) {
+                selectSubAreaData.push({
+                    id: $jq(selectSubAreaRows[i]).attr("subarea_id"),
+                    area_name: $jq(selectSubAreaRows[i]).attr("name"),
+                    area_code: $jq(selectSubAreaRows[i]).attr("code"),
+                    status: $jq(selectSubAreaRows[i]).attr("isactive"),
+                    update_name: $jq(selectSubAreaRows[i]).attr("update_name"),
+                    update_date: $jq(selectSubAreaRows[i]).attr("update_time")
+                });
+            }
+
+            //get sub area table
+            var subAreaRows = $jq("input.hiddenSubAreaData");
+
+            var subAreaData = new Array();
+            for (var j = 0; j < subAreaRows.length; j++) {
+                subAreaData.push({
+                    id: $jq(subAreaRows[j]).attr("subarea_id"),
+                    area_name: $jq(subAreaRows[j]).attr("name"),
+                    area_code: $jq(subAreaRows[j]).attr("code"),
+                    status: $jq(subAreaRows[j]).attr("isactive"),
+                    update_name: $jq(subAreaRows[j]).attr("update_name"),
+                    update_date: $jq(subAreaRows[j]).attr("update_time")
+                });
+            }
+
+            showSortAreaTable(subAreaData, selectSubAreaData);
+            $jq("#modalSearchSubArea").modal("hide");
+        }
+
+
+        function showSortAreaTable(subAreaRows, selectSubAreaRows, subAreaId, subAreaName, subAreaCode, status, updateUser, updateDate) {
+            //render subarea table
+            $jq.ajax({
+                    url: "@Url.Action("RenderSubAreaList", "SubArea")",
+                    method: "POST",
+                    data: {
+                        subAreaList: JSON.stringify(subAreaRows),
+                        selectSubAreaList: JSON.stringify(selectSubAreaRows),
+                        subAreaId: subAreaId,
+                        subAreaName: subAreaName,
+                        subAreaCode: subAreaCode,
+                        status: status,
+                        updateUser: updateUser,
+                        updateDate: updateDate,
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    },
+                    beforeSend: function() { $jq("#dvLoading").show(); },
+                    complete: function() { $jq("#dvLoading").hide(); }
+                })
+                .done(function (result) {
+                    if (isLoginForm(result)) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    }
+                    if (result.Valid == null) {
+                        $jq("#dvSearchSubArea").html('');
+                        $jq("#dvSearchSubArea").html(result);
+                    } else {
+                        showServerErrors(result);
+                    }
+                })
+                .fail(function() {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+        }
+
+        function showSortAreaTableAfterAddSubArea(areaRows, subAreaId, subAreaName, status, updateBy, updateDate) {
+            var data = [];
+
+            for (var i = 0; i < areaRows.length; i++) {
+                data.push({
+                    id: areaRows[i].id,
+                    action: "<span style='cursor: pointer; color: red;' onclick='onDeleteSubAreaRow(" + areaRows[i].id + ")'><i class='fa fa-trash-o'></i></span>",
+                    area_name: areaRows[i].area_name,
+                    area_code: areaRows[i].area_code,
+                    status: areaRows[i].status,
+                    update_name: areaRows[i].update_name,
+                    update_date: areaRows[i].update_date
+                });
+            }
+
+            data.push({
+                id: subAreaId,
+                action: "<span style='cursor: pointer; color: red;' onclick='onDeleteSubAreaRow(" + subAreaId + ")'><i class='fa fa-trash-o'></i></span>",
+                area_name: subAreaName,
+                area_code: subAreaCode,
+                status: status,
+                update_name: updateBy,
+                update_date: updateDate
+            });
+
+            //sort by name
+            data.sort(function(a, b) {
+                var str1 = a.area_name;
+                var str2 = b.area_name;
+                return str1.localeCompare(str2);
+            });
+
+            $jq("#tableArea").bootstrapTable("removeAll");
+            $jq("#tableArea").bootstrapTable('append', data);
+        }
+
+        function onDeleteSubAreaRow(id) {
+            if (confirm("คุณต้องการยืนยันที่ลบ Sub Area ออกจาก Area หรือไม่?")) {
+                var subAreaRows = $jq("input.hiddenSubAreaData");
+
+                var subAreaData = new Array();
+                for (var i = 0; i < subAreaRows.length; i++) {
+                    subAreaData.push({
+                        id: $jq(subAreaRows[i]).attr("subarea_id"),
+                        area_name: $jq(subAreaRows[i]).attr("name"),
+                        area_code: $jq(subAreaRows[i]).attr("code"),
+                        status: $jq(subAreaRows[i]).attr("isactive"),
+                        update_name: $jq(subAreaRows[i]).attr("update_name"),
+                        update_date: $jq(subAreaRows[i]).attr("update_time")
+                    });
+                }
+
+                $jq.ajax({
+                        url: "@Url.Action("RenderSubAreaList", "SubArea")",
+                        method: "POST",
+                        data: {
+                            subAreaList: JSON.stringify(subAreaData),
+                            selectSubAreaList: "null",
+                            deleteId: id,
+                            __RequestVerificationToken: getAntiForgeryToken()
+                        },
+                        beforeSend: function() { $jq("#dvLoading").show(); },
+                        complete: function() { $jq("#dvLoading").hide(); }
+                    })
+                    .done(function (result) {
+                        if (isLoginForm(result)) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        }
+                        if (result.Valid == null) {
+                            $jq("#dvSearchSubArea").html('');
+                            $jq("#dvSearchSubArea").html(result);
+                        } else {
+                            showServerErrors(result);
+                        }
+                    })
+                    .fail(function() {
+                        if (xhr.status === 401) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        } else {
+                            var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            }
+        }
+
+        function loadSelectSubAreaList() {
+            var subAreaRows = $jq(".hiddenSubAreaId");
+            var subAreaIdArray = new Array();
+
+            if (subAreaRows.length > 0) {
+                for (var i = 0; i < subAreaRows.length; i++) {
+                    subAreaIdArray[i] = $jq(subAreaRows[i]).attr("subarea_id");
+                }
+                var subAreaIsStr = subAreaIdArray.join(",");
+                $jq("#hiddenSubAreaIdList").val(subAreaIsStr);
+                selectSearchFilter.SubAreaIdList = $jq("#hiddenSubAreaIdList").val();
+            }
+
+            $jq.ajax({
+                    url: "@Url.Action("SearchSelectSubAreaList", "SubArea")",
+                    method: "POST",
+                    data: selectSearchFilter,
+                    beforeSend: function() { $jq("#dvLoading").show(); },
+                    complete: function() { $jq("#dvLoading").hide(); }
+                })
+                .done(function (result) {
+                    if (isLoginForm(result)) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    }
+                    if (result.Valid == null) {
+                        $jq("#dvSelectSearchSubArea").html('');
+                        selectSuccessFilter = selectSearchFilter;
+                        $jq("#dvSelectSearchSubArea").html(result);
+                        initializeSelectSearchFilter();
+                        initializeSelectPaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                })
+                .fail(function() {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+        }
+
+        function initializeSelectSearchFilter() {
+            selectSearchFilter = {
+                SubAreaName: $jq("#txtSearchSubAreaName").val(),
+                SubAreaCode: $jq("#SearchSubAreaCode").val(),
+                SubAreaIdList: $jq("#hiddenSubAreaIdList").val(),
+                PageNo: '@Model.SelectSearchFilter.PageNo',
+                PageSize: '@Model.SelectSearchFilter.PageSize',
+                SortField: '@Model.SelectSearchFilter.SortField',
+                SortOrder: '@Model.SelectSearchFilter.SortOrder',
+                __RequestVerificationToken: getAntiForgeryToken()
+            };
+            selectSuccessFilter = selectSearchFilter;
+        }
+
+        function initializeSelectPaging() {
+            $jq("#dvSelectSearchSubArea .input-page").change(function(event) {
+                selectSearchFilter = selectSuccessFilter;
+                selectSearchFilter.PageNo = $jq(this).val();
+                loadSelectSubAreaList();
+                return false;
+            }).keypress(function(event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSelectSearchSubArea #pagesizelist").change(function(event) {
+                selectSearchFilter = selectSuccessFilter;
+                selectSearchFilter.PageNo = "1";
+                selectSearchFilter.PageSize = $jq(this).val();
+                loadSelectSubAreaList();
+                return false;
+            });
+
+            $jq('#dvSelectSearchSubArea .pagination ul li a').on('click', function(event) {
+                selectSearchFilter = selectSuccessFilter;
+                selectSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadSelectSubAreaList();
+                return false;
+            });
+        }
+
+        function sortField(selectedSortField) {
+            if (selectedSortField == selectSearchFilter.SortField)
+                selectSearchFilter.SortOrder = (selectSearchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                selectSearchFilter.SortOrder = 'ASC';
+            selectSearchFilter.SortField = selectedSortField;
+            selectSearchFilter.PageNo = 1;
+            loadSelectSubAreaList();
+        }
+
+//        var checkAll = false;
+//        function onCkbAllClick() {
+//
+//        }
+
+    </script>
+}

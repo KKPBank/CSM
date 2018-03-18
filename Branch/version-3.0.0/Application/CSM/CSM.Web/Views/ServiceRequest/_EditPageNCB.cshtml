@@ -1,0 +1,178 @@
+﻿@using System.Globalization
+@using CSM.Common.Utilities
+@model CSM.Web.Models.CreateServiceRequestViewModel
+@{
+    var currentThaiYear = @DateTime.Now.ToString("yyyy", new CultureInfo("th-TH"));
+}
+<tr>
+    <td class="text">Subscription Type  :</td>
+    <td class="input">
+        <span class="value">@Model.CustomerSubscriptionName</span>
+    </td>
+    <td style="line-height:12px;padding:3px" class="text" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">Subscription ID :</td>
+    <td class="input">
+        <span class="value">@Model.CustomerCardNo</span>
+    </td>
+</tr>
+<tr>
+    <td class="text">ชื่อลูกค้า :</td>
+    <td class="input">
+        <span class="value">@Model.CustomerFirstNameTh</span>
+    </td>
+    <td class="text">นามสกุลลูกค้า :</td>
+    <td class="input">
+        <span class="value">@Model.CustomerLastNameTh</span>
+    </td>
+</tr>
+<tr>
+    <td class="text">วันเกิด/วันที่จดทะเบียน (พ.ศ.) @if (@Model.CanEdit){<span>*</span>}:</td>
+    <td class="input">
+        <div class="form-inline" style="width:150px;display:inline-block">
+            <div class="form-group">
+                @if (@Model.CanEdit)
+                {
+                    <div class="input-group date" id="datetimepicker1">
+                        @Html.TextBoxFor(m => m.NCBBirthDate, new
+                                    {
+                                        @class = "form-control input-sm",
+                                        @id = "txtBirthDayTh",
+                                        data_provide = "datepicker"
+                                    })
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.NCBBirthDate)
+                }
+                else
+                {
+                    <span class="value">@Model.NCBBirthDate</span>
+                }
+            </div>
+        </div>
+        <span id="spanBirthDayEn" style="color:black;font-weight:normal"></span>
+    </td>
+    <td class="text"></td>
+    <td class="input"></td>
+</tr>
+<tr>
+    <td style="line-height:12px" class="text">Marketing Branch<br> Upper#1:</td>
+    <td class="input">
+        <input type="hidden" name="NCBMarketingBranchUpper1Id" value="@Model.NCBMarketingBranchUpper1Id" />
+        <input type="hidden" name="NCBMarketingBranchUpper1Name" value="@Model.NCBMarketingBranchUpper1Name" />
+        <span class="value">@Model.NCBMarketingBranchUpper1Name</span>
+    <td style="line-height:12px" class="text">Marketing Branch <br/>Upper #2:</td>
+    <td class="input">
+        <input type="hidden" name="NCBMarketingBranchUpper2Id" value="@Model.NCBMarketingBranchUpper2Id" />
+        <input type="hidden" name="NCBMarketingBranchUpper2Name" value="@Model.NCBMarketingBranchUpper2Name" />
+        <span class="value">@Model.NCBMarketingBranchUpper2Name</span>
+    </td>
+</tr>
+<tr>
+    <td class="text">Marketing Branch :</td>
+    <td class="input">
+        <input type="hidden" name="NCBMarketingBranchId" value="@Model.NCBMarketingBranchId" />
+        <input type="hidden" name="NCBMarketingBranchName" value="@Model.NCBMarketingBranchName" />
+        <span class="value">@Model.NCBMarketingBranchName</span>
+    </td>
+    <td class="text">Marketing :</td>
+    <td class="input">
+        <input type="hidden" name="NCBMarketingUserId" value="@Model.NCBMarketingUserId" />
+        <input type="hidden" name="NCBMarketingName" value="@Model.NCBMarketingName" id="hiddenNCBMarketingName" />
+        <span class="value">@Model.NCBMarketingName</span>
+    </td>
+</tr>
+<tr>
+    <td class="text">NCB Check Status @if (@Model.CanEdit){<span>*</span>} :</td>
+    <td class="input">
+        @if (@Model.CanEdit)
+        {
+            @Html.DropDownListFor(d => d.NCBCheckStatus, Model.NCBCheckStatuses, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-controls input-sm", @style = "width:300px" })
+            @Html.ValidationMessageFor(d => d.NCBCheckStatus)
+        }
+        else
+        {
+            <span class="value">@Model.NCBCheckStatus</span>
+        }
+    </td>
+    <td></td>
+    <td></td>
+</tr>
+<script type="text/javascript">
+
+    $jq(function () {
+
+        // DateTime Picker From Date
+        $jq('#datetimepicker1').datepicker({
+            weekStart: 1,
+            endDate: "0d",
+            format: "dd/mm/yyyy",
+            keyboardNavigation: false,
+            todayHighlight: true,
+            showOnFocus: false,
+            language: "th-th"
+        });
+
+        if ($jq("#txtBirthDayTh").select2("val") == "-1") {
+            $jq("#txtBirthDayTh").select2("val", "");
+        }
+        $jq("#txtBirthDayTh").change(onChangeBirthDate);
+
+        onChangeBirthDate();
+    });
+
+    function onChangeBirthDate() {
+
+        if ($jq("#txtBirthDayTh").length == 0)
+            return;
+
+        var date = $jq("#txtBirthDayTh").val();
+
+        var strArray = date.split('/');
+        if (strArray.length != 3) {
+            clearValue();
+            return;
+        }
+
+        try {
+            var day = parseInt(strArray[0]);
+            var month = parseInt(strArray[1]);
+            var thaiYear = parseInt(strArray[2]);
+
+            var currentThaiYear = parseInt("@currentThaiYear");
+
+            if (day < 1 || day > 31) {
+                clearValue();
+                return;
+            }
+
+            if (month < 1 || month > 12) {
+                clearValue();
+                return;
+            }
+
+
+
+            if (thaiYear < (currentThaiYear - 200)) {
+                clearValue();
+                return;
+            }
+
+            if (thaiYear > (currentThaiYear + 200)) {
+                clearValue();
+                return;
+            }
+
+            var engYear = (thaiYear - 543);
+            $jq("#spanBirthDayEn").html("(ค.ศ. " + paddy(day, 2) + "/" + paddy(month, 2) + "/" + engYear + ")");
+
+        } catch (e) {
+            clearValue();
+        }
+    }
+
+    function clearValue() {
+        $jq("#txtBirthDayTh").val("");
+        $jq("#spanBirthDayEn").html("");
+    }
+</script>

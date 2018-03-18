@@ -1,0 +1,259 @@
+﻿@model CSM.Web.Models.CustomerInfoViewModel
+<div id="pnlCustomerInfo">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group form-group-control">
+                <div class="col-md-4">
+                    <p class="form-control-static">
+                        Subscription Type:
+                    </p>
+                </div>
+                <div class="col-md-8">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.SubscriptType.SubscriptTypeName)
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group form-group-control">
+                <div class="col-md-5">
+                    <p class="form-control-static" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                        Subscription ID:
+                    </p>
+                </div>
+                <div class="col-md-7">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.CardNo)
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group form-group-control">
+                <div class="col-md-5">
+                    <p class="form-control-static">
+                        วันเกิด:
+                    </p>
+                </div>
+                <div class="col-md-7">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.BirthDateDisplay)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group form-group-control">
+                <div class="col-md-4">
+                    <p class="form-control-static">
+                        คำนำหน้า:
+                    </p>
+                </div>
+                <div class="col-md-8">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.TitleThai.TitleName)
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group form-group-control">
+                <div class="col-md-5">
+                    <p class="form-control-static">
+                        ชื่อลูกค้า:
+                    </p>
+                </div>
+                <div class="col-md-7">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.FirstNameThai)
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group form-group-control">
+                <div class="col-md-5">
+                    <p class="form-control-static">
+                        นามสกุลลูกค้า:
+                    </p>
+                </div>
+                <div class="col-md-7">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.LastNameThai)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group form-group-control">
+                <div class="col-md-4">
+                    <p class="form-control-static">
+                        Title:
+                    </p>
+                </div>
+                <div class="col-md-8">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.TitleEnglish.TitleName)
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group form-group-control">
+                <div class="col-md-5">
+                    <p class="form-control-static">
+                        First Name:
+                    </p>
+                </div>
+                <div class="col-md-7">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.FirstNameEnglish)
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group form-group-control">
+                <div class="col-md-5">
+                    <p class="form-control-static">
+                        Last Name:
+                    </p>
+                </div>
+                <div class="col-md-7">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.LastNameEnglish)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group form-group-control">
+                <div class="col-md-2">
+                    <p class="form-control-static">
+                        เบอร์โทรศัพท์ #1:
+                    </p>
+                </div>
+                <div class="col-md-10 nopadding">                    
+                    <div class="form-inline padding-left-10">
+                        <div class="form-group">
+                            <p class="form-control input-sm static-view input-small">
+                                @if (Model.PhoneList.Count > 0)
+                                {
+                                    @Html.DisplayFor(model => model.PhoneList[0].PhoneTypeName)
+                                }
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <p class="form-control input-sm static-view input-large">
+                                @if (Model.PhoneList.Count > 0)
+                                {
+                                    @Html.DisplayFor(model => model.PhoneList[0].PhoneNo)
+                                }
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group form-group-control">
+                <div class="col-md-2">
+                    <p class="form-control-static">
+                        เบอร์โทรศัพท์ #2:
+                    </p>
+                </div>
+                <div class="col-md-10 nopadding">
+                    <div class="form-inline padding-left-10">
+                        <div class="form-group">
+                            <p class="form-control input-sm static-view input-small">
+                                @if (Model.PhoneList.Count > 1)
+                                {
+                                    @Html.DisplayFor(model => model.PhoneList[1].PhoneTypeName)
+                                }
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <p class="form-control input-sm static-view input-large">
+                                @if (Model.PhoneList.Count > 1)
+                                {
+                                    @Html.DisplayFor(model => model.PhoneList[1].PhoneNo)
+                                }
+                            </p>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group form-group-control">
+                <div class="col-md-2">
+                    <p class="form-control-static">
+                        เบอร์โทรศัพท์ #3:
+                    </p>
+                </div>
+                <div class="col-md-10 nopadding">
+                    <div class="form-inline padding-left-10">
+                        <div class="form-group">
+                            <p class="form-control input-sm static-view input-small">
+                                @if (Model.PhoneList.Count > 2)
+                                {
+                                    @Html.DisplayFor(model => model.PhoneList[2].PhoneTypeName)
+                                }
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <p class="form-control input-sm static-view input-large">
+                                @if (Model.PhoneList.Count > 2)
+                                {
+                                    @Html.DisplayFor(model => model.PhoneList[2].PhoneNo)
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group form-group-control">
+                <div class="col-md-4">
+                    <p class="form-control-static">
+                        เบอร์แฟกซ์:
+                    </p>
+                </div>
+                <div class="col-md-8">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.Fax)
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="form-group form-group-control">
+                <div class="col-md-3">
+                    <p class="form-control-static">
+                        อีเมล์:
+                    </p>
+                </div>
+                <div class="col-md-9 nopadding">
+                    <p class="form-control input-sm static-view">
+                        @Html.DisplayFor(model => model.Email)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

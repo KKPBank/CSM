@@ -1,0 +1,540 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{232C231E-1A10-4A93-AABA-42021F5F70C9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSM.Data</RootNamespace>
+    <AssemblyName>CSM.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataAccess\CisDataAccess.cs" />
+    <Compile Include="DataAccess\AFSDataAccess.cs" />
+    <Compile Include="DataAccess\AreaDataAccess.cs" />
+    <Compile Include="DataAccess\AuditLogDataAccess.cs" />
+    <Compile Include="DataAccess\BdwDataAccess.cs" />
+    <Compile Include="DataAccess\BranchDataAccess.cs" />
+    <Compile Include="DataAccess\CampaignServiceDataAccess.cs" />
+    <Compile Include="DataAccess\ChannelDataAccess.cs" />
+    <Compile Include="DataAccess\CommonDataAccess.cs" />
+    <Compile Include="DataAccess\CommPoolDataAccess.cs" />
+    <Compile Include="DataAccess\CSMContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSMContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\CSMContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\CSMContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSMContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\CustomerDataAccess.cs" />
+    <Compile Include="DataAccess\HpDataAccess.cs" />
+    <Compile Include="DataAccess\IAFSDataAccess.cs" />
+    <Compile Include="DataAccess\IAreaDataAccess.cs" />
+    <Compile Include="DataAccess\IAuditLogDataAccess.cs" />
+    <Compile Include="DataAccess\IBdwDataAccess.cs" />
+    <Compile Include="DataAccess\ICampaignServiceDataAccess.cs" />
+    <Compile Include="DataAccess\IChannelDataAccess.cs" />
+    <Compile Include="DataAccess\ICommonDataAccess.cs" />
+    <Compile Include="DataAccess\ICommPoolDataAccess.cs" />
+    <Compile Include="DataAccess\ICustomerDataAccess.cs" />
+    <Compile Include="DataAccess\IHpDataAccess.cs" />
+    <Compile Include="DataAccess\IMappingProductTypeDataAccess.cs" />
+    <Compile Include="DataAccess\INewsDataAccess.cs" />
+    <Compile Include="DataAccess\IProductGroupDataAccess.cs" />
+    <Compile Include="DataAccess\IQuestionDataAccess.cs" />
+    <Compile Include="DataAccess\IQuestionGroupDataAccess.cs" />
+    <Compile Include="DataAccess\IReportDataAccess.cs" />
+    <Compile Include="DataAccess\IServiceRequestDataAccess.cs" />
+    <Compile Include="DataAccess\ISlaDataAccess.cs" />
+    <Compile Include="DataAccess\ISrChannelDataAccess.cs" />
+    <Compile Include="DataAccess\ISrPageDataAccess.cs" />
+    <Compile Include="DataAccess\ISrStatusDataAccess.cs" />
+    <Compile Include="DataAccess\ISubAreaDataAccess.cs" />
+    <Compile Include="DataAccess\ITypeDataAccess.cs" />
+    <Compile Include="DataAccess\IUserDataAccess.cs" />
+    <Compile Include="DataAccess\MappingProductTypeDataAccess.cs" />
+    <Compile Include="DataAccess\NewsDataAccess.cs" />
+    <Compile Include="DataAccess\ProductGroupDataAccess.cs" />
+    <Compile Include="DataAccess\QuestionDataAccess.cs" />
+    <Compile Include="DataAccess\QuestionGroupDataAccess.cs" />
+    <Compile Include="DataAccess\ReportDataAccess.cs" />
+    <Compile Include="DataAccess\ServiceRequestDataAccess.cs" />
+    <Compile Include="DataAccess\SlaDataAccess.cs" />
+    <Compile Include="DataAccess\SP_GET_CONTACT_LIST_Result.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SP_GET_CUSTOMER_BY_PHONE_Result.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SP_GET_CUSTOMER_LIST_SET_Result.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SP_GET_SR_ACTIVITY_Result.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SP_GET_SR_ACTIVITY_Result1.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SP_GET_SR_Result.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SP_GET_SR_Result1.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SP_VALIDATE_CREATE_SR_Result.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\SrChannelDataAccess.cs" />
+    <Compile Include="DataAccess\SrPageDataAccess.cs" />
+    <Compile Include="DataAccess\SrStatusDataAccess.cs" />
+    <Compile Include="DataAccess\SubAreaDataAccess.cs" />
+    <Compile Include="DataAccess\TB_C_CASA_ACCOUNT_STATUS.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_CUSTOMER_CATEGORY.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_ERROR.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_FONT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_JOB_STATUS.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_MENU.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_PARAMETER.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_PROCESS.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_ROLE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_ROLE_SCREEN.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_ROLE_SR_PAGE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_RULE_OPTION.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_SCREEN.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_SEQUENCE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_SEQUENCE_SR.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_SR_ACTIVITY_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_SR_EMAIL_TEMPLATE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_SR_PAGE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_SR_STATUS.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_C_SR_STATUS_CHANGE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_BDW_CONTACT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_ADDRESS_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_CORPORATE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_COUNTRY.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_CUSTOMER_EMAIL.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_CUSTOMER_PHONE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_DISTRICT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_EMAIL_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_INDIVIDUAL.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_PHONE_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_PRODUCT_GROUP.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_PROVINCE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_SUBDISTRICT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_SUBSCRIPTION.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_SUBSCRIPTION_ADDRESS.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_SUBSCRIPTION_EMAIL.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_SUBSCRIPTION_PHONE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_SUBSCRIPTION_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_CIS_TITLE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_HP_ACTIVITY.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_PROPERTY.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_I_SALE_ZONE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_L_AUDIT_LOG.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_L_CUSTOMER_LOG.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_L_LOGIN.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_L_SR_LOGGING.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_ACCOUNT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_ACCOUNT_ADDRESS.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_ACCOUNT_EMAIL.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_ACCOUNT_PHONE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_ADDRESS.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_AFS_ASSET.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_AREA.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_AREA_SUBAREA.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_CONFIG_ROLE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_CONFIG_URL.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_CONTACT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_CONTACT_PHONE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_CUSTOMER.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_CUSTOMER_ATTACHMENT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_CUSTOMER_CONTACT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_DOCUMENT_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_MAP_AUTO_FORWARD.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_MAP_PRODUCT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_MAP_PRODUCT_QUESTIONGROUP.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_MEDIA_SOURCE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_NOTE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_PHONE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_PHONE_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_POOL.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_POOL_BRANCH.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_QUESTION.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_QUESTIONGROUP.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_QUESTIONGROUP_QUESTION.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_RELATIONSHIP.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_SLA.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_SUBAREA.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_SUBSCRIPT_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_TITLE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_M_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_R_BRANCH.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_R_BRANCH_CALENDAR.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_R_CAMPAIGNSERVICE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_R_CHANNEL.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_R_PRODUCT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_R_PRODUCTGROUP.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_R_USER.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_R_USER_PHONE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_ATTACHMENT_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_CALL_INFO.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_DEFAULT_SEARCH.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_JOB.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_JOB_ATTACHMENT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_NEWS.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_NEWS_ATTACHMENT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_NEWS_BRANCH.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_READ_NEWS.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR_ACCOUNT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR_ACTIVITY.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR_ATTACHMENT.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR_ATTACHMENT_DOCUMENT_TYPE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR_CUSTOMER.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR_CUSTOMER_PHONE.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR_PREPARE_EMAIL.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR_REPLY_EMAIL.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR_VERIFY_RESULT_GROUP.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TB_T_SR_VERIFY_RESULT_QUESTION.cs">
+      <DependentUpon>CSMContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\TypeDataAccess.cs" />
+    <Compile Include="DataAccess\UserDataAccess.cs" />
+    <Compile Include="DataAccess\IProductDataAccess.cs" />
+    <Compile Include="DataAccess\ProductDataAccess.cs" />
+    <Compile Include="DataAccess\ICisDataAccess.cs" />
+    <Compile Include="DataAccess\UserMonitoringDataAccess.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="DataAccess\CSMContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CSMContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataAccess\CSMContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CSMContext.edmx</DependentUpon>
+      <LastGenOutput>CSMContext.Context.cs</LastGenOutput>
+    </None>
+    <None Include="DataAccess\CSMContext.edmx.diagram">
+      <DependentUpon>CSMContext.edmx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataAccess\CSMContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CSMContext.edmx</DependentUpon>
+      <LastGenOutput>CSMContext.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CSM.Common\CSM.Common.csproj">
+      <Project>{ceb384cc-d77a-4fa9-a22f-03fcc9fdab5a}</Project>
+      <Name>CSM.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CSM.Entity\CSM.Entity.csproj">
+      <Project>{ee39efc2-7f0a-4b19-bba0-fac715db83e1}</Project>
+      <Name>CSM.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CSM.Service\CSM.Service.csproj">
+      <Project>{A2D8F87B-929D-428C-B7D8-C0C2EC4B2445}</Project>
+      <Name>CSM.Service</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

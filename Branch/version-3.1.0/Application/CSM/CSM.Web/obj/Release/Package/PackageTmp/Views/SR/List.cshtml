@@ -1,0 +1,231 @@
+﻿@using CSM.Entity
+@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using MvcPaging
+
+@model CSM.Web.Models.SrViewModel
+@{
+    ViewBag.Title = Resource.Lbl_CustomerInformation;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink(Resource.Lbl_SearchCustomer, "Search", "Customer", new { @skip = "1" }, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_CustomerInformation </strong>
+}
+
+@if (Model != null)
+{
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">@Resource.Lbl_CustomerInformation</h5>
+        @Html.HiddenFor(model => model.CustomerInfo.CustomerId, new { @id = "hddCustomerId" })
+        @Html.HiddenFor(model => model.CustomerInfo.CustomerNumber, new { @id = "hddCustomerNumber" })
+        @Html.HiddenFor(model => model.CustomerInfo.CbsCardType.CardTypeName, new { @id = "hddCardTypeName" })
+        @Html.HiddenFor(model => model.CustomerInfo.CardNo, new { @id = "hddCardNo" })
+        @if (Model.CustomerInfo != null)
+        {
+            Html.RenderPartial("~/Views/Customer/_CustomerInfo.cshtml", Model.CustomerInfo);
+        }
+        <div class="clearfix"></div>
+
+        @Html.Action("CustomerTab", "MenuNavigator", new { selectedTab = CustomerTabCode.SR, customerId = @Model.CustomerInfo.CustomerId, customerNumber = @Model.CustomerInfo.CustomerNumber })
+
+        <div class="clearfix"></div>
+        <div class="pull-left padding-top-5">
+            @if ((Model.CustomerInfo.CustomerId ?? 0) > 0)
+            {
+                <button id="btnAddSR" type="button" class="btn btn-green btn-sm" onclick="initNewSR();">
+                    <i class="fa fa-plus"></i>&nbsp;New SR
+                </button>
+            }
+            else if ((Model.CustomerInfo.CustomerNumber ?? 0) > 0)
+            {
+                var customerNumber = Model.CustomerInfo.CustomerNumber ?? 0;
+                var cardTypeCode = (Model.CustomerInfo.CbsCardType != null ? Model.CustomerInfo.CbsCardType.CardTypeCode : "");
+                var cardTypeName = (Model.CustomerInfo.CbsCardType != null ? Model.CustomerInfo.CbsCardType.CardTypeName : "");
+                var cardTypeId = (Model.CustomerInfo.CbsCardType != null ? Model.CustomerInfo.CbsCardType.CardTypeID : 0);
+                var cardNo = Model.CustomerInfo.CardNo;
+                var birthDate = Model.CustomerInfo.BirthDateDisplay;
+                var custType = Model.CustomerInfo.CustomerType;
+                var emplCode = Model.CustomerInfo.EmployeeCode;
+                var titleTh = Model.CustomerInfo.TitleThai.TitleName;
+                var fNameTh = Model.CustomerInfo.FirstNameThai.TextToHtml();
+                var lNameTh = Model.CustomerInfo.LastNameThai.TextToHtml();
+                var titleEn = Model.CustomerInfo.TitleEnglish.TitleName;
+                var fNameEn = Model.CustomerInfo.FirstNameEnglish.TextToHtml();
+                var lNameEn = Model.CustomerInfo.LastNameEnglish.TextToHtml();
+                var phone = Model.CustomerInfo.PhoneNo;
+                var fax = Model.CustomerInfo.Fax;
+                var email = Model.CustomerInfo.Email;
+                var actionUrl = Url.Action("Create", "ServiceRequest");
+                //initNewSRWithDefaData() ==> sr.js
+                var addSRClick = string.Format("initNewSRWithDefaData('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}'"
+                                + ",'{9}','{10}','{11}','{12}','{13}','{14}'"
+                                + ",'{15}','{16}','{17}');"
+                    , actionUrl, 0, customerNumber, cardNo, cardTypeCode, cardTypeName, custType, birthDate
+                    , titleTh,  fNameTh, lNameTh, titleEn, fNameEn, lNameEn
+                    , phone, fax, email, emplCode);
+                <button id="btnAddSR" type="button" class="btn btn-green btn-sm" onclick="@addSRClick">
+                    <i class="fa fa-plus"></i>&nbsp;New SR
+                </button>
+            }
+        </div>
+        <div class="clear"></div>
+        <div class="tab-content">
+            <div id="tabSR" class="tab-pane fade in active">
+                <div id="dvSearchResult">
+                    @*@if (Model.SrList != null)
+                        {
+                            Html.RenderPartial("~/Views/SR/_CustomerSrList.cshtml", Model);
+                        }*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="clearfix"></div>
+
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+    var searchFilter;
+    var successFilter;
+
+    $jq(document).ready(function () {
+        initializeSearchFilter();
+        initializePaging();
+        loadData();
+
+        $jq("#divShowOtherAddress").click(function () {
+            setTimeout(function () {
+                $jq("#divOtherAddress").toggle();
+
+                if ($jq("#divOtherAddress").css("display") == "none")
+                    $jq("#divShowOtherAddress").html("[+] ที่อยู่อื่นๆ");
+                else
+                    $jq("#divShowOtherAddress").html("[-] ที่อยู่อื่นๆ");
+
+            }, 300);
+        });
+    });
+
+    function initializeSearchFilter() {
+        searchFilter = {
+            CustomerId: $jq("#hddCustomerId").val(),
+            CustomerNumber: $jq("#hddCustomerNumber").val(),
+            CbsCardTypeName: $jq("#hddCardTypeName").val(),
+            CardNo: $jq("#hddCardNo").val(),
+            PageNo: '@Model.SearchFilter.PageNo',
+            PageSize: '@Model.SearchFilter.PageSize',
+            SortField: '@Model.SearchFilter.SortField',
+            SortOrder: '@Model.SearchFilter.SortOrder'
+        };
+        successFilter = searchFilter;
+    };
+
+    function initializePaging() {
+        $jq("#dvSearchResult .input-page").change(function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = $jq(this).val();
+            loadData();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchResult #pagesizelist").change(function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = "1";
+            searchFilter.PageSize = $jq(this).val();
+            loadData();
+            return false;
+        });
+
+        $jq('#dvSearchResult .pagination ul li a').on('click', function (event) {
+            searchFilter = successFilter;
+            searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadData();
+            return false;
+        });
+
+        try{
+            $jq("#tblSRList").tableHeadFixer({ "head": false, "left": 3 });
+        }
+        catch (e) { }
+    };
+
+    function loadData() {
+        $jq.ajax({
+            url: '@Url.Action("CustomerSrList", "SR")',
+            type: "POST",
+            data: addAntiForgeryToken(searchFilter),
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == null) {
+                    $jq("#dvSearchResult").html('');
+                    successFilter = searchFilter;
+                    $jq("#dvSearchResult").html(result);
+                    initializePaging();
+                } else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    };
+
+    function sortField(selectedSortField) {
+        if (selectedSortField == searchFilter.SortField)
+            searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+        else
+            searchFilter.SortOrder = 'ASC';
+        searchFilter.SortField = selectedSortField;
+        searchFilter.PageNo = 1;
+        loadData();
+    }
+
+    function initEditSR(srId) {
+        var actionUrl = '@Url.Action("Edit", "ServiceRequest")';
+            $jq('#dvTarget').html('');
+            var inputSrId = $jq("<input>").attr("type", "hidden").attr("name", "SrId").val(srId);
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').append($jq(inputSrId));
+            $jq('#dvTarget form').submit();
+        }
+
+        function initNewSR() {
+            var accountId = '';
+            var contactId = '';
+            var customerId = $jq('#hddCustomerId').val();
+            var actionUrl = '@Url.Action("Create", "ServiceRequest")';
+            $jq('#dvTarget').html('');
+            var inputCustomerId = $jq("<input>").attr("type", "hidden").attr("name", "CustomerId").val(customerId);
+            var inputAccountId = $jq("<input>").attr("type", "hidden").attr("name", "AccountId").val(accountId);
+            var inputContactId = $jq("<input>").attr("type", "hidden").attr("name", "ContactId").val(contactId);
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden" target="_blank"></form>');
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').append($jq(inputCustomerId));
+            $jq('#dvTarget form').append($jq(inputAccountId));
+            $jq('#dvTarget form').append($jq(inputContactId));
+            $jq('#dvTarget form').submit();
+        }
+    </script>
+}

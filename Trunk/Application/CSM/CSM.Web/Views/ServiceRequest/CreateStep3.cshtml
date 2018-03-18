@@ -1,0 +1,1847 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using CSM.Entity
+@model CSM.Web.Models.CreateServiceRequestViewModel
+@{
+    ViewBag.Title = "New Service Request";
+    ViewBag.ShowThaiBuddhistCalendar = true;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.ServiceRequest })
+}
+@section Breadcrumb {
+    <strong class="font-blue">Service Request &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink("Search Service Request", "Index", "ServiceRequest", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; New Service Request (Activity Information) </strong>
+}
+<script src="~/Scripts/datepicker_th/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/datepicker_th/bootstrap-datepicker-thai.js"></script>
+<script src="~/Scripts/datepicker_th/bootstrap-datepicker.th.js"></script>
+<script type="text/javascript">
+
+    $jq(function () {
+        initDatePicker();
+    });
+
+    function initDatePicker() {
+        var dateFormat = 'dd/mm/yyyy';
+
+        $jq.extend($jq.fn.datepicker.defaults, {
+            format: dateFormat,
+            weekStart: 1,
+            autoclose: true,
+            todayHighlight: true,
+            language: "th-th"
+        });
+    }
+</script>
+<style type="text/css">
+    .form input[type="text"].input-sr,
+    .input-sr {
+        width: 300px;
+    }
+
+    .modal-lg {
+        width: 1100px;
+    }
+</style>
+
+<h5 class="form-title">New Service Request</h5>
+<hr class="dotted-line" />
+
+@using (Html.BeginForm("Create", "ServiceRequest", FormMethod.Post, new { @id = "form1", @class = "sr" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    if (ViewData.ModelState["ErrorMessage"] != null && ViewData.ModelState["ErrorMessage"].Errors != null && ViewData.ModelState["ErrorMessage"].Errors.Count > 0)
+    {
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Warning!</strong> @ViewData.ModelState["ErrorMessage"].Errors[0].ErrorMessage
+        </div>
+    }
+
+    <div style="overflow: auto">
+        <div style="width: 1150px;">
+
+            @Html.Partial("_ViewCreateStep2", Model)
+
+            <div class="collapse_container">
+                <div class="collapse_header">
+                    <span class="collapse_sign">[&mdash;]</span> Activity Information
+                </div>
+                <div class="collapse_body">
+                    <table class="form form-long">
+                        <tbody>
+                            <tr>
+                                <td class="text" style="width: 200px">Creator Branch :</td>
+                                <td class="input" style="width: 350px">
+                                    <span class="value">@Model.CreatorBranchName</span>
+                                </td>
+                                <td class="text" style="width: 150px">Creator SR :</td>
+                                <td class="input">
+                                    <span class="value">@Model.CreatorUserFullName</span>
+                                </td>
+                            </tr>
+                            @if (Model.SrPageCode != null)
+                            {
+                                if (Model.SrPageCode.ToUpper().InList(Constants.SRPage.DefaultPageCode
+                                    , Constants.SRPage.CPNPageCode))
+                                {
+                                    @Html.Partial("_EditPageDefault", Model)
+                                }
+                                else if (Model.SrPageCode.ToUpper() == Constants.SRPage.AFSPageCode)
+                                {
+                                    @Html.Partial("_EditPageAFS", Model)
+                                }
+                                else if (Model.SrPageCode.ToUpper() == Constants.SRPage.NCBPageCode)
+                                {
+                                    @Html.Partial("_EditPageNCB", Model)
+                                }
+                            }
+                            <tr>
+                                <td class="text">Owner Branch <span>*</span>:</td>
+                                <td class="input">
+                                    @Html.TextBoxFor(model => model.OwnerBranchId, new { @id = "txtOwnerBranch", @class = "form-control input-sm input-sr" })
+                                    @Html.HiddenFor(model => model.OwnerBranchName, new { @id = "hiddenOwnerBranchName" })
+                                    @Html.ValidationMessageFor(model => model.OwnerBranchId)
+                                </td>
+                                <td class="text">
+                                    Owner SR
+                                    <span>*</span>:
+                                    @if (Model.SrPageCode != null && Model.SrPageCode.ToUpper() == Constants.SRPage.AFSPageCode)
+                                    {
+                                        <br /><span style="color: #000; font-weight: normal">(Sale Owner)</span>
+                                    }
+                                </td>
+                                <td class="input">
+                                    @Html.TextBoxFor(model => model.OwnerUserId, new { @id = "txtOwnerUser", @class = "form-control input-sm input-sr" })
+                                    @Html.HiddenFor(model => model.OwnerUserFullName, new { @id = "hiddenOwnerUserFullName" })
+                                    @Html.ValidationMessageFor(model => model.OwnerUserId)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Delegate Branch :</td>
+                                <td class="input">
+
+                                    @Html.TextBoxFor(model => model.DelegateBranchId, new { @id = "txtDelegateBranch", @class = "form-control input-sm input-sr" })
+                                    @Html.HiddenFor(model => model.DelegateBranchName, new { @id = "hiddenDelegateBranchName" })
+                                </td>
+                                <td class="text">Delegate SR :</td>
+                                <td class="input">
+                                    @Html.TextBoxFor(model => model.DelegateUserId, new { @id = "txtDelegateUser", @class = "form-control input-sm input-sr" })
+                                    @Html.HiddenFor(model => model.DelegateUserFullName, new { @id = "hiddenDelegateUserFullName" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text"></td>
+                                <td colspan="3" class="input">
+                                    <label>
+                                        <input name="IsEmailDelegate" id="chkIsEmailDelegate" type="checkbox" value="true" @(Model.IsEmailDelegate ? "checked=\"checked\"" : "") />
+                                        ส่งอีเมล์มอบหมายงาน
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Send E-Mail <span>*</span>:</td>
+                                <td class="input" colspan="2">
+                                    @Html.DropDownListFor(model => model.SrEmailTemplateId, Model.SrEmailTemplates, "Not Send Mail", new { @id = "ddlSrEmailTemplateId", @class = "form-control input-sm input-sr" })
+                                    @Html.ValidationMessageFor(model => model.SrEmailTemplateId)
+                                    @Html.HiddenFor(model => model.SrEmailTemplateName, new { @id = "hiddenSrEmailTemplateName" })
+                                </td>
+                                <td class="input"></td>
+                            </tr>
+                            <tr class="tr_not_send_mail">
+                                <td class="text vtop">รายละเอียดการติดต่อ <span>*</span>:</td>
+                                <td class="input" colspan="3">
+                                    @Html.TextAreaFor(model => model.ActivityDescription, new { @id = "txtActivityDescription", @class = "form-control input-sm input-sr-long", maxlength = WebConfig.GetEditTextMaxLength() })
+                                    @Html.ValidationMessageFor(model => model.ActivityDescription)
+                                </td>
+                            </tr>
+                            <tr class="tr_send_mail" style="display: none;">
+                                <td class="text">TO <span>*</span>:</td>
+                                <td class="input" colspan="3">
+                                    @Html.HiddenFor(model => model.SendMailSender, new { @id = "hiddenSendMailSender" })
+                                    @Html.TextBoxFor(model => model.SendMailTo, new { @id = "txtSendMailTo", @class = "form-control input-sm input-sr-long", placeholder = "sample@kiatnakin.co.th โดยสามารถระบุหลายอีเมล์โดยคั่นด้วยเครื่องหมายคอมม่า (,)" })
+                                    @Html.ValidationMessageFor(model => model.SendMailSender)
+                                    @Html.ValidationMessageFor(model => model.SendMailTo)
+                                    <span id="validationMessageSendMailTo" style="color: #b94a48; display: none;">โปรดกรอกข้อมูล 'TO' ในรูปแบบอีเมล์ สามารถระบุหลายอีเมล์โดยคั่นด้วยเครื่องหมายคอมม่า (,)</span>
+                                </td>
+                            </tr>
+                            <tr class="tr_send_mail" style="display: none;">
+                                <td class="text">CC :</td>
+                                <td class="input" colspan="3">
+                                    @Html.TextBoxFor(model => model.SendMailCc, new { @id = "txtSendMailCc", @class = "form-control input-sm input-sr-long", placeholder = "sample@kiatnakin.co.th โดยสามารถระบุหลายอีเมล์โดยคั่นด้วยเครื่องหมายคอมม่า (,)" })
+                                    <span id="validationMessageSendMailCc" style="color: #b94a48; display: none;">โปรดกรอกข้อมูล 'CC' ในรูปแบบอีเมล์ สามารถระบุหลายอีเมล์โดยคั่นด้วยเครื่องหมายคอมม่า (,)</span>
+                                </td>
+                            </tr>
+                            <tr class="tr_send_mail" style="display: none;">
+                                <td class="text">BCC :</td>
+                                <td class="input" colspan="3">
+                                    @Html.TextBoxFor(model => model.SendMailBcc, new { @id = "txtSendMailBcc", @class = "form-control input-sm input-sr-long", placeholder = "sample@kiatnakin.co.th โดยสามารถระบุหลายอีเมล์โดยคั่นด้วยเครื่องหมายคอมม่า (,)" })
+                                    <span id="validationMessageSendMailBcc" style="color: #b94a48; display: none;">โปรดกรอกข้อมูล 'BCC' ในรูปแบบอีเมล์ สามารถระบุหลายอีเมล์โดยคั่นด้วยเครื่องหมายคอมม่า (,)</span>
+                                </td>
+                            </tr>
+                            <tr class="tr_send_mail" style="display: none;">
+                                <td class="text">Subject E-Mail <span>*</span>:</td>
+                                <td class="input" colspan="3">
+                                    @Html.TextBoxFor(model => model.SendMailSubject, new { @id = "txtSendMailSubject", @class = "form-control input-sm input-sr-long" })
+                                    @Html.ValidationMessageFor(model => model.SendMailSubject)
+                                </td>
+                            </tr>
+                            <tr class="tr_send_mail" style="display: none;">
+                                <td class="text vtop">E-Mail Body <span>*</span>:</td>
+                                <td class="input" colspan="3">
+                                    @Html.TextAreaFor(model => model.SendMailBody, new { @id = "txtSendMailBody" })
+                                    @Html.ValidationMessageFor(model => model.SendMailBody)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Activity Type <span>*</span>:</td>
+                                <td class="input" colspan="3">
+                                    <select id="ddlActivityType" class="form-control input-sm input-sr">
+                                        <option>@Resource.Ddl_PleaseSelect</option>
+                                        @foreach (var activityType in Model.ActivityTypes)
+                                        {
+                                            <option value="@activityType.Value">@activityType.Text</option>
+                                        }
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.ActivityTypeId)
+                                    @Html.HiddenFor(model => model.ActivityTypeId, new { @id = "hiddenActivityTypeId" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">SR Status :</td>
+                                <td class="input" colspan="3">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.IsClose)
+                                        Closed
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    @if (Model.SrPageCode != null)
+                    {
+                        if (Model.SrPageCode.ToUpper() == Constants.SRPage.CPNPageCode)
+                        {
+                            @Html.Partial("_EditPageCPN", Model)
+                        }
+                    }
+                    <input type="hidden" id="CurrentUserId" value="@ViewBag.CurrentUserId" />
+                    <div>
+                        <div style="padding: 5px">
+                            <span class="btn btn-sm btn-green" id="btnDocumentCreate">
+                                <i class="fa fa-plus"></i>
+                                New Document
+                            </span>
+                        </div>
+                        <div id="divSearchDocument">
+                            <hr class="dashed-line clear" />
+                            <div class="table-responsive margin-top-10">
+                                <table class="table table-hover datatable">
+                                    <thead>
+                                        <tr>
+                                            <th class="center" style="width: 10% !important;">Action</th>
+                                            <th>ชื่อเอกสาร</th>
+                                            <th style="width: 10%">Attach file to email</th>
+                                            <th>คำอธิบายเอกสาร</th>
+                                            <th>ประเภทเอกสาร</th>
+                                            <th style="width: 15%">วันหมดอายุเอกสาร</th>
+                                            <th style="width: 15%">วันที่นำเข้า</th>
+                                            <th>สถานะ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodySearchDocument">
+                                        <tr>
+                                            <td colspan="7" class="center">@Resource.Msg_NoRecords</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <button id="btnBack" name="CommandButton" class="btn btn-sm btn-default cancel" value="BackOnStep3"><i class="fa fa-arrow-left"></i> Back</button>
+                <span id="btnSaveDraft" class="btn btn-sm btn-primary" value="SaveDraft"><i class="fa fa-save"></i> Draft</span>
+                <span id="btnSave" name="CommandButton" class="btn btn-sm btn-success" value="Save"><i class="fa fa-save"></i> Save</span>
+                @*                <a href="@Url.Action("Index")" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</a>*@
+                <span class="btn btn-sm btn-default" id="btnSrStep3Cancel"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+    <div id="modalRemark" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="overflow-y:auto;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body" id="modalRemarkBody">
+                    <br />
+                    @Html.Raw(Model.RemarkOriginal)
+                </div>
+                <div class="modal-footer">
+                    <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="SrId" value="@Model.SrId" id="hiddenSrId" />
+
+    <input type="hidden" name="CreatorBranchId" value="@Model.CreatorBranchId" />
+    <input type="hidden" name="CreatorBranchCode" value="@Model.CreatorBranchCode" id="hiddenCreatorBranchCode" />
+    <input type="hidden" name="CreatorBranchName" value="@Model.CreatorBranchName" id="hiddenCreatorBranchName" />
+    <input type="hidden" name="CreatorUserId" value="@Model.CreatorUserId" />
+    <input type="hidden" name="CreatorUserFullName" value="@Model.CreatorUserFullName" id="hiddenCreatorUserFullName" />
+
+    <input type="hidden" name="DefaultOwnerUserId" id="hiddenDefaultOwnerUserId" value="@Model.DefaultOwnerUserId" />
+    <input type="hidden" name="DefaultOwnerUserFullName" id="hiddenDefaultOwnerUserFullName" value="@Model.DefaultOwnerUserFullName" />
+    <input type="hidden" name="DefaultOwnerBranchId" id="hiddenDefaultOwnerBranchId" value="@Model.DefaultOwnerBranchId" />
+    <input type="hidden" name="DefaultOwnerBranchFullName" id="hiddenDefaultOwnerBranchFullName" value="@Model.DefaultOwnerBranchName" />
+
+    <input type="hidden" name="PhoneNo" value="@Model.PhoneNo" />
+    <input type="hidden" name="CallId" value="@Model.CallId" />
+
+    <input type="hidden" name="SrPageId" value="@Model.SrPageId" />
+    <input type="hidden" name="SrPageCode" value="@Model.SrPageCode" />
+
+    <input type="hidden" name="AttachmentJsonLength" value="@(Model.AttachmentJson != null ? Model.AttachmentJson.Length + "": "")" id="hiddenAttachmentJsonLength" />
+    <input type="hidden" name="AttachmentJson" value="@Html.Raw(Model.AttachmentJson)" id="hiddenAttachmentJson" />
+    <input type="hidden" name="VerifyAnswerJson" id="hiddenVerifyAnswerJson" />
+
+    <input type="hidden" value="@Model.OfficePhoneNo" id="hiddenOfficePhoneNo" />
+    <input type="hidden" value="@Model.OfficeHour" id="hiddenOfficeHour" />
+    
+    <input type="hidden" name="hddSrDocumentFolder" value="@Model.SrDocumentFolder" id="hiddenSrDocumentFolder" />
+
+    @Html.HiddenFor(m => m.Remark3, new { @id = "hdfRemark3" })
+    @Html.HiddenFor(m => m.Remark3Original, new { @id = "Remark3Original" })
+}
+
+<!-- Edit Attachment -->
+<div id="editAttachmentModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title" id="attachmentModalHeader"></h4>
+            </div>
+            <form id="formAttachmentModal">
+                <div class="modal-body">
+                    @Html.ValidationSummary(true)
+                    <input type="hidden" id="hiddenTotalFileSize" value="@Model.TotalAttachmentFileSize" />
+                    <div class="form-horizontal">
+                        <div id="row">
+                            <div class="form-group" id="divDocUpload" style="display: none;">
+                                <label class="control-label col-md-3 left-label">เอกสารที่อัพโหลด <span class="required-field-block">*</span></label>
+                                <div class="col-md-6 nopadding">
+                                    @Html.TextBoxFor(m => m.FileAttach, null, new
+                               {
+                                   @id = "txtFileAttach",
+                                   type = "file",
+                                   @style = "min-width:550px;"
+                               })
+                                    <p class="help-block" style="color: red;width:550px;">
+                                        @Model.AllowFileExtensionsDesc
+                                    </p>
+                                    @Html.ValidationMessageFor(m => m.FileAttach)
+                                </div>
+                            </div>
+                            <div class="form-group" id="divDocLink" style="display: none;">
+                                <label class="control-label col-md-3 left-label">เอกสารที่อัพโหลด <span class="required-field-block">*</span></label>
+                                <div class="col-md-6 nopadding">
+                                    <input type="hidden" id="hiddenPreviewPathFile" />
+                                    <input type="hidden" id="hiddenContentType" />
+                                    <input type="hidden" id="hiddenFileName" />
+                                    <span onclick="previewSrAttachment()" id="lnkDocLink" class="doc_link"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divDocumentName" style="display: none;">
+                                <label class="control-label col-md-3 left-label">ชื่อเอกสาร <span class="required-field-block">*</span></label>
+                                <div class="col-md-6 nopadding">
+                                    @Html.TextBoxFor(m => m.DocName, new
+                               {
+                                   @id = "txtDocName",
+                                   @class = "form-control input-sm",
+                                   @style = "min-width:550px;",
+                                   @maxlength = Constants.MaxLength.AttachName
+                               })
+                                    @Html.ValidationMessageFor(m => m.DocName)
+                                </div>
+                            </div>
+                            <div class="form-group" id="divDocumentNameEdit" style="display: none;">
+                                <label class="control-label col-md-3 left-label">ชื่อเอกสาร <span class="required-field-block">*</span></label>
+                                <div class="col-md-6 nopadding">
+                                    <input type="text" id="DocNameEdit" class="form-control input-sm static-view" readonly="readonly" style="min-width: 550px;" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">คำอธิบายเอกสาร</label>
+                                <div class="col-md-6 nopadding">
+                                    @Html.TextAreaFor(model => model.DocDesc, new
+                               {
+                                   @id = "txtDocDesc",
+                                   @class = "form-control input-sm",
+                                   @style = "min-width:550px;min-height: 150px;"
+                               })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">วันที่หมดอายุ</label>
+                                <div class="col-md-6 nopadding">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <div class='input-group date' id='datepickAttach'>
+                                                @Html.TextBoxFor(model => model.ExpiryDate, new
+                                           {
+                                               @class = "form-control input-sm input-small",
+                                               @style = "min-width:100px",
+                                               @id = "txtExpiryDate",
+                                               onchange = "validateDateValue($jq(this));"
+                                           })
+                                                <span class="input-group-addon">
+                                                    <span class="fa fa-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*                            <div class="form-group">*@
+                            @*                                <label class="control-label col-md-3 left-label">สถานะ <span class="required-field-block">*</span></label>*@
+                            @*                                <div class="col-md-6 nopadding">*@
+                            @*                                    @Html.DropDownListFor(m => m.Status, Model.StatusList, Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @style = "width:165px!important;display:block", id = "ddlStatus" })*@
+                            @*                                    @Html.ValidationMessageFor(model => model.Status)*@
+                            @*                                </div>*@
+                            @*                            </div>*@
+                            <div class="form-group">
+                                <div class="col-md-7 col-md-offset-3">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.AttachToEmail)
+                                        Attach file to Email
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 left-label">ประเภทเอกสาร <span class="required-field-block">*</span></label>
+                                <div class="col-md-9 nopadding">
+                                    @if (Model.DocTypeCheckBoxes != null && Model.DocTypeCheckBoxes.Count > 0)
+                                    {
+                                        <table class="checkboxlist">
+                                            @for (int i = 0; i < Model.DocTypeCheckBoxes.Count(); i++)
+                                            {
+                                                var docTypeCheckBox = Model.DocTypeCheckBoxes[i];
+                                                <tr style="width: 45% !important">
+                                                    <td>
+                                                        @Html.CheckBoxFor(model => model.DocTypeCheckBoxes[i].Checked, new { @id = "cblDocType_" + i, oid = @docTypeCheckBox.Value, oname = @docTypeCheckBox.Text, @class = "cblDocType" })
+                                                        @Html.HiddenFor(model => model.DocTypeCheckBoxes[i].Value)
+                                                        @Html.HiddenFor(model => model.DocTypeCheckBoxes[i].Text)
+                                                    </td>
+                                                    <td class="padding-left-2"><label for="@("cblDocType_" + i)">@Model.DocTypeCheckBoxes[i].Text</label></td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="modal-footer">
+                        <span class="btn btn-blue btn-sm btn-xsmall" id="btnSaveAttach" style="display: none;">Save</span>
+                        <span class="btn btn-blue btn-sm btn-xsmall" id="btnSaveEditAttach" style="display: none;">Save</span>
+                        <span class="btn btn-gray btn-sm btn-xsmall" id="btnCancelAttach">Cancel</span>
+                        <span class="btn btn-gray btn-sm btn-xsmall" id="btnCloseAttach" style="display: none;" data-dismiss="modal" aria-hidden="true">Close</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="dvTarget"></div>
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+
+    <script type="text/javascript">
+
+        // To Validate Hidden Fields
+        $jq.validator.setDefaults({ ignore: null });
+
+        var isLoadComplete = false;
+        var tempRow = null;
+
+        var srDocumentPath = "@Model.SrDocumentFolder";
+
+        $jq(function () {
+
+            $jq('.summernote').summernote({
+                height: 200,
+                codemirror: {
+                    theme: 'monokai'
+                }
+            });
+
+            initDatePicker();
+
+            initAutoComplete();
+
+            initForm();
+
+            initDefaultOwner();
+
+            onSelectEmailTemplate();
+
+            checkAccountNoIsMatch();
+
+            resetValidation();
+
+            if ($jq("#txtDelegateBranch").select2("val").length == 0 && $jq("#txtDelegateUser").select2("val").length == 0) {
+                $jq("#txtDelegateUser").select2("disable");
+            }
+
+            $jq("#ddlActivityType").select2("val", $jq("#hiddenActivityTypeId").val());
+
+            $jq("#txtSendMailBody").summernote({ height: 300 });
+
+            if ($jq("#txtSendMailBody").code() == "-1") {
+                reloadSrEmailTemplate();
+            }
+
+            isLoadComplete = true;
+
+            $jq('#txtFileAttach').change(onTxtFileAttachChange);
+
+            $jq("#btnDocumentCreate").click(onBtnDocumentCreateClick);
+            $jq("#btnSaveAttach").click(onBtnSaveAttachClick);
+            $jq("#btnSaveEditAttach").click(onEditAttachClick);
+            $jq("#btnCancelAttach").click(onCancelAttachClick);
+
+            $jq("#btnSaveDraft").click(onBtnSaveDraftClick);
+            $jq("#btnSave").click(onBtnSaveClick);
+
+            $jq("#btnSrStep3Cancel").click(onBtnStStep3CancelClick);
+
+            renderDocumentTable();
+
+            var dateFormat = 'dd/mm/yyyy';
+            $jq('#datepickAttach').datepicker({
+                weekStart: 1,
+                startDate: "0d",
+                autoclose: true,
+                todayHighlight: true,
+                language: "th-en"
+            });
+
+            @*$jq("#txtRemark").val('@Model.Remark');
+            $jq("#RemarkOriginal").val('@Model.RemarkOriginal');*@
+        });
+
+        function onBtnStStep3CancelClick() {
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateSrStep3()', 'Confirm');
+            }
+            return false;
+        }
+
+        function closeCreateSrStep3() {
+            window.location = "@Url.Action("Index")";
+        }
+
+        function onTxtFileAttachChange() {
+
+            var filename = $jq('#txtFileAttach').val().toLowerCase();
+            var regex = new RegExp("@Model.AllowFileExtensionsRegex");
+            if (regex.test(filename)) {
+                var filenameNoExt = filename.replace(/\.[^/.]+$/, "");
+
+                var oldDocName = $jq("#txtDocName").val();
+                if (oldDocName.trim().length == 0) {
+
+                    var tokens = filenameNoExt.split("\\");
+                    if (tokens.length > 1) {
+                        filenameNoExt = tokens[tokens.length - 1];
+                    }
+
+                    $jq("#txtDocName").val(filenameNoExt);
+                }
+            } else {
+                alert("ระบบไม่รองรับไฟล์นามสกุล ." + filename.split('.').pop());
+                $jq('#txtFileAttach').val("");
+            }
+        }
+
+        function onBtnSaveAttachClick() {
+            //validate document type
+            if ($jq(".cblDocType:checked").length == 0) {
+                doModal("dvAlertMsg", "Message Dialog", "โปรดเลือกประเภทเอกสารอย่างน้อย 1 ประเภท", "", "");
+                return;
+            }
+
+            if ($jq("#formAttachmentModal").valid()) {
+                var formData = new FormData($jq('#formAttachmentModal').get(0));
+
+                //get filesize
+                var totalSize = 0;
+                var fileSizeList = $jq(".input_file_size");
+                for (var i = 0; i < fileSizeList.length; i++)
+                {
+                    if ($jq(fileSizeList[i]).attr("delete") != 'true') {
+                        totalSize = totalSize + parseInt($jq(fileSizeList[i]).val());
+                    }
+                }
+
+                if (isNaN(totalSize))
+                    totalSize = 0;
+
+                formData.append("fileSize", totalSize);
+
+                //get filename
+                var fileNameArr = new Array();
+                var fileNameList = $jq(".input_file_name");
+                for (var j = 0; j < fileNameList.length; j++) {
+                    fileNameArr.push({
+                        Name: $jq(fileNameList[j]).text()
+                    });
+                }
+                formData.append("fileNameList", JSON.stringify(fileNameArr));
+
+                $jq.ajax({
+                    url: "@Url.Action("SaveSrAttachment", "ServiceRequest")",
+                    method: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() { $jq("#dvLoading").show(); },
+                    complete: function() { $jq("#dvLoading").hide(); },
+                    success: function(result) {
+                        if (result.IsSuccess == true) {
+
+                            //check srJsonData
+                            var dataArr = new Array();
+                            var hiddenSrAttachment = $jq("#hiddenAttachmentJson").val();
+                            if (hiddenSrAttachment.length != 0) {
+                                //have data
+                                dataArr = eval(decodeURIComponent(hiddenSrAttachment));
+                            }
+
+                            var jsonData = ({
+                                Url: result.Url,
+                                Filename: result.Filename,
+                                Name: result.DocName,
+                                DocDesc: result.DocDesc,
+                                ContentType: result.ContentType,
+                                ExpiryDate: result.ExpiryDate,
+                                AttachToEmail: result.AttachToEmail,
+                                DocumentType: result.SelectedAttachType,
+                                CreateDate: result.CreateDate,
+                                FileSize: result.FileSize,
+                                Status: result.Status,
+                                IsEditable: true,
+                                CreateUserId: result.CreateUserId,
+                                CreateUserName: result.CreateUserName
+                            });
+
+                            dataArr.push(jsonData);
+
+                            $jq("#hiddenAttachmentJson").val(encodeURIComponent(JSON.stringify(dataArr)));
+
+                            renderDocumentTable();
+                            $jq('#editAttachmentModal').modal('hide');
+                        } else {
+                            //                            showServerErrors(result);
+                            doModal('dvAlertMsg', 'Message Dialog', result.Message, '', '');
+                        }
+                    },
+                    error: function(xhr) {
+
+                        if (xhr.status == 404 || xhr.status == 400) {
+
+                            var inputCtrl = $jq('#txtFileAttach');
+                            var spanCtrl = inputCtrl.parent().parent().find('span.field-validation-valid');
+                            inputCtrl.addClass('input-validation-error');
+                            spanCtrl.html('@CSM.Common.Resources.Resource.ValError_FileSizeExceedServerMaxLimit').removeClass('field-validation-valid').addClass('field-validation-error');
+                            return false;
+                        }
+
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                });
+            }
+        }
+
+        function onEditAttachClick() {
+
+            if ($jq(".cblDocType:checked").length == 0) {
+                doModal("dvAlertMsg", "Message Dialog", "โปรดเลือกประเภทเอกสารอย่างน้อย 1 ประเภท", "", "");
+                return;
+            }
+
+            var jsonStr = eval(decodeURIComponent($jq("#hiddenAttachmentJson").val()));
+            for (var i = 0; i < jsonStr.length; i++) {
+
+                if (i == (tempRow - 1)) {
+                    jsonStr[i].DocDesc = $jq("#txtDocDesc").val();
+                    jsonStr[i].ExpiryDate = $jq("#txtExpiryDate").val();
+                    jsonStr[i].AttachToEmail = $jq("#AttachToEmail")[0].checked;
+
+                    var docTypeChecked = $jq(".cblDocType:checked");
+
+                    var selectedDocType = new Array();
+
+                    for (var j = 0; j < docTypeChecked.length; j++) {
+                        selectedDocType.push({
+                            DocTypeId: $jq(docTypeChecked[j]).attr("oid"),
+                            Name: $jq(docTypeChecked[j]).attr("oname")
+                        });
+                    }
+
+                    jsonStr[i].DocumentType = selectedDocType;
+                }
+            }
+
+            var newTable = new Array();
+            for (var j = 0; j < jsonStr.length; j++) {
+                var dataRow = jsonStr[j];
+                newTable.push(dataRow);
+            }
+
+            $jq("#hiddenAttachmentJson").val(encodeURIComponent(JSON.stringify(newTable)));
+
+            renderDocumentTable();
+            $jq("#editAttachmentModal").modal("hide");
+        }
+
+        function onCancelAttachClick() {
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'closeCreateAttachModal()', 'Confirm');
+            }
+            return false;
+        }
+
+        function closeCreateAttachModal() {
+            $jq("#modalWindow").modal('hide');
+            $jq("#editAttachmentModal").modal('hide');
+        }
+
+        function previewSrAttachment() {
+
+            var data = {
+                __RequestVerificationToken: getAntiForgeryToken(),
+                pathFile: $jq("#hiddenPreviewPathFile").val()
+            };
+
+            $jq.ajax({
+                url: '@Url.Action("LoadFileAttachment", "ServiceRequest")',
+                type: "POST",
+                data: data,
+                beforeSend: function() { $jq("#dvLoading").show(); },
+                complete: function() { $jq("#dvLoading").hide(); },
+                success: function(result) {
+                    if (result.Valid == true) {
+                        var html = '<form action="@Url.Action("PreviewAttachment", "ServiceRequest")" method="POST" style="display:none">'
+                            + '<input type="hidden" name="__RequestVerificationToken" value="' + getAntiForgeryToken() + '"/>'
+                            + '<input type="hidden" name="pathFile" value="' + $jq("#hiddenPreviewPathFile").val() + '"/>'
+                            + '<input type="hidden" name="contentType" value="' + $jq("#hiddenContentType").val() + '"/>'
+                            + '<input type="hidden" name="fileName" value="' + $jq("#hiddenFileName").val() + '"/>'
+                            + '<input type="submit" id="btnPreviewAttachment"/>'
+                            + '</form>';
+                        $jq('#dvTarget').html('');
+                        $jq('#dvTarget').append(html);
+                        $jq('#btnPreviewAttachment').click();
+
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function(xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function renderDocumentTable() {
+
+            //render attach table
+            var jsonStr = decodeURIComponent($jq("#hiddenAttachmentJson").val());
+
+            if (jsonStr.length > 0) {
+                var dataArr = new Array();
+                dataArr = eval(decodeURIComponent(jsonStr));
+                var str = "";
+
+                if (dataArr == null || dataArr.length == 0) {
+                    renderBlankDocumentTable();
+                } else {
+                    for (var i = 0; i < dataArr.length; i++) {
+                        var isToEmail = "<span><i class='fa fa-paperclip'></i></span>";
+                        if (dataArr[i].AttachToEmail == false) {
+                            isToEmail = "";
+                        }
+
+                        var expire = "";
+                        if (dataArr[i].ExpiryDate != null) {
+                            expire = dataArr[i].ExpiryDate;
+                        }
+
+                        var docDesc = "";
+                        if (dataArr[i].DocDesc != null) {
+                            docDesc = dataArr[i].DocDesc;
+                        }
+
+                        var typeStr = "";
+                        for (var j = 0; j < dataArr[i].DocumentType.length; j++) {
+                            typeStr += dataArr[i].DocumentType[j].Name;
+
+                            if (j < dataArr[i].DocumentType.length - 1) {
+                                typeStr += "<br/>";
+                            }
+                        }
+
+                        var statusStr = "";
+                        if (dataArr[i].Status != null) {
+                            statusStr = dataArr[i].Status == 1 ? "Active" : "Inactive";
+                        }
+
+                        var linkStr = "";
+                        var deleteAttr = "";
+
+                        if (dataArr[i].Status == 1) {
+
+                            deleteAttr = "";
+
+                            //check is create document user
+                            var currentUserId = $jq("#CurrentUserId").val();
+                            if (currentUserId == dataArr[i].CreateUserId) {
+                                linkStr += "<span class='edit-active' title='edit' onclick='onEditDocClick(" + (i + 1) + ", true)'></span> ";
+                                linkStr += "<a class='delete-active' title='delete' onclick='onDeleteDocClick(" + (i + 1) + ")'></a>";
+                            } else {
+                                //                                linkStr += "<span class='edit-active' title='edit' onclick='onEditDocClick(" + (i + 1) + ", true)'></span> ";
+                                linkStr += "<span class='view' title='view' onclick='onEditDocClick(" + (i + 1) + ", false)'></span> ";
+                                linkStr += "<a class='delete-disable' title='delete' onclick='javascript:;'></a>";
+                            }
+
+                        } else {
+                            deleteAttr = " delete='true' ";
+
+                            linkStr += "<span class='view' title='view' onclick='onEditDocClick(" + (i + 1) + ", false)'></span> ";
+                            linkStr += "<a class='delete-disable' title='delete' onclick='javascript:;'></a>";
+                        }
+
+                        str += "<tr>" +
+                            "<td class='center'>" +
+                            "   <input type='hidden' class='input_file_size' value='" + dataArr[i].FileSize + "' " + deleteAttr + "/>" +
+                            "   <input type='hidden' class='input_create_user_id' value='" + dataArr[i].CreateUserId + "'/>" +
+                            "   <input type='hidden' class='input_create_user_name' value='" + dataArr[i].CreateUserName + "'/>" +
+                            linkStr +
+                            "</td>" +
+                            "<td class='input_file_name'>" + dataArr[i].Name + "</td>" +
+                            "<td class='center'>" + isToEmail + "</td>" +
+                            "<td>" + docDesc + "</td>" +
+                            "<td>" + typeStr + "</td>" +
+                            "<td class='center'>" + expire + "</td>" +
+                            "<td class='center'>" + dataArr[i].CreateDate + "</td>" +
+                            "<td class='center'>" + statusStr + "</td>" +
+                            "</tr>";
+                    }
+
+                    $jq("#tbodySearchDocument").html('');
+                    $jq("#tbodySearchDocument").html(str);
+                }
+
+            } else {
+                renderBlankDocumentTable();
+            }
+        }
+
+        function renderBlankDocumentTable() {
+            $jq("#tbodySearchDocument").html("<tr><td colspan='8' class='center '>@Resource.Msg_NoRecords</td></tr>");
+        }
+
+        function onDeleteDocClick(row) {
+
+            if ($jq("#hiddenAttachmentJson").val().length == 0)
+                return;
+
+            if (confirm("ยืนยันการลบ Document")) {
+
+                var jsonStr = eval(decodeURIComponent($jq("#hiddenAttachmentJson").val()));
+
+                var newTable = new Array();
+
+                for (var i = 0; i < jsonStr.length; i++) {
+                    var dataRow = jsonStr[i];
+
+                    if ((i + 1) != row) {
+                        newTable.push(dataRow);
+                    } else {
+                        dataRow.Status = 0;
+                        newTable.push(dataRow);
+                    }
+                }
+
+                $jq("#hiddenAttachmentJson").val(encodeURIComponent(JSON.stringify(newTable)));
+
+                renderDocumentTable();
+            }
+        }
+
+        function onEditDocClick(row, canEdit) {
+            if ($jq("#hiddenAttachmentJson").val().length == 0)
+                return;
+
+            var jsonStr = eval(decodeURIComponent($jq("#hiddenAttachmentJson").val()));
+            onClearAttachModal();
+
+            for (var i = 0; i < jsonStr.length; i++) {
+                var dataRow = jsonStr[i];
+                if ((i + 1) == row) {
+
+                    var chkList = $jq(".cblDocType");
+
+                    for (var j = 0; j < dataRow.DocumentType.length; j++) {
+
+                        var docTypeId = dataRow.DocumentType[j].DocTypeId;
+
+                        for (var k = 0; k < chkList.length; k++) {
+                            if ($jq(chkList[k]).attr("oid") == docTypeId) {
+                                $jq(chkList[k]).prop("checked", true);
+                            }
+                        }
+                    };
+
+                    tempRow = row;
+
+                    //var pathFile = srDocumentPath + "/" + dataRow.Url;
+                    var pathFile = $jq('#hiddenSrDocumentFolder').val() + "/" + dataRow.Url;
+
+                    // $jq("#lnkDocLink").attr("href", pathFile);
+                    $jq("#hiddenPreviewPathFile").val(pathFile);
+                    $jq("#hiddenContentType").val(dataRow.ContentType);
+                    $jq("#hiddenFileName").val(dataRow.Filename);
+                    $jq("#lnkDocLink").text(dataRow.Filename);
+                    $jq("#DocNameEdit").val(dataRow.Name);
+                    $jq("#txtDocDesc").val(dataRow.DocDesc);
+                    $jq("#txtExpiryDate").val(dataRow.ExpiryDate);
+                    $jq("#AttachToEmail").prop("checked", dataRow.AttachToEmail);
+//                $jq("#ddlStatus").val(dataRow.Status);
+                }
+            }
+
+            $jq("#divDocUpload").hide();
+            $jq("#divDocumentName").hide();
+            $jq("#btnSaveAttach").hide();
+
+            $jq("#divDocLink").show();
+            $jq("#divDocumentNameEdit").show();
+
+            if (canEdit) {
+                $jq("#attachmentModalHeader").text("Edit Document");
+                $jq("#btnSaveEditAttach").show();
+                $jq("#btnCancelAttach").show();
+                $jq("#btnCloseAttach").hide();
+
+                $jq("#txtDocDesc").removeAttr("readonly");
+                $jq("#txtExpiryDate").removeAttr("disabled");
+                $jq("#datepickAttach .input-group-addon").css("display", "");
+                $jq("#AttachToEmail").removeAttr("disabled");
+                $jq(".cblDocType").removeAttr("disabled");
+            }
+            else {
+                $jq("#attachmentModalHeader").text("View Document");
+                $jq("#btnSaveEditAttach").hide();
+                $jq("#btnCancelAttach").hide();
+                $jq("#btnCloseAttach").show();
+
+                $jq("#txtDocDesc").attr("readonly", "readonly");
+                $jq("#txtExpiryDate").attr("disabled", "disabled");
+                $jq("#datepickAttach .input-group-addon").css("display", "none");
+                $jq("#AttachToEmail").attr("disabled", "disabled");
+                $jq(".cblDocType").attr("disabled", "disabled");
+            }
+
+            $jq("#editAttachmentModal").modal("show");
+        }
+
+        function onBtnDocumentCreateClick() {
+            resetValidation();
+            onClearAttachModal();
+            $jq("#attachmentModalHeader").text("New Document");
+            $jq("#divDocUpload").show();
+            $jq("#divDocumentName").show();
+            $jq("#btnSaveAttach").show();
+
+            $jq("#divDocLink").hide();
+            $jq("#divDocumentNameEdit").hide();
+            $jq("#btnSaveEditAttach").hide();
+
+            $jq("#btnSaveEditAttach").hide();
+            $jq("#btnCancelAttach").show();
+            $jq("#btnCloseAttach").hide();
+
+            $jq("#txtDocDesc").removeAttr("readonly");
+            $jq("#txtExpiryDate").removeAttr("disabled");
+            $jq("#datepickAttach .input-group-addon").css("display", "");
+            $jq("#AttachToEmail").removeAttr("disabled");
+            $jq(".cblDocType").removeAttr("disabled");
+
+
+            $jq("#editAttachmentModal").modal("show");
+        }
+
+        function onClearAttachModal() {
+            $jq("#txtFileAttach").val("");
+            $jq("#txtDocName").val("");
+            $jq("#txtDocDesc").val("");
+            $jq("#txtExpiryDate").val("");
+
+            $jq("#lnkDocLink").val("");
+            $jq("#DocNameEdit").val("");
+//        $jq("#ddlStatus").val("");
+
+            $jq("#AttachToEmail").attr("checked", false);
+
+            var checkBoxList = $jq(".cblDocType");
+            for (var i = 0; i < checkBoxList.length; i++) {
+                $jq(checkBoxList[i]).prop("checked", false);
+            }
+        }
+
+        function initAutoCompleteSrEmailTemplate() {
+
+            $jq("#ddlSrEmailTemplateId").select2({
+                placeholder: 'Auto complete'
+            }).on("change", function(evt) {
+
+                var value = $jq(this).val().trim();
+                if (value.length != 0) {
+                    // On Selected
+                    var text = $jq('#ddlSrEmailTemplateId').select2('data').text.trim();
+                    $jq("#hiddenSrEmailTemplateName").val(text);
+                } else {
+                    // On Clear
+                    $jq("#hiddenSrEmailTemplateName").val("");
+                }
+
+                onSelectEmailTemplate();
+            });
+        }
+
+        function onBtnSaveDraftClick(e) {
+            e.preventDefault();
+
+            var isClose = $jq("#IsClose")[0].checked;
+            if (isClose) {
+
+                doModalWithCloseEvent("dvAlertMsg", "Message Dialog", "ไม่สามารถ Save Draft ได้ เนื่องจากเลือก SR Status เป็น Closed", "");
+                return;
+            }
+
+            var actionUrl = "@Url.Action("SaveDraft", "ServiceRequest")";
+            ProcessSave(actionUrl);
+        }
+
+        function onBtnSaveClick(e) {
+            e.preventDefault();
+
+            var actionUrl = "@Url.Action("Save", "ServiceRequest")";
+            ProcessSave(actionUrl);
+        }
+
+        function ProcessSave(actionUrl) {
+
+            clearRequiredFieldForSave();
+
+            var isValidSendMail = checkValidSendMail();
+
+            var frm = $jq("#form1");
+
+            if (frm.valid() && isValidSendMail && chkCauseDetail()) {
+
+                encodeVerifyAnswerToHiddenField();
+
+                $jq("#txtSendMailBody").val($jq("#txtSendMailBody").code());
+
+                $jq("#dvLoading").show();
+
+                var frmData = $jq("#form1").serialize();
+
+                $jq.ajax({
+                        url: actionUrl,
+                        method: "POST",
+                        data: frmData
+                    })
+                    .done(function(result) {
+
+                        $jq("#dvLoading").hide();
+
+                        if (result.IsSuccess) {
+
+                            var detail = "";
+                            detail += "<br/> - SR No = " + result.SrNo;
+                            detail += "<br/> - Product Group = " + $jq("#hiddenProductGroupName").val();
+                            detail += "<br/> - Product = " + $jq("#hiddenProductName").val();
+                            detail += "<br/> - Campaign/Service = " + $jq("#hiddenCampaignServiceName").val();
+                            detail += "<br/> - Area = " + $jq("#hiddenAreaName").val();
+                            detail += "<br/> - Sub Area = " + $jq("#hiddenSubAreaName").val();
+                            detail += "<br/> - Type = " + $jq("#hiddenTypeName").val();
+                            detail += "<br/> - Owner SR = " + $jq("#hiddenOwnerUserFullName").val();
+                            detail += "<br/> - Owner Branch = " + $jq("#hiddenOwnerBranchName").val();
+
+                            var msg = "<strong>Save Success</strong>";
+                            msg += detail;
+
+                            var msgWarning = "";
+                            if (result.WarningMessages != null && result.WarningMessages.length > 0) {
+                                msgWarning = "<br/><br/><span style='color:#b94a48'><strong>Warning Message:</strong><br/>"
+                                for (var i = 0; i < result.WarningMessages.length; i++) {
+                                    msgWarning += (" - " + result.WarningMessages[i] + "<br/>");
+                                }
+                                msgWarning += "</span>";
+                            }
+
+                            if (result.IsSaveDraft) {
+                                doModalWithCloseEvent("dvAlertMsg", "Save Success", "Save Draft Success", "onSaveSuccess()");
+                                return;
+                            }
+
+                            doModalWithCloseEvent("dvAlertMsg", "Save Success", msg + msgWarning, "onSaveSuccess()");
+                            return;
+                        }
+
+                        doModal("dvAlertMsg", "Message Dialog", result.ErrorMessage, "", "");
+                    })
+                    .fail(function() {
+
+                        $jq("#dvLoading").hide();
+
+                        doModal("dvAlertMsg", "Message Dialog", "@Resource.Error_SaveFailed", "", "");
+                });
+            }
+
+            return true;
+        }
+
+        function onSaveSuccess() {
+            window.location = "@Url.Action("Index", "ServiceRequest")";
+        }
+
+        function clearRequiredFieldForSave() {
+            var srEmailTemplateId = $jq('#ddlSrEmailTemplateId').select2('val');
+            if (srEmailTemplateId.length == 0) {
+                // Not Send Email
+
+                // Not Required: Email Sender
+                if ($jq("#hiddenSendMailSender").val().length == 0) {
+                    $jq("#hiddenSendMailSender").val("-1");
+                }
+                // Not Required: Email To
+                if ($jq("#txtSendMailTo").val().length == 0) {
+                    $jq("#txtSendMailTo").val("-1");
+                }
+                // Not Required: Email Subject
+                if ($jq("#txtSendMailSubject").val().length == 0) {
+                    $jq("#txtSendMailSubject").val("-1");
+                }
+                // Not Required: Email Body
+                if ($jq("#txtSendMailBody").code().length == 0) {
+                    $jq("#txtSendMailBody").code("-1");
+                }
+
+            } else {
+                // Send Email
+
+                // Not Required: ActivityDescription
+                if ($jq("#txtActivityDescription").val().length == 0) {
+                    $jq("#txtActivityDescription").val("-1");
+                }
+            }
+        }
+
+        function encodeVerifyAnswerToHiddenField() {
+            var vaArray = new Array();
+
+            var verifyAnswers = $jq(".verify-answer");
+
+
+            for (var i = 0; i < verifyAnswers.length; i++) {
+                var a = verifyAnswers[i];
+
+                var name = $jq(a).attr("name");
+
+                var tokens = name.split("_");
+                var groupId = parseInt(tokens[1]);
+                var questionId = parseInt(tokens[2]);
+
+                vaArray.push({
+                    "GroupId": groupId,
+                    "QuestionId": questionId,
+                    "Value": $jq(a).val()
+                });
+            }
+
+            $jq("#hiddenVerifyAnswerJson").val(encodeURIComponent(JSON.stringify(vaArray)));
+        }
+
+        function checkValidSendMail() {
+
+            var isValid = true;
+
+            var emailTemplateId = $jq("#ddlSrEmailTemplateId").select2("val");
+            var isSendMail = (emailTemplateId != null && emailTemplateId.length > 0);
+            var msg = '';
+
+            if (isSendMail) {
+
+                var txtSendMailTo = $jq("#txtSendMailTo").val().trim();
+
+                if (txtSendMailTo.length > 0) {
+                    var isValidToEmails = checkValidEmails(txtSendMailTo);
+                    if (isValidToEmails) {
+                        // Valid Emails
+                        //$jq("#validationMessageSendMailTo").hide();
+                    } else {
+                        // Invalid Emails
+                        //$jq("#validationMessageSendMailTo").show();
+                        isValid = false;
+                        msg += "ที่อยู่อีเมล์ในช่อง \"TO\" ไม่ถูก Format sample@kiatnakin.co.th\r\n";
+                    }
+                }
+
+                var txtSendMailCc = $jq("#txtSendMailCc").val().trim();
+
+                if (txtSendMailCc.length > 0) {
+                    var isValidCcEmails = checkValidEmails(txtSendMailCc);
+                    if (isValidCcEmails) {
+                        // Valid Emails
+                        //$jq("#validationMessageSendMailCc").hide();
+                    } else {
+                        // Invalid Emails
+                        //$jq("#validationMessageSendMailCc").show();
+                        isValid = false;
+                        msg += "ที่อยู่อีเมล์ในช่อง \"Cc\" ไม่ถูก Format sample@kiatnakin.co.th\r\n";
+                    }
+                }
+
+                var txtSendMailBcc = $jq("#txtSendMailBcc").val().trim();
+
+                if (txtSendMailBcc.length > 0) {
+                    var isValidCcEmails = checkValidEmails(txtSendMailBcc);
+                    if (isValidCcEmails) {
+                        // Valid Emails
+                        //$jq("#validationMessageSendMailBcc").hide();
+                    } else {
+                        // Invalid Emails
+                        //$jq("#validationMessageSendMailBcc").show();
+                        isValid = false;
+                        msg += "ที่อยู่อีเมล์ในช่อง \"Bcc\" ไม่ถูก Format sample@kiatnakin.co.th\r\n";
+                    }
+                }
+
+                if (isValid == false) {
+                    isValid = confirm('Warning!\r\n' + msg + 'ต้องการบันทึกข้อมูลใช่หรือไม่ ?');
+                }
+            }
+            return isValid;
+        }
+
+        function initForm() {
+
+            if ($jq("#txtOwnerBranch").select2("val") == "-1") {
+                $jq("#txtOwnerBranch").select2("val", "");
+            }
+
+            if ($jq("#txtOwnerUser").select2("val") == "-1") {
+                $jq("#txtOwnerUser").select2("val", "");
+            }
+
+            if ($jq("#txtActivityDescription").val() == "-1") {
+                $jq("#txtActivityDescription").val("");
+            }
+
+            if ($jq("#hiddenSendMailSender").val() == "-1") {
+                $jq("#hiddenSendMailSender").val("");
+            }
+
+            if ($jq("#txtSendMailTo").val() == "-1") {
+                $jq("#txtSendMailTo").val("");
+            }
+
+            if ($jq("#txtSendMailCc").val() == "-1") {
+                $jq("#txtSendMailCc").val("");
+            }
+
+            if ($jq("#txtSendMailSubject").val() == "-1") {
+                $jq("#txtSendMailSubject").val("");
+            }
+
+            if ($jq("#hiddenActivityTypeId").val() == "-1") {
+                $jq("#hiddenActivityTypeId").val("");
+            }
+
+            if ($jq("#txtSendMailBody").code() == "-1") {
+                $jq("#txtSendMailBody").code("");
+            }
+        }
+
+        function initDefaultOwner() {
+
+            var ownerUserId = $jq("#txtOwnerUser").select2("val");
+
+            if (ownerUserId.length == 0 || ownerUserId == "-1") {
+                $jq("#txtOwnerUser").select2("val", $jq("#hiddenDefaultOwnerUserId").val());
+                $jq("#hiddenOwnerUserFullName").val($jq("#hiddenDefaultOwnerUserFullName").val());
+                $jq("#txtOwnerUser").select2("data", { id: $jq("#hiddenDefaultOwnerUserId").val(), text: $jq("#hiddenDefaultOwnerUserFullName").val() });
+
+                $jq("#txtOwnerBranch").select2("val", $jq("#hiddenDefaultOwnerBranchId").val());
+                $jq("#hiddenOwnerBranchName").val($jq("#hiddenDefaultOwnerBranchFullName").val());
+                $jq("#txtOwnerBranch").select2("data", { id: $jq("#hiddenDefaultOwnerBranchId").val(), text: $jq("#hiddenDefaultOwnerBranchFullName").val() });
+            }
+        }
+
+        function initAutoComplete() {
+            initAutoCompleteOwnerBranch();
+            initAutoCompleteOwnerSr();
+            initAutoCompleteDelegateBranch();
+            initAutoCompleteDelegateSr();
+
+            initAutoCompleteSrEmailTemplate();
+            initAutoCompleteActivityType();
+        }
+
+        function onSelectEmailTemplate() {
+
+            var value = $jq("#ddlSrEmailTemplateId").select2("val");
+
+            if (value.length != 0) {
+                // On Selected = Send Mail
+                var text = $jq('#ddlSrEmailTemplateId').select2('data').text.trim();
+                $jq("#hiddenSrEmailTemplateName").val(text);
+
+                $jq("#ddlActivityType").select2("val", "@Constants.EmailOutboundActivityTypeId");
+                $jq("#ddlActivityType").select2("disable");
+
+                $jq("#hiddenActivityTypeId").val("@Constants.EmailOutboundActivityTypeId");
+
+                $jq(".tr_send_mail").show();
+                $jq(".tr_not_send_mail").hide();
+
+                if ($jq("#txtSendMailTo").val() == "-1") {
+                    $jq("#txtSendMailTo").val("");
+                }
+
+                if (isLoadComplete) {
+                    reloadSrEmailTemplate();
+                }
+
+            } else {
+                // On Clear = Not Send Mail
+                $jq("#hiddenSrEmailTemplateName").val("");
+                $jq("#ddlActivityType").select2("val", "");
+                $jq("#ddlActivityType").select2("enable");
+
+                $jq(".tr_send_mail").hide();
+                $jq(".tr_not_send_mail").show();
+
+                if ($jq("#txtActivityDescription").val() == "-1") {
+                    $jq("#txtActivityDescription").val("");
+                }
+            }
+        }
+
+        function reloadSrEmailTemplate() {
+            var id = $jq('#ddlSrEmailTemplateId').select2('val');
+
+            if (id == "")
+                return;
+
+            var dataSend = genRenderEmailTemplateData(id);
+
+            $jq.ajax({
+                url: "@Url.Action("RenderEmailTemplate", "ServiceRequest")",
+                method: 'POST',
+                data: dataSend
+            }).done(function(result) {
+                if (result.IsSuccess) {
+                    var data = result.Data;
+                    $jq("#hiddenSendMailSender").val(data.Sender);
+                    //$jq("#txtSendMailSubject").val(fillContent(data.Subject));
+                    //$jq("#txtSendMailBody").code(fillContent(data.Content));
+                    $jq("#txtSendMailSubject").val(data.Subject);
+                    $jq("#txtSendMailBody").code(data.Content);
+
+                    if (data.Sender == null || data.Sender == "") {
+                        doModal('dvAlertMsg', 'Message Dialog', 'ไม่พบอีเมล์ของคุณในฐานข้อมูล จึงทำให้ไม่สามารถส่งอีเมล์ได้', '', '');
+                    }
+                }
+
+                }).fail(function () {
+                    doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+                });
+        }
+
+        function genRenderEmailTemplateData(id) {
+/*
+            var data = {
+                SrEmailTemplateId: id,
+                CustomerFirstNameTh: $jq('#hiddenCustomerFirstNameTh').val(),
+                CustomerLastNameTh: $jq('#hiddenCustomerLastNameTh').val(),
+                CustomerPhoneNo1: $jq('#hiddenCustomerPhoneNo1').val(),
+                AccountNo: $jq('#hiddenAccountNo').val(),
+                ContactFirstNameTh: $jq('#hiddenContactFirstNameTh').val(),
+                ContactLastNameTh: $jq('#hiddenContactLastNameTh').val(),
+                ContactPhoneNo1: $jq('#hiddenContactPhoneNo1').val(),
+                CreatorBranchCode: $jq('#hiddenCreatorBranchCode').val(),
+                CreatorBranchName: $jq('#hiddenCreatorBranchName').val(),
+                ProductGroupName: $jq('#hiddenProductGroupName').val(),
+                ProductName: $jq('#hiddenProductName').val(),
+                CampaignServiceName: $jq('#hiddenCampaignServiceName').val(),
+                TypeName: $jq('#hiddenTypeName').val(),
+                AreaName: $jq('#hiddenAreaName').val(),
+                SubAreaName: $jq('#hiddenSubAreaName').val(),
+                ChannelName: $jq('#hiddenChannelName').val(),
+                RemarkSubject: $jq('#txtSubject').val(),
+                Remark: $jq('#txtRemark').val(),
+                OwnerUserFullName: $jq('#hiddenOwnerUserFullName').val(),
+                OfficePhoneNo: $jq('#hiddenOfficePhoneNo').val(),
+                OfficeHour: $jq('#hiddenOfficeHour').val(),
+                CustomerCardNo: $jq('#hiddenCustomerCardNo').val(),
+                CPN_ProductGroupName: $jq('#hdfCPNProductGroupName').val(),
+                CPN_ProductName: $jq('#hdfCPNProductName').val(),
+                CPN_CampaignName: $jq('#hdfCPNCampaignName').val(),
+                CPN_SubjectName: $jq('#hdfCPNSubjectName').val(),
+                CPN_TypeName: $jq('#hdfCPNTypeName').val(),
+                CPN_RootCauseName: $jq('#hdfCPNRootCauseName').val(),
+                CPN_IssueName: $jq('#hdfCPNIssueName').val(),
+            };
+*/
+            $jq('#dvTarget').html('');
+            $jq('#dvTarget').append("<form method='POST' class='hidden'></form>");
+            $jq('#dvTarget form').append(`<input type="hidden" name="__RequestVerificationToken" value="${getAntiForgeryToken()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="SrEmailTemplateId" value="${id}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CustomerFirstNameTh" value="${$jq('#hiddenCustomerFirstNameTh').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CustomerLastNameTh" value="${$jq('#hiddenCustomerLastNameTh').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CustomerPhoneNo1" value="${$jq('#hiddenCustomerPhoneNo1').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="AccountNo" value="${$jq('#hiddenAccountNo').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="ContactFirstNameTh" value="${$jq('#hiddenContactFirstNameTh').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="ContactLastNameTh" value="${$jq('#hiddenContactLastNameTh').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="ContactPhoneNo1" value="${$jq('#hiddenContactPhoneNo1').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CreatorBranchCode" value="${$jq('#hiddenCreatorBranchCode').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CreatorBranchName" value="${$jq('#hiddenCreatorBranchName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CreatorUserFullName" value="${$jq('#hiddenCreatorUserFullName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="ProductGroupName" value="${$jq('#hiddenProductGroupName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="ProductName" value="${$jq('#hiddenProductName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CampaignServiceName" value="${$jq('#hiddenCampaignServiceName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="TypeName" value="${$jq('#hiddenTypeName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="AreaName" value="${$jq('#hiddenAreaName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="SubAreaName" value="${$jq('#hiddenSubAreaName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="ChannelName" value="${$jq('#hiddenChannelName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="RemarkSubject" value="${$jq('#txtSubject').val()}" />`);
+            //debugger;
+            //$jq('#dvTarget form').append(`<input type="hidden" name="Remark" value="${$jq('#txtRemark').val().replace(/"/g, "&quot;").replace(/'/g, "&apos;")}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="Remark" value="${$jq('#hdfRemark3').val().replace(/"/g, "&quot;").replace(/'/g, "&apos;")}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="OwnerUserFullName" value="${$jq('#hiddenOwnerUserFullName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="OfficePhoneNo" value="${$jq('#hiddenOfficePhoneNo').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="OfficeHour" value="${$jq('#hiddenOfficeHour').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CustomerCardNo" value="${$jq('#hiddenCustomerCardNo').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CPN_ProductGroupName" value="${$jq('#hdfCPNProductGroupName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CPN_ProductName" value="${$jq('#hdfCPNProductName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CPN_CampaignName" value="${$jq('#hdfCPNCampaignName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CPN_SubjectName" value="${$jq('#hdfCPNSubjectName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CPN_TypeName" value="${$jq('#hdfCPNTypeName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CPN_RootCauseName" value="${$jq('#hdfCPNRootCauseName').val()}" />`);
+            $jq('#dvTarget form').append(`<input type="hidden" name="CPN_IssueName" value="${$jq('#hdfCPNIssueName').val()}" />`);
+            return $jq('#dvTarget form').serialize();
+        }
+
+/* ย้ายไปรวมกันที่ฝั่ง Server
+        function fillContent(original) {
+
+            var tmp = original;
+
+            tmp = replaceAllIfNotEmpty(tmp, '%CUSTOMER_FIRST_NAME%', $jq('#hiddenCustomerFirstNameTh').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%CUSTOMER_LAST_NAME%', $jq('#hiddenCustomerLastNameTh').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%CUSTOMER_PHONE_NO%', $jq('#hiddenCustomerPhoneNo1').val());
+
+            tmp = replaceAllIfNotEmpty(tmp, '%ACCOUNT_NO%', $jq('#hiddenAccountNo').val());
+
+            tmp = replaceAllIfNotEmpty(tmp, '%CONTACT_FIRST_NAME%', $jq('#hiddenContactFirstNameTh').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%CONTACT_LAST_NAME%', $jq('#hiddenContactLastNameTh').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%CONTACT_PHONE_NO%', $jq('#hiddenContactPhoneNo1').val());
+
+
+            tmp = replaceAllIfNotEmpty(tmp, '%BRANCH_CODE%', $jq('#hiddenCreatorBranchCode').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%BRANCH_NAME%', $jq('#hiddenCreatorBranchName').val());
+
+            tmp = replaceAllIfNotEmpty(tmp, '%PRODUCTGROUP_NAME%', $jq('#hiddenProductGroupName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%PRODUCT_NAME%', $jq('#hiddenProductName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%CAMPAIGNSERVICE_NAME%', $jq('#hiddenCampaignServiceName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%TYPE_NAME%', $jq('#hiddenTypeName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%AREA_NAME%', $jq('#hiddenAreaName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%SUBAREA_NAME%', $jq('#hiddenSubAreaName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%CHANNEL_NAME%', $jq('#hiddenChannelName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%REMARK%', $jq('#txtRemark').val());
+
+            tmp = replaceAllIfNotEmpty(tmp, '%OWNER%', $jq('#hiddenOwnerUserFullName').val());
+
+            var customerFirstName = "";
+            if ($jq('#hiddenCustomerFirstNameTh').length > 0)
+                customerFirstName = $jq('#hiddenCustomerFirstNameTh').val();
+
+            var customerLastName = "";
+            if ($jq('#hiddenCustomerLastNameTh').length > 0)
+                customerLastName = $jq('#hiddenCustomerLastNameTh').val();
+
+            tmp = replaceAllIfNotEmpty(tmp, '%MARKETING_NAME%', customerFirstName + " " + customerLastName);
+
+            tmp = replaceAllIfNotEmpty(tmp, '%CREATE_BY%', $jq('#hiddenCreatorUserFullName').val());
+
+            tmp = replaceAllIfNotEmpty(tmp, '%OFFICE_PHONE_NO%', $jq('#hiddenOfficePhoneNo').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%OFFICE_HOUR%', $jq('#hiddenOfficeHour').val());
+            //----
+            tmp = replaceAllIfNotEmpty(tmp, '%SUBSCRIPTION_ID%', $jq('#hiddenCustomerCardNo').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%CONTACT_NAME%', `${$jq('#hiddenContactFirstNameTh').val()} ${$jq('#hiddenContactLastNameTh').val()}`);
+            tmp = replaceAllIfNotEmpty(tmp, '%CPN_PRODUCT_GROUP_NAME%', $jq('#hdfCPNProductGroupName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%CPN_PRODUCT_NAME%', $jq('#hdfCPNProductName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%CPN_CAMPAIGN_NAME%', $jq('#hdfCPNCampaignName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%COMPLAINT_SUBJECT_NAME%', $jq('#hdfCPNSubjectName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%COMPLAINT_TYPE_NAME%', $jq('#hdfCPNTypeName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%ROOT_CAUSE_NAME%', $jq('#hdfCPNRootCauseName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%COMPLAINT_ISSUES_NAME%', $jq('#hdfCPNIssueName').val());
+            tmp = replaceAllIfNotEmpty(tmp, '%SUBJECT%', $jq('#txtSubject').val());
+
+            return tmp;
+        }
+*/
+        function initAutoCompleteActivityType() {
+
+            $jq("#ddlActivityType").select2({
+                placeholder: 'Auto complete'
+            }).on("change", function(evt) {
+
+                var value = $jq(this).val().trim();
+                if (value.length != 0 && value != "@Resource.Ddl_PleaseSelect" && value != "-1") {
+                    // On Selected
+                    $jq("#hiddenActivityTypeId").val($jq('#ddlActivityType').select2('val'));
+                } else {
+                    // On Clear
+                    $jq("#hiddenActivityTypeId").val("");
+                }
+            });
+        }
+
+        function initAutoCompleteOwnerBranch() {
+            $jq("#txtOwnerBranch").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchBranch", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function(keyword) {
+                        return {
+                            keyword: keyword
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function(item) {
+                                return {
+                                    text: item.BranchName,
+                                    id: item.BranchId
+                                }
+                            })
+                        };
+                    },
+                    error: function(xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                },
+                initSelection: function(element, callback) {
+                    var data = { id: "@Model.OwnerBranchId", text: "@Model.OwnerBranchName" };
+
+                    if (data.text == null || data.text.trim().length == 0) {
+                        var text = $jq("#hiddenOwnerBranchName").val();
+                        if (text != null && text.trim().length > 0) {
+                            data.text = text;
+                        }
+                    }
+                    callback(data);
+                }
+            }).on("change", function(evt) {
+
+                if ($jq(this).val().length != 0) {
+
+                    $jq("#txtOwnerUser").select2("enable");
+
+                    // Clear User
+                    $jq("#txtOwnerUser").select2("val", "");
+                    $jq("#hiddenOwnerUserFullName").val("");
+
+                    var text = $jq('#txtOwnerBranch').select2('data').text.trim();
+                    $jq("#hiddenOwnerBranchName").val(text);
+                } else {
+                    $jq("#txtOwnerUser").select2("disable");
+                    $jq("#txtOwnerUser").select2("val", "");
+
+                    $jq("#hiddenOwnerBranchName").val("");
+                    $jq("#hiddenOwnerUserFullName").val("");
+                }
+            });
+        }
+
+        function initAutoCompleteOwnerSr() {
+
+            $jq("#txtOwnerUser").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchUserWithJobOnHand", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            branchId: $jq("#txtOwnerBranch").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.UserDisplayName,
+                                    id: item.UserId
+                                }
+                            })
+                        };
+                    },
+                    error: function (xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                },
+                initSelection: function (element, callback) {
+                    var data = { id: "@Model.OwnerUserId", text: "@Model.OwnerUserFullName" };
+
+                    if (data.text == null || data.text.trim().length == 0) {
+                        var text = $jq("#hiddenOwnerUserFullName").val();
+                        if (text != null && text.trim().length > 0) {
+                            data.text = text;
+                        }
+                    }
+                    callback(data);
+                }
+            }).on("change", function (evt) {
+
+                if ($jq(this).val().length != 0) {
+                    var text = $jq('#txtOwnerUser').select2('data').text.trim();
+                    $jq("#hiddenOwnerUserFullName").val(text);
+                    var uid = $jq('#txtOwnerUser').val();
+                    var chkUser = [];
+                    var unChkUser = [];
+
+                    @if (Model.CheckMailToDelegateUsers != null) {
+                        foreach (var d in Model.CheckMailToDelegateUsers)
+                        {
+                            @:chkUser.push("@d");
+                        }
+                    }
+
+                    @if (Model.UnCheckMailToDelegateUsers != null) {
+                        foreach (var d in Model.UnCheckMailToDelegateUsers)
+                        {
+                            @:unChkUser.push("@d");
+                        }
+                    }
+
+                    if (chkUser.indexOf(uid) != -1) {
+                        $jq("#chkIsEmailDelegate").prop("checked", "checked");
+                    } else if (unChkUser.indexOf(uid) != -1) {
+                        $jq("#chkIsEmailDelegate").removeProp("checked");
+                    }
+                } else {
+                    $jq("#hiddenOwnerUserFullName").val("");
+                }
+
+            });
+        }
+
+        function initAutoCompleteDelegateBranch() {
+
+            $jq("#txtDelegateBranch").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchBranch", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function(keyword) {
+                        return {
+                            keyword: keyword
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function(item) {
+                                return {
+                                    text: item.BranchName,
+                                    id: item.BranchId
+                                }
+                            })
+                        };
+                    },
+                    error: function(xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                },
+                initSelection: function(element, callback) {
+                    var data = { id: "@Model.DelegateBranchId", text: "@Model.DelegateBranchName" };
+
+                    if (data.text == null || data.text.trim().length == 0) {
+                        var text = $jq("#hiddenDelegateBranchName").val();
+                        if (text != null && text.trim().length > 0) {
+                            data.text = text;
+                        }
+                    }
+                    callback(data);
+                }
+            }).on("change", function(evt) {
+
+                if ($jq(this).val().length != 0) {
+                    $jq("#txtDelegateUser").select2("enable");
+
+                    // Clear User
+                    $jq("#txtDelegateUser").select2("val", "");
+                    $jq("#hiddenDelegateUserFullName").val("");
+
+                    var text = $jq('#txtDelegateBranch').select2('data').text.trim();
+                    $jq("#hiddenDelegateBranchName").val(text);
+                } else {
+                    $jq("#txtDelegateUser").select2("disable");
+                    $jq("#txtDelegateUser").select2("val", "");
+
+                    $jq("#hiddenDelegateBranchName").val("");
+                    $jq("#hiddenDelegateUserFullName").val("");
+                }
+            });
+        }
+
+        function initAutoCompleteDelegateSr() {
+
+            $jq("#txtDelegateUser").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+                minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+                language: "th",
+                allowClear: true,
+                ajax: {
+                    url: "@Url.Action("AutoCompleteSearchUserWithJobOnHand", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function(keyword) {
+                        return {
+                            keyword: keyword,
+                            branchId: $jq("#txtDelegateBranch").val()
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function(item) {
+                                return {
+                                    text: item.UserDisplayName,
+                                    id: item.UserId
+                                }
+                            })
+                        };
+                    },
+                    error: function(xhr) {
+                        var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                        ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                    }
+                },
+                initSelection: function(element, callback) {
+                    var data = { id: "@Model.DelegateUserId", text: "@Model.DelegateUserFullName" };
+
+                    if (data.text == null || data.text.trim().length == 0) {
+                        var text = $jq("#hiddenDelegateUserFullName").val();
+                        if (text != null && text.trim().length > 0) {
+                            data.text = text;
+                        }
+                    }
+                    callback(data);
+                }
+            }).on("change", function(evt) {
+
+                if ($jq(this).val().length != 0) {
+                    var value = $jq('#txtDelegateUser').select2('val');
+                    var text = $jq('#txtDelegateUser').select2('data').text.trim();
+                    $jq("#hiddenDelegateUserFullName").val(text);
+                } else {
+                    $jq("#hiddenDelegateUserFullName").val("");
+                }
+            });
+        }
+        function onlinkRemarkClick() {
+            $jq("#modalRemark").modal("show");
+        }
+
+        function chkCauseDetail() {
+            var succ = true;
+            var msg = '';
+            $jq("[id^=txtCPNCause]").each(function (idx) {
+                if ($jq(this).is(':visible') && $jq(this).val().trim().length == 0) {
+                    succ = false;
+                    msg += `หากพบสาเหตุเป็น ${$jq(this).prop('id').replace("txtCPNCause", "").replace("Detail", "")} กรุณาระบุรายละเอียด!<br />`;
+                }
+            });
+
+            if (!succ && msg.trim().length > 0) {
+                doModal('dvAlertMsg', 'Message Dialog', msg, '', '');
+            }
+
+            return succ;
+        }
+    </script>
+}

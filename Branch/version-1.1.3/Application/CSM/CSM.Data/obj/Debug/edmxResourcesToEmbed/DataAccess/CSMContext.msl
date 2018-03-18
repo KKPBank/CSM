@@ -1,0 +1,2252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CSMModelStoreContainer" CdmEntityContainer="CSMContext">
+    <FunctionImportMapping FunctionImportName="SP_GET_NEXT_ATTACHMENT_SEQ" FunctionName="CSMModel.Store.SP_GET_NEXT_ATTACHMENT_SEQ" />
+    <FunctionImportMapping FunctionImportName="SP_GET_NEXT_SR_SEQ" FunctionName="CSMModel.Store.SP_GET_NEXT_SR_SEQ" />
+    <FunctionImportMapping FunctionImportName="SP_IMPORT_BDW_CONTACT" FunctionName="CSMModel.Store.SP_IMPORT_BDW_CONTACT" />
+    <FunctionImportMapping FunctionImportName="SP_IMPORT_CIS_ACCOUNT_ADDRESS" FunctionName="CSMModel.Store.SP_IMPORT_CIS_ACCOUNT_ADDRESS" />
+    <FunctionImportMapping FunctionImportName="SP_IMPORT_CIS_ACCOUNT_EMAIL" FunctionName="CSMModel.Store.SP_IMPORT_CIS_ACCOUNT_EMAIL" />
+    <FunctionImportMapping FunctionImportName="SP_IMPORT_CIS_ACCOUNT_PHONE" FunctionName="CSMModel.Store.SP_IMPORT_CIS_ACCOUNT_PHONE" />
+    <FunctionImportMapping FunctionImportName="SP_IMPORT_CIS_CORPORATE" FunctionName="CSMModel.Store.SP_IMPORT_CIS_CORPORATE" />
+    <FunctionImportMapping FunctionImportName="SP_IMPORT_CIS_CUSTOMER_EMAIL" FunctionName="CSMModel.Store.SP_IMPORT_CIS_CUSTOMER_EMAIL" />
+    <FunctionImportMapping FunctionImportName="SP_IMPORT_CIS_CUSTOMER_PHONE" FunctionName="CSMModel.Store.SP_IMPORT_CIS_CUSTOMER_PHONE" />
+    <FunctionImportMapping FunctionImportName="SP_IMPORT_CIS_INDIVIDUAL" FunctionName="CSMModel.Store.SP_IMPORT_CIS_INDIVIDUAL" />
+    <FunctionImportMapping FunctionImportName="SP_IMPORT_CIS_SUBSCRIPTION" FunctionName="CSMModel.Store.SP_IMPORT_CIS_SUBSCRIPTION" />
+    <FunctionImportMapping FunctionImportName="SP_IMPORT_CIS_SUBSCRIPTION_TYPE" FunctionName="CSMModel.Store.SP_IMPORT_CIS_SUBSCRIPTION_TYPE" />
+    <EntitySetMapping Name="TB_C_ERROR">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_ERROR">
+        <MappingFragment StoreEntitySet="TB_C_ERROR">
+          <ScalarProperty Name="IS_INQUIRY" ColumnName="IS_INQUIRY" />
+          <ScalarProperty Name="ERROR_SERVICE" ColumnName="ERROR_SERVICE" />
+          <ScalarProperty Name="ERROR_SYSTEM" ColumnName="ERROR_SYSTEM" />
+          <ScalarProperty Name="ERROR_DESC" ColumnName="ERROR_DESC" />
+          <ScalarProperty Name="ERROR_CODE" ColumnName="ERROR_CODE" />
+          <ScalarProperty Name="ERROR_ID" ColumnName="ERROR_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_FONT">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_FONT">
+        <MappingFragment StoreEntitySet="TB_C_FONT">
+          <ScalarProperty Name="FONT_NAME" ColumnName="FONT_NAME" />
+          <ScalarProperty Name="FONT_ID" ColumnName="FONT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_JOB_STATUS">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_JOB_STATUS">
+        <MappingFragment StoreEntitySet="TB_C_JOB_STATUS">
+          <ScalarProperty Name="STATUS_VALUE" ColumnName="STATUS_VALUE" />
+          <ScalarProperty Name="STATUS_NAME" ColumnName="STATUS_NAME" />
+          <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_MENU">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_MENU">
+        <MappingFragment StoreEntitySet="TB_C_MENU">
+          <ScalarProperty Name="CSS_CLASS" ColumnName="CSS_CLASS" />
+          <ScalarProperty Name="CONTROLLER_NAME" ColumnName="CONTROLLER_NAME" />
+          <ScalarProperty Name="ACTION_NAME" ColumnName="ACTION_NAME" />
+          <ScalarProperty Name="MENU_CODE" ColumnName="MENU_CODE" />
+          <ScalarProperty Name="MENU_NAME" ColumnName="MENU_NAME" />
+          <ScalarProperty Name="MENU_ID" ColumnName="MENU_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_PARAMETER">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_PARAMETER">
+        <MappingFragment StoreEntitySet="TB_C_PARAMETER">
+          <ScalarProperty Name="PARAMTER_TYPE" ColumnName="PARAMTER_TYPE" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="PARAMETER_DESC" ColumnName="PARAMETER_DESC" />
+          <ScalarProperty Name="PARAMETER_VALUE" ColumnName="PARAMETER_VALUE" />
+          <ScalarProperty Name="PARAMETER_NAME" ColumnName="PARAMETER_NAME" />
+          <ScalarProperty Name="PARAMETER_ID" ColumnName="PARAMETER_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_ROLE">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_ROLE">
+        <MappingFragment StoreEntitySet="TB_C_ROLE">
+          <ScalarProperty Name="ROLE_VALUE" ColumnName="ROLE_VALUE" />
+          <ScalarProperty Name="ROLE_CODE" ColumnName="ROLE_CODE" />
+          <ScalarProperty Name="ROLE_NAME" ColumnName="ROLE_NAME" />
+          <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_ROLE_SCREEN">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_ROLE_SCREEN">
+        <MappingFragment StoreEntitySet="TB_C_ROLE_SCREEN">
+          <ScalarProperty Name="SCREEN_ID" ColumnName="SCREEN_ID" />
+          <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+          <ScalarProperty Name="ROLE_SCREEN_ID" ColumnName="ROLE_SCREEN_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_ROLE_SR_PAGE">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_ROLE_SR_PAGE">
+        <MappingFragment StoreEntitySet="TB_C_ROLE_SR_PAGE">
+          <ScalarProperty Name="SR_PAGE_ID" ColumnName="SR_PAGE_ID" />
+          <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+          <ScalarProperty Name="ROLE_SR_PAGE_ID" ColumnName="ROLE_SR_PAGE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_RULE_OPTION">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_RULE_OPTION">
+        <MappingFragment StoreEntitySet="TB_C_RULE_OPTION">
+          <ScalarProperty Name="SYSTEM_VIEW" ColumnName="SYSTEM_VIEW" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+          <ScalarProperty Name="IS_DELETE" ColumnName="IS_DELETE" />
+          <ScalarProperty Name="OPTION_CREATE_BY" ColumnName="OPTION_CREATE_BY" />
+          <ScalarProperty Name="OPTION_SUB_CODE" ColumnName="OPTION_SUB_CODE" />
+          <ScalarProperty Name="SEQ" ColumnName="SEQ" />
+          <ScalarProperty Name="OPTION_TYPE" ColumnName="OPTION_TYPE" />
+          <ScalarProperty Name="OPTION_DESC" ColumnName="OPTION_DESC" />
+          <ScalarProperty Name="OPTION_CODE" ColumnName="OPTION_CODE" />
+          <ScalarProperty Name="RULE_OPTION_ID" ColumnName="RULE_OPTION_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_SCREEN">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_SCREEN">
+        <MappingFragment StoreEntitySet="TB_C_SCREEN">
+          <ScalarProperty Name="CONTROLLER_NAME" ColumnName="CONTROLLER_NAME" />
+          <ScalarProperty Name="ACTION_NAME" ColumnName="ACTION_NAME" />
+          <ScalarProperty Name="SCREEN_CODE" ColumnName="SCREEN_CODE" />
+          <ScalarProperty Name="SCREEN_NAME" ColumnName="SCREEN_NAME" />
+          <ScalarProperty Name="MENU_ID" ColumnName="MENU_ID" />
+          <ScalarProperty Name="SCREEN_ID" ColumnName="SCREEN_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_SR_ACTIVITY_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_SR_ACTIVITY_TYPE">
+        <MappingFragment StoreEntitySet="TB_C_SR_ACTIVITY_TYPE">
+          <ScalarProperty Name="SR_ACTIVITY_TYPE_NAME" ColumnName="SR_ACTIVITY_TYPE_NAME" />
+          <ScalarProperty Name="SR_ACTIVITY_TYPE_ID" ColumnName="SR_ACTIVITY_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_SR_EMAIL_TEMPLATE">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_SR_EMAIL_TEMPLATE">
+        <MappingFragment StoreEntitySet="TB_C_SR_EMAIL_TEMPLATE">
+          <ScalarProperty Name="SR_EMAIL_TEMPLATE_REMARK" ColumnName="SR_EMAIL_TEMPLATE_REMARK" />
+          <ScalarProperty Name="SR_EMAIL_TEMPLATE_CONTENT" ColumnName="SR_EMAIL_TEMPLATE_CONTENT" />
+          <ScalarProperty Name="SR_EMAIL_TEMPLATE_SUBJECT" ColumnName="SR_EMAIL_TEMPLATE_SUBJECT" />
+          <ScalarProperty Name="SR_EMAIL_TEMPLATE_SENDER" ColumnName="SR_EMAIL_TEMPLATE_SENDER" />
+          <ScalarProperty Name="SR_EMAIL_TEMPLATE_TYPE" ColumnName="SR_EMAIL_TEMPLATE_TYPE" />
+          <ScalarProperty Name="SR_EMAIL_TEMPLATE_NAME" ColumnName="SR_EMAIL_TEMPLATE_NAME" />
+          <ScalarProperty Name="SR_EMAIL_TEMPLATE_CODE" ColumnName="SR_EMAIL_TEMPLATE_CODE" />
+          <ScalarProperty Name="SR_EMAIL_TEMPLATE_ID" ColumnName="SR_EMAIL_TEMPLATE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_SR_PAGE">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_SR_PAGE">
+        <MappingFragment StoreEntitySet="TB_C_SR_PAGE">
+          <ScalarProperty Name="SR_PAGE_NAME" ColumnName="SR_PAGE_NAME" />
+          <ScalarProperty Name="SR_PAGE_CODE" ColumnName="SR_PAGE_CODE" />
+          <ScalarProperty Name="SR_PAGE_ID" ColumnName="SR_PAGE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_SR_STATUS">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_SR_STATUS">
+        <MappingFragment StoreEntitySet="TB_C_SR_STATUS">
+          <ScalarProperty Name="SR_STATUS_NAME" ColumnName="SR_STATUS_NAME" />
+          <ScalarProperty Name="SR_STATUS_CODE" ColumnName="SR_STATUS_CODE" />
+          <ScalarProperty Name="SR_STATUS_ID" ColumnName="SR_STATUS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_SR_STATUS_CHANGE">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_SR_STATUS_CHANGE">
+        <MappingFragment StoreEntitySet="TB_C_SR_STATUS_CHANGE">
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+          <ScalarProperty Name="SUBAREA_ID" ColumnName="SUBAREA_ID" />
+          <ScalarProperty Name="AREA_ID" ColumnName="AREA_ID" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_ID" ColumnName="CAMPAIGNSERVICE_ID" />
+          <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+          <ScalarProperty Name="PRODUCTGROUP_ID" ColumnName="PRODUCTGROUP_ID" />
+          <ScalarProperty Name="TO_SR_STATUS_ID" ColumnName="TO_SR_STATUS_ID" />
+          <ScalarProperty Name="FROM_SR_STATUS_ID" ColumnName="FROM_SR_STATUS_ID" />
+          <ScalarProperty Name="SR_STATUS_CHANGE_ID" ColumnName="SR_STATUS_CHANGE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_HP_ACTIVITY">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_HP_ACTIVITY">
+        <MappingFragment StoreEntitySet="TB_I_HP_ACTIVITY">
+          <ScalarProperty Name="SR_STATUS_ID" ColumnName="SR_STATUS_ID" />
+          <ScalarProperty Name="SR_ID" ColumnName="SR_ID" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="CONTACT_EMAIL" ColumnName="CONTACT_EMAIL" />
+          <ScalarProperty Name="CONTACT_FAX" ColumnName="CONTACT_FAX" />
+          <ScalarProperty Name="PLAN_START_DATE" ColumnName="PLAN_START_DATE" />
+          <ScalarProperty Name="CALL_BACK_FLG" ColumnName="CALL_BACK_FLG" />
+          <ScalarProperty Name="ASSET_INSPECT_FLG" ColumnName="ASSET_INSPECT_FLG" />
+          <ScalarProperty Name="PRI_ISSUED_FLG" ColumnName="PRI_ISSUED_FLG" />
+          <ScalarProperty Name="DOC_REQ_FLG" ColumnName="DOC_REQ_FLG" />
+          <ScalarProperty Name="LOC_ENQ_FLG" ColumnName="LOC_ENQ_FLG" />
+          <ScalarProperty Name="ENQ_FLG" ColumnName="ENQ_FLG" />
+          <ScalarProperty Name="CALL_FLG" ColumnName="CALL_FLG" />
+          <ScalarProperty Name="SR_NO" ColumnName="SR_NO" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="OWNER_PER_ID" ColumnName="OWNER_PER_ID" />
+          <ScalarProperty Name="OWNER_LOGIN" ColumnName="OWNER_LOGIN" />
+          <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+          <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+          <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="DONE_FLG" ColumnName="DONE_FLG" />
+          <ScalarProperty Name="CONTACT_PHONE" ColumnName="CONTACT_PHONE" />
+          <ScalarProperty Name="CONTACT_LAST_NAME" ColumnName="CONTACT_LAST_NAME" />
+          <ScalarProperty Name="CONTACT_NAME" ColumnName="CONTACT_NAME" />
+          <ScalarProperty Name="CALL_ID" ColumnName="CALL_ID" />
+          <ScalarProperty Name="A_NO" ColumnName="A_NO" />
+          <ScalarProperty Name="CONTACT_INFO" ColumnName="CONTACT_INFO" />
+          <ScalarProperty Name="ASSET_INFO" ColumnName="ASSET_INFO" />
+          <ScalarProperty Name="COMMENT" ColumnName="COMMENT" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="AREA" ColumnName="AREA" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="CHANNEL" ColumnName="CHANNEL" />
+          <ScalarProperty Name="HP_ACTIVITY_ID" ColumnName="HP_ACTIVITY_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_PROPERTY">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_PROPERTY">
+        <MappingFragment StoreEntitySet="TB_I_PROPERTY">
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="MOBILE_NO" ColumnName="MOBILE_NO" />
+          <ScalarProperty Name="PHONE_NO" ColumnName="PHONE_NO" />
+          <ScalarProperty Name="SALE_NAME" ColumnName="SALE_NAME" />
+          <ScalarProperty Name="AST_PURCH_LOC_DESC" ColumnName="AST_PURCH_LOC_DESC" />
+          <ScalarProperty Name="AST_LOT_NUM" ColumnName="AST_LOT_NUM" />
+          <ScalarProperty Name="AST_REF_NUMBER_1" ColumnName="AST_REF_NUMBER_1" />
+          <ScalarProperty Name="AST_COMMENTS" ColumnName="AST_COMMENTS" />
+          <ScalarProperty Name="AST_NAME" ColumnName="AST_NAME" />
+          <ScalarProperty Name="AST_DESC_TEXT" ColumnName="AST_DESC_TEXT" />
+          <ScalarProperty Name="AST_STATUS_CD" ColumnName="AST_STATUS_CD" />
+          <ScalarProperty Name="AST_TRADEINTYPE_CD" ColumnName="AST_TRADEINTYPE_CD" />
+          <ScalarProperty Name="AST_TYPE_CD" ColumnName="AST_TYPE_CD" />
+          <ScalarProperty Name="AST_ASSET_NUM" ColumnName="AST_ASSET_NUM" />
+          <ScalarProperty Name="IF_ROW_BATCH_NUM" ColumnName="IF_ROW_BATCH_NUM" />
+          <ScalarProperty Name="IF_ROW_STAT" ColumnName="IF_ROW_STAT" />
+          <ScalarProperty Name="ROW_ID" ColumnName="ROW_ID" />
+          <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+          <ScalarProperty Name="PROPERTY_ID" ColumnName="PROPERTY_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_SALE_ZONE">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_SALE_ZONE">
+        <MappingFragment StoreEntitySet="TB_I_SALE_ZONE">
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="MOBILE_NO" ColumnName="MOBILE_NO" />
+          <ScalarProperty Name="EMPLOYEE_NO" ColumnName="EMPLOYEE_NO" />
+          <ScalarProperty Name="PHONE_NO" ColumnName="PHONE_NO" />
+          <ScalarProperty Name="SALE_NAME" ColumnName="SALE_NAME" />
+          <ScalarProperty Name="PROVINCE" ColumnName="PROVINCE" />
+          <ScalarProperty Name="AMPHUR" ColumnName="AMPHUR" />
+          <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+          <ScalarProperty Name="SALE_ZONE_ID" ColumnName="SALE_ZONE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_L_AUDIT_LOG">
+      <EntityTypeMapping TypeName="CSMModel.TB_L_AUDIT_LOG">
+        <MappingFragment StoreEntitySet="TB_L_AUDIT_LOG">
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="IP_ADDRESS" ColumnName="IP_ADDRESS" />
+          <ScalarProperty Name="MODULE" ColumnName="MODULE" />
+          <ScalarProperty Name="DETAIL" ColumnName="DETAIL" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="ACTION" ColumnName="ACTION" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="AUDIT_LOG_ID" ColumnName="AUDIT_LOG_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_L_CUSTOMER_LOG">
+      <EntityTypeMapping TypeName="CSMModel.TB_L_CUSTOMER_LOG">
+        <MappingFragment StoreEntitySet="TB_L_CUSTOMER_LOG">
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="DETAIL" ColumnName="DETAIL" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="LOG_ID" ColumnName="LOG_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_L_LOGIN">
+      <EntityTypeMapping TypeName="CSMModel.TB_L_LOGIN">
+        <MappingFragment StoreEntitySet="TB_L_LOGIN">
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="LOGGED_IN" ColumnName="LOGGED_IN" />
+          <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+          <ScalarProperty Name="LOGIN_NAME" ColumnName="LOGIN_NAME" />
+          <ScalarProperty Name="LOGIN_ID" ColumnName="LOGIN_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_L_SR_LOGGING">
+      <EntityTypeMapping TypeName="CSMModel.TB_L_SR_LOGGING">
+        <MappingFragment StoreEntitySet="TB_L_SR_LOGGING">
+          <ScalarProperty Name="CREATE_USERNAME" ColumnName="CREATE_USERNAME" />
+          <ScalarProperty Name="WORKING_MINUTE" ColumnName="WORKING_MINUTE" />
+          <ScalarProperty Name="OVER_SLA_TIMES" ColumnName="OVER_SLA_TIMES" />
+          <ScalarProperty Name="OVER_SLA_MINUTE" ColumnName="OVER_SLA_MINUTE" />
+          <ScalarProperty Name="DELEGATE_USER_ID_NEW" ColumnName="DELEGATE_USER_ID_NEW" />
+          <ScalarProperty Name="DELEGATE_USER_ID_OLD" ColumnName="DELEGATE_USER_ID_OLD" />
+          <ScalarProperty Name="OWNER_USER_ID_NEW" ColumnName="OWNER_USER_ID_NEW" />
+          <ScalarProperty Name="OWNER_USER_ID_OLD" ColumnName="OWNER_USER_ID_OLD" />
+          <ScalarProperty Name="SR_STATUS_ID_NEW" ColumnName="SR_STATUS_ID_NEW" />
+          <ScalarProperty Name="SR_STATUS_ID_OLD" ColumnName="SR_STATUS_ID_OLD" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="SR_LOGGING_ACTION" ColumnName="SR_LOGGING_ACTION" />
+          <ScalarProperty Name="SR_LOGGING_SYSTEM_ACTION" ColumnName="SR_LOGGING_SYSTEM_ACTION" />
+          <ScalarProperty Name="SR_ACTIVITY_ID" ColumnName="SR_ACTIVITY_ID" />
+          <ScalarProperty Name="SR_ID" ColumnName="SR_ID" />
+          <ScalarProperty Name="SR_LOGGING_ID" ColumnName="SR_LOGGING_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_ACCOUNT">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_ACCOUNT">
+        <MappingFragment StoreEntitySet="TB_M_ACCOUNT">
+          <ScalarProperty Name="CIS_SUBSCRIPTION_ID" ColumnName="CIS_SUBSCRIPTION_ID" />
+          <ScalarProperty Name="ACCOUNT_DESC" ColumnName="ACCOUNT_DESC" />
+          <ScalarProperty Name="BRANCH_CODE" ColumnName="BRANCH_CODE" />
+          <ScalarProperty Name="IS_DEFAULT" ColumnName="IS_DEFAULT" />
+          <ScalarProperty Name="SUBSCRIPTION_DESC" ColumnName="SUBSCRIPTION_DESC" />
+          <ScalarProperty Name="SUBSCRIPTION_CODE" ColumnName="SUBSCRIPTION_CODE" />
+          <ScalarProperty Name="PRODUCT_DESC" ColumnName="PRODUCT_DESC" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="GRADE" ColumnName="GRADE" />
+          <ScalarProperty Name="CAR_NO" ColumnName="CAR_NO" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="EXPIRY_DATE" ColumnName="EXPIRY_DATE" />
+          <ScalarProperty Name="EFFECTIVE_DATE" ColumnName="EFFECTIVE_DATE" />
+          <ScalarProperty Name="BRANCH_NAME" ColumnName="BRANCH_NAME" />
+          <ScalarProperty Name="ACCOUNT_NO" ColumnName="ACCOUNT_NO" />
+          <ScalarProperty Name="PRODUCT" ColumnName="PRODUCT" />
+          <ScalarProperty Name="PRODUCT_GROUP" ColumnName="PRODUCT_GROUP" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_ACCOUNT_ADDRESS">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_ACCOUNT_ADDRESS">
+        <MappingFragment StoreEntitySet="TB_M_ACCOUNT_ADDRESS">
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="SUBSCRIPTION_CODE" ColumnName="SUBSCRIPTION_CODE" />
+          <ScalarProperty Name="PRODUCT_TYPE" ColumnName="PRODUCT_TYPE" />
+          <ScalarProperty Name="PRODUCT_GROUP" ColumnName="PRODUCT_GROUP" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="POSTCODE" ColumnName="POSTCODE" />
+          <ScalarProperty Name="COUNTRY" ColumnName="COUNTRY" />
+          <ScalarProperty Name="PROVINCE" ColumnName="PROVINCE" />
+          <ScalarProperty Name="DISTRICT" ColumnName="DISTRICT" />
+          <ScalarProperty Name="SUB_DISTRICT" ColumnName="SUB_DISTRICT" />
+          <ScalarProperty Name="SOI" ColumnName="SOI" />
+          <ScalarProperty Name="STREET" ColumnName="STREET" />
+          <ScalarProperty Name="MOO" ColumnName="MOO" />
+          <ScalarProperty Name="ROOM_NO" ColumnName="ROOM_NO" />
+          <ScalarProperty Name="FLOOR_NO" ColumnName="FLOOR_NO" />
+          <ScalarProperty Name="BUILDING" ColumnName="BUILDING" />
+          <ScalarProperty Name="VILLAGE" ColumnName="VILLAGE" />
+          <ScalarProperty Name="ADDRESS_NO" ColumnName="ADDRESS_NO" />
+          <ScalarProperty Name="ADDRESS_TYPE_NAME" ColumnName="ADDRESS_TYPE_NAME" />
+          <ScalarProperty Name="ADDRESS_TYPE_CODE" ColumnName="ADDRESS_TYPE_CODE" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="ADDRESS_ID" ColumnName="ADDRESS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_ACCOUNT_EMAIL">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_ACCOUNT_EMAIL">
+        <MappingFragment StoreEntitySet="TB_M_ACCOUNT_EMAIL">
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="EMAIL_ACCOUNT" ColumnName="EMAIL_ACCOUNT" />
+          <ScalarProperty Name="EMAIL_TYPE_NAME" ColumnName="EMAIL_TYPE_NAME" />
+          <ScalarProperty Name="EMAIL_TYPE_CODE" ColumnName="EMAIL_TYPE_CODE" />
+          <ScalarProperty Name="SUBSCRIPTION_CODE" ColumnName="SUBSCRIPTION_CODE" />
+          <ScalarProperty Name="PRODUCT_TYPE" ColumnName="PRODUCT_TYPE" />
+          <ScalarProperty Name="PRODUCT_GROUP" ColumnName="PRODUCT_GROUP" />
+          <ScalarProperty Name="EMAIL_ID" ColumnName="EMAIL_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_ACCOUNT_PHONE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_ACCOUNT_PHONE">
+        <MappingFragment StoreEntitySet="TB_M_ACCOUNT_PHONE">
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="SUBSCRIPTION_CODE" ColumnName="SUBSCRIPTION_CODE" />
+          <ScalarProperty Name="PRODUCT_TYPE" ColumnName="PRODUCT_TYPE" />
+          <ScalarProperty Name="PRODUCT_GROUP" ColumnName="PRODUCT_GROUP" />
+          <ScalarProperty Name="PHONE_TYPE_NAME" ColumnName="PHONE_TYPE_NAME" />
+          <ScalarProperty Name="PHONE_TYPE_CODE" ColumnName="PHONE_TYPE_CODE" />
+          <ScalarProperty Name="PHONE_EXT" ColumnName="PHONE_EXT" />
+          <ScalarProperty Name="PHONE_NO" ColumnName="PHONE_NO" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="ACCOUNT_PHONE_ID" ColumnName="ACCOUNT_PHONE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_ADDRESS">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_ADDRESS">
+        <MappingFragment StoreEntitySet="TB_M_ADDRESS">
+          <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+          <ScalarProperty Name="ADDRESS_TYPE" ColumnName="ADDRESS_TYPE" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="ADDRESS_ID" ColumnName="ADDRESS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_AREA">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_AREA">
+        <MappingFragment StoreEntitySet="TB_M_AREA">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="AREA_CODE" ColumnName="AREA_CODE" />
+          <ScalarProperty Name="AREA_IS_ACTIVE" ColumnName="AREA_IS_ACTIVE" />
+          <ScalarProperty Name="AREA_NAME" ColumnName="AREA_NAME" />
+          <ScalarProperty Name="AREA_ID" ColumnName="AREA_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_AREA_SUBAREA">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_AREA_SUBAREA">
+        <MappingFragment StoreEntitySet="TB_M_AREA_SUBAREA">
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="SUBAREA_ID" ColumnName="SUBAREA_ID" />
+          <ScalarProperty Name="AREA_ID" ColumnName="AREA_ID" />
+          <ScalarProperty Name="AREA_SUBAREA_ID" ColumnName="AREA_SUBAREA_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_CONFIG_ROLE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_CONFIG_ROLE">
+        <MappingFragment StoreEntitySet="TB_M_CONFIG_ROLE">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+          <ScalarProperty Name="CONFIG_URL_ID" ColumnName="CONFIG_URL_ID" />
+          <ScalarProperty Name="CONFIG_ROLE_ID" ColumnName="CONFIG_ROLE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_CONFIG_URL">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_CONFIG_URL">
+        <MappingFragment StoreEntitySet="TB_M_CONFIG_URL">
+          <ScalarProperty Name="FONT_NAME" ColumnName="FONT_NAME" />
+          <ScalarProperty Name="MENU_ID" ColumnName="MENU_ID" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
+          <ScalarProperty Name="CONFIG_URL" ColumnName="CONFIG_URL" />
+          <ScalarProperty Name="CONFIG_NAME" ColumnName="CONFIG_NAME" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="CONFIG_URL_ID" ColumnName="CONFIG_URL_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_CONTACT">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_CONTACT">
+        <MappingFragment StoreEntitySet="TB_M_CONTACT">
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="IS_EDIT" ColumnName="IS_EDIT" />
+          <ScalarProperty Name="IS_DEFAULT" ColumnName="IS_DEFAULT" />
+          <ScalarProperty Name="BIRTH_DATE" ColumnName="BIRTH_DATE" />
+          <ScalarProperty Name="TITLE_TH_ID" ColumnName="TITLE_TH_ID" />
+          <ScalarProperty Name="TITLE_EN_ID" ColumnName="TITLE_EN_ID" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_ID" ColumnName="SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="CARD_NO" ColumnName="CARD_NO" />
+          <ScalarProperty Name="LAST_NAME_EN" ColumnName="LAST_NAME_EN" />
+          <ScalarProperty Name="FIRST_NAME_EN" ColumnName="FIRST_NAME_EN" />
+          <ScalarProperty Name="LAST_NAME_TH" ColumnName="LAST_NAME_TH" />
+          <ScalarProperty Name="FIRST_NAME_TH" ColumnName="FIRST_NAME_TH" />
+          <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_CONTACT_PHONE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_CONTACT_PHONE">
+        <MappingFragment StoreEntitySet="TB_M_CONTACT_PHONE">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="PHONE_NO" ColumnName="PHONE_NO" />
+          <ScalarProperty Name="PHONE_TYPE_ID" ColumnName="PHONE_TYPE_ID" />
+          <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+          <ScalarProperty Name="CONTACT_PHONE_ID" ColumnName="CONTACT_PHONE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_CUSTOMER">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_CUSTOMER">
+        <MappingFragment StoreEntitySet="TB_M_CUSTOMER">
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="FAX" ColumnName="FAX" />
+          <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+          <ScalarProperty Name="TITLE_EN_ID" ColumnName="TITLE_EN_ID" />
+          <ScalarProperty Name="TITLE_TH_ID" ColumnName="TITLE_TH_ID" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="BIRTH_DATE" ColumnName="BIRTH_DATE" />
+          <ScalarProperty Name="CARD_NO" ColumnName="CARD_NO" />
+          <ScalarProperty Name="LAST_NAME_EN" ColumnName="LAST_NAME_EN" />
+          <ScalarProperty Name="LAST_NAME_TH" ColumnName="LAST_NAME_TH" />
+          <ScalarProperty Name="FIRST_NAME_EN" ColumnName="FIRST_NAME_EN" />
+          <ScalarProperty Name="FIRST_NAME_TH" ColumnName="FIRST_NAME_TH" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_ID" ColumnName="SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_CUSTOMER_ATTACHMENT">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_CUSTOMER_ATTACHMENT">
+        <MappingFragment StoreEntitySet="TB_M_CUSTOMER_ATTACHMENT">
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="EXPIRY_DATE" ColumnName="EXPIRY_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="ATTACHMENT_DESC" ColumnName="ATTACHMENT_DESC" />
+          <ScalarProperty Name="ATTACHMENT_NAME" ColumnName="ATTACHMENT_NAME" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="CONTENT_TYPE" ColumnName="CONTENT_TYPE" />
+          <ScalarProperty Name="FILE_NAME" ColumnName="FILE_NAME" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="CUSTOMER_ATTACHMENT_ID" ColumnName="CUSTOMER_ATTACHMENT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_CUSTOMER_CONTACT">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_CUSTOMER_CONTACT">
+        <MappingFragment StoreEntitySet="TB_M_CUSTOMER_CONTACT">
+          <ScalarProperty Name="SYSTEM" ColumnName="SYSTEM" />
+          <ScalarProperty Name="IS_EDIT" ColumnName="IS_EDIT" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="RELATIONSHIP_ID" ColumnName="RELATIONSHIP_ID" />
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="CUSTOMER_CONTACT_ID" ColumnName="CUSTOMER_CONTACT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_DOCUMENT_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_DOCUMENT_TYPE">
+        <MappingFragment StoreEntitySet="TB_M_DOCUMENT_TYPE">
+          <ScalarProperty Name="CATEGORY" ColumnName="CATEGORY" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="DOCUMENT_TYPE_NAME" ColumnName="DOCUMENT_TYPE_NAME" />
+          <ScalarProperty Name="DOCUMENT_TYPE_CODE" ColumnName="DOCUMENT_TYPE_CODE" />
+          <ScalarProperty Name="DOCUMENT_TYPE_ID" ColumnName="DOCUMENT_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_MAP_AUTO_FORWARD">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_MAP_AUTO_FORWARD">
+        <MappingFragment StoreEntitySet="TB_M_MAP_AUTO_FORWARD">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+          <ScalarProperty Name="IS_VERIFY" ColumnName="IS_VERIFY" />
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+          <ScalarProperty Name="SUBAREA_ID" ColumnName="SUBAREA_ID" />
+          <ScalarProperty Name="AREA_ID" ColumnName="AREA_ID" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_ID" ColumnName="CAMPAIGNSERVICE_ID" />
+          <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+          <ScalarProperty Name="FORWARD_TO_USER" ColumnName="FORWARD_TO_USER" />
+          <ScalarProperty Name="CHANNEL_ID" ColumnName="CHANNEL_ID" />
+          <ScalarProperty Name="AUTO_FORWARD_ID" ColumnName="AUTO_FORWARD_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_MAP_PRODUCT">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_MAP_PRODUCT">
+        <MappingFragment StoreEntitySet="TB_M_MAP_PRODUCT">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="HP_LANGUAGE_INDEPENDENT_CODE" ColumnName="HP_LANGUAGE_INDEPENDENT_CODE" />
+          <ScalarProperty Name="HP_SUBJECT" ColumnName="HP_SUBJECT" />
+          <ScalarProperty Name="MAP_PRODUCT_IS_ACTIVE" ColumnName="MAP_PRODUCT_IS_ACTIVE" />
+          <ScalarProperty Name="MAP_PRODUCT_IS_VERIFY" ColumnName="MAP_PRODUCT_IS_VERIFY" />
+          <ScalarProperty Name="SR_PAGE_ID" ColumnName="SR_PAGE_ID" />
+          <ScalarProperty Name="DEFAULT_OWNER_USER_ID" ColumnName="DEFAULT_OWNER_USER_ID" />
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+          <ScalarProperty Name="SUBAREA_ID" ColumnName="SUBAREA_ID" />
+          <ScalarProperty Name="AREA_ID" ColumnName="AREA_ID" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_ID" ColumnName="CAMPAIGNSERVICE_ID" />
+          <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+          <ScalarProperty Name="MAP_PRODUCT_ID" ColumnName="MAP_PRODUCT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_MAP_PRODUCT_QUESTIONGROUP">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_MAP_PRODUCT_QUESTIONGROUP">
+        <MappingFragment StoreEntitySet="TB_M_MAP_PRODUCT_QUESTIONGROUP">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
+          <ScalarProperty Name="REQUIRE_AMOUNT_PASS" ColumnName="REQUIRE_AMOUNT_PASS" />
+          <ScalarProperty Name="QUESTIONGROUP_ID" ColumnName="QUESTIONGROUP_ID" />
+          <ScalarProperty Name="MAP_PRODUCT_ID" ColumnName="MAP_PRODUCT_ID" />
+          <ScalarProperty Name="MAP_PRODUCT_QUESTIONGROUP_ID" ColumnName="MAP_PRODUCT_QUESTIONGROUP_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_MEDIA_SOURCE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_MEDIA_SOURCE">
+        <MappingFragment StoreEntitySet="TB_M_MEDIA_SOURCE">
+          <ScalarProperty Name="MEDIA_SOURCE_NAME" ColumnName="MEDIA_SOURCE_NAME" />
+          <ScalarProperty Name="MEDIA_SOURCE_ID" ColumnName="MEDIA_SOURCE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_NOTE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_NOTE">
+        <MappingFragment StoreEntitySet="TB_M_NOTE">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="EXPIRY_DATE" ColumnName="EXPIRY_DATE" />
+          <ScalarProperty Name="EFFECTIVE_DATE" ColumnName="EFFECTIVE_DATE" />
+          <ScalarProperty Name="DETAIL" ColumnName="DETAIL" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="NOTE_ID" ColumnName="NOTE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_PHONE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_PHONE">
+        <MappingFragment StoreEntitySet="TB_M_PHONE">
+          <ScalarProperty Name="PHONE_EXT" ColumnName="PHONE_EXT" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="PHONE_NO" ColumnName="PHONE_NO" />
+          <ScalarProperty Name="PHONE_TYPE_ID" ColumnName="PHONE_TYPE_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="PHONE_ID" ColumnName="PHONE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_PHONE_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_PHONE_TYPE">
+        <MappingFragment StoreEntitySet="TB_M_PHONE_TYPE">
+          <ScalarProperty Name="PHONE_TYPE_CODE" ColumnName="PHONE_TYPE_CODE" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="PHONE_TYPE_NAME" ColumnName="PHONE_TYPE_NAME" />
+          <ScalarProperty Name="PHONE_TYPE_ID" ColumnName="PHONE_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_POOL">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_POOL">
+        <MappingFragment StoreEntitySet="TB_M_POOL">
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="POOL_DESC" ColumnName="POOL_DESC" />
+          <ScalarProperty Name="POOL_NAME" ColumnName="POOL_NAME" />
+          <ScalarProperty Name="POOL_ID" ColumnName="POOL_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_POOL_BRANCH">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_POOL_BRANCH">
+        <MappingFragment StoreEntitySet="TB_M_POOL_BRANCH">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+          <ScalarProperty Name="POOL_ID" ColumnName="POOL_ID" />
+          <ScalarProperty Name="POOL_BRANCH_ID" ColumnName="POOL_BRANCH_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_QUESTION">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_QUESTION">
+        <MappingFragment StoreEntitySet="TB_M_QUESTION">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+          <ScalarProperty Name="QUESTION_NAME" ColumnName="QUESTION_NAME" />
+          <ScalarProperty Name="QUESTION_ID" ColumnName="QUESTION_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_QUESTIONGROUP">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_QUESTIONGROUP">
+        <MappingFragment StoreEntitySet="TB_M_QUESTIONGROUP">
+          <ScalarProperty Name="QUESTIONGROUP_DESC" ColumnName="QUESTIONGROUP_DESC" />
+          <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="QUESTIONGROUP_IS_ACTIVE" ColumnName="QUESTIONGROUP_IS_ACTIVE" />
+          <ScalarProperty Name="QUESTIONGROUP_NAME" ColumnName="QUESTIONGROUP_NAME" />
+          <ScalarProperty Name="QUESTIONGROUP_ID" ColumnName="QUESTIONGROUP_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_QUESTIONGROUP_QUESTION">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_QUESTIONGROUP_QUESTION">
+        <MappingFragment StoreEntitySet="TB_M_QUESTIONGROUP_QUESTION">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
+          <ScalarProperty Name="QUESTION_ID" ColumnName="QUESTION_ID" />
+          <ScalarProperty Name="QUESTIONGROUP_ID" ColumnName="QUESTIONGROUP_ID" />
+          <ScalarProperty Name="QUESTIONGROUP_QUESTION_ID" ColumnName="QUESTIONGROUP_QUESTION_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_RELATIONSHIP">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_RELATIONSHIP">
+        <MappingFragment StoreEntitySet="TB_M_RELATIONSHIP">
+          <ScalarProperty Name="IS_DEFAULT" ColumnName="IS_DEFAULT" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="RELATIONSHIP_DESC" ColumnName="RELATIONSHIP_DESC" />
+          <ScalarProperty Name="RELATIONSHIP_NAME" ColumnName="RELATIONSHIP_NAME" />
+          <ScalarProperty Name="RELATIONSHIP_ID" ColumnName="RELATIONSHIP_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_SLA">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_SLA">
+        <MappingFragment StoreEntitySet="TB_M_SLA">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="SLA_IS_ACTIVE" ColumnName="SLA_IS_ACTIVE" />
+          <ScalarProperty Name="SLA_DAY" ColumnName="SLA_DAY" />
+          <ScalarProperty Name="SLA_TIMES" ColumnName="SLA_TIMES" />
+          <ScalarProperty Name="SLA_MINUTE" ColumnName="SLA_MINUTE" />
+          <ScalarProperty Name="SR_STATUS_ID" ColumnName="SR_STATUS_ID" />
+          <ScalarProperty Name="CHANNEL_ID" ColumnName="CHANNEL_ID" />
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+          <ScalarProperty Name="SUBAREA_ID" ColumnName="SUBAREA_ID" />
+          <ScalarProperty Name="AREA_ID" ColumnName="AREA_ID" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_ID" ColumnName="CAMPAIGNSERVICE_ID" />
+          <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+          <ScalarProperty Name="SLA_ID" ColumnName="SLA_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_SUBAREA">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_SUBAREA">
+        <MappingFragment StoreEntitySet="TB_M_SUBAREA">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="SUBAREA_CODE" ColumnName="SUBAREA_CODE" />
+          <ScalarProperty Name="SUBAREA_IS_ACTIVE" ColumnName="SUBAREA_IS_ACTIVE" />
+          <ScalarProperty Name="SUBAREA_NAME" ColumnName="SUBAREA_NAME" />
+          <ScalarProperty Name="SUBAREA_ID" ColumnName="SUBAREA_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_SUBSCRIPT_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_SUBSCRIPT_TYPE">
+        <MappingFragment StoreEntitySet="TB_M_SUBSCRIPT_TYPE">
+          <ScalarProperty Name="CUST_TYPE_GROUP" ColumnName="CUST_TYPE_GROUP" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_NAME" ColumnName="SUBSCRIPT_TYPE_NAME" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_CODE" ColumnName="SUBSCRIPT_TYPE_CODE" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_ID" ColumnName="SUBSCRIPT_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_TITLE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_TITLE">
+        <MappingFragment StoreEntitySet="TB_M_TITLE">
+          <ScalarProperty Name="LANGUAGE" ColumnName="LANGUAGE" />
+          <ScalarProperty Name="TITLE_NAME" ColumnName="TITLE_NAME" />
+          <ScalarProperty Name="TITLE_ID" ColumnName="TITLE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_TYPE">
+        <MappingFragment StoreEntitySet="TB_M_TYPE">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="TYPE_CODE" ColumnName="TYPE_CODE" />
+          <ScalarProperty Name="TYPE_IS_ACTIVE" ColumnName="TYPE_IS_ACTIVE" />
+          <ScalarProperty Name="TYPE_NAME" ColumnName="TYPE_NAME" />
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_R_BRANCH">
+      <EntityTypeMapping TypeName="CSMModel.TB_R_BRANCH">
+        <MappingFragment StoreEntitySet="TB_R_BRANCH">
+          <ScalarProperty Name="BRANCH_ZIPCODE" ColumnName="BRANCH_ZIPCODE" />
+          <ScalarProperty Name="BRANCH_TAMBOL" ColumnName="BRANCH_TAMBOL" />
+          <ScalarProperty Name="BRANCH_AMPHUR" ColumnName="BRANCH_AMPHUR" />
+          <ScalarProperty Name="BRANCH_PROVINCE" ColumnName="BRANCH_PROVINCE" />
+          <ScalarProperty Name="BRANCH_STREET" ColumnName="BRANCH_STREET" />
+          <ScalarProperty Name="BRANCH_SOI" ColumnName="BRANCH_SOI" />
+          <ScalarProperty Name="BRANCH_FLOOR" ColumnName="BRANCH_FLOOR" />
+          <ScalarProperty Name="BRANCH_BUILDING" ColumnName="BRANCH_BUILDING" />
+          <ScalarProperty Name="BRANCH_MOO" ColumnName="BRANCH_MOO" />
+          <ScalarProperty Name="BRANCH_HOME_NO" ColumnName="BRANCH_HOME_NO" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="END_TIME_MINUTE" ColumnName="END_TIME_MINUTE" />
+          <ScalarProperty Name="END_TIME_HOUR" ColumnName="END_TIME_HOUR" />
+          <ScalarProperty Name="START_TIME_MINUTE" ColumnName="START_TIME_MINUTE" />
+          <ScalarProperty Name="START_TIME_HOUR" ColumnName="START_TIME_HOUR" />
+          <ScalarProperty Name="UPPER_BRANCH_ID" ColumnName="UPPER_BRANCH_ID" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="BRANCH_NAME" ColumnName="BRANCH_NAME" />
+          <ScalarProperty Name="BRANCH_CODE" ColumnName="BRANCH_CODE" />
+          <ScalarProperty Name="CHANNEL_ID" ColumnName="CHANNEL_ID" />
+          <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_R_BRANCH_CALENDAR">
+      <EntityTypeMapping TypeName="CSMModel.TB_R_BRANCH_CALENDAR">
+        <MappingFragment StoreEntitySet="TB_R_BRANCH_CALENDAR">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="HOLIDAY_DESC" ColumnName="HOLIDAY_DESC" />
+          <ScalarProperty Name="HOLIDAY_DATE" ColumnName="HOLIDAY_DATE" />
+          <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+          <ScalarProperty Name="BRANCH_CALENDAR_ID" ColumnName="BRANCH_CALENDAR_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_R_CAMPAIGNSERVICE">
+      <EntityTypeMapping TypeName="CSMModel.TB_R_CAMPAIGNSERVICE">
+        <MappingFragment StoreEntitySet="TB_R_CAMPAIGNSERVICE">
+          <ScalarProperty Name="CAMPAIGNSERVICE_CODE" ColumnName="CAMPAIGNSERVICE_CODE" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_IS_ACTIVE" ColumnName="CAMPAIGNSERVICE_IS_ACTIVE" />
+          <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_NAME" ColumnName="CAMPAIGNSERVICE_NAME" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_ID" ColumnName="CAMPAIGNSERVICE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_R_CHANNEL">
+      <EntityTypeMapping TypeName="CSMModel.TB_R_CHANNEL">
+        <MappingFragment StoreEntitySet="TB_R_CHANNEL">
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="CHANNEL_CODE" ColumnName="CHANNEL_CODE" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="CHANNEL_NAME" ColumnName="CHANNEL_NAME" />
+          <ScalarProperty Name="CHANNEL_ID" ColumnName="CHANNEL_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_R_PRODUCT">
+      <EntityTypeMapping TypeName="CSMModel.TB_R_PRODUCT">
+        <MappingFragment StoreEntitySet="TB_R_PRODUCT">
+          <ScalarProperty Name="PRODUCT_TYPE" ColumnName="PRODUCT_TYPE" />
+          <ScalarProperty Name="PRODUCT_CODE" ColumnName="PRODUCT_CODE" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="PRODUCT_IS_ACTIVE" ColumnName="PRODUCT_IS_ACTIVE" />
+          <ScalarProperty Name="PRODUCTGROUP_ID" ColumnName="PRODUCTGROUP_ID" />
+          <ScalarProperty Name="PRODUCT_NAME" ColumnName="PRODUCT_NAME" />
+          <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_R_PRODUCTGROUP">
+      <EntityTypeMapping TypeName="CSMModel.TB_R_PRODUCTGROUP">
+        <MappingFragment StoreEntitySet="TB_R_PRODUCTGROUP">
+          <ScalarProperty Name="PRODUCTGROUP_CODE" ColumnName="PRODUCTGROUP_CODE" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="PRODUCTGROUP_IS_ACTIVE" ColumnName="PRODUCTGROUP_IS_ACTIVE" />
+          <ScalarProperty Name="PRODUCTGROUP_NAME" ColumnName="PRODUCTGROUP_NAME" />
+          <ScalarProperty Name="PRODUCTGROUP_ID" ColumnName="PRODUCTGROUP_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_R_USER">
+      <EntityTypeMapping TypeName="CSMModel.TB_R_USER">
+        <MappingFragment StoreEntitySet="TB_R_USER">
+          <ScalarProperty Name="EXPORT_DATE" ColumnName="EXPORT_DATE" />
+          <ScalarProperty Name="MARKETING_FLAG" ColumnName="MARKETING_FLAG" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USERNAME" ColumnName="UPDATE_USERNAME" />
+          <ScalarProperty Name="CREATE_USERNAME" ColumnName="CREATE_USERNAME" />
+          <ScalarProperty Name="TELESALE_TEAM" ColumnName="TELESALE_TEAM" />
+          <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+          <ScalarProperty Name="EMPLOYEE_TYPE" ColumnName="EMPLOYEE_TYPE" />
+          <ScalarProperty Name="RANK" ColumnName="RANK" />
+          <ScalarProperty Name="LINE" ColumnName="LINE" />
+          <ScalarProperty Name="MARKETING_TEAM" ColumnName="MARKETING_TEAM" />
+          <ScalarProperty Name="ROLE_SALE" ColumnName="ROLE_SALE" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="MARKETING_CODE" ColumnName="MARKETING_CODE" />
+          <ScalarProperty Name="POSITION_CODE" ColumnName="POSITION_CODE" />
+          <ScalarProperty Name="IS_GROUP" ColumnName="IS_GROUP" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="EMPLOYEE_CODE" ColumnName="EMPLOYEE_CODE" />
+          <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+          <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+          <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+          <ScalarProperty Name="SUPERVISOR_ID" ColumnName="SUPERVISOR_ID" />
+          <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_R_USER_PHONE">
+      <EntityTypeMapping TypeName="CSMModel.TB_R_USER_PHONE">
+        <MappingFragment StoreEntitySet="TB_R_USER_PHONE">
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="ORDER" ColumnName="ORDER" />
+          <ScalarProperty Name="PHONE_NO" ColumnName="PHONE_NO" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="PHONE_ID" ColumnName="PHONE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_ATTACHMENT_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_ATTACHMENT_TYPE">
+        <MappingFragment StoreEntitySet="TB_T_ATTACHMENT_TYPE">
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="DOCUMENT_TYPE_ID" ColumnName="DOCUMENT_TYPE_ID" />
+          <ScalarProperty Name="JOB_ATTACHMENT_ID" ColumnName="JOB_ATTACHMENT_ID" />
+          <ScalarProperty Name="SR_ATTACHMENT_ID" ColumnName="SR_ATTACHMENT_ID" />
+          <ScalarProperty Name="NEWS_ATTACHMENT_ID" ColumnName="NEWS_ATTACHMENT_ID" />
+          <ScalarProperty Name="CUSTOMER_ATTACHMENT_ID" ColumnName="CUSTOMER_ATTACHMENT_ID" />
+          <ScalarProperty Name="ATTACHMENT_TYPE_ID" ColumnName="ATTACHMENT_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_CALL_INFO">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_CALL_INFO">
+        <MappingFragment StoreEntitySet="TB_T_CALL_INFO">
+          <ScalarProperty Name="CALL_TYPE" ColumnName="CALL_TYPE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CARD_NO" ColumnName="CARD_NO" />
+          <ScalarProperty Name="A_NO" ColumnName="A_NO" />
+          <ScalarProperty Name="CALL_ID" ColumnName="CALL_ID" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="CALL_INFO_ID" ColumnName="CALL_INFO_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_DEFAULT_SEARCH">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_DEFAULT_SEARCH">
+        <MappingFragment StoreEntitySet="TB_T_DEFAULT_SEARCH">
+          <ScalarProperty Name="IS_SELECTED" ColumnName="IS_SELECTED" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="SEARCH_PAGE" ColumnName="SEARCH_PAGE" />
+          <ScalarProperty Name="USER_SEARCH_ID" ColumnName="USER_SEARCH_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_JOB_ATTACHMENT">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_JOB_ATTACHMENT">
+        <MappingFragment StoreEntitySet="TB_T_JOB_ATTACHMENT">
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="ATTACHMENT_DESC" ColumnName="ATTACHMENT_DESC" />
+          <ScalarProperty Name="ATTACHMENT_NAME" ColumnName="ATTACHMENT_NAME" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="CONTENT_TYPE" ColumnName="CONTENT_TYPE" />
+          <ScalarProperty Name="FILE_NAME" ColumnName="FILE_NAME" />
+          <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
+          <ScalarProperty Name="JOB_ATTACHMENT_ID" ColumnName="JOB_ATTACHMENT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_NEWS">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_NEWS">
+        <MappingFragment StoreEntitySet="TB_T_NEWS">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="EXPIRY_DATE" ColumnName="EXPIRY_DATE" />
+          <ScalarProperty Name="ANNOUNCE_DATE" ColumnName="ANNOUNCE_DATE" />
+          <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+          <ScalarProperty Name="TOPIC" ColumnName="TOPIC" />
+          <ScalarProperty Name="NEWS_ID" ColumnName="NEWS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_NEWS_ATTACHMENT">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_NEWS_ATTACHMENT">
+        <MappingFragment StoreEntitySet="TB_T_NEWS_ATTACHMENT">
+          <ScalarProperty Name="FILE_SIZE" ColumnName="FILE_SIZE" />
+          <ScalarProperty Name="EXPIRY_DATE" ColumnName="EXPIRY_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="ATTACHMENT_DESC" ColumnName="ATTACHMENT_DESC" />
+          <ScalarProperty Name="ATTACHMENT_NAME" ColumnName="ATTACHMENT_NAME" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="CONTENT_TYPE" ColumnName="CONTENT_TYPE" />
+          <ScalarProperty Name="FILE_NAME" ColumnName="FILE_NAME" />
+          <ScalarProperty Name="NEWS_ID" ColumnName="NEWS_ID" />
+          <ScalarProperty Name="NEWS_ATTACHMENT_ID" ColumnName="NEWS_ATTACHMENT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_NEWS_BRANCH">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_NEWS_BRANCH">
+        <MappingFragment StoreEntitySet="TB_T_NEWS_BRANCH">
+          <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+          <ScalarProperty Name="NEWS_ID" ColumnName="NEWS_ID" />
+          <ScalarProperty Name="NEWS_BRANCH_ID" ColumnName="NEWS_BRANCH_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_READ_NEWS">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_READ_NEWS">
+        <MappingFragment StoreEntitySet="TB_T_READ_NEWS">
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="NEWS_ID" ColumnName="NEWS_ID" />
+          <ScalarProperty Name="READ_NEWS_ID" ColumnName="READ_NEWS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_SR_ACTIVITY">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_SR_ACTIVITY">
+        <MappingFragment StoreEntitySet="TB_T_SR_ACTIVITY">
+          <ScalarProperty Name="EXPORT_DATE" ColumnName="EXPORT_DATE" />
+          <ScalarProperty Name="CREATE_USERNAME" ColumnName="CREATE_USERNAME" />
+          <ScalarProperty Name="ACTIVITY_HP_SUBMIT_ERROR_DESC" ColumnName="ACTIVITY_HP_SUBMIT_ERROR_DESC" />
+          <ScalarProperty Name="ACTIVITY_HP_SUBMIT_ERROR_CODE" ColumnName="ACTIVITY_HP_SUBMIT_ERROR_CODE" />
+          <ScalarProperty Name="ACTIVITY_HP_SUBMIT_DATE" ColumnName="ACTIVITY_HP_SUBMIT_DATE" />
+          <ScalarProperty Name="ACTIVITY_HP_SUBMIT_STATUS" ColumnName="ACTIVITY_HP_SUBMIT_STATUS" />
+          <ScalarProperty Name="ACTIVITY_CAR_SUBMIT_ERROR_DESC" ColumnName="ACTIVITY_CAR_SUBMIT_ERROR_DESC" />
+          <ScalarProperty Name="ACTIVITY_CAR_SUBMIT_ERROR_CODE" ColumnName="ACTIVITY_CAR_SUBMIT_ERROR_CODE" />
+          <ScalarProperty Name="ACTIVITY_CAR_SUBMIT_DATE" ColumnName="ACTIVITY_CAR_SUBMIT_DATE" />
+          <ScalarProperty Name="ACTIVITY_CAR_SUBMIT_STATUS" ColumnName="ACTIVITY_CAR_SUBMIT_STATUS" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="CREATE_BRANCH_ID" ColumnName="CREATE_BRANCH_ID" />
+          <ScalarProperty Name="SR_ACTIVITY_TYPE_ID" ColumnName="SR_ACTIVITY_TYPE_ID" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_ATTACHMENTS" ColumnName="SR_ACTIVITY_EMAIL_ATTACHMENTS" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_BODY" ColumnName="SR_ACTIVITY_EMAIL_BODY" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_SUBJECT" ColumnName="SR_ACTIVITY_EMAIL_SUBJECT" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_CC" ColumnName="SR_ACTIVITY_EMAIL_CC" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_TO" ColumnName="SR_ACTIVITY_EMAIL_TO" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_SENDER" ColumnName="SR_ACTIVITY_EMAIL_SENDER" />
+          <ScalarProperty Name="SR_EMAIL_TEMPLATE_ID" ColumnName="SR_EMAIL_TEMPLATE_ID" />
+          <ScalarProperty Name="SR_ACTIVITY_DESC" ColumnName="SR_ACTIVITY_DESC" />
+          <ScalarProperty Name="IS_SEND_DELEGATE_EMAIL" ColumnName="IS_SEND_DELEGATE_EMAIL" />
+          <ScalarProperty Name="OLD_SR_STATUS_ID" ColumnName="OLD_SR_STATUS_ID" />
+          <ScalarProperty Name="OLD_DELEGATE_USER_ID" ColumnName="OLD_DELEGATE_USER_ID" />
+          <ScalarProperty Name="OLD_OWNER_USER_ID" ColumnName="OLD_OWNER_USER_ID" />
+          <ScalarProperty Name="DELEGATE_USER_ID" ColumnName="DELEGATE_USER_ID" />
+          <ScalarProperty Name="DELEGATE_BRANCH_ID" ColumnName="DELEGATE_BRANCH_ID" />
+          <ScalarProperty Name="SR_STATUS_ID" ColumnName="SR_STATUS_ID" />
+          <ScalarProperty Name="OWNER_USER_ID" ColumnName="OWNER_USER_ID" />
+          <ScalarProperty Name="OWNER_BRANCH_ID" ColumnName="OWNER_BRANCH_ID" />
+          <ScalarProperty Name="SR_ID" ColumnName="SR_ID" />
+          <ScalarProperty Name="SR_ACTIVITY_ID" ColumnName="SR_ACTIVITY_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_SR_ATTACHMENT">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_SR_ATTACHMENT">
+        <MappingFragment StoreEntitySet="TB_T_SR_ATTACHMENT">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="CREATE_USERNAME" ColumnName="CREATE_USERNAME" />
+          <ScalarProperty Name="FILE_SIZE" ColumnName="FILE_SIZE" />
+          <ScalarProperty Name="EXPIRY_DATE" ColumnName="EXPIRY_DATE" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="SR_ATTACHMENT_DESC" ColumnName="SR_ATTACHMENT_DESC" />
+          <ScalarProperty Name="SR_ATTACHMENT_NAME" ColumnName="SR_ATTACHMENT_NAME" />
+          <ScalarProperty Name="SR_ATTACHMENT_URL" ColumnName="SR_ATTACHMENT_URL" />
+          <ScalarProperty Name="SR_ATTACHMENT_CONTENT_TYPE" ColumnName="SR_ATTACHMENT_CONTENT_TYPE" />
+          <ScalarProperty Name="SR_ATTACHMENT_FILE_NAME" ColumnName="SR_ATTACHMENT_FILE_NAME" />
+          <ScalarProperty Name="SR_ACTIVITY_ID" ColumnName="SR_ACTIVITY_ID" />
+          <ScalarProperty Name="SR_ID" ColumnName="SR_ID" />
+          <ScalarProperty Name="SR_ATTACHMENT_ID" ColumnName="SR_ATTACHMENT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_SR_ATTACHMENT_DOCUMENT_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_SR_ATTACHMENT_DOCUMENT_TYPE">
+        <MappingFragment StoreEntitySet="TB_T_SR_ATTACHMENT_DOCUMENT_TYPE">
+          <ScalarProperty Name="CREATE_USERNAME" ColumnName="CREATE_USERNAME" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="DOCUMENT_TYPE_ID" ColumnName="DOCUMENT_TYPE_ID" />
+          <ScalarProperty Name="SR_ATTACHMENT_ID" ColumnName="SR_ATTACHMENT_ID" />
+          <ScalarProperty Name="SR_ATTACHMENT_DOCUMENT_TYPE_ID" ColumnName="SR_ATTACHMENT_DOCUMENT_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_SR_PREPARE_EMAIL">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_SR_PREPARE_EMAIL">
+        <MappingFragment StoreEntitySet="TB_T_SR_PREPARE_EMAIL">
+          <ScalarProperty Name="EMAIL_CREATE_BY" ColumnName="EMAIL_CREATE_BY" />
+          <ScalarProperty Name="IS_DELETE" ColumnName="IS_DELETE" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="EXPORT_STATUS" ColumnName="EXPORT_STATUS" />
+          <ScalarProperty Name="RULE_ACTIVITY_ID" ColumnName="RULE_ACTIVITY_ID" />
+          <ScalarProperty Name="EMAIL_SUBJECT" ColumnName="EMAIL_SUBJECT" />
+          <ScalarProperty Name="EMAIL_SENDER" ColumnName="EMAIL_SENDER" />
+          <ScalarProperty Name="EMAIL_CONTENT" ColumnName="EMAIL_CONTENT" />
+          <ScalarProperty Name="EMAIL_ADDRESS" ColumnName="EMAIL_ADDRESS" />
+          <ScalarProperty Name="SR_ACTIVITY_ID" ColumnName="SR_ACTIVITY_ID" />
+          <ScalarProperty Name="SR_PREPARE_EMAIL_ID" ColumnName="SR_PREPARE_EMAIL_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_SR_REPLY_EMAIL">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_SR_REPLY_EMAIL">
+        <MappingFragment StoreEntitySet="TB_T_SR_REPLY_EMAIL">
+          <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
+          <ScalarProperty Name="ERROR_MESSAGE" ColumnName="ERROR_MESSAGE" />
+          <ScalarProperty Name="ERROR_CODE" ColumnName="ERROR_CODE" />
+          <ScalarProperty Name="PROCESS_DATE" ColumnName="PROCESS_DATE" />
+          <ScalarProperty Name="IS_PROCESS" ColumnName="IS_PROCESS" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="SR_STATUS_ID" ColumnName="SR_STATUS_ID" />
+          <ScalarProperty Name="SR_ID" ColumnName="SR_ID" />
+          <ScalarProperty Name="SR_REPLY_EMAIL_ID" ColumnName="SR_REPLY_EMAIL_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_SR_VERIFY_RESULT_GROUP">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_SR_VERIFY_RESULT_GROUP">
+        <MappingFragment StoreEntitySet="TB_T_SR_VERIFY_RESULT_GROUP">
+          <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
+          <ScalarProperty Name="QUESTIONGROUP_PASS_AMOUNT" ColumnName="QUESTIONGROUP_PASS_AMOUNT" />
+          <ScalarProperty Name="QUESTIONGROUP_NAME" ColumnName="QUESTIONGROUP_NAME" />
+          <ScalarProperty Name="QUESTIONGROUP_ID" ColumnName="QUESTIONGROUP_ID" />
+          <ScalarProperty Name="SR_ID" ColumnName="SR_ID" />
+          <ScalarProperty Name="SR_VERIFY_RESULT_GROUP_ID" ColumnName="SR_VERIFY_RESULT_GROUP_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_SR_VERIFY_RESULT_QUESTION">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_SR_VERIFY_RESULT_QUESTION">
+        <MappingFragment StoreEntitySet="TB_T_SR_VERIFY_RESULT_QUESTION">
+          <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
+          <ScalarProperty Name="RESULT" ColumnName="RESULT" />
+          <ScalarProperty Name="QUESTION_NAME" ColumnName="QUESTION_NAME" />
+          <ScalarProperty Name="QUESTION_ID" ColumnName="QUESTION_ID" />
+          <ScalarProperty Name="SR_VERIFY_RESULT_GROUP_ID" ColumnName="SR_VERIFY_RESULT_GROUP_ID" />
+          <ScalarProperty Name="SR_VERIFY_RESULT_QUESTION_ID" ColumnName="SR_VERIFY_RESULT_QUESTION_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_SEQUENCE">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_SEQUENCE">
+        <MappingFragment StoreEntitySet="TB_C_SEQUENCE">
+          <ScalarProperty Name="CURRENT_SEQ" ColumnName="CURRENT_SEQ" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_C_SEQUENCE_SR">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_SEQUENCE_SR">
+        <MappingFragment StoreEntitySet="TB_C_SEQUENCE_SR">
+          <ScalarProperty Name="CURRENT_SEQ" ColumnName="CURRENT_SEQ" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="SP_GET_CUSTOMER_COUNT" FunctionName="CSMModel.Store.SP_GET_CUSTOMER_COUNT" />
+    <FunctionImportMapping FunctionImportName="SP_GET_CUSTOMER_LIST" FunctionName="CSMModel.Store.SP_GET_CUSTOMER_LIST">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CSMModel.SP_GET_CUSTOMER_LIST_SET_Result">
+          <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="FIRST_NAME_TH" ColumnName="FIRST_NAME_TH" />
+          <ScalarProperty Name="FIRST_NAME_EN" ColumnName="FIRST_NAME_EN" />
+          <ScalarProperty Name="LAST_NAME_TH" ColumnName="LAST_NAME_TH" />
+          <ScalarProperty Name="LAST_NAME_EN" ColumnName="LAST_NAME_EN" />
+          <ScalarProperty Name="CARD_NO" ColumnName="CARD_NO" />
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="ACCOUNT_NO" ColumnName="ACCOUNT_NO" />
+          <ScalarProperty Name="PRODUCT" ColumnName="PRODUCT" />
+          <ScalarProperty Name="PRODUCT_GROUP" ColumnName="PRODUCT_GROUP" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="BRANCH_CODE" ColumnName="BRANCH_CODE" />
+          <ScalarProperty Name="BRANCH_NAME" ColumnName="BRANCH_NAME" />
+          <ScalarProperty Name="ACCOUNT_DESC" ColumnName="ACCOUNT_DESC" />
+          <ScalarProperty Name="GRADE" ColumnName="GRADE" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_ID" ColumnName="SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_NAME" ColumnName="SUBSCRIPT_TYPE_NAME" />
+          <ScalarProperty Name="CAR_NO" ColumnName="CAR_NO" />
+          <ScalarProperty Name="PhoneList" ColumnName="PhoneList" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_GET_CUSTOMER_LIST_SET" FunctionName="CSMModel.Store.SP_GET_CUSTOMER_LIST_SET">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CSMModel.SP_GET_CUSTOMER_LIST_SET_Result">
+          <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="FIRST_NAME_TH" ColumnName="FIRST_NAME_TH" />
+          <ScalarProperty Name="FIRST_NAME_EN" ColumnName="FIRST_NAME_EN" />
+          <ScalarProperty Name="LAST_NAME_TH" ColumnName="LAST_NAME_TH" />
+          <ScalarProperty Name="LAST_NAME_EN" ColumnName="LAST_NAME_EN" />
+          <ScalarProperty Name="CARD_NO" ColumnName="CARD_NO" />
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="ACCOUNT_NO" ColumnName="ACCOUNT_NO" />
+          <ScalarProperty Name="PRODUCT" ColumnName="PRODUCT" />
+          <ScalarProperty Name="PRODUCT_GROUP" ColumnName="PRODUCT_GROUP" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="BRANCH_CODE" ColumnName="BRANCH_CODE" />
+          <ScalarProperty Name="BRANCH_NAME" ColumnName="BRANCH_NAME" />
+          <ScalarProperty Name="ACCOUNT_DESC" ColumnName="ACCOUNT_DESC" />
+          <ScalarProperty Name="GRADE" ColumnName="GRADE" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_ID" ColumnName="SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_NAME" ColumnName="SUBSCRIPT_TYPE_NAME" />
+          <ScalarProperty Name="CAR_NO" ColumnName="CAR_NO" />
+          <ScalarProperty Name="PhoneList" ColumnName="PhoneList" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_GET_CUSTOMER_BY_PHONE" FunctionName="CSMModel.Store.SP_GET_CUSTOMER_BY_PHONE">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CSMModel.SP_GET_CUSTOMER_BY_PHONE_Result">
+          <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="FIRST_NAME_TH" ColumnName="FIRST_NAME_TH" />
+          <ScalarProperty Name="FIRST_NAME_EN" ColumnName="FIRST_NAME_EN" />
+          <ScalarProperty Name="LAST_NAME_TH" ColumnName="LAST_NAME_TH" />
+          <ScalarProperty Name="LAST_NAME_EN" ColumnName="LAST_NAME_EN" />
+          <ScalarProperty Name="CARD_NO" ColumnName="CARD_NO" />
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="ACCOUNT_NO" ColumnName="ACCOUNT_NO" />
+          <ScalarProperty Name="PRODUCT" ColumnName="PRODUCT" />
+          <ScalarProperty Name="PRODUCT_GROUP" ColumnName="PRODUCT_GROUP" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="BRANCH_CODE" ColumnName="BRANCH_CODE" />
+          <ScalarProperty Name="BRANCH_NAME" ColumnName="BRANCH_NAME" />
+          <ScalarProperty Name="ACCOUNT_DESC" ColumnName="ACCOUNT_DESC" />
+          <ScalarProperty Name="GRADE" ColumnName="GRADE" />
+          <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_ID" ColumnName="SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_NAME" ColumnName="SUBSCRIPT_TYPE_NAME" />
+          <ScalarProperty Name="CAR_NO" ColumnName="CAR_NO" />
+          <ScalarProperty Name="PhoneList" ColumnName="PhoneList" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_GET_CONTACT_LIST" FunctionName="CSMModel.Store.SP_GET_CONTACT_LIST">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CSMModel.SP_GET_CONTACT_LIST_Result">
+          <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+          <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+          <ScalarProperty Name="FIRST_NAME_TH" ColumnName="FIRST_NAME_TH" />
+          <ScalarProperty Name="FIRST_NAME_EN" ColumnName="FIRST_NAME_EN" />
+          <ScalarProperty Name="LAST_NAME_TH" ColumnName="LAST_NAME_TH" />
+          <ScalarProperty Name="LAST_NAME_EN" ColumnName="LAST_NAME_EN" />
+          <ScalarProperty Name="CARD_NO" ColumnName="CARD_NO" />
+          <ScalarProperty Name="PhoneList" ColumnName="PhoneList" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_GET_SR" FunctionName="CSMModel.Store.SP_GET_SR">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CSMModel.SP_GET_SR_Result1">
+          <ScalarProperty Name="SR_ID" ColumnName="SR_ID" />
+          <ScalarProperty Name="SR_NO" ColumnName="SR_NO" />
+          <ScalarProperty Name="SR_CALL_ID" ColumnName="SR_CALL_ID" />
+          <ScalarProperty Name="SR_ANO" ColumnName="SR_ANO" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="CUSTOMER_SUBSCRIPT_TYPE_ID" ColumnName="CUSTOMER_SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="CUSTOMER_SUBSCRIPT_TYPE_CODE" ColumnName="CUSTOMER_SUBSCRIPT_TYPE_CODE" />
+          <ScalarProperty Name="CUSTOMER_SUBSCRIPT_TYPE_NAME" ColumnName="CUSTOMER_SUBSCRIPT_TYPE_NAME" />
+          <ScalarProperty Name="CUSTOMER_TITLE_ID_TH" ColumnName="CUSTOMER_TITLE_ID_TH" />
+          <ScalarProperty Name="CUSTOMER_TITLE_NAME_TH" ColumnName="CUSTOMER_TITLE_NAME_TH" />
+          <ScalarProperty Name="CUSTOMER_FIRST_NAME_TH" ColumnName="CUSTOMER_FIRST_NAME_TH" />
+          <ScalarProperty Name="CUSTOMER_LAST_NAME_TH" ColumnName="CUSTOMER_LAST_NAME_TH" />
+          <ScalarProperty Name="CUSTOMER_TITLE_ID_EN" ColumnName="CUSTOMER_TITLE_ID_EN" />
+          <ScalarProperty Name="CUSTOMER_TITLE_NAME_EN" ColumnName="CUSTOMER_TITLE_NAME_EN" />
+          <ScalarProperty Name="CUSTOMER_FIRST_NAME_EN" ColumnName="CUSTOMER_FIRST_NAME_EN" />
+          <ScalarProperty Name="CUSTOMER_LAST_NAME_EN" ColumnName="CUSTOMER_LAST_NAME_EN" />
+          <ScalarProperty Name="CUSTOMER_CARD_NO" ColumnName="CUSTOMER_CARD_NO" />
+          <ScalarProperty Name="CUSTOMER_BIRTH_DATE" ColumnName="CUSTOMER_BIRTH_DATE" />
+          <ScalarProperty Name="CUSTOMER_EMAIL" ColumnName="CUSTOMER_EMAIL" />
+          <ScalarProperty Name="CUSTOMER_TYPE" ColumnName="CUSTOMER_TYPE" />
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="ACCOUNT_NO" ColumnName="ACCOUNT_NO" />
+          <ScalarProperty Name="ACCOUNT_CAR_NO" ColumnName="ACCOUNT_CAR_NO" />
+          <ScalarProperty Name="ACCOUNT_PRODUCT_GROUP" ColumnName="ACCOUNT_PRODUCT_GROUP" />
+          <ScalarProperty Name="ACCOUNT_PRODUCT" ColumnName="ACCOUNT_PRODUCT" />
+          <ScalarProperty Name="ACCOUNT_BRANCH_CODE" ColumnName="ACCOUNT_BRANCH_CODE" />
+          <ScalarProperty Name="ACCOUNT_BRANCH_NAME" ColumnName="ACCOUNT_BRANCH_NAME" />
+          <ScalarProperty Name="ACCOUNT_STATUS" ColumnName="ACCOUNT_STATUS" />
+          <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+          <ScalarProperty Name="CONTACT_SUBSCRIPT_TYPE_ID" ColumnName="CONTACT_SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="CONTACT_SUBSCRIPT_TYPE_CODE" ColumnName="CONTACT_SUBSCRIPT_TYPE_CODE" />
+          <ScalarProperty Name="CONTACT_SUBSCRIPT_TYPE_NAME" ColumnName="CONTACT_SUBSCRIPT_TYPE_NAME" />
+          <ScalarProperty Name="CONTACT_TITLE_ID_TH" ColumnName="CONTACT_TITLE_ID_TH" />
+          <ScalarProperty Name="CONTACT_TITLE_NAME_TH" ColumnName="CONTACT_TITLE_NAME_TH" />
+          <ScalarProperty Name="CONTACT_FIRST_NAME_TH" ColumnName="CONTACT_FIRST_NAME_TH" />
+          <ScalarProperty Name="CONTACT_LAST_NAME_TH" ColumnName="CONTACT_LAST_NAME_TH" />
+          <ScalarProperty Name="CONTACT_TITLE_ID_EN" ColumnName="CONTACT_TITLE_ID_EN" />
+          <ScalarProperty Name="CONTACT_TITLE_NAME_EN" ColumnName="CONTACT_TITLE_NAME_EN" />
+          <ScalarProperty Name="CONTACT_FIRST_NAME_EN" ColumnName="CONTACT_FIRST_NAME_EN" />
+          <ScalarProperty Name="CONTACT_LAST_NAME_EN" ColumnName="CONTACT_LAST_NAME_EN" />
+          <ScalarProperty Name="CONTACT_CARD_NO" ColumnName="CONTACT_CARD_NO" />
+          <ScalarProperty Name="CONTACT_BIRTH_DATE" ColumnName="CONTACT_BIRTH_DATE" />
+          <ScalarProperty Name="CONTACT_EMAIL" ColumnName="CONTACT_EMAIL" />
+          <ScalarProperty Name="CONTACT_RELATIONSHIP_ID" ColumnName="CONTACT_RELATIONSHIP_ID" />
+          <ScalarProperty Name="CONTACT_RELATIONSHIP_NAME" ColumnName="CONTACT_RELATIONSHIP_NAME" />
+          <ScalarProperty Name="CONTACT_RELATIONSHIP_DESC" ColumnName="CONTACT_RELATIONSHIP_DESC" />
+          <ScalarProperty Name="CONTACT_ACCOUNT_NO" ColumnName="CONTACT_ACCOUNT_NO" />
+          <ScalarProperty Name="MAP_PRODUCT_ID" ColumnName="MAP_PRODUCT_ID" />
+          <ScalarProperty Name="PRODUCTGROUP_ID" ColumnName="PRODUCTGROUP_ID" />
+          <ScalarProperty Name="PRODUCTGROUP_NAME" ColumnName="PRODUCTGROUP_NAME" />
+          <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+          <ScalarProperty Name="PRODUCT_NAME" ColumnName="PRODUCT_NAME" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_ID" ColumnName="CAMPAIGNSERVICE_ID" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_NAME" ColumnName="CAMPAIGNSERVICE_NAME" />
+          <ScalarProperty Name="AREA_ID" ColumnName="AREA_ID" />
+          <ScalarProperty Name="AREA_NAME" ColumnName="AREA_NAME" />
+          <ScalarProperty Name="SUBAREA_ID" ColumnName="SUBAREA_ID" />
+          <ScalarProperty Name="SUBAREA_NAME" ColumnName="SUBAREA_NAME" />
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+          <ScalarProperty Name="TYPE_NAME" ColumnName="TYPE_NAME" />
+          <ScalarProperty Name="SR_SUBJECT" ColumnName="SR_SUBJECT" />
+          <ScalarProperty Name="SR_REMARK" ColumnName="SR_REMARK" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CLOSE_DATE" ColumnName="CLOSE_DATE" />
+          <ScalarProperty Name="SR_PAGE_ID" ColumnName="SR_PAGE_ID" />
+          <ScalarProperty Name="SR_IS_VERIFY" ColumnName="SR_IS_VERIFY" />
+          <ScalarProperty Name="SR_IS_VERIFY_PASS" ColumnName="SR_IS_VERIFY_PASS" />
+          <ScalarProperty Name="SR_PAGE_CODE" ColumnName="SR_PAGE_CODE" />
+          <ScalarProperty Name="SR_PAGE_NAME" ColumnName="SR_PAGE_NAME" />
+          <ScalarProperty Name="SR_STATUS_ID" ColumnName="SR_STATUS_ID" />
+          <ScalarProperty Name="SR_STATUS_CODE" ColumnName="SR_STATUS_CODE" />
+          <ScalarProperty Name="SR_STATUS_NAME" ColumnName="SR_STATUS_NAME" />
+          <ScalarProperty Name="SR_DEF_ACCOUNT_ADDRESS_ID" ColumnName="SR_DEF_ACCOUNT_ADDRESS_ID" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_HOUSE_NO" ColumnName="SR_DEF_ADDRESS_HOUSE_NO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_VILLAGE" ColumnName="SR_DEF_ADDRESS_VILLAGE" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_BUILDING" ColumnName="SR_DEF_ADDRESS_BUILDING" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_FLOOR_NO" ColumnName="SR_DEF_ADDRESS_FLOOR_NO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_ROOM_NO" ColumnName="SR_DEF_ADDRESS_ROOM_NO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_MOO" ColumnName="SR_DEF_ADDRESS_MOO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_SOI" ColumnName="SR_DEF_ADDRESS_SOI" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_STREET" ColumnName="SR_DEF_ADDRESS_STREET" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_TAMBOL" ColumnName="SR_DEF_ADDRESS_TAMBOL" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_AMPHUR" ColumnName="SR_DEF_ADDRESS_AMPHUR" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_PROVINCE" ColumnName="SR_DEF_ADDRESS_PROVINCE" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_ZIPCODE" ColumnName="SR_DEF_ADDRESS_ZIPCODE" />
+          <ScalarProperty Name="SR_AFS_ASSET_ID" ColumnName="SR_AFS_ASSET_ID" />
+          <ScalarProperty Name="SR_AFS_ASSET_NO" ColumnName="SR_AFS_ASSET_NO" />
+          <ScalarProperty Name="SR_AFS_ASSET_DESC" ColumnName="SR_AFS_ASSET_DESC" />
+          <ScalarProperty Name="SR_NCB_CUSTOMER_BIRTHDATE" ColumnName="SR_NCB_CUSTOMER_BIRTHDATE" />
+          <ScalarProperty Name="SR_NCB_CHECK_STATUS" ColumnName="SR_NCB_CHECK_STATUS" />
+          <ScalarProperty Name="SR_NCB_MARKETING_USER_ID" ColumnName="SR_NCB_MARKETING_USER_ID" />
+          <ScalarProperty Name="SR_NCB_MARKETING_FULL_NAME" ColumnName="SR_NCB_MARKETING_FULL_NAME" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_ID" ColumnName="SR_NCB_MARKETING_BRANCH_ID" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_NAME" ColumnName="SR_NCB_MARKETING_BRANCH_NAME" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_UPPER_1_ID" ColumnName="SR_NCB_MARKETING_BRANCH_UPPER_1_ID" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_UPPER_1_NAME" ColumnName="SR_NCB_MARKETING_BRANCH_UPPER_1_NAME" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_UPPER_2_ID" ColumnName="SR_NCB_MARKETING_BRANCH_UPPER_2_ID" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_UPPER_2_NAME" ColumnName="SR_NCB_MARKETING_BRANCH_UPPER_2_NAME" />
+          <ScalarProperty Name="RULE_ASSIGN_FLAG" ColumnName="RULE_ASSIGN_FLAG" />
+          <ScalarProperty Name="DRAFT_SR_EMAIL_TEMPLATE_ID" ColumnName="DRAFT_SR_EMAIL_TEMPLATE_ID" />
+          <ScalarProperty Name="DRAFT_MAIL_SENDER" ColumnName="DRAFT_MAIL_SENDER" />
+          <ScalarProperty Name="DRAFT_MAIL_TO" ColumnName="DRAFT_MAIL_TO" />
+          <ScalarProperty Name="DRAFT_MAIL_CC" ColumnName="DRAFT_MAIL_CC" />
+          <ScalarProperty Name="DRAFT_MAIL_SUBJECT" ColumnName="DRAFT_MAIL_SUBJECT" />
+          <ScalarProperty Name="DRAFT_MAIL_BODY" ColumnName="DRAFT_MAIL_BODY" />
+          <ScalarProperty Name="DRAFT_ACTIVITY_TYPE_ID" ColumnName="DRAFT_ACTIVITY_TYPE_ID" />
+          <ScalarProperty Name="DRAFT_ACTIVITY_DESC" ColumnName="DRAFT_ACTIVITY_DESC" />
+          <ScalarProperty Name="DRAFT_ACCOUNT_ADDRESS_TEXT" ColumnName="DRAFT_ACCOUNT_ADDRESS_TEXT" />
+          <ScalarProperty Name="DRAFT_IS_SEND_EMAIL_FOR_DELEGATE" ColumnName="DRAFT_IS_SEND_EMAIL_FOR_DELEGATE" />
+          <ScalarProperty Name="DRAFT_IS_CLOSE" ColumnName="DRAFT_IS_CLOSE" />
+          <ScalarProperty Name="DRAFT_ATTACHMENT_JSON" ColumnName="DRAFT_ATTACHMENT_JSON" />
+          <ScalarProperty Name="DRAFT_VERIFY_ANSWER_JSON" ColumnName="DRAFT_VERIFY_ANSWER_JSON" />
+          <ScalarProperty Name="CREATE_USER_ID" ColumnName="CREATE_USER_ID" />
+          <ScalarProperty Name="CREATE_USER_FIRST_NAME" ColumnName="CREATE_USER_FIRST_NAME" />
+          <ScalarProperty Name="CREATE_USER_LAST_NAME" ColumnName="CREATE_USER_LAST_NAME" />
+          <ScalarProperty Name="CREATE_USER_POSITION_CODE" ColumnName="CREATE_USER_POSITION_CODE" />
+          <ScalarProperty Name="CREATE_BRANCH_ID" ColumnName="CREATE_BRANCH_ID" />
+          <ScalarProperty Name="CREATE_BRANCH_CODE" ColumnName="CREATE_BRANCH_CODE" />
+          <ScalarProperty Name="CREATE_BRANCH_NAME" ColumnName="CREATE_BRANCH_NAME" />
+          <ScalarProperty Name="UPDATE_USER_ID" ColumnName="UPDATE_USER_ID" />
+          <ScalarProperty Name="UPDATE_USER_FIRST_NAME" ColumnName="UPDATE_USER_FIRST_NAME" />
+          <ScalarProperty Name="UPDATE_USER_LAST_NAME" ColumnName="UPDATE_USER_LAST_NAME" />
+          <ScalarProperty Name="UPDATE_USER_POSITION_CODE" ColumnName="UPDATE_USER_POSITION_CODE" />
+          <ScalarProperty Name="OWNER_USER_ID" ColumnName="OWNER_USER_ID" />
+          <ScalarProperty Name="OWNER_USER_FIRST_NAME" ColumnName="OWNER_USER_FIRST_NAME" />
+          <ScalarProperty Name="OWNER_USER_LAST_NAME" ColumnName="OWNER_USER_LAST_NAME" />
+          <ScalarProperty Name="OWNER_USER_POSITION_CODE" ColumnName="OWNER_USER_POSITION_CODE" />
+          <ScalarProperty Name="OWNER_BRANCH_ID" ColumnName="OWNER_BRANCH_ID" />
+          <ScalarProperty Name="OWNER_BRANCH_CODE" ColumnName="OWNER_BRANCH_CODE" />
+          <ScalarProperty Name="OWNER_BRANCH_NAME" ColumnName="OWNER_BRANCH_NAME" />
+          <ScalarProperty Name="DELEGATE_USER_ID" ColumnName="DELEGATE_USER_ID" />
+          <ScalarProperty Name="DELEGATE_USER_FIRST_NAME" ColumnName="DELEGATE_USER_FIRST_NAME" />
+          <ScalarProperty Name="DELEGATE_USER_LAST_NAME" ColumnName="DELEGATE_USER_LAST_NAME" />
+          <ScalarProperty Name="DELEGATE_USER_POSITION_CODE" ColumnName="DELEGATE_USER_POSITION_CODE" />
+          <ScalarProperty Name="DELEGATE_BRANCH_ID" ColumnName="DELEGATE_BRANCH_ID" />
+          <ScalarProperty Name="DELEGATE_BRANCH_CODE" ColumnName="DELEGATE_BRANCH_CODE" />
+          <ScalarProperty Name="DELEGATE_BRANCH_NAME" ColumnName="DELEGATE_BRANCH_NAME" />
+          <ScalarProperty Name="CHANNEL_ID" ColumnName="CHANNEL_ID" />
+          <ScalarProperty Name="CHANNEL_NAME" ColumnName="CHANNEL_NAME" />
+          <ScalarProperty Name="CHANNEL_CODE" ColumnName="CHANNEL_CODE" />
+          <ScalarProperty Name="MEDIA_SOURCE_ID" ColumnName="MEDIA_SOURCE_ID" />
+          <ScalarProperty Name="MEDIA_SOURCE_NAME" ColumnName="MEDIA_SOURCE_NAME" />
+          <ScalarProperty Name="CUSTOMER_EMPLOYEE_CODE" ColumnName="CUSTOMER_EMPLOYEE_CODE" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_GET_SR_ACTIVITY" FunctionName="CSMModel.Store.SP_GET_SR_ACTIVITY">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CSMModel.SP_GET_SR_ACTIVITY_Result1">
+          <ScalarProperty Name="SR_ACTIVITY_ID" ColumnName="SR_ACTIVITY_ID" />
+          <ScalarProperty Name="SR_ID" ColumnName="SR_ID" />
+          <ScalarProperty Name="SR_NO" ColumnName="SR_NO" />
+          <ScalarProperty Name="SR_CALL_ID" ColumnName="SR_CALL_ID" />
+          <ScalarProperty Name="SR_ANO" ColumnName="SR_ANO" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="CUSTOMER_SUBSCRIPT_TYPE_ID" ColumnName="CUSTOMER_SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="CUSTOMER_SUBSCRIPT_TYPE_NAME" ColumnName="CUSTOMER_SUBSCRIPT_TYPE_NAME" />
+          <ScalarProperty Name="CUSTOMER_SUBSCRIPT_TYPE_CODE" ColumnName="CUSTOMER_SUBSCRIPT_TYPE_CODE" />
+          <ScalarProperty Name="CUSTOMER_CARD_NO" ColumnName="CUSTOMER_CARD_NO" />
+          <ScalarProperty Name="CUSTOMER_BIRTH_DATE" ColumnName="CUSTOMER_BIRTH_DATE" />
+          <ScalarProperty Name="CUSTOMER_TITLE_NAME_TH" ColumnName="CUSTOMER_TITLE_NAME_TH" />
+          <ScalarProperty Name="CUSTOMER_FIRST_NAME_TH" ColumnName="CUSTOMER_FIRST_NAME_TH" />
+          <ScalarProperty Name="CUSTOMER_LAST_NAME_TH" ColumnName="CUSTOMER_LAST_NAME_TH" />
+          <ScalarProperty Name="CUSTOMER_TITLE_NAME_EN" ColumnName="CUSTOMER_TITLE_NAME_EN" />
+          <ScalarProperty Name="CUSTOMER_FIRST_NAME_EN" ColumnName="CUSTOMER_FIRST_NAME_EN" />
+          <ScalarProperty Name="CUSTOMER_LAST_NAME_EN" ColumnName="CUSTOMER_LAST_NAME_EN" />
+          <ScalarProperty Name="CUSTOMER_EMAIL" ColumnName="CUSTOMER_EMAIL" />
+          <ScalarProperty Name="CUSTOMER_EMPLOYEE_CODE" ColumnName="CUSTOMER_EMPLOYEE_CODE" />
+          <ScalarProperty Name="CUSTOMER_KKCIS_ID" ColumnName="CUSTOMER_KKCIS_ID" />
+          <ScalarProperty Name="ACCOUNT_NO" ColumnName="ACCOUNT_NO" />
+          <ScalarProperty Name="ACCOUNT_STATUS" ColumnName="ACCOUNT_STATUS" />
+          <ScalarProperty Name="ACCOUNT_CAR_NO" ColumnName="ACCOUNT_CAR_NO" />
+          <ScalarProperty Name="ACCOUNT_PRODUCT_GROUP" ColumnName="ACCOUNT_PRODUCT_GROUP" />
+          <ScalarProperty Name="ACCOUNT_PRODUCT" ColumnName="ACCOUNT_PRODUCT" />
+          <ScalarProperty Name="ACCOUNT_BRANCH_NAME" ColumnName="ACCOUNT_BRANCH_NAME" />
+          <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+          <ScalarProperty Name="CONTACT_SUBSCRIPT_TYPE_NAME" ColumnName="CONTACT_SUBSCRIPT_TYPE_NAME" />
+          <ScalarProperty Name="CONTACT_CARD_NO" ColumnName="CONTACT_CARD_NO" />
+          <ScalarProperty Name="CONTACT_BIRTH_DATE" ColumnName="CONTACT_BIRTH_DATE" />
+          <ScalarProperty Name="CONTACT_TITLE_NAME_TH" ColumnName="CONTACT_TITLE_NAME_TH" />
+          <ScalarProperty Name="CONTACT_FIRST_NAME_TH" ColumnName="CONTACT_FIRST_NAME_TH" />
+          <ScalarProperty Name="CONTACT_LAST_NAME_TH" ColumnName="CONTACT_LAST_NAME_TH" />
+          <ScalarProperty Name="CONTACT_TITLE_NAME_EN" ColumnName="CONTACT_TITLE_NAME_EN" />
+          <ScalarProperty Name="CONTACT_FIRST_NAME_EN" ColumnName="CONTACT_FIRST_NAME_EN" />
+          <ScalarProperty Name="CONTACT_LAST_NAME_EN" ColumnName="CONTACT_LAST_NAME_EN" />
+          <ScalarProperty Name="CONTACT_EMAIL" ColumnName="CONTACT_EMAIL" />
+          <ScalarProperty Name="CONTACT_ACCOUNT_NO" ColumnName="CONTACT_ACCOUNT_NO" />
+          <ScalarProperty Name="CONTACT_RELATIONSHIP_NAME" ColumnName="CONTACT_RELATIONSHIP_NAME" />
+          <ScalarProperty Name="PRODUCTGROUP_CODE" ColumnName="PRODUCTGROUP_CODE" />
+          <ScalarProperty Name="PRODUCTGROUP_NAME" ColumnName="PRODUCTGROUP_NAME" />
+          <ScalarProperty Name="PRODUCT_CODE" ColumnName="PRODUCT_CODE" />
+          <ScalarProperty Name="PRODUCT_NAME" ColumnName="PRODUCT_NAME" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_CODE" ColumnName="CAMPAIGNSERVICE_CODE" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_NAME" ColumnName="CAMPAIGNSERVICE_NAME" />
+          <ScalarProperty Name="AREA_ID" ColumnName="AREA_ID" />
+          <ScalarProperty Name="AREA_CODE" ColumnName="AREA_CODE" />
+          <ScalarProperty Name="AREA_NAME" ColumnName="AREA_NAME" />
+          <ScalarProperty Name="SUBAREA_ID" ColumnName="SUBAREA_ID" />
+          <ScalarProperty Name="SUBAREA_CODE" ColumnName="SUBAREA_CODE" />
+          <ScalarProperty Name="SUBAREA_NAME" ColumnName="SUBAREA_NAME" />
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+          <ScalarProperty Name="TYPE_CODE" ColumnName="TYPE_CODE" />
+          <ScalarProperty Name="TYPE_NAME" ColumnName="TYPE_NAME" />
+          <ScalarProperty Name="CHANNEL_CODE" ColumnName="CHANNEL_CODE" />
+          <ScalarProperty Name="CHANNEL_NAME" ColumnName="CHANNEL_NAME" />
+          <ScalarProperty Name="MEDIA_SOURCE_NAME" ColumnName="MEDIA_SOURCE_NAME" />
+          <ScalarProperty Name="SR_SUBJECT" ColumnName="SR_SUBJECT" />
+          <ScalarProperty Name="SR_REMARK" ColumnName="SR_REMARK" />
+          <ScalarProperty Name="SR_IS_VERIFY" ColumnName="SR_IS_VERIFY" />
+          <ScalarProperty Name="SR_IS_VERIFY_PASS" ColumnName="SR_IS_VERIFY_PASS" />
+          <ScalarProperty Name="SR_PAGE_ID" ColumnName="SR_PAGE_ID" />
+          <ScalarProperty Name="CREATE_BRANCH_NAME" ColumnName="CREATE_BRANCH_NAME" />
+          <ScalarProperty Name="CREATE_FIRST_NAME" ColumnName="CREATE_FIRST_NAME" />
+          <ScalarProperty Name="CREATE_LAST_NAME" ColumnName="CREATE_LAST_NAME" />
+          <ScalarProperty Name="CREATE_POSITION_CODE" ColumnName="CREATE_POSITION_CODE" />
+          <ScalarProperty Name="OWNER_BRANCH_NAME" ColumnName="OWNER_BRANCH_NAME" />
+          <ScalarProperty Name="OWNER_FIRST_NAME" ColumnName="OWNER_FIRST_NAME" />
+          <ScalarProperty Name="OWNER_LAST_NAME" ColumnName="OWNER_LAST_NAME" />
+          <ScalarProperty Name="OWNER_POSITION_CODE" ColumnName="OWNER_POSITION_CODE" />
+          <ScalarProperty Name="DELEGATE_BRANCH_NAME" ColumnName="DELEGATE_BRANCH_NAME" />
+          <ScalarProperty Name="DELEGATE_FIRST_NAME" ColumnName="DELEGATE_FIRST_NAME" />
+          <ScalarProperty Name="DELEGATE_LAST_NAME" ColumnName="DELEGATE_LAST_NAME" />
+          <ScalarProperty Name="DELEGATE_POSITION_CODE" ColumnName="DELEGATE_POSITION_CODE" />
+          <ScalarProperty Name="SR_EMAIL_TEMPLATE_ID" ColumnName="SR_EMAIL_TEMPLATE_ID" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_SENDER" ColumnName="SR_ACTIVITY_EMAIL_SENDER" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_TO" ColumnName="SR_ACTIVITY_EMAIL_TO" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_CC" ColumnName="SR_ACTIVITY_EMAIL_CC" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_SUBJECT" ColumnName="SR_ACTIVITY_EMAIL_SUBJECT" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_BODY" ColumnName="SR_ACTIVITY_EMAIL_BODY" />
+          <ScalarProperty Name="SR_ACTIVITY_EMAIL_ATTACHMENTS" ColumnName="SR_ACTIVITY_EMAIL_ATTACHMENTS" />
+          <ScalarProperty Name="SR_ACTIVITY_DESC" ColumnName="SR_ACTIVITY_DESC" />
+          <ScalarProperty Name="SR_ACTIVITY_TYPE_ID" ColumnName="SR_ACTIVITY_TYPE_ID" />
+          <ScalarProperty Name="SR_ACTIVITY_TYPE_NAME" ColumnName="SR_ACTIVITY_TYPE_NAME" />
+          <ScalarProperty Name="SR_STATUS_NAME" ColumnName="SR_STATUS_NAME" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_HOUSE_NO" ColumnName="SR_DEF_ADDRESS_HOUSE_NO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_VILLAGE" ColumnName="SR_DEF_ADDRESS_VILLAGE" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_BUILDING" ColumnName="SR_DEF_ADDRESS_BUILDING" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_FLOOR_NO" ColumnName="SR_DEF_ADDRESS_FLOOR_NO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_ROOM_NO" ColumnName="SR_DEF_ADDRESS_ROOM_NO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_MOO" ColumnName="SR_DEF_ADDRESS_MOO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_SOI" ColumnName="SR_DEF_ADDRESS_SOI" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_STREET" ColumnName="SR_DEF_ADDRESS_STREET" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_TAMBOL" ColumnName="SR_DEF_ADDRESS_TAMBOL" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_AMPHUR" ColumnName="SR_DEF_ADDRESS_AMPHUR" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_PROVINCE" ColumnName="SR_DEF_ADDRESS_PROVINCE" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_ZIPCODE" ColumnName="SR_DEF_ADDRESS_ZIPCODE" />
+          <ScalarProperty Name="SR_AFS_ASSET_NO" ColumnName="SR_AFS_ASSET_NO" />
+          <ScalarProperty Name="SR_AFS_ASSET_DESC" ColumnName="SR_AFS_ASSET_DESC" />
+          <ScalarProperty Name="SR_NCB_CUSTOMER_BIRTHDATE" ColumnName="SR_NCB_CUSTOMER_BIRTHDATE" />
+          <ScalarProperty Name="SR_NCB_CHECK_STATUS" ColumnName="SR_NCB_CHECK_STATUS" />
+          <ScalarProperty Name="SR_NCB_MARKETING_FULL_NAME" ColumnName="SR_NCB_MARKETING_FULL_NAME" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_NAME" ColumnName="SR_NCB_MARKETING_BRANCH_NAME" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_UPPER_1_NAME" ColumnName="SR_NCB_MARKETING_BRANCH_UPPER_1_NAME" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_UPPER_2_NAME" ColumnName="SR_NCB_MARKETING_BRANCH_UPPER_2_NAME" />
+          <ScalarProperty Name="ACTIVITY_CREATE_DATE" ColumnName="ACTIVITY_CREATE_DATE" />
+          <ScalarProperty Name="ACTIVITY_CREATE_FIRST_NAME" ColumnName="ACTIVITY_CREATE_FIRST_NAME" />
+          <ScalarProperty Name="ACTIVITY_CREATE_LAST_NAME" ColumnName="ACTIVITY_CREATE_LAST_NAME" />
+          <ScalarProperty Name="ACTIVITY_CREATE_POSITION_CODE" ColumnName="ACTIVITY_CREATE_POSITION_CODE" />
+          <ScalarProperty Name="ACTIVITY_CREATE_EMPLOYEE_CODE" ColumnName="ACTIVITY_CREATE_EMPLOYEE_CODE" />
+          <ScalarProperty Name="MAP_PRODUCT_ID" ColumnName="MAP_PRODUCT_ID" />
+          <ScalarProperty Name="HP_SUBJECT" ColumnName="HP_SUBJECT" />
+          <ScalarProperty Name="HP_LANGUAGE_INDEPENDENT_CODE" ColumnName="HP_LANGUAGE_INDEPENDENT_CODE" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SP_VALIDATE_CREATE_SR" FunctionName="CSMModel.Store.SP_VALIDATE_CREATE_SR">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CSMModel.SP_VALIDATE_CREATE_SR_Result">
+          <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+          <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+          <ScalarProperty Name="ContactRelationshipId" ColumnName="ContactRelationshipId" />
+          <ScalarProperty Name="CampaignServiceId" ColumnName="CampaignServiceId" />
+          <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+          <ScalarProperty Name="SubAreaId" ColumnName="SubAreaId" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
+          <ScalarProperty Name="MediaSourceId" ColumnName="MediaSourceId" />
+          <ScalarProperty Name="SrPageId" ColumnName="SrPageId" />
+          <ScalarProperty Name="MapProductId" ColumnName="MapProductId" />
+          <ScalarProperty Name="IsVerify" ColumnName="IsVerify" />
+          <ScalarProperty Name="CreatorUserId" ColumnName="CreatorUserId" />
+          <ScalarProperty Name="CreatorBranchId" ColumnName="CreatorBranchId" />
+          <ScalarProperty Name="OwnerUserId" ColumnName="OwnerUserId" />
+          <ScalarProperty Name="OwnerBranchId" ColumnName="OwnerBranchId" />
+          <ScalarProperty Name="DelegateUserId" ColumnName="DelegateUserId" />
+          <ScalarProperty Name="DelegateBranchId" ColumnName="DelegateBranchId" />
+          <ScalarProperty Name="NcbMarketingUserId" ColumnName="NcbMarketingUserId" />
+          <ScalarProperty Name="AfsAssetId" ColumnName="AfsAssetId" />
+          <ScalarProperty Name="AfsAssetNo" ColumnName="AfsAssetNo" />
+          <ScalarProperty Name="AfsAssetDesc" ColumnName="AfsAssetDesc" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="ProductGroupId" ColumnName="ProductGroupId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="TB_C_PROCESS">
+      <EntityTypeMapping TypeName="CSMModel.TB_C_PROCESS">
+        <MappingFragment StoreEntitySet="TB_C_PROCESS">
+          <ScalarProperty Name="DETAIL" ColumnName="DETAIL" />
+          <ScalarProperty Name="IS_RERUNABLE" ColumnName="IS_RERUNABLE" />
+          <ScalarProperty Name="PROCESS_TIME" ColumnName="PROCESS_TIME" />
+          <ScalarProperty Name="END_TIME" ColumnName="END_TIME" />
+          <ScalarProperty Name="START_TIME" ColumnName="START_TIME" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="PROCESS_NAME" ColumnName="PROCESS_NAME" />
+          <ScalarProperty Name="PROCESS_CODE" ColumnName="PROCESS_CODE" />
+          <ScalarProperty Name="PROCESS_ID" ColumnName="PROCESS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_ADDRESS_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_ADDRESS_TYPE">
+        <MappingFragment StoreEntitySet="TB_I_CIS_ADDRESS_TYPE">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="ADDRESS_TYPE_NAME" ColumnName="ADDRESS_TYPE_NAME" />
+          <ScalarProperty Name="ADDRESS_TYPE_CODE" ColumnName="ADDRESS_TYPE_CODE" />
+          <ScalarProperty Name="CIS_ADDRESS_TYPE_ID" ColumnName="CIS_ADDRESS_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_CORPORATE">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_CORPORATE">
+        <MappingFragment StoreEntitySet="TB_I_CIS_CORPORATE">
+          <ScalarProperty Name="SUBSCRIPT_TYPE_ID" ColumnName="SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="TITLE_EN_ID" ColumnName="TITLE_EN_ID" />
+          <ScalarProperty Name="TITLE_TH_ID" ColumnName="TITLE_TH_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="STOCK" ColumnName="STOCK" />
+          <ScalarProperty Name="MARKETING_ID" ColumnName="MARKETING_ID" />
+          <ScalarProperty Name="BUSINESS_CAT_CODE" ColumnName="BUSINESS_CAT_CODE" />
+          <ScalarProperty Name="ID_COUNTRY_ISSUE" ColumnName="ID_COUNTRY_ISSUE" />
+          <ScalarProperty Name="DATE_CUST_UPDATED" ColumnName="DATE_CUST_UPDATED" />
+          <ScalarProperty Name="PLACE_CUST_UPDATED" ColumnName="PLACE_CUST_UPDATED" />
+          <ScalarProperty Name="FIRST_BRANCH" ColumnName="FIRST_BRANCH" />
+          <ScalarProperty Name="FLG_MST_APP" ColumnName="FLG_MST_APP" />
+          <ScalarProperty Name="SHARE_INFO_FLAG" ColumnName="SHARE_INFO_FLAG" />
+          <ScalarProperty Name="NUMBER_OF_EMPLOYEE" ColumnName="NUMBER_OF_EMPLOYEE" />
+          <ScalarProperty Name="FIXED_ASSET_EXCLUDE_LAND" ColumnName="FIXED_ASSET_EXCLUDE_LAND" />
+          <ScalarProperty Name="FIXED_ASSET" ColumnName="FIXED_ASSET" />
+          <ScalarProperty Name="BUSINESS_CODE" ColumnName="BUSINESS_CODE" />
+          <ScalarProperty Name="REGISTER_DATE" ColumnName="REGISTER_DATE" />
+          <ScalarProperty Name="AUTHORIZED_SHARE_CAPITAL" ColumnName="AUTHORIZED_SHARE_CAPITAL" />
+          <ScalarProperty Name="VALUE_PER_SHARE" ColumnName="VALUE_PER_SHARE" />
+          <ScalarProperty Name="HOST_BUSINESS_COUNTRY_CODE" ColumnName="HOST_BUSINESS_COUNTRY_CODE" />
+          <ScalarProperty Name="TAX_ID" ColumnName="TAX_ID" />
+          <ScalarProperty Name="ISIC_CODE" ColumnName="ISIC_CODE" />
+          <ScalarProperty Name="NAME_EN" ColumnName="NAME_EN" />
+          <ScalarProperty Name="NAME_TH" ColumnName="NAME_TH" />
+          <ScalarProperty Name="TITLE_ID" ColumnName="TITLE_ID" />
+          <ScalarProperty Name="CUST_TYPE_GROUP" ColumnName="CUST_TYPE_GROUP" />
+          <ScalarProperty Name="CUST_TYPE_CODE" ColumnName="CUST_TYPE_CODE" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="CARD_ID" ColumnName="CARD_ID" />
+          <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="CIS_CUSTOMER_ID" ColumnName="CIS_CUSTOMER_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_COUNTRY">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_COUNTRY">
+        <MappingFragment StoreEntitySet="TB_I_CIS_COUNTRY">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="COUNTRY_NAME_EN" ColumnName="COUNTRY_NAME_EN" />
+          <ScalarProperty Name="COUNTRY_NAME_TH" ColumnName="COUNTRY_NAME_TH" />
+          <ScalarProperty Name="COUNTRY_CODE" ColumnName="COUNTRY_CODE" />
+          <ScalarProperty Name="COUNTRY_ID" ColumnName="COUNTRY_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_CUSTOMER_EMAIL">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_CUSTOMER_EMAIL">
+        <MappingFragment StoreEntitySet="TB_I_CIS_CUSTOMER_EMAIL">
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="MAILACCOUNT" ColumnName="MAILACCOUNT" />
+          <ScalarProperty Name="MAIL_TYPE_CODE" ColumnName="MAIL_TYPE_CODE" />
+          <ScalarProperty Name="CUST_TYPE_GROUP" ColumnName="CUST_TYPE_GROUP" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="CARD_ID" ColumnName="CARD_ID" />
+          <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="CIS_EMAIL_ID" ColumnName="CIS_EMAIL_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_CUSTOMER_PHONE">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_CUSTOMER_PHONE">
+        <MappingFragment StoreEntitySet="TB_I_CIS_CUSTOMER_PHONE">
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="PHONE_TYPE_ID" ColumnName="PHONE_TYPE_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="PHONE_EXT" ColumnName="PHONE_EXT" />
+          <ScalarProperty Name="PHONE_NUM" ColumnName="PHONE_NUM" />
+          <ScalarProperty Name="PHONE_TYPE_CODE" ColumnName="PHONE_TYPE_CODE" />
+          <ScalarProperty Name="CUST_TYPE_GROUP" ColumnName="CUST_TYPE_GROUP" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="CARD_ID" ColumnName="CARD_ID" />
+          <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="CIS_PHONE_ID" ColumnName="CIS_PHONE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_DISTRICT">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_DISTRICT">
+        <MappingFragment StoreEntitySet="TB_I_CIS_DISTRICT">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="DISTRICT_NAME_EN" ColumnName="DISTRICT_NAME_EN" />
+          <ScalarProperty Name="DISTRICT_NAME_TH" ColumnName="DISTRICT_NAME_TH" />
+          <ScalarProperty Name="DISTRICT_CODE" ColumnName="DISTRICT_CODE" />
+          <ScalarProperty Name="PROVINCE_CODE" ColumnName="PROVINCE_CODE" />
+          <ScalarProperty Name="CIST_DISTRICT_ID" ColumnName="CIST_DISTRICT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_EMAIL_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_EMAIL_TYPE">
+        <MappingFragment StoreEntitySet="TB_I_CIS_EMAIL_TYPE">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="EMAIL_TYPE_DESC" ColumnName="EMAIL_TYPE_DESC" />
+          <ScalarProperty Name="EMAIL_TYPE_CODE" ColumnName="EMAIL_TYPE_CODE" />
+          <ScalarProperty Name="CIS_EMAIL_TYPE_ID" ColumnName="CIS_EMAIL_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_INDIVIDUAL">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_INDIVIDUAL">
+        <MappingFragment StoreEntitySet="TB_I_CIS_INDIVIDUAL">
+          <ScalarProperty Name="SUBSCRIPT_TYPE_ID" ColumnName="SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="TITLE_EN_ID" ColumnName="TITLE_EN_ID" />
+          <ScalarProperty Name="TITLE_TH_ID" ColumnName="TITLE_TH_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="SOURCE_INCOME_REM" ColumnName="SOURCE_INCOME_REM" />
+          <ScalarProperty Name="TOTAL_WEALTH" ColumnName="TOTAL_WEALTH" />
+          <ScalarProperty Name="COUNTRY_INCOME" ColumnName="COUNTRY_INCOME" />
+          <ScalarProperty Name="OCCUPATION_SUBTYPE_CODE" ColumnName="OCCUPATION_SUBTYPE_CODE" />
+          <ScalarProperty Name="OCCUPATION_CODE" ColumnName="OCCUPATION_CODE" />
+          <ScalarProperty Name="FIXED_ASSET_EXCLUDE_LAND" ColumnName="FIXED_ASSET_EXCLUDE_LAND" />
+          <ScalarProperty Name="FIXED_ASSET" ColumnName="FIXED_ASSET" />
+          <ScalarProperty Name="NUMBER_OF_EMPLOYEE" ColumnName="NUMBER_OF_EMPLOYEE" />
+          <ScalarProperty Name="MARKETING_ID" ColumnName="MARKETING_ID" />
+          <ScalarProperty Name="ANNUAL_INCOME_PERIOD" ColumnName="ANNUAL_INCOME_PERIOD" />
+          <ScalarProperty Name="DATE_CUST_UPDATED" ColumnName="DATE_CUST_UPDATED" />
+          <ScalarProperty Name="PLACE_CUST_UPDATED" ColumnName="PLACE_CUST_UPDATED" />
+          <ScalarProperty Name="SHARE_INFO_FLAG" ColumnName="SHARE_INFO_FLAG" />
+          <ScalarProperty Name="FIRST_BRANCH" ColumnName="FIRST_BRANCH" />
+          <ScalarProperty Name="CHANNEL_HOME" ColumnName="CHANNEL_HOME" />
+          <ScalarProperty Name="FLG_MST_APP" ColumnName="FLG_MST_APP" />
+          <ScalarProperty Name="TOTAL_WEALTH_PERIOD" ColumnName="TOTAL_WEALTH_PERIOD" />
+          <ScalarProperty Name="SOURCE_INCOME" ColumnName="SOURCE_INCOME" />
+          <ScalarProperty Name="ANNUAL_INCOME" ColumnName="ANNUAL_INCOME" />
+          <ScalarProperty Name="ISIC_CODE" ColumnName="ISIC_CODE" />
+          <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+          <ScalarProperty Name="BUSINESS_CODE" ColumnName="BUSINESS_CODE" />
+          <ScalarProperty Name="POSITION" ColumnName="POSITION" />
+          <ScalarProperty Name="EDUCATION_CODE" ColumnName="EDUCATION_CODE" />
+          <ScalarProperty Name="RELIGION_CODE" ColumnName="RELIGION_CODE" />
+          <ScalarProperty Name="NATIONALITY3_CODE" ColumnName="NATIONALITY3_CODE" />
+          <ScalarProperty Name="NATIONALITY2_CODE" ColumnName="NATIONALITY2_CODE" />
+          <ScalarProperty Name="NATIONALITY1_CODE" ColumnName="NATIONALITY1_CODE" />
+          <ScalarProperty Name="MARITAL_CODE" ColumnName="MARITAL_CODE" />
+          <ScalarProperty Name="GENDER_CODE" ColumnName="GENDER_CODE" />
+          <ScalarProperty Name="BIRTH_DATE" ColumnName="BIRTH_DATE" />
+          <ScalarProperty Name="LAST_NAME_EN" ColumnName="LAST_NAME_EN" />
+          <ScalarProperty Name="MID_NAME_EN" ColumnName="MID_NAME_EN" />
+          <ScalarProperty Name="FIRST_NAME_EN" ColumnName="FIRST_NAME_EN" />
+          <ScalarProperty Name="LAST_NAME_TH" ColumnName="LAST_NAME_TH" />
+          <ScalarProperty Name="MID_NAME_TH" ColumnName="MID_NAME_TH" />
+          <ScalarProperty Name="FIRST_NAME_TH" ColumnName="FIRST_NAME_TH" />
+          <ScalarProperty Name="TITLE_NAME_CUSTOM" ColumnName="TITLE_NAME_CUSTOM" />
+          <ScalarProperty Name="TITLE_ID" ColumnName="TITLE_ID" />
+          <ScalarProperty Name="CUST_TYPE_GROUP" ColumnName="CUST_TYPE_GROUP" />
+          <ScalarProperty Name="CUST_TYPE_CODE" ColumnName="CUST_TYPE_CODE" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="CARD_ID" ColumnName="CARD_ID" />
+          <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="CIS_CUSTOMER_ID" ColumnName="CIS_CUSTOMER_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_PHONE_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_PHONE_TYPE">
+        <MappingFragment StoreEntitySet="TB_I_CIS_PHONE_TYPE">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="PHONE_TYPE_DESC" ColumnName="PHONE_TYPE_DESC" />
+          <ScalarProperty Name="PHONE_TYPE_CODE" ColumnName="PHONE_TYPE_CODE" />
+          <ScalarProperty Name="CIS_PHONE_TYPE_ID" ColumnName="CIS_PHONE_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_PRODUCT_GROUP">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_PRODUCT_GROUP">
+        <MappingFragment StoreEntitySet="TB_I_CIS_PRODUCT_GROUP">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="SUBSCR_DESC" ColumnName="SUBSCR_DESC" />
+          <ScalarProperty Name="SUBSCR_CODE" ColumnName="SUBSCR_CODE" />
+          <ScalarProperty Name="ENTITY_CODE" ColumnName="ENTITY_CODE" />
+          <ScalarProperty Name="PRODUCT_FLAG" ColumnName="PRODUCT_FLAG" />
+          <ScalarProperty Name="SYSTEM" ColumnName="SYSTEM" />
+          <ScalarProperty Name="PRODUCT_DESC" ColumnName="PRODUCT_DESC" />
+          <ScalarProperty Name="PRODUCT_TYPE" ColumnName="PRODUCT_TYPE" />
+          <ScalarProperty Name="PRODUCT_CODE" ColumnName="PRODUCT_CODE" />
+          <ScalarProperty Name="PRODUCT_GROUP_ID" ColumnName="PRODUCT_GROUP_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_PROVINCE">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_PROVINCE">
+        <MappingFragment StoreEntitySet="TB_I_CIS_PROVINCE">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="PROVINCE_NAME_EN" ColumnName="PROVINCE_NAME_EN" />
+          <ScalarProperty Name="PROVINCE_NAME_TH" ColumnName="PROVINCE_NAME_TH" />
+          <ScalarProperty Name="PROVINCE_CODE" ColumnName="PROVINCE_CODE" />
+          <ScalarProperty Name="CIS_PROVINCE_ID" ColumnName="CIS_PROVINCE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_SUBDISTRICT">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_SUBDISTRICT">
+        <MappingFragment StoreEntitySet="TB_I_CIS_SUBDISTRICT">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="POSTCODE" ColumnName="POSTCODE" />
+          <ScalarProperty Name="SUBDISTRICT_NAME_EN" ColumnName="SUBDISTRICT_NAME_EN" />
+          <ScalarProperty Name="SUBDISTRICT_NAME_TH" ColumnName="SUBDISTRICT_NAME_TH" />
+          <ScalarProperty Name="SUBDISTRICT_CODE" ColumnName="SUBDISTRICT_CODE" />
+          <ScalarProperty Name="DISTRICT_CODE" ColumnName="DISTRICT_CODE" />
+          <ScalarProperty Name="CIS_SUBDISTRICT_ID" ColumnName="CIS_SUBDISTRICT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_SUBSCRIPTION">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_SUBSCRIPTION">
+        <MappingFragment StoreEntitySet="TB_I_CIS_SUBSCRIPTION">
+          <ScalarProperty Name="SYSCUSTSUBSCR_ID" ColumnName="SYSCUSTSUBSCR_ID" />
+          <ScalarProperty Name="BRANCH_NAME" ColumnName="BRANCH_NAME" />
+          <ScalarProperty Name="UPDATED_CHANNEL" ColumnName="UPDATED_CHANNEL" />
+          <ScalarProperty Name="ACCOUNT_NO" ColumnName="ACCOUNT_NO" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_CHANNEL" ColumnName="CREATE_CHANNEL" />
+          <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="SUBSCR_STATUS" ColumnName="SUBSCR_STATUS" />
+          <ScalarProperty Name="DATE5" ColumnName="DATE5" />
+          <ScalarProperty Name="DATE4" ColumnName="DATE4" />
+          <ScalarProperty Name="DATE3" ColumnName="DATE3" />
+          <ScalarProperty Name="DATE2" ColumnName="DATE2" />
+          <ScalarProperty Name="DATE1" ColumnName="DATE1" />
+          <ScalarProperty Name="NUMBER5" ColumnName="NUMBER5" />
+          <ScalarProperty Name="NUMBER4" ColumnName="NUMBER4" />
+          <ScalarProperty Name="NUMBER3" ColumnName="NUMBER3" />
+          <ScalarProperty Name="NUMBER2" ColumnName="NUMBER2" />
+          <ScalarProperty Name="NUMBER1" ColumnName="NUMBER1" />
+          <ScalarProperty Name="TEXT10" ColumnName="TEXT10" />
+          <ScalarProperty Name="TEXT9" ColumnName="TEXT9" />
+          <ScalarProperty Name="TEXT8" ColumnName="TEXT8" />
+          <ScalarProperty Name="TEXT7" ColumnName="TEXT7" />
+          <ScalarProperty Name="TEXT6" ColumnName="TEXT6" />
+          <ScalarProperty Name="TEXT5" ColumnName="TEXT5" />
+          <ScalarProperty Name="TEXT4" ColumnName="TEXT4" />
+          <ScalarProperty Name="TEXT3" ColumnName="TEXT3" />
+          <ScalarProperty Name="TEXT2" ColumnName="TEXT2" />
+          <ScalarProperty Name="TEXT1" ColumnName="TEXT1" />
+          <ScalarProperty Name="REF_NO" ColumnName="REF_NO" />
+          <ScalarProperty Name="SUBSCR_CODE" ColumnName="SUBSCR_CODE" />
+          <ScalarProperty Name="PROD_TYPE" ColumnName="PROD_TYPE" />
+          <ScalarProperty Name="PROD_GROUP" ColumnName="PROD_GROUP" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="CARD_ID" ColumnName="CARD_ID" />
+          <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="SUBSCRIPTION_ID" ColumnName="SUBSCRIPTION_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_SUBSCRIPTION_TYPE">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_SUBSCRIPTION_TYPE">
+        <MappingFragment StoreEntitySet="TB_I_CIS_SUBSCRIPTION_TYPE">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="SUBSCRIPT_TYPE_ID" ColumnName="SUBSCRIPT_TYPE_ID" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="CARD_TYPE_TH" ColumnName="CARD_TYPE_TH" />
+          <ScalarProperty Name="CARD_TYPE_EN" ColumnName="CARD_TYPE_EN" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="CUST_TYPE_EN" ColumnName="CUST_TYPE_EN" />
+          <ScalarProperty Name="CUST_TYPE_TH" ColumnName="CUST_TYPE_TH" />
+          <ScalarProperty Name="CUST_TYPE_CODE" ColumnName="CUST_TYPE_CODE" />
+          <ScalarProperty Name="CUST_TYPE_GROUP" ColumnName="CUST_TYPE_GROUP" />
+          <ScalarProperty Name="SUBSCRIPTION_TYPE_ID" ColumnName="SUBSCRIPTION_TYPE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_TITLE">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_TITLE">
+        <MappingFragment StoreEntitySet="TB_I_CIS_TITLE">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="GENDER_CODE" ColumnName="GENDER_CODE" />
+          <ScalarProperty Name="TITLE_TYPE_GROUP" ColumnName="TITLE_TYPE_GROUP" />
+          <ScalarProperty Name="TITLE_NAME_EN" ColumnName="TITLE_NAME_EN" />
+          <ScalarProperty Name="TITLE_NAME_TH" ColumnName="TITLE_NAME_TH" />
+          <ScalarProperty Name="TITLE_ID" ColumnName="TITLE_ID" />
+          <ScalarProperty Name="CIS_TITLE_ID" ColumnName="CIS_TITLE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_BDW_CONTACT">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_BDW_CONTACT">
+        <MappingFragment StoreEntitySet="TB_I_BDW_CONTACT">
+          <ScalarProperty Name="MAP_CARD_TYPE_CODE" ColumnName="MAP_CARD_TYPE_CODE" />
+          <ScalarProperty Name="RELATION_NAME" ColumnName="RELATION_NAME" />
+          <ScalarProperty Name="LOAN_MAIN" ColumnName="LOAN_MAIN" />
+          <ScalarProperty Name="ACCOUNT_STATUS" ColumnName="ACCOUNT_STATUS" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="DATA_SOURCE" ColumnName="DATA_SOURCE" />
+          <ScalarProperty Name="DATA_DATE" ColumnName="DATA_DATE" />
+          <ScalarProperty Name="DATA_TYPE" ColumnName="DATA_TYPE" />
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="RELATION_ID" ColumnName="RELATION_ID" />
+          <ScalarProperty Name="CUSTOMER_CONTACT_ID" ColumnName="CUSTOMER_CONTACT_ID" />
+          <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="CAMPAIGN" ColumnName="CAMPAIGN" />
+          <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+          <ScalarProperty Name="RELATIONSHIP" ColumnName="RELATIONSHIP" />
+          <ScalarProperty Name="PRODUCT" ColumnName="PRODUCT" />
+          <ScalarProperty Name="PRODUCT_GROUP" ColumnName="PRODUCT_GROUP" />
+          <ScalarProperty Name="ACCOUNT_NO" ColumnName="ACCOUNT_NO" />
+          <ScalarProperty Name="SURNAME_EN" ColumnName="SURNAME_EN" />
+          <ScalarProperty Name="NAME_EN" ColumnName="NAME_EN" />
+          <ScalarProperty Name="TITILE_EN" ColumnName="TITILE_EN" />
+          <ScalarProperty Name="SURNAME_TH" ColumnName="SURNAME_TH" />
+          <ScalarProperty Name="NAME_TH" ColumnName="NAME_TH" />
+          <ScalarProperty Name="TITILE_TH" ColumnName="TITILE_TH" />
+          <ScalarProperty Name="CARD_NO" ColumnName="CARD_NO" />
+          <ScalarProperty Name="BDW_CONTACT_ID" ColumnName="BDW_CONTACT_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_AFS_ASSET">
+      <EntityTypeMapping TypeName="CSMModel.TB_M_AFS_ASSET">
+        <MappingFragment StoreEntitySet="TB_M_AFS_ASSET">
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="MOBILE_NO" ColumnName="MOBILE_NO" />
+          <ScalarProperty Name="PHONE_NO" ColumnName="PHONE_NO" />
+          <ScalarProperty Name="SALE_NAME" ColumnName="SALE_NAME" />
+          <ScalarProperty Name="SALE_USER_ID" ColumnName="SALE_USER_ID" />
+          <ScalarProperty Name="PROVINCE" ColumnName="PROVINCE" />
+          <ScalarProperty Name="AMPHUR" ColumnName="AMPHUR" />
+          <ScalarProperty Name="AFS_REF_NO" ColumnName="AFS_REF_NO" />
+          <ScalarProperty Name="PROJECT_DES" ColumnName="PROJECT_DES" />
+          <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+          <ScalarProperty Name="STATUS_DESC" ColumnName="STATUS_DESC" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="ASSET_TYPE" ColumnName="ASSET_TYPE" />
+          <ScalarProperty Name="ASSET_NO" ColumnName="ASSET_NO" />
+          <ScalarProperty Name="ASSET_ID" ColumnName="ASSET_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_JOB">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_JOB">
+        <MappingFragment StoreEntitySet="TB_T_JOB">
+          <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="CREATE_USERNAME" ColumnName="CREATE_USERNAME" />
+          <ScalarProperty Name="CHANNEL_ID" ColumnName="CHANNEL_ID" />
+          <ScalarProperty Name="SENDER_SURNAME" ColumnName="SENDER_SURNAME" />
+          <ScalarProperty Name="SENDER_NAME" ColumnName="SENDER_NAME" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+          <ScalarProperty Name="SUBJECT" ColumnName="SUBJECT" />
+          <ScalarProperty Name="JOB_STATUS" ColumnName="JOB_STATUS" />
+          <ScalarProperty Name="JOB_DATE" ColumnName="JOB_DATE" />
+          <ScalarProperty Name="FROM" ColumnName="FROM" />
+          <ScalarProperty Name="POOL_ID" ColumnName="POOL_ID" />
+          <ScalarProperty Name="SR_ID" ColumnName="SR_ID" />
+          <ScalarProperty Name="JOB_ID" ColumnName="JOB_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_SUBSCRIPTION_ADDRESS">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_SUBSCRIPTION_ADDRESS">
+        <MappingFragment StoreEntitySet="TB_I_CIS_SUBSCRIPTION_ADDRESS">
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="SYSCUSTSUBSCR_ID" ColumnName="SYSCUSTSUBSCR_ID" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="POSTAL_VALUE" ColumnName="POSTAL_VALUE" />
+          <ScalarProperty Name="PROVINCE_VALUE" ColumnName="PROVINCE_VALUE" />
+          <ScalarProperty Name="DISTRICT_VALUE" ColumnName="DISTRICT_VALUE" />
+          <ScalarProperty Name="SUB_DISTRICT_VALUE" ColumnName="SUB_DISTRICT_VALUE" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="SUBSCR_CODE" ColumnName="SUBSCR_CODE" />
+          <ScalarProperty Name="PROD_TYPE" ColumnName="PROD_TYPE" />
+          <ScalarProperty Name="PROD_GROUP" ColumnName="PROD_GROUP" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="POSTAL_CODE" ColumnName="POSTAL_CODE" />
+          <ScalarProperty Name="COUNTRY_CODE" ColumnName="COUNTRY_CODE" />
+          <ScalarProperty Name="PROVINCE_CODE" ColumnName="PROVINCE_CODE" />
+          <ScalarProperty Name="DISTRICT_CODE" ColumnName="DISTRICT_CODE" />
+          <ScalarProperty Name="SUB_DISTRICT_CODE" ColumnName="SUB_DISTRICT_CODE" />
+          <ScalarProperty Name="SOI" ColumnName="SOI" />
+          <ScalarProperty Name="STREET" ColumnName="STREET" />
+          <ScalarProperty Name="MOO" ColumnName="MOO" />
+          <ScalarProperty Name="ROOM_NO" ColumnName="ROOM_NO" />
+          <ScalarProperty Name="FLOOR_NO" ColumnName="FLOOR_NO" />
+          <ScalarProperty Name="BUILDING" ColumnName="BUILDING" />
+          <ScalarProperty Name="VILLAGE" ColumnName="VILLAGE" />
+          <ScalarProperty Name="ADDRESS_NUMBER" ColumnName="ADDRESS_NUMBER" />
+          <ScalarProperty Name="ADDRESS_TYPE_CODE" ColumnName="ADDRESS_TYPE_CODE" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="CARD_ID" ColumnName="CARD_ID" />
+          <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+          <ScalarProperty Name="CIS_ADDRESS_ID" ColumnName="CIS_ADDRESS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_SUBSCRIPTION_EMAIL">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_SUBSCRIPTION_EMAIL">
+        <MappingFragment StoreEntitySet="TB_I_CIS_SUBSCRIPTION_EMAIL">
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="SYSCUSTSUBSCR_ID" ColumnName="SYSCUSTSUBSCR_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="MAILACCOUNT" ColumnName="MAILACCOUNT" />
+          <ScalarProperty Name="EMAIL_TYPE_NAME" ColumnName="EMAIL_TYPE_NAME" />
+          <ScalarProperty Name="EMAIL_TYPE_CODE" ColumnName="EMAIL_TYPE_CODE" />
+          <ScalarProperty Name="SUBSCR_CODE" ColumnName="SUBSCR_CODE" />
+          <ScalarProperty Name="PROD_TYPE" ColumnName="PROD_TYPE" />
+          <ScalarProperty Name="PROD_GROUP" ColumnName="PROD_GROUP" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="CARD_ID" ColumnName="CARD_ID" />
+          <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="CIS_EMAIL_ID" ColumnName="CIS_EMAIL_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_I_CIS_SUBSCRIPTION_PHONE">
+      <EntityTypeMapping TypeName="CSMModel.TB_I_CIS_SUBSCRIPTION_PHONE">
+        <MappingFragment StoreEntitySet="TB_I_CIS_SUBSCRIPTION_PHONE">
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="SYSCUSTSUBSCR_ID" ColumnName="SYSCUSTSUBSCR_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+          <ScalarProperty Name="UPDATE_BY" ColumnName="UPDATE_BY" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_BY" ColumnName="CREATE_BY" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="PHONE_EXT" ColumnName="PHONE_EXT" />
+          <ScalarProperty Name="PHONE_NUM" ColumnName="PHONE_NUM" />
+          <ScalarProperty Name="PHONE_TYPE_CODE" ColumnName="PHONE_TYPE_CODE" />
+          <ScalarProperty Name="SUBSCR_CODE" ColumnName="SUBSCR_CODE" />
+          <ScalarProperty Name="PROD_TYPE" ColumnName="PROD_TYPE" />
+          <ScalarProperty Name="PROD_GROUP" ColumnName="PROD_GROUP" />
+          <ScalarProperty Name="CARD_TYPE_CODE" ColumnName="CARD_TYPE_CODE" />
+          <ScalarProperty Name="CARD_ID" ColumnName="CARD_ID" />
+          <ScalarProperty Name="CUST_ID" ColumnName="CUST_ID" />
+          <ScalarProperty Name="KKCIS_ID" ColumnName="KKCIS_ID" />
+          <ScalarProperty Name="CIS_PHONE_ID" ColumnName="CIS_PHONE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_SR">
+      <EntityTypeMapping TypeName="CSMModel.TB_T_SR">
+        <MappingFragment StoreEntitySet="TB_T_SR">
+          <ScalarProperty Name="UPDATE_USERNAME" ColumnName="UPDATE_USERNAME" />
+          <ScalarProperty Name="CLOSE_USERNAME" ColumnName="CLOSE_USERNAME" />
+          <ScalarProperty Name="CLOSE_USER" ColumnName="CLOSE_USER" />
+          <ScalarProperty Name="EXPORT_DATE" ColumnName="EXPORT_DATE" />
+          <ScalarProperty Name="DRAFT_VERIFY_ANSWER_JSON" ColumnName="DRAFT_VERIFY_ANSWER_JSON" />
+          <ScalarProperty Name="DRAFT_ATTACHMENT_JSON" ColumnName="DRAFT_ATTACHMENT_JSON" />
+          <ScalarProperty Name="DRAFT_IS_CLOSE" ColumnName="DRAFT_IS_CLOSE" />
+          <ScalarProperty Name="DRAFT_IS_SEND_EMAIL_FOR_DELEGATE" ColumnName="DRAFT_IS_SEND_EMAIL_FOR_DELEGATE" />
+          <ScalarProperty Name="DRAFT_ACCOUNT_ADDRESS_TEXT" ColumnName="DRAFT_ACCOUNT_ADDRESS_TEXT" />
+          <ScalarProperty Name="DRAFT_ACTIVITY_DESC" ColumnName="DRAFT_ACTIVITY_DESC" />
+          <ScalarProperty Name="DRAFT_ACTIVITY_TYPE_ID" ColumnName="DRAFT_ACTIVITY_TYPE_ID" />
+          <ScalarProperty Name="DRAFT_MAIL_BODY" ColumnName="DRAFT_MAIL_BODY" />
+          <ScalarProperty Name="DRAFT_MAIL_SUBJECT" ColumnName="DRAFT_MAIL_SUBJECT" />
+          <ScalarProperty Name="DRAFT_MAIL_CC" ColumnName="DRAFT_MAIL_CC" />
+          <ScalarProperty Name="DRAFT_MAIL_TO" ColumnName="DRAFT_MAIL_TO" />
+          <ScalarProperty Name="DRAFT_MAIL_SENDER" ColumnName="DRAFT_MAIL_SENDER" />
+          <ScalarProperty Name="DRAFT_SR_EMAIL_TEMPLATE_ID" ColumnName="DRAFT_SR_EMAIL_TEMPLATE_ID" />
+          <ScalarProperty Name="RULE_CURRENT_SLA" ColumnName="RULE_CURRENT_SLA" />
+          <ScalarProperty Name="RULE_DELEGATE_DATE" ColumnName="RULE_DELEGATE_DATE" />
+          <ScalarProperty Name="RULE_STATUS_DATE" ColumnName="RULE_STATUS_DATE" />
+          <ScalarProperty Name="RULE_ASSIGN_DATE" ColumnName="RULE_ASSIGN_DATE" />
+          <ScalarProperty Name="RULE_EMAIL_FLAG" ColumnName="RULE_EMAIL_FLAG" />
+          <ScalarProperty Name="RULE_ASSIGN_FLAG" ColumnName="RULE_ASSIGN_FLAG" />
+          <ScalarProperty Name="RULE_NEXT_SLA" ColumnName="RULE_NEXT_SLA" />
+          <ScalarProperty Name="RULE_TOTAL_WORK" ColumnName="RULE_TOTAL_WORK" />
+          <ScalarProperty Name="RULE_THIS_WORK" ColumnName="RULE_THIS_WORK" />
+          <ScalarProperty Name="RULE_TOTAL_ALERT" ColumnName="RULE_TOTAL_ALERT" />
+          <ScalarProperty Name="RULE_THIS_ALERT" ColumnName="RULE_THIS_ALERT" />
+          <ScalarProperty Name="RULE_DELEGATE_BRANCH_ID" ColumnName="RULE_DELEGATE_BRANCH_ID" />
+          <ScalarProperty Name="RULE_DELEGATE_FLAG" ColumnName="RULE_DELEGATE_FLAG" />
+          <ScalarProperty Name="UPDATE_DATE_BY_DELEGATE" ColumnName="UPDATE_DATE_BY_DELEGATE" />
+          <ScalarProperty Name="UPDATE_DATE_BY_OWNER" ColumnName="UPDATE_DATE_BY_OWNER" />
+          <ScalarProperty Name="CLOSE_DATE" ColumnName="CLOSE_DATE" />
+          <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+          <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+          <ScalarProperty Name="UPDATE_USER" ColumnName="UPDATE_USER" />
+          <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+          <ScalarProperty Name="CREATE_BRANCH_ID" ColumnName="CREATE_BRANCH_ID" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_UPPER_2_NAME" ColumnName="SR_NCB_MARKETING_BRANCH_UPPER_2_NAME" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_UPPER_2_ID" ColumnName="SR_NCB_MARKETING_BRANCH_UPPER_2_ID" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_UPPER_1_NAME" ColumnName="SR_NCB_MARKETING_BRANCH_UPPER_1_NAME" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_UPPER_1_ID" ColumnName="SR_NCB_MARKETING_BRANCH_UPPER_1_ID" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_NAME" ColumnName="SR_NCB_MARKETING_BRANCH_NAME" />
+          <ScalarProperty Name="SR_NCB_MARKETING_BRANCH_ID" ColumnName="SR_NCB_MARKETING_BRANCH_ID" />
+          <ScalarProperty Name="SR_NCB_MARKETING_FULL_NAME" ColumnName="SR_NCB_MARKETING_FULL_NAME" />
+          <ScalarProperty Name="SR_NCB_MARKETING_USER_ID" ColumnName="SR_NCB_MARKETING_USER_ID" />
+          <ScalarProperty Name="SR_NCB_CHECK_STATUS" ColumnName="SR_NCB_CHECK_STATUS" />
+          <ScalarProperty Name="SR_NCB_CUSTOMER_BIRTHDATE" ColumnName="SR_NCB_CUSTOMER_BIRTHDATE" />
+          <ScalarProperty Name="SR_AFS_ASSET_DESC" ColumnName="SR_AFS_ASSET_DESC" />
+          <ScalarProperty Name="SR_AFS_ASSET_NO" ColumnName="SR_AFS_ASSET_NO" />
+          <ScalarProperty Name="SR_AFS_ASSET_ID" ColumnName="SR_AFS_ASSET_ID" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_ZIPCODE" ColumnName="SR_DEF_ADDRESS_ZIPCODE" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_PROVINCE" ColumnName="SR_DEF_ADDRESS_PROVINCE" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_AMPHUR" ColumnName="SR_DEF_ADDRESS_AMPHUR" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_TAMBOL" ColumnName="SR_DEF_ADDRESS_TAMBOL" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_STREET" ColumnName="SR_DEF_ADDRESS_STREET" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_SOI" ColumnName="SR_DEF_ADDRESS_SOI" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_MOO" ColumnName="SR_DEF_ADDRESS_MOO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_ROOM_NO" ColumnName="SR_DEF_ADDRESS_ROOM_NO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_FLOOR_NO" ColumnName="SR_DEF_ADDRESS_FLOOR_NO" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_BUILDING" ColumnName="SR_DEF_ADDRESS_BUILDING" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_VILLAGE" ColumnName="SR_DEF_ADDRESS_VILLAGE" />
+          <ScalarProperty Name="SR_DEF_ADDRESS_HOUSE_NO" ColumnName="SR_DEF_ADDRESS_HOUSE_NO" />
+          <ScalarProperty Name="SR_DEF_ACCOUNT_ADDRESS_ID" ColumnName="SR_DEF_ACCOUNT_ADDRESS_ID" />
+          <ScalarProperty Name="OLD_SR_STATUS_ID" ColumnName="OLD_SR_STATUS_ID" />
+          <ScalarProperty Name="SR_STATUS_ID" ColumnName="SR_STATUS_ID" />
+          <ScalarProperty Name="SR_IS_VERIFY_PASS" ColumnName="SR_IS_VERIFY_PASS" />
+          <ScalarProperty Name="SR_IS_VERIFY" ColumnName="SR_IS_VERIFY" />
+          <ScalarProperty Name="SR_PAGE_ID" ColumnName="SR_PAGE_ID" />
+          <ScalarProperty Name="OLD_DELEGATE_USER_ID" ColumnName="OLD_DELEGATE_USER_ID" />
+          <ScalarProperty Name="OLD_OWNER_USER_ID" ColumnName="OLD_OWNER_USER_ID" />
+          <ScalarProperty Name="DELEGATE_USER_ID" ColumnName="DELEGATE_USER_ID" />
+          <ScalarProperty Name="DELEGATE_BRANCH_ID" ColumnName="DELEGATE_BRANCH_ID" />
+          <ScalarProperty Name="OWNER_USER_ID" ColumnName="OWNER_USER_ID" />
+          <ScalarProperty Name="OWNER_BRANCH_ID" ColumnName="OWNER_BRANCH_ID" />
+          <ScalarProperty Name="SR_REMARK" ColumnName="SR_REMARK" />
+          <ScalarProperty Name="SR_SUBJECT" ColumnName="SR_SUBJECT" />
+          <ScalarProperty Name="MEDIA_SOURCE_ID" ColumnName="MEDIA_SOURCE_ID" />
+          <ScalarProperty Name="CHANNEL_ID" ColumnName="CHANNEL_ID" />
+          <ScalarProperty Name="MAP_PRODUCT_ID" ColumnName="MAP_PRODUCT_ID" />
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+          <ScalarProperty Name="SUBAREA_ID" ColumnName="SUBAREA_ID" />
+          <ScalarProperty Name="AREA_ID" ColumnName="AREA_ID" />
+          <ScalarProperty Name="CAMPAIGNSERVICE_ID" ColumnName="CAMPAIGNSERVICE_ID" />
+          <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+          <ScalarProperty Name="PRODUCTGROUP_ID" ColumnName="PRODUCTGROUP_ID" />
+          <ScalarProperty Name="CONTACT_RELATIONSHIP_ID" ColumnName="CONTACT_RELATIONSHIP_ID" />
+          <ScalarProperty Name="CONTACT_ACCOUNT_NO" ColumnName="CONTACT_ACCOUNT_NO" />
+          <ScalarProperty Name="CONTACT_ID" ColumnName="CONTACT_ID" />
+          <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+          <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+          <ScalarProperty Name="SR_ANO" ColumnName="SR_ANO" />
+          <ScalarProperty Name="SR_CALL_ID" ColumnName="SR_CALL_ID" />
+          <ScalarProperty Name="SR_NO" ColumnName="SR_NO" />
+          <ScalarProperty Name="SR_ID" ColumnName="SR_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

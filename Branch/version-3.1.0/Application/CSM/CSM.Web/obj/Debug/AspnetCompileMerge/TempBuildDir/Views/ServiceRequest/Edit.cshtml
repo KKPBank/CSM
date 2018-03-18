@@ -1,0 +1,1430 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@using CSM.Entity
+@model CSM.Web.Models.CreateServiceRequestViewModel
+@{
+    ViewBag.Title = "View Service Request";
+    ViewBag.ShowThaiBuddhistCalendar = true;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.IsEditView = true;
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.ServiceRequest })
+}
+@section Breadcrumb {
+    <strong class="font-blue">Service Request &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink("Search Service Request", "Index", "ServiceRequest", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; View Service Request</strong>
+}
+<script src="~/Scripts/datepicker_th/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/datepicker_th/bootstrap-datepicker-thai.js"></script>
+<script src="~/Scripts/datepicker_th/bootstrap-datepicker.th.js"></script>
+<script type="text/javascript">
+
+    $jq(function () {
+        initDatePicker();
+    });
+
+    function initDatePicker() {
+        var dateFormat = 'dd/mm/yyyy';
+
+        $jq.extend($jq.fn.datepicker.defaults, {
+            format: dateFormat,
+            weekStart: 1,
+            autoclose: true,
+            todayHighlight: true,
+            language: "th-th"
+        });
+    }
+</script>
+
+<style type="text/css">
+    .modal-lg {
+        width: 1100px;
+    }
+</style>
+
+<h5 class="form-title sr-title">View Service Request 
+    <span class="label label-primary srno" oid="@Model.SrId"> SR ID: @Model.SrNo
+        @MvcHtmlString.Create(string.Format(" Tel: {0} Call ID: {1}", string.IsNullOrWhiteSpace(@Model.PhoneNo) ? "NA" : @Model.PhoneNo, string.IsNullOrWhiteSpace(@Model.CallId) ? "NA" : @Model.CallId))
+    </span> 
+</h5>
+<hr class="dotted-line" />
+
+<div class="sr" style="overflow: auto">
+    <div style="width: 1150px;">
+        <div class="collapse_container">
+            <div class="collapse_header">
+                <span class="collapse_sign">[-]</span> Customer Profile Information
+            </div>
+            <div class="collapse_body">
+                <table class="form">
+                    <tbody>
+                        <tr>
+                            <td style="width: 200px" class="text">
+                                Subscription Type:
+                            </td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerSubscriptionName</span>
+                            </td>
+                            <td style="width: 180px; padding: 3px" class="text" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                                Subscription ID :
+                            </td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerCardNo</span>
+                            </td>
+                            <td style="width: 170px" class="text">วันเกิด :</td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerBirthDate</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">คำนำหน้า: </td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerTitleTh</span>
+                            </td>
+                            <td class="text" title="ชื่อลูกค้า/Employee Name">ชื่อลูกค้า: </td>
+                            <td class="input">
+                                <span class="value" title="ชื่อลูกค้า/Employee Name">@Model.CustomerFirstNameTh</span>
+                            </td>
+                            <td class="text">นามสกุลลูกค้า: </td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerLastNameTh</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">Title: </td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerTitleEn</span>
+                            </td>
+                            <td class="text">First Name: </td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerFirstNameEn</span>
+                            </td>
+                            <td class="text">Last Name: </td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerLastNameEn</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">เบอร์โทรศัพท์ #1: </td>
+                            <td colspan="5" class="input">
+                                <span class="value w100">@Model.CustomerPhoneTypeName1</span>
+                                <span class="value">@Model.CustomerPhoneNo1</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">เบอร์โทรศัพท์ #2: </td>
+                            <td colspan="5" class="input">
+                                <span class="value w100">@Model.CustomerPhoneTypeName2</span>
+                                <span class="value">@Model.CustomerPhoneNo2</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">เบอร์โทรศัพท์ #3: </td>
+                            <td colspan="5" class="input">
+                                <span class="value w100">@Model.CustomerPhoneTypeName3</span>
+                                <span class="value">@Model.CustomerPhoneNo3</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">เบอร์แฟกซ์</td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerFax</span>
+                            </td>
+                            <td class="text">อีเมล์: </td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerEmail</span>
+                            </td>
+                            <td class="text">รหัสพนักงาน: </td>
+                            <td class="input">
+                                <span class="value">@Model.CustomerEmployeeCode</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="collapse_container">
+            <div class="collapse_header">
+                <span class="collapse_sign">[-]</span> Contact Profile Information
+            </div>
+            <div class="collapse_body">
+                <table class="form">
+                    <tbody>
+                        <tr>
+                            <td style="width: 200px" class="text">
+                                เลขที่บัญชี/สัญญา :
+                            </td>
+                            <td class="input">
+                                <input type="hidden" id="hiddenAccountId" value="@Model.AccountId" />
+                                <span class="value">@Model.AccountNo</span>
+                            </td>
+                            <td style="width: 180px" class="text">
+                                สถานะบัญชี:
+                            </td>
+                            <td class="input">
+                                @*@{
+                                    var accountStatus = @Model.AccountStatus;
+                                    if (string.IsNullOrEmpty(accountStatus))
+                                        accountStatus = "Inactive";
+                                    else if (accountStatus.ToUpper() == "A")
+                                        accountStatus = "Active";
+                                    else
+                                        accountStatus = "Inactive";
+                                }*@
+                                <span class="value">@Model.AccountStatus</span>
+                            </td>
+                            <td style="width: 170px" class="text">
+                                ทะเบียนรถ:
+                            </td>
+                            <td class="input">
+                                <span class="value">@Model.AccountCarNo</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">Product Group:</td>
+                            <td class="input">
+                                <span class="value">@Model.AccountProductGroupName</span>
+                            </td>
+                            <td class="text">Product: </td>
+                            <td class="input">
+                                <span class="value">@Model.AccountProductName</span>
+                            </td>
+                            <td class="text">ชื่อสาขา: </td>
+                            <td class="input">
+                                <span class="value">@Model.AccountBranchName</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text">
+                                Subscription Type:
+                            </td>
+                            <td class="input">
+                                <span class="value">@Model.ContactSubscriptionName</span>
+                            </td>
+                            <td class="text" style="padding: 3px" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                                Subscription ID :
+                            </td>
+                            <td class="input">
+                                <span class="value">@Model.ContactCardNo</span>
+                            </td>
+                            <td class="text">วันเกิด :</td>
+                            <td class="input">
+                                <span class="value">@Model.ContactBirthDate</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">คำนำหน้า: </td>
+                            <td class="input">
+                                <span class="value">@Model.ContactTitleTh</span>
+                            </td>
+                            <td class="text">ชื่อลูกค้า: </td>
+                            <td class="input">
+                                <span class="value">@Model.ContactFirstNameTh</span>
+                            </td>
+                            <td class="text">นามสกุลลูกค้า: </td>
+                            <td class="input">
+                                <span class="value">@Model.ContactLastNameTh</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">Title: </td>
+                            <td class="input">
+                                <span class="value">@Model.ContactTitleEn</span>
+                            </td>
+                            <td class="text">First Name: </td>
+                            <td class="input">
+                                <span class="value">@Model.ContactFirstNameEn</span>
+                            </td>
+                            <td class="text">Last Name: </td>
+                            <td class="input">
+                                <span class="value">@Model.ContactLastNameEn</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">เบอร์โทรศัพท์ #1: </td>
+                            <td colspan="5" class="input">
+                                <span class="value w100">@Model.ContactPhoneTypeName1</span>
+                                <span class="value">@Model.ContactPhoneNo1</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">เบอร์โทรศัพท์ #2: </td>
+                            <td colspan="5" class="input">
+                                <span class="value w100">@Model.ContactPhoneTypeName2</span>
+                                <span class="value">@Model.ContactPhoneNo2</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">เบอร์โทรศัพท์ #3: </td>
+                            <td colspan="5" class="input">
+                                <span class="value w100">@Model.ContactPhoneTypeName3</span>
+                                <span class="value">@Model.ContactPhoneNo3</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text">เบอร์แฟกซ์</td>
+                            <td class="input">
+                                <span class="value">@Model.ContactFax</span>
+                            </td>
+                            <td class="text">อีเมล์: </td>
+                            <td class="input">
+                                <span class="value">@Model.ContactEmail</span>
+                            </td>
+                            <td class="text"></td>
+                            <td class="input"></td>
+                        </tr>
+                        <tr>
+                            <td class="text">เลขที่สัญญาที่เกี่ยวข้องกับผู้ติดต่อ:</td>
+                            <td class="input">
+                                <span class="value">@Model.ContactAccountNo</span>
+                            </td>
+                            <td class="text">ความสัมพันธ์:</td>
+                            <td class="input">
+                                <span class="value">@Model.ContactRelationshipName</span>
+                            </td>
+                            <td class="text"></td>
+                            <td class="input"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="collapse_container">
+            <div class="collapse_header">
+                <span class="collapse_sign">[-]</span> Service Request Information
+            </div>
+            <div class="collapse_body">
+                <table class="form">
+                    <tbody>
+                        <tr>
+                            <td style="width: 200px" class="text">Campaign / Service:</td>
+                            <td class="input">
+                                <span class="value">@Model.CampaignServiceName</span>
+                            </td>
+                            <td style="width: 170px" class="text">SR Channel: </td>
+                            <td class="input">
+                                <span class="value">@Model.ChannelName</span>
+                            </td>
+                            <td style="width: 170px" class="text"></td>
+                            <td class="input"></td>
+                        </tr>
+                        <tr>
+                            <td class="text">Product Group:</td>
+                            <td class="input">
+                                <span class="value">@Model.ProductGroupName</span>
+                            </td>
+                            <td class="text">Product: </td>
+                            <td class="input">
+                                <span class="value">@Model.ProductName</span>
+                            </td>
+                            <td class="text"></td>
+                            <td class="input"></td>
+                        </tr>
+                        <tr>
+                            <td class="text">Area:</td>
+                            <td class="input">
+                                <span class="value">@Model.AreaName</span>
+                            </td>
+                            <td class="text">Sub Area:</td>
+                            <td class="input">
+                                <span class="value">@Model.SubAreaName</span>
+                            </td>
+                            <td class="text"></td>
+                            <td class="input"></td>
+                        </tr>
+                        <tr>
+                            <td class="text">Type:</td>
+                            <td class="input">
+                                <span class="value">@Model.TypeName</span>
+                            </td>
+                            <td class="text">Media Source:</td>
+                            <td class="input">
+                                <span class="value">@Model.MediaSourceName</span>
+                            </td>
+                            <td class="text"></td>
+                            <td class="input"></td>
+                        </tr>
+                        <tr>
+                            <td class="text">SR State:</td>
+                            <td class="input">
+                                <span class="value">@Model.SRStateName</span>
+                            </td>
+                            <td class="text">SR Status:</td>
+                            <td class="input">
+                                <span class="value">@Model.SRStatusName</span>
+                            </td>
+                            <td class="text"></td>
+                            <td class="input"></td>
+                        </tr>
+                        <tr>
+                            <td class="text">วันที่ปิด SR:</td>
+                            <td class="input">
+                                <span class="value">@Model.CloseDateDisplay</span>
+                            </td>
+                            <td class="text"></td>
+                            <td class="input"></td>
+                            <td class="text"></td>
+                            <td class="input"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @if (Model.IsVerify)
+        {
+            <div class="collapse_container">
+                <div class="collapse_header">
+                    <span class="collapse_sign">[-]</span> Verify Information
+                </div>
+                <div class="collapse_body">
+                    
+                    @foreach (var verifyGroup in Model.VerifyGroups)
+                    {
+                        <div class="qv">
+                            <div class="qv_group" oid="@verifyGroup.GroupId">@verifyGroup.GroupName (ตอบถูกอย่างน้อย @verifyGroup.RequirePass ข้อ)</div>
+                            <div class="qv_list">
+                                <table>
+                                    <tbody>
+                                        @for (int i = 0; i < verifyGroup.VerifyQuestions.Count; i++)
+                                        {
+                                            var question = verifyGroup.VerifyQuestions[i];
+                                            var seqNo = (i + 1);
+
+                                            var radioCheck = string.Format("<img src='{0}' alt='check'/>", Url.Content("~/Images/radio_check.png"));
+                                            var radioUncheck = string.Format("<img src='{0}' alt='uncheck'/>", Url.Content("~/Images/radio_uncheck.png"));
+
+                                            var result = question.Result;
+                                            var checkSkip = (string.IsNullOrEmpty(result) || result == "SKIP" || (result != "PASS" && result != "FAIL")) ? radioCheck : radioUncheck;
+                                            var checkPass = result == "PASS" ? radioCheck : radioUncheck;
+                                            var checkFail = result == "FAIL" ? radioCheck : radioUncheck;
+
+                                            <tr>
+                                                <td oid="@question.QuestionId">คำถามที่ @seqNo: @Html.Raw(question.QuestionName)</td>
+                                                <td class="result"><label>@Html.Raw(checkSkip) ข้าม</label></td>
+                                                <td class="result"><label>@Html.Raw(checkPass) ถูก</label></td>
+                                                <td class="result"><label>@Html.Raw(checkFail) ผิด</label></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                    <table style="margin: 20px 0 5px" class="form">
+                        <tbody>
+                            <tr>
+                                <td style="width: 200px" class="text">Verify Result :</td>
+                                <td class="input">
+                                    @{
+                    var color = Model.IsVerifyPass == "PASS" ? "#008000" : Model.IsVerifyPass == "FAIL" ? "#a94442" : "#000000";
+                    var bgColor = Model.IsVerifyPass == "PASS" ? "#dff0d8" : Model.IsVerifyPass == "FAIL" ? "#f2dede" : "#eeeeee";
+
+                    var style = string.Format("color:{0};background-color:{1};", color, bgColor);
+
+                    var isVerifyPass = @Model.IsVerifyPass;
+
+                    if (isVerifyPass == "PASS")
+                        isVerifyPass = "Passed";
+                    else if (isVerifyPass == "FAIL")
+                        isVerifyPass = "Failed";
+                    else if (isVerifyPass == "SKIP")
+                        isVerifyPass = "Skipped";
+                                    }
+                                    <span class="value" style="@style">@isVerifyPass</span>
+                                </td>
+                                <td style="width: 150px" class="input">
+                                    @if (Model.MappingProduct.IsVerifyOTP)
+                                    {
+                                        <span id="btnOTPHistory" class="btn btn-sm" title="Show OTP History"><img src="~/Images/History_icon.jpg" />History</span>
+                                    }
+                                </td>
+                                <td class="input"></td>
+                                <td style="width: 170px" class="text"></td>
+                                <td class="input"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        <div class="collapse_container">
+            <div class="collapse_header">
+                <span class="collapse_sign">[-]</span> Activity Information
+            </div>
+            <div class="collapse_body">
+                @using (Html.BeginForm("Create", "ServiceRequest", FormMethod.Post, new { @id = "form1" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    <input type="hidden" name="SrId" value="@Model.SrId" id="hdnSrId" />
+                    <input type="hidden" name="SrPageId" value="@Model.SrPageId" />
+                    <input type="hidden" name="SrPageCode" value="@Model.SrPageCode" />
+                    
+                    <table class="form form-long">
+                        <tbody>
+                            <tr>
+                                <td style="width: 200px" class="text">Creator Branch :</td>
+                                <td class="input">
+                                    <span class="value">@Model.CreatorBranchName</span>
+                                </td>
+                                <td style="width: 170px" class="text">Creator SR :</td>
+                                <td class="input">
+                                    <span class="value">@Model.CreatorUserFullName</span>
+                                </td>
+                            </tr>
+                            @if (Model.SrPageId.HasValue)
+                            {
+                                if (Model.SrPageId.InList(Constants.SRPage.DefaultPageId, Constants.SRPage.CPNPageId))
+                                {
+                                    @Html.Partial("_EditPageDefault", Model)
+                                }
+                                else if (Model.SrPageId == Constants.SRPage.AFSPageId)
+                                {
+                                    @Html.Partial("_EditPageAFS", Model)
+                                }
+                                else if (Model.SrPageId == Constants.SRPage.NCBPageId)
+                                {
+                                    @Html.Partial("_EditPageNCB", Model)
+                                }
+                            }
+                            <tr>
+                                <td class="text">Owner Branch :</td>
+                                <td class="input">
+                                    <span class="value">@Model.OwnerBranchName</span>
+                                </td>
+                                <td class="text">Owner SR :</td>
+                                <td class="input">
+                                    <span class="value">@Model.OwnerUserFullName</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text">Delegate Branch :</td>
+                                <td class="input">
+                                    <span class="value">@Model.DelegateBranchName</span>
+                                </td>
+                                <td class="text">Delegate SR :</td>
+                                <td class="input">
+                                    <span class="value">@Model.DelegateUserFullName</span>
+                                </td>
+                            </tr>
+                            
+                            @if (Model.CanEdit)
+                            {
+                                <tr>
+                                    <td class="text">Subject: <span>*</span></td>
+                                    <td colspan="3" class="input">
+                                        @Html.TextBoxFor(model => model.Subject, new { @class = "form-control input-sm input-sr-long", maxlength = Constants.MaxLength.MailSubject })
+                                        @Html.ValidationMessageFor(model => model.Subject)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text vtop">Remark: </td>
+                                    <td colspan="3" class="input">
+                                        @if (!string.IsNullOrWhiteSpace(Model.Remark) && Model.Remark.Length > WebConfig.GetRemarkDisplayMaxLength())
+                                        {
+                                            @Html.TextArea("Remark", "<p><br></p>&nbsp;&nbsp;" + Constants.RemarkLink + "&nbsp;&nbsp;", new { @id = "Remark", @class = "summernote" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextAreaFor(model => model.Remark, new { @class = "summernote" })
+                                            @Html.ValidationMessageFor(model => model.Remark)
+                                        }
+                                        @Html.HiddenFor(model => model.RemarkOriginal, new { @id = "RemarkOriginal" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        @if (Model.SrPageId == Constants.SRPage.CPNPageId)
+                                        {
+                                            @Html.Partial("_EditPageCPN", Model)
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text"></td>
+                                    <td colspan="3" class="input">
+                                        <span class="btn btn-sm btn-primary" id="btnSave"><i class="fa fa-save"></i> SAVE</span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="text">Subject:</td>
+                                    <td colspan="3" class="input">
+                                        <span class="value input-sr-long">@Model.Subject</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text vtop">Remark: </td>
+                                    <td colspan="3" class="input">
+                                        @*<span class="value input-sr-long" style="min-height: 80px">@Model.Remark</span>*@
+                                        <span class="value input-sr-long" style="min-height: 80px">@Html.Raw(Model.Remark)</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        @if (Model.SrPageId == Constants.SRPage.CPNPageId)
+                                        {
+                                            @Html.Partial("_EditPageCPN", Model)
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+        <div class="collapse_container">
+
+            <div>
+                <!-- Nav tabs -->
+                <ul role="tablist" class="nav nav-tabs">
+                    <li class="active" role="presentation"><a id="navActivity" data-toggle="tab" role="tab" aria-controls="divActivity" href="#divActivity">Activity</a></li>
+                    <li role="presentation"><a id="navExisting" data-toggle="tab" role="tab" aria-controls="divExisting_sr" href="#divExisting_sr">Existing SR</a></li>
+                    <li role="presentation"><a id="navDocument" data-toggle="tab" role="tab" aria-controls="divDocument" href="#divDocument">Document</a></li>
+                    <li role="presentation"><a id="navLogging" data-toggle="tab" role="tab" aria-controls="divLogging" href="#divLogging">Logging</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div id="divActivity" class="tab-pane active" role="tabpanel">
+                    </div>
+                    <div id="divExisting_sr" class="tab-pane" role="tabpanel">
+                    </div>
+                    <div id="divDocument" class="tab-pane" role="tabpanel">
+                    </div>
+                    <div id="divLogging" class="tab-pane" role="tabpanel">
+                    </div>
+                </div>
+            </div>
+            <style type="text/css">
+                .doc_type {
+                    width: 300px;
+                    display: inline-block;
+                }
+            </style>
+            <div aria-labelledby="mySmallModalLabel" role="dialog" tabindex="-1" class="modal fade" id="modalCreateDocument">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">New Document</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+                                <div id="divBasicSearch">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label class="control-label">เอกสารที่อัพโหลด <span class="require">*</span>:</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="file">
+                                                <p style="color: red" class="help-block">
+                                                    @Model.AllowFileExtensionsDesc
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label style="text-align: left;" class="control-label">ชื่อเอกสาร <span class="require">*</span>:</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control input-sm">
+                                                <p class="help-block">(ไม่เกิน 200 ตัวอักษร)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label class="control-label">คำอธิบายเอกสาร :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control input-sm"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label class="control-label">วันที่หมดอายุของเอกสาร :</label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control input-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3 col-sm-offset-3">
+                                                <input type="checkbox"> Attach file to Email
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label class="control-label">ประเภทเอกสาร <span class="require">*</span>:</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div id="divDocumentTypeList">
+                                                    <div>
+                                                        <select class="form-control input-sm doc_type">
+                                                            <option>กรุณาเลือก</option>
+                                                            <option>ขอสำเนาทะเบียนรถยนต์,ตารางพรบ,ต่อภาษี</option>
+                                                            <option>ขอสำเนาใบเสร็จรับเงิน</option>
+                                                            <option>ขอใบแจ้งการชำระเงิน</option>
+                                                            <option>ใบ Payin</option>
+                                                            <option>ใบแจ้งความ</option>
+                                                            <option>ใบมรณบัตร</option>
+                                                            <option>ใบรับรองแพทย์</option>
+                                                            <option>ใบเสร็จรับเงินค่างวด</option>
+                                                            <option>สำเนาบัตรประชาชน</option>
+                                                            <option>สำเนาหนังสือรับรองบริษัท</option>
+                                                            <option>เอกสารของผู้จัดการมรดก</option>
+                                                            <option>แบบฟอร์มคำขอเปลี่ยนแปลงข้อมูลลูกค้า</option>
+                                                            <option>แบบฟอร์มหนังสือมอบอำนาจ</option>
+                                                            <option>อัตราดอกเบี้ย</option>
+                                                            <option>แบบฟอร์มหนังสือแบบคำขอโอน และรับโอนรถยนต์</option>
+                                                            <option>แบบฟอร์มหนังสือแบบคำขอโอน และรับโอนรถขนส่ง</option>
+                                                            <option>แบบฟอร์มหนังสือยินยอม</option>
+                                                            <option>แบบฟอร์มเปลี่ยนที่อยู่</option>
+                                                            <option>อื่นๆ</option>
+                                                        </select>
+                                                        <span onclick=" onBtnDeleteDocumentTypeClick(this) " class="btn btn-default btn-sm btnDeleteDocumentType"><i class="fa fa-trash-o"></i></span>
+                                                    </div>
+                                                </div>
+                                                <div style="padding: 5px 0">
+                                                    <span class="btn btn-xs btn-success" id="btnAddDocumentType"><i class="fa fa-plus"></i></span>
+                                                </div>
+                                                <div style="display: none" id="divDocumentTypeTemplate">
+                                                    <div>
+                                                        <select class="form-control input-sm doc_type">
+                                                            <option>กรุณาเลือก</option>
+                                                            <option>ขอสำเนาทะเบียนรถยนต์,ตารางพรบ,ต่อภาษี</option>
+                                                            <option>ขอสำเนาใบเสร็จรับเงิน</option>
+                                                            <option>ขอใบแจ้งการชำระเงิน</option>
+                                                            <option>ใบ Payin</option>
+                                                            <option>ใบแจ้งความ</option>
+                                                            <option>ใบมรณบัตร</option>
+                                                            <option>ใบรับรองแพทย์</option>
+                                                            <option>ใบเสร็จรับเงินค่างวด</option>
+                                                            <option>สำเนาบัตรประชาชน</option>
+                                                            <option>สำเนาหนังสือรับรองบริษัท</option>
+                                                            <option>เอกสารของผู้จัดการมรดก</option>
+                                                            <option>แบบฟอร์มคำขอเปลี่ยนแปลงข้อมูลลูกค้า</option>
+                                                            <option>แบบฟอร์มหนังสือมอบอำนาจ</option>
+                                                            <option>อัตราดอกเบี้ย</option>
+                                                            <option>แบบฟอร์มหนังสือแบบคำขอโอน และรับโอนรถยนต์</option>
+                                                            <option>แบบฟอร์มหนังสือแบบคำขอโอน และรับโอนรถขนส่ง</option>
+                                                            <option>แบบฟอร์มหนังสือยินยอม</option>
+                                                            <option>แบบฟอร์มเปลี่ยนที่อยู่</option>
+                                                            <option>อื่นๆ</option>
+                                                        </select>
+                                                        <span onclick=" onBtnDeleteDocumentTypeClick(this) " class="btn btn-default btn-sm btnDeleteDocumentType"><i class="fa fa-trash-o"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <span data-dismiss="modal" class="btn btn-sm btn-primary btnDocumentSave"><i class="fa fa-save"></i> Save</span>
+                            <span data-dismiss="modal" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div aria-labelledby="mySmallModalLabel" role="dialog" tabindex="-1" class="modal fade" id="modalEditDocument">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit Document</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+                                <div id="divBasicSearch">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label style="text-align: left;" class="control-label">ชื่อเอกสาร :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <input type="text" value="สำเนาบัตรประชาชน" readonly="readonly" class="form-control input-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label class="control-label">คำอธิบายเอกสาร :</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control input-sm"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label class="control-label">วันที่หมดอายุของเอกสาร :</label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control input-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3 col-sm-offset-3">
+                                                <input type="checkbox"> Attach file to Email
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label class="control-label">ประเภทเอกสาร <span class="require">*</span>:</label>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div id="divDocumentTypeList"></div>
+                                                <div style="padding: 5px 0">
+                                                    <span class="btn btn-xs btn-success" id="btnAddDocumentType"><i class="fa fa-plus"></i></span>
+                                                </div>
+                                                <div style="display: none" id="divDocumentTypeTemplate">
+                                                    <div>
+                                                        <select class="form-control input-sm doc_type">
+                                                            <option>กรุณาเลือก</option>
+                                                            <option>ขอสำเนาทะเบียนรถยนต์,ตารางพรบ,ต่อภาษี</option>
+                                                            <option>ขอสำเนาใบเสร็จรับเงิน</option>
+                                                            <option>ขอใบแจ้งการชำระเงิน</option>
+                                                            <option>ใบ Payin</option>
+                                                            <option>ใบแจ้งความ</option>
+                                                            <option>ใบมรณบัตร</option>
+                                                            <option>ใบรับรองแพทย์</option>
+                                                            <option>ใบเสร็จรับเงินค่างวด</option>
+                                                            <option>สำเนาบัตรประชาชน</option>
+                                                            <option>สำเนาหนังสือรับรองบริษัท</option>
+                                                            <option>เอกสารของผู้จัดการมรดก</option>
+                                                            <option>แบบฟอร์มคำขอเปลี่ยนแปลงข้อมูลลูกค้า</option>
+                                                            <option>แบบฟอร์มหนังสือมอบอำนาจ</option>
+                                                            <option>อัตราดอกเบี้ย</option>
+                                                            <option>แบบฟอร์มหนังสือแบบคำขอโอน และรับโอนรถยนต์</option>
+                                                            <option>แบบฟอร์มหนังสือแบบคำขอโอน และรับโอนรถขนส่ง</option>
+                                                            <option>แบบฟอร์มหนังสือยินยอม</option>
+                                                            <option>แบบฟอร์มเปลี่ยนที่อยู่</option>
+                                                            <option>อื่นๆ</option>
+                                                        </select>
+                                                        <span onclick=" onBtnDeleteDocumentTypeClick(this) " class="btn btn-default btn-sm btnDeleteDocumentType"><i class="fa fa-trash-o"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <span data-dismiss="modal" class="btn btn-sm btn-primary btnDocumentSave"><i class="fa fa-save"></i> Save</span>
+                            <span data-dismiss="modal" class="btn btn-sm btn-default"><i class="fa fa-times"></i> ยกเลิก</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-right">
+@*            <a class="btn btn-sm btn-default pull-left" href="@Url.Action("Index", "ServiceRequest")"><i class="fa fa-times"></i> Cancel</a>*@
+            <span class="btn btn-sm btn-default pull-left" id="btnEditSrCancel"><i class="fa fa-times"></i> Cancel</span>
+        </div>
+    </div>
+</div>
+<div id="modalRemark" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="overflow-y:auto;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" id="modalRemarkBody">
+                <br />
+                @Html.Raw(Model.RemarkOriginal)
+            </div>
+            <div class="modal-footer">
+                <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.HiddenFor(m => m.CustomerId, new { @id = "hiddenCustomerId" })
+
+<div id="dvTarget"></div>
+
+<div id="modalOTPHis" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="overflow: scroll;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title">Send OTP History</h4>
+            </div>
+            <div class="modal-body" id="modalOTPHisBody"></div>
+            <div class="modal-footer">
+                <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_Antiforgery")
+
+@section masterjs
+{
+    <script type="text/javascript">
+
+        var activitySearchFilter;
+        var activitySuccessFilter;
+
+        var existingSearchFilter;
+        var existingSuccessFilter;
+
+        var documentSearchFilter;
+        var documentSuccessFilter;
+
+        var loggingSearchFilter;
+        var loggingSuccessFilter;
+
+        // To Validate Hidden Fields
+        $jq.validator.setDefaults({ ignore: null });
+
+        $jq(function () {
+
+            $jq('.summernote').summernote({
+                height: 200,
+                codemirror: {
+                    theme: 'monokai'
+                }
+            });
+
+            //initial activity paging table tab
+            initializeActivitySearchFilter();
+            initializeActivityPaging();
+
+            //initial exiting paging table tab
+            initializeExistingSearchFilter();
+            initializeExistingPaging();
+
+            //initial document paging table tab
+            initializeDocumentSearchFilter();
+            initializeDocumentPaging();
+
+            //initial logging pagin table tab
+            initializeLoggingSearchFilter();
+            initializeLoggingPaging();
+
+            $jq("#navActivity").click(onNavActivityClick);
+
+            $jq("#navExisting").click(onNavExistingClick);
+
+            $jq("#navDocument").click(onNavDocumentClick);
+
+            $jq("#navLogging").click(onNavLoggingClick);
+
+            $jq("#btnSave").click(onBtnSaveClick);
+
+            $jq("#btnEditSrCancel").click(onBtnEditSrCancel);
+
+            loadActivityData();
+
+            resetValidation();
+
+            $jq("#btnOTPHistory").on("click", function (e) {
+                e.preventDefault();
+                var reqData = {
+                    __RequestVerificationToken: getAntiForgeryToken(),
+                    callId: '@Model.CallId',
+                    cardNo: '@Model.CustomerCardNo'
+                };
+                $jq.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetSendOTPHistory", "ServiceRequest")',
+                    data: reqData,
+                    beforeSend: function () {
+                        $jq("#dvLoading").show();
+                    }
+                }).done(function (result) {
+                    $jq("#dvLoading").hide();
+                    if (result.RedirectUrl) {
+                        topLocation(result.RedirectUrl);
+                    } else {
+                        $jq("#modalOTPHisBody").html('');
+                        $jq("#modalOTPHisBody").html(result);
+                        $jq("#modalOTPHis").modal("show");
+                    }
+                }).fail(function (xhr, status, errorThrown) {
+                    $jq("#dvLoading").hide();
+                }).always(function (xhr, status) {
+                    $jq("#dvLoading").hide();
+                });
+            });
+        });
+
+        function onBtnEditSrCancel() {
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'cancelEditSr()', 'Confirm');
+            }
+            return false;
+        }
+
+        function cancelEditSr() {
+            window.location = "@Url.Action("Index", "ServiceRequest")";
+        }
+
+        function onBtnSaveClick() {
+
+            var frm = $jq("#form1");
+
+            if (frm.valid() && chkCauseDetail()) {
+
+                $jq("#dvLoading").show();
+
+                var frmData = $jq("#form1").serialize();
+
+                $jq.ajax({
+                    url: "@Url.Action("UpdateServiceRequest","ServiceRequest")",
+                    method: "POST",
+                    data: frmData
+                })
+                .done(function (result) {
+
+                    $jq("#dvLoading").hide();
+
+                    if (result.IsSuccess) {
+
+                        var msg = "<strong>Save Success</strong>";
+                        var msgWarning = "";
+                        if (result.WarningMessages != null && result.WarningMessages.length > 0) {
+                            msgWarning = "<br/><br/><span style='color:#b94a48'><strong>Warning Message:</strong><br/>"
+                            for (var i = 0; i < result.WarningMessages.length; i++) {
+                                msgWarning += (" - " + result.WarningMessages[i] + "<br/>");
+                            }
+                            msgWarning += "</span>";
+                        }
+
+                        doModalWithCloseEvent("dvAlertMsg", "Save Success", msg + msgWarning, "onSaveSuccess()");
+                        return false;
+                    }
+
+                    doModal("dvAlertMsg", "Message Dialog", result.ErrorMessage, "", "");
+                    return false;
+                })
+                .fail(function () {
+
+                    $jq("#dvLoading").hide();
+
+                    doModal("dvAlertMsg", "Message Dialog", "@Resource.Error_SaveFailed", "", "");
+                });
+            }
+
+            return true;
+
+
+        }
+
+        //Initial Existing Paging Table tab
+
+        function onNavExistingClick() {
+            loadExistingData();
+        }
+
+        function loadExistingData() {
+            $jq.ajax({
+                url: "@Url.Action("GetTabExistingList", "ServiceRequest")",
+                type: "POST",
+                data: existingSearchFilter,
+                beforeSend: function() { $jq("#dvLoading").show(); },
+                complete: function() { $jq("#dvLoading").hide(); },
+                success: function(result) {
+                    if (result.Valid == null) {
+                        $jq("#divExisting_sr").html('');
+                        existingSuccessFilter = existingSearchFilter;
+                        $jq("#divExisting_sr").html(result);
+                        initializeExistingPaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                }
+            });
+        }
+
+        function initSrEdit(srId) {
+
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            var inputSrId = $jq("<input>").attr("type", "hidden").attr("name", "srId").val(srId);
+
+            $jq('#dvTarget').html('');
+            $jq('#dvTarget').append("<form action='@Url.Action("Edit", "ServiceRequest")' method='POST' class='hidden' target='_blank'>");
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').append($jq(inputSrId));
+            $jq('#dvTarget form').submit();
+        }
+
+        function initializeExistingSearchFilter() {
+            existingSearchFilter = {
+                CustomerId: '@Model.ExistingSearchFilter.CustomerId',
+
+                PageNo: '@Model.ExistingSearchFilter.PageNo',
+                PageSize: '@Model.ExistingSearchFilter.PageSize',
+                SortField: '@Model.ExistingSearchFilter.SortField',
+                SortOrder: '@Model.ExistingSearchFilter.SortOrder',
+                __RequestVerificationToken: getAntiForgeryToken()
+            };
+            existingSuccessFilter = existingSearchFilter;
+        }
+
+        function initializeExistingPaging() {
+            $jq("#divExisting_sr .input-page").change(function (event) {
+                existingSearchFilter = existingSuccessFilter;
+                existingSearchFilter.PageNo = $jq(this).val();
+                loadExistingData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#divExisting_sr #pagesizelist").change(function (event) {
+                existingSearchFilter = existingSuccessFilter;
+                existingSearchFilter.PageNo = "1";
+                existingSearchFilter.PageSize = $jq(this).val();
+                loadExistingData();
+                return false;
+            });
+
+            $jq('#divExisting_sr .pagination ul li a').on('click', function (event) {
+                existingSearchFilter = existingSuccessFilter;
+                existingSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadExistingData();
+                return false;
+            });
+        }
+
+        function sortExistingField(selectedSortField) {
+            if (selectedSortField == existingSearchFilter.SortField)
+                existingSearchFilter.SortOrder = (existingSearchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                existingSearchFilter.SortOrder = 'ASC';
+
+            existingSearchFilter.SortField = selectedSortField;
+            existingSearchFilter.PageNo = 1;
+            loadExistingData();
+        }
+
+        //End Existing Paging Table tab
+
+        //Initial Activity Paging Table Tab
+
+        function onNavActivityClick() {
+            loadActivityData();
+        }
+
+        function loadActivityData() {
+            $jq.ajax({
+                url: "@Url.Action("GetTabActivityList", "ServiceRequest")",
+                method: "POST",
+                data: activitySearchFilter,
+                beforeSend: function() { $jq("#dvLoading").show(); },
+                complete: function() { $jq("#dvLoading").hide(); },
+                success: function(result) {
+                    if (result.Valid == null) {
+                        $jq("#divActivity").html('');
+                        activitySuccessFilter = activitySearchFilter;
+                        $jq("#divActivity").html(result);
+                        initializeActivityPaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                }
+            });
+        }
+
+        function initializeActivitySearchFilter() {
+            activitySearchFilter = {
+                SrId: '@Model.ActivitySearchFilter.SrId',
+                SrNo: '@Model.ActivitySearchFilter.SrNo',
+                CustomerId: '@Model.ActivitySearchFilter.CustomerId',
+                CustomerCardNo: '@Model.ActivitySearchFilter.CustomerCardNo',
+                CustomerSubscriptionTypeCode: '@Model.ActivitySearchFilter.CustomerSubscriptionTypeCode',
+                SubsTypeCode: '@Model.ActivitySearchFilter.CustomerSubscriptionTypeCode',
+                SrOnly: '@Model.ActivitySearchFilter.SrOnly',
+                PageNo: '@Model.ActivitySearchFilter.PageNo',
+                PageSize: '@Model.ActivitySearchFilter.PageSize',
+                SortField: '@Model.ActivitySearchFilter.SortField',
+                SortOrder: '@Model.ActivitySearchFilter.SortOrder',
+                __RequestVerificationToken: getAntiForgeryToken()
+            };
+            activitySuccessFilter = activitySearchFilter;
+        }
+
+        function initializeActivityPaging() {
+            $jq("#divActivity .input-page").change(function (event) {
+                activitySearchFilter = activitySuccessFilter;
+                activitySearchFilter.PageNo = $jq(this).val();
+                loadActivityData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#divActivity #pagesizelist").change(function (event) {
+                activitySearchFilter = activitySuccessFilter;
+                activitySearchFilter.PageNo = "1";
+                activitySearchFilter.PageSize = $jq(this).val();
+                loadActivityData();
+                return false;
+            });
+
+            $jq('#divActivity .pagination ul li a').on('click', function (event) {
+                activitySearchFilter = activitySuccessFilter;
+                activitySearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadActivityData();
+                return false;
+            });
+        }
+
+        function sortActivityField(selectedSortField) {
+            if (selectedSortField == activitySearchFilter.SortField)
+                activitySearchFilter.SortOrder = (activitySearchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                activitySearchFilter.SortOrder = 'ASC';
+
+            activitySearchFilter.SortField = selectedSortField;
+            activitySearchFilter.PageNo = 1;
+            loadActivityData();
+        }
+
+        //End Activity Pagging Table Tab
+
+        // Initial Document Paging Table Tab
+
+        function onNavDocumentClick() {
+            loadDocumentData();
+        }
+
+        function loadDocumentData() {
+            $jq.ajax({
+                url: "@Url.Action("GetTabDocumentList", "ServiceRequest")",
+                method: "POST",
+                data: documentSearchFilter,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#divDocument").html('');
+                        documentSuccessFilter = documentSearchFilter;
+                        $jq("#divDocument").html(result);
+                        initializeDocumentPaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                }
+            });
+        }
+
+        function initializeDocumentSearchFilter() {
+            documentSearchFilter = {
+                SrId: '@Model.DocumentSearchFilter.SrId',
+                CustomerId: '@Model.DocumentSearchFilter.CustomerId',
+                SrOnly: '@Model.DocumentSearchFilter.SrOnly',
+                PageNo: '@Model.DocumentSearchFilter.PageNo',
+                PageSize: '@Model.DocumentSearchFilter.PageSize',
+                SortField: '@Model.DocumentSearchFilter.SortField',
+                SortOrder: '@Model.DocumentSearchFilter.SortOrder',
+                __RequestVerificationToken: getAntiForgeryToken()
+            };
+            documentSuccessFilter = documentSearchFilter;
+        };
+
+        function initializeDocumentPaging() {
+            $jq("#divDocument .input-page").change(function (event) {
+                documentSearchFilter = documentSuccessFilter;
+                documentSearchFilter.PageNo = $jq(this).val();
+                loadDocumentData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#divDocument #pagesizelist").change(function (event) {
+                documentSearchFilter = documentSuccessFilter;
+                documentSearchFilter.PageNo = "1";
+                documentSearchFilter.PageSize = $jq(this).val();
+                loadDocumentData();
+                return false;
+            });
+
+            $jq('#divDocument .pagination ul li a').on('click', function (event) {
+                documentSearchFilter = documentSuccessFilter;
+                documentSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadDocumentData();
+                return false;
+            });
+        }
+
+        function sortDocumentField(selectedSortField) {
+            if (selectedSortField == documentSearchFilter.SortField)
+                documentSearchFilter.SortOrder = (documentSearchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                documentSearchFilter.SortOrder = 'ASC';
+
+            documentSearchFilter.SortField = selectedSortField;
+            documentSearchFilter.PageNo = 1;
+            loadDocumentData();
+        }
+
+        //End Document Pagging Table Tab
+
+        //Initial Logging Paging Table Tab
+
+        function onNavLoggingClick() {
+            loadLoggingData();
+        }
+
+        function loadLoggingData() {
+            $jq.ajax({
+                url: "@Url.Action("GetTabLoggingList", "ServiceRequest")",
+                method: "POST",
+                data: loggingSearchFilter,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#divLogging").html('');
+                        loggingSuccessFilter = loggingSearchFilter;
+                        $jq("#divLogging").html(result);
+                        initializeLoggingPaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                }
+            });
+        }
+
+        function initializeLoggingSearchFilter() {
+            loggingSearchFilter = {
+                SrId: '@Model.LoggingSearchFilter.SrId',
+
+                PageNo: '@Model.LoggingSearchFilter.PageNo',
+                PageSize: '@Model.LoggingSearchFilter.PageSize',
+                SortField: '@Model.LoggingSearchFilter.SortField',
+                SortOrder: '@Model.LoggingSearchFilter.SortOrder',
+                __RequestVerificationToken: getAntiForgeryToken()
+            };
+            loggingSuccessFilter = loggingSearchFilter;
+        }
+
+        function initializeLoggingPaging() {
+            $jq("#divLogging .input-page").change(function (event) {
+                loggingSearchFilter = loggingSuccessFilter;
+                loggingSearchFilter.PageNo = $jq(this).val();
+                loadLoggingData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#divLogging #pagesizelist").change(function (event) {
+                loggingSearchFilter = loggingSuccessFilter;
+                loggingSearchFilter.PageNo = "1";
+                loggingSearchFilter.PageSize = $jq(this).val();
+                loadLoggingData();
+                return false;
+            });
+
+            $jq('#divLogging .pagination ul li a').on('click', function (event) {
+                loggingSearchFilter = loggingSuccessFilter;
+                loggingSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadLoggingData();
+                return false;
+            });
+        }
+
+        function sortLoggingField(selectedSortField) {
+            if (selectedSortField == loggingSearchFilter.SortField)
+                loggingSearchFilter.SortOrder = (loggingSearchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                loggingSearchFilter.SortOrder = 'ASC';
+
+            loggingSearchFilter.SortField = selectedSortField;
+            loggingSearchFilter.PageNo = 1;
+            loadLoggingData();
+        }
+        //End Document Pagging Table Tab
+
+        function onlinkRemarkClick() {
+            $jq("#modalRemark").modal("show");
+        }
+
+        function chkCauseDetail() {
+            var succ = true;
+            var msg = '';
+            $jq("[id^=txtCPNCause]").each(function (idx) {
+                if ($jq(this).is(':visible') && $jq(this).val().trim().length == 0) {
+                    succ = false;
+                    msg += `หากพบสาเหตุเป็น ${$jq(this).prop('id').replace("txtCPNCause", "").replace("Detail", "")} กรุณาระบุรายละเอียด!<br />`;
+                }
+            });
+
+            if (!succ && msg.trim().length > 0) {
+                doModal('dvAlertMsg', 'Can not save! - Message Dialog', msg, '', '');
+            }
+
+            return succ;
+        }
+    </script>
+}

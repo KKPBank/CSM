@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="UpdateCustomerFlags" elementFormDefault="qualified" targetNamespace="UpdateCustomerFlags" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="UpdateCustFlag" type="tns:ReqUpdFlagEntity" />
+  <xs:complexType name="ReqUpdFlagEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CitizenId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="UpdInquiries" type="tns:ArrayOfUpdInquiry" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfUpdInquiry">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UpdInquiry" nillable="true" type="tns:UpdInquiry" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="UpdInquiry">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="CampaignId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="HasOffered" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="IsInterested" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Comments" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="UpdatedBy" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Command" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="header" type="tns:Header" />
+  <xs:complexType name="Header">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="transaction_date" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="user_name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="service_name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="system_code" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="reference_no" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

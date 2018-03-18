@@ -1,0 +1,105 @@
+﻿@model CSM.Web.Models.HomeViewModel
+@using CSM.Common.Resources
+@using MvcPaging;
+@helper LabelForSort(string headerText, string fieldName, string sortField, string sortOrder)
+{
+    <a href="javascript:;" onclick="sortFieldNewsRead('@fieldName');return false;">
+        @headerText
+        @if (fieldName.ToLower().Equals(sortField.ToLower()))
+        {
+            if (sortOrder.Equals("ASC"))
+            {<i class="fa fa-sort-asc"></i>}
+            else
+            {<i class="fa fa-sort-desc"></i> }
+        }
+        else
+        {<i class="fa fa-sort"></i>}
+    </a>
+}
+
+@if (Model.NewsReadList == null || Model.NewsReadSearchFilter.TotalRecords == 0)
+{
+    string sortField = Model.NewsReadSearchFilter.SortField;
+    string sortOrder = Model.NewsReadSearchFilter.SortOrder;
+    <div class="table-responsive margin-top-10">
+        <table class="table datatable">
+            <thead>
+                <tr>
+                    <th class="center" style="width:10%!important;">Action</th>
+                    <th style="width:40%!important;">Subject</th>
+                    <th style="width:15%!important;">ประกาศเมื่อวันที่</th>
+                    <th style="width:15%!important;">วันที่ประกาศสิ้นสุด</th>
+                    <th style="width:20%!important;">ผู้ประกาศ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string sortField = Model.NewsReadSearchFilter.SortField;
+    string sortOrder = Model.NewsReadSearchFilter.SortOrder;
+
+    <div class="form-inline nopadding">
+        <div class="form-group">
+            @Html.Raw(Html.Pager(
+                new Options
+                {
+                    PageSize = Model.NewsReadSearchFilter.PageSize,
+                    TotalItemCount = Model.NewsReadSearchFilter.TotalRecords,
+                    CurrentPage = Model.NewsReadSearchFilter.PageNo,
+                    ItemTexts = new ItemTexts
+                    {
+                        First = "<i class='fa fa-step-backward' style='font-size: 0.8em'></i>",
+                        Previous = "<i class='fa fa-caret-left'></i>",
+                        Next = "<i class='fa fa-caret-right'></i>",
+                        Last = "<i class='fa fa-step-forward' style='font-size: 0.8em'></i>"
+                    },
+                    IsShowFirstLast = true,
+                    CssClass = "pager",
+                    IsShowInputPage = true
+                },
+             new { PageSize = ViewBag.NewsReadPageSize }))
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("PageSize", new SelectList(ViewBag.NewsReadPageSizeList, "Key", "Value"), new { @class = "form-control input-xs", id = "pagesizelist" })
+        </div>
+        <div class="form-group text-nowrap margin-left-8">
+            <strong>
+                @MvcHtmlString.Create(string.Format(Resource.Lbl_Paging, @Model.NewsReadSearchFilter.FirstPageIndex, @Model.NewsReadSearchFilter.LastPageIndex, @Model.NewsReadSearchFilter.TotalRecordsDisplay))
+            </strong>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table datatable">
+            <thead>
+                <tr>
+                    <th class="center text-nowrap" style="width:10%!important;">Action</th>
+                    <th class="center text-nowrap" style="width:40%!important;">@LabelForSort("Subject", "Topic", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:15%!important;">@LabelForSort("ประกาศเมื่อวันที่", "AnnounceDate", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:15%!important;">@LabelForSort("วันที่ประกาศสิ้นสุด", "ExpiryDate", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:20%!important;">@LabelForSort("ผู้ประกาศ", "FullName", sortField, sortOrder)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.NewsReadList)
+                {
+                    <tr>
+                        <td class="center">
+                            <a href="javascript:;" class="view" title="View" onclick="initAcceptNews('@item.NewsId', '0');"></a>
+                        </td>
+                        <td>@item.Topic</td>
+                        <td class="center text-nowrap">@item.AnnounceDateDisplay</td>
+                        <td class="center text-nowrap">@item.ExpiryDateDisplay</td>
+                        <td>@item.CreateUser.FullName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,100 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@model CSM.Web.Models.CreateServiceRequestViewModel
+
+@Html.Partial("_ViewCreateStep1", Model)
+
+@if (Model.MappingProduct != null && Model.MappingProduct.IsVerify)
+{
+    <div class="collapse_container">
+        <div class="collapse_header"><span class="collapse_sign">[+]</span> Verify Question</div>
+        <div class="collapse_body" style="display:none">
+
+            @if (Model.MappingProduct != null && Model.MappingProduct.MappingProductQuestionGroups.Count > 0)
+            {
+                foreach (var group in Model.MappingProduct.MappingProductQuestionGroups)
+                {
+                    <div class="qv">
+                        <div class="qv_group">@group.QuestionGroupName (ตอบถูกอย่างน้อย @group.RequireAmountPass ข้อ)</div>
+                        <div class="qv_list">
+                            <table>
+                                <tbody>
+                                    @for (int i = 0; i < group.Questions.Count; i++)
+                                    {
+                                        var question = group.Questions[i];
+                                        var seqNo = (i + 1);
+                                        var checkBoxName = "answer_" + @group.QuestionGroupId + "_" + @question.QuestionId;
+
+                                        var radioCheck = string.Format("<img src='{0}' alt='check'/>", Url.Content("~/Images/radio_check.png"));
+                                        var radioUncheck = string.Format("<img src='{0}' alt='uncheck'/>", Url.Content("~/Images/radio_uncheck.png"));
+                                        
+                                        var result = (Request.Form[checkBoxName] ?? string.Empty).ToUpper();
+                                        var checkSkip = (string.IsNullOrEmpty(result) || result == "SKIP" || (result != "PASS" && result != "FAIL")) ? radioCheck : radioUncheck;
+                                        var checkPass = result == "PASS" ? radioCheck : radioUncheck;
+                                        var checkFail = result == "FAIL" ? radioCheck : radioUncheck;
+
+                                        <tr>
+                                            <td>คำถามที่ @seqNo: @Html.Raw(question.QuestionName)</td>
+                                            <td class="result"><label>@Html.Raw(checkSkip) ข้าม</label></td>
+                                            <td class="result"><label>@Html.Raw(checkPass) ถูก</label></td>
+                                            <td class="result"><label>@Html.Raw(checkFail) ผิด</label></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            }
+            
+            @{
+            var verifyAnswers = Request.Form.AllKeys.Where(r => r.StartsWith("answer_")).ToList();
+            foreach (var verifyAnswer in verifyAnswers)
+            {
+                <input type="hidden" name='@verifyAnswer' value='@Request.Form[@verifyAnswer]' class="verify-answer" />
+            }
+            }
+
+            <table style="margin: 20px 0 5px" class="form">
+                <tbody>
+                    <tr>
+                        <td style="width:200px" class="text">Verify Result :</td>
+                        <td class="input">
+                            @{
+    var verifyPass = Model.IsVerifyPass.ToUpper();
+
+    var color = (verifyPass == "PASS" || verifyPass == "PASSED") ? "#008000" : (verifyPass == "FAIL" || verifyPass == "FAILED") ? "#a94442" : "#000000";
+    var bgColor = (verifyPass == "PASS" || verifyPass == "PASSED") ? "#dff0d8" : (verifyPass == "FAILED" || verifyPass == "FAILED") ? "#f2dede" : "#eeeeee";
+                            }
+                            @Html.TextBoxFor(model => model.IsVerifyPass, new
+                            {
+                                @id = "txtIsVerifyPass",
+                                @class = "form-control input-sm is-verify-pass",
+                                @readonly = "readonly",
+                                style = string.Format("color:{0};background-color:{1};", color, bgColor)
+                            
+                            })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text">Subject : </td>
+                        <td class="input">
+                            @Html.TextBoxFor(model => model.Subject, new { @id = "txtSubject", @class = "form-control input-sm input-sr-long", maxlength = Constants.MaxLength.MailSubject })
+                            @Html.ValidationMessageFor(model => model.Subject)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text vtop">Remark: </td>
+                        <td class="input">
+                            @Html.TextAreaFor(model => model.Remark, new { @id = "txtRemark", @class = "summernote" })
+                            @Html.HiddenFor(model => model.RemarkOriginal, new { @id = "RemarkOriginal" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<input type="hidden" name="MappingProductId" value="@((Model.MappingProductId??0).ToString())" />
+<input type="hidden" name="IsVerify" value="@Model.IsVerify.ToString()" />

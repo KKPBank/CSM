@@ -1,0 +1,18 @@
+﻿@using CSM.Common.Resources
+@{
+    ViewBag.Title = "Access Denied";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.NA })
+}
+
+@using (Html.BeginForm("AccessDenied", "User", FormMethod.Post, new { @class = "form-horizontal", @id = "form1" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="alert alert-danger margin-top-10" role="alert">
+        <h5 class="form-title">Access Denied</h5>
+        @Html.Raw(Resource.Lbl_AccessDenied)
+    </div>
+}

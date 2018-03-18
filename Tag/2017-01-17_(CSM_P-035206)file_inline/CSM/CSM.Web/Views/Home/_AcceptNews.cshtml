@@ -1,0 +1,187 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.AcceptNewsViewModel
+<div class="modal-dialog modal-sm" style="min-width:800px;">
+    <div id="dvBrForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">ข่าวสาร</h5>
+            @Html.HiddenFor(model => model.NewsId, new { @id = "hddNewsId" })
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 left-label">Subject :</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static">
+                                @Model.Topic
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 left-label">ประกาศเมื่อวันที่ :</label>
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                @Model.AnnounceDate
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 left-label">ผู้ประกาศ :</label>
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                @Model.FullName
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 left-label">เนื้อหา :</label>
+                        <div class="col-md-9">                            
+                            @Html.Raw(Model.Content)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div>
+                @if (Model.AttachmentList != null && Model.AttachmentList.Count() > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%!important;">Action</th>
+                                    <th style="width:45%!important;">ชื่อเอกสาร</th>
+                                    <th style="width:45%!important;">คำอธิบายเอกสาร</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.AttachmentList)
+                                {                                    
+                                    <tr>
+                                        <td class="center" style="width: 10% !important;">
+                                            <a href="javascript:;" onclick="previewNewsAttachment('@item.AttachmentId')" class="download" title="download"></a>
+
+                                        </td>
+                                        <td style="width: 45% !important;">@item.Name</td>
+                                        <td style="width: 45% !important;">@item.Description</td>
+                                    </tr>                                    
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+            </div>                  
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">            
+            <div class="modal-footer">
+                @if (Model.IsShowAcceptNews)
+                {
+                    <div class="col-md-4 text-left">
+                        <input type="checkbox" id="chkIsAcceptNews" />@MvcHtmlString.Create("&nbsp; ยอมรับว่าอ่านข้อมูลเรียบร้อยแล้ว")
+                    </div>
+                    <div class="col-md-8">
+                        <button type="button" class="btn btn-blue btn-sm btn-xsmall" onclick="" id="btnAcceptNewsSave">
+                            <i class="fa fa-save"></i>&nbsp;Save
+                        </button>
+                        <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                    </div>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" aria-hidden="true">Close</button>
+                }                
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $jq(function () {
+        $jq('#btnAcceptNewsSave').click(function (e) {
+            e.preventDefault();
+            saveAcceptNews();
+            return false;
+        });
+    });
+
+    function saveAcceptNews() {        
+        // validate checkbox is checked
+        if ($jq("#chkIsAcceptNews").prop('checked') == false) {
+            var errorMsg = String.format('<strong></strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.ValErr_PleaseAcceptNews');
+            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+        }
+        else {
+            var objNews = $jq("#form2").serialize();
+            $jq.ajax({
+                url: '@Url.Action("SaveAcceptNews", "Home")',
+                type: "POST",
+                data: objNews,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid === true) {
+                        loadNewsUnreadData();
+                        loadNewsReadData();
+                        $jq('#acceptNewsModal').modal('hide');
+                    } else {
+                        $jq('#acceptNewsModal').modal('hide');
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+        }
+
+        return false;
+    }
+
+    function previewNewsAttachment(attachmentId) {
+        var data = {
+            attachmentId: attachmentId
+        };
+        $jq.ajax({
+            url: '@Url.Action("LoadFileNewsAttachment", "Home")',
+            type: "POST",
+            data: addAntiForgeryToken(data),
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); },
+            success: function (result) {
+                if (result.Valid == true) {
+                    $jq('#dvTarget').html('');
+                    var url = '@Url.Action("PreviewNewsAttachment", "Home")';
+                    var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+                    $jq('#dvTarget').append('<form action="' + url + '" method="POST" class="hidden"></form>');
+                    $jq('#dvTarget form').append($jq(inputToken));
+                    $jq('#dvTarget form').submit();
+                } else {
+                    showServerErrors(result);
+                }
+            },
+            error: function (xhr) {
+                var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+            }
+        });
+
+        return false;
+    }
+</script>

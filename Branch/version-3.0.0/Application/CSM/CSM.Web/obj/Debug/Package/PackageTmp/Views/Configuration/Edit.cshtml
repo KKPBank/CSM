@@ -1,0 +1,366 @@
+﻿@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@model CSM.Web.Models.ConfigurationViewModel
+@{
+    ViewBag.Title = (Model.ConfigureUrlId != null && Model.ConfigureUrlId > 0) ? Resource.Lbl_EditConfigUrl : Resource.Lbl_NewConfigUrl;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" })</strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink(Resource.Lbl_SearchConfigUrl, "Search", "Configuration", null, new { @class = "font-blue" })
+    </strong>
+    @if (Model.ConfigureUrlId != null && Model.ConfigureUrlId > 0)
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_EditConfigUrl </strong>
+    }
+    else
+    {
+        <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_NewConfigUrl </strong>
+    }
+}
+
+@using (Html.BeginForm("Edit", "Configuration", FormMethod.Post, new { @class = "form-horizontal", @id = "form1", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ConfigureUrlId, new { @id = "ConfigureUrlId" })
+    @Html.HiddenFor(model => model.JsonRole)
+    <input id="btnSubmitTrigger" type="submit" class="hidden" />
+
+    <div id="dvForm" class="form-box">
+        @if (Model.ConfigureUrlId != null && Model.ConfigureUrlId > 0)
+        {
+            <h5 class="form-title">@Resource.Lbl_EditConfigUrl</h5>            
+        }
+        else
+        {
+            <h5 class="form-title">@Resource.Lbl_NewConfigUrl</h5>           
+        }
+        @*<h5 class="form-title">Configuration URL</h5>*@
+        <div class="row margin-top-15">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            ชื่อระบบ&nbsp;<span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.SystemName, new { @class = "form-control input-sm", @style = "width:225px!important;display:block", @id = "txtSystemName", @maxLength = Constants.MaxLength.ConfigName })
+                        @Html.ValidationMessageFor(model => model.SystemName)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            สถานะ
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        @if (Model.ConfigureUrlId != null)
+                        {
+                            @Html.DropDownListFor(model => model.Status, Model.StatusList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @style = "display:block" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.Status, Model.StatusList, null, new { @class = "form-control input-sm", @style = "display:block" })
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            เมนูหลัก&nbsp;<span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.DropDownListFor(model => model.MenuId, Model.MenuList, CSM.Common.Resources.Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @style = "width:225px!important;display:block" })
+                        @Html.ValidationMessageFor(model => model.MenuId)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            URL&nbsp;<span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.Url, new { @class = "form-control input-sm", @id = "txtUrl", @style = "display:block", @maxlength = Constants.MaxLength.ConfigUrl })
+                        @Html.ValidationMessageFor(model => model.Url)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            Displayed Image&nbsp;<span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-7">
+                        @Html.HiddenFor(model => model.FontName, new { @id = "hddFontName" })
+                        <a href="javascript:;" id="icon-popover-2" class="btn btn-green">
+                            <i class="@Model.FontName" title="Choose Image">
+                                @if (string.IsNullOrEmpty(Model.FontName))
+                                {
+                                    @Html.Raw("choose image");
+                                }
+                            </i>
+                        </a>
+                        @Html.ValidationMessageFor(model => model.FontName)
+
+                        @*@Html.TextBoxFor(model => model.File, null, new { @id = "txtFile", type = "file" })
+                        <span class="required-message-block">@(ViewBag.UploadLimitType)</span>
+                        @Html.ValidationMessageFor(model => model.File)*@
+                    </div>                    
+                </div>
+            </div>
+            @*<div class="col-md-7">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            Preview Image<br />
+                            <small class="font-green-jungle">(before upload)</small>
+                        </p>
+                    </div>
+                    <div class="col-md-10">
+                        
+                        
+                        @if (!string.IsNullOrWhiteSpace(Model.FileUrl))
+                        {
+                            <img src="@Href(@Model.FileUrl)" width="50" height="50" onerror="this.src = '@Href(@CSM.Common.Utilities.Constants.NoImage50)';" />
+                        }
+                        else
+                        {
+                            <img src="@Href(@CSM.Common.Utilities.Constants.NoImage50)" width="50" height="50" />
+                        }
+
+                        
+                    </div>
+                </div>
+            </div>*@
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-1">
+                        <p class="form-control-static">
+                            Role&nbsp;<span class="required-field-block">*</span>
+                        </p>
+                    </div>
+                    <div class="col-md-9" style="padding-left:50px!important">
+                        @if (Model.RoleCheckBoxes != null && Model.RoleCheckBoxes.Count > 0)
+                        {
+                            <table class="checkboxlist">
+                                @for (int i = 0; i < Model.RoleCheckBoxes.Count; i++)
+                                {
+                                    <tr style="width:42%!important">
+                                        <td>
+                                            @Html.CheckBoxFor(model => model.RoleCheckBoxes[i].Checked, new { @id = "cblRole_" + i })
+                                            @Html.HiddenFor(model => model.RoleCheckBoxes[i].Value)
+                                        </td>
+                                        <td class="padding-left-2">@Model.RoleCheckBoxes[i].Text</td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            สร้างโดย
+                        </p>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.CreateUser, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            วันที่สร้าง&nbsp;
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.CreatedDate, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <p class="form-control-static">
+                            แก้ไขโดย
+                        </p>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.UpdateUser, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            วันที่แก้ไข&nbsp;
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.UpdateDate, new { @class = "form-control input-sm readonly", @style = "width:180px!important", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="panel-actions noborder">
+        <div class="pull-right">
+            <div class="form-inline">
+                <div class="form-group">
+                    <button id="btnSave" type="button" class="btn btn-blue btn-sm btn-xsmall">
+                        <i class="fa fa-save"></i>&nbsp;Save
+                    </button>
+                </div>
+                <div class="form-group">
+                    <button id="btnReset" type="button" class="btn btn-gray btn-sm btn-xsmall">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="dvIconResult">
+        @if (Model.FontList != null)
+            {
+                Html.RenderPartial("~/Views/Configuration/_IconList.cshtml", Model);
+            }
+    </div>
+
+}
+<div id="dvTarget"></div>
+
+@section masterjs
+{
+    <script type="text/javascript">
+    $jq(function () {
+
+        // Enables popover #1
+        $jq("[data-toggle=popover]").popover();
+
+        // Enables popover #2
+        $jq("#icon-popover-2").popover({
+            html: true,
+            content: function () {
+                return $jq("#icon-popover-2-content").html();
+            },
+            title: function () {
+                return $jq("#icon-popover-2-title").html();
+            }
+        });
+
+        //loadIconFontData();        
+
+        $jq('#btnSave').click(function () {
+            $jq('#btnSubmitTrigger').click();
+        });
+
+        $jq('#form1').submit(function () {
+            $jq("#dvLoading").show();
+        });
+
+        $jq("#btnReset").click(function (e) {
+            e.preventDefault();
+            var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+            if ($jq.trim(msg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', msg, 'initSearch()', 'Confirm');
+            }
+            return false;
+        });
+
+        var errorMsg = '@ViewBag.ErrorMessage';
+        if ($jq.trim(errorMsg) != '') {
+            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+        }
+    });
+
+    function initSearch() {
+        $jq("#dvLoading").show();
+        var actionUrl = '@Url.Action("Search", "Configuration")';
+            $jq('#dvTarget').html('');
+            var input = $jq("<input>").attr("type", "hidden");
+            $jq('#dvTarget').append('<form action="' + actionUrl + '" method="POST" class="hidden"></form>');
+            $jq('#dvTarget form').append($jq(input));
+            $jq('#dvTarget form').submit();
+        }
+
+        var resultIcon;
+        function loadIconFontData(isNext) {           
+            // set data
+            var paramData = {
+                currentPage: $jq("#hddPageIndexOfFont").val(),
+                isNext: isNext
+            }
+            $jq.ajax({
+                url: '@Url.Action("IconList", "Configuration")',
+                type: "POST",
+                data: paramData,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        resultIcon = result;
+                        refreshIcon();                        
+                        
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+            return false;
+        }
+        function refreshIcon() {            
+
+            $jq("#dvIconResult").html('');
+            $jq("#dvIconResult").html(resultIcon);
+            $jq("#icon-popover-2").popover("show");
+        }
+
+        function selectedIcon(fontName) {
+
+            $jq("#icon-popover-2").find('i').removeClass($jq("#hddFontName").val()).addClass(fontName).text('');
+            $jq("#hddFontName").val(fontName);
+            $jq("#icon-popover-2").click();
+            clearServerErrors();
+        }
+
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿@model CSM.Web.Models.CampaignViewModel
+@using CSM.Common.Resources
+@using CSM.Common.Utilities
+@if (Model.RecommendedCampaignList == null || Model.RecommendedCampaignList.Count() == 0)
+{
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th style="width:5%!important;">สนใจ/ไม่สนใจ</th>
+                    <th style="width:10%!important;">รหัสผลิตภัณฑ์/แคมเปญ</th>
+                    <th style="width:15%!important;">ชื่อผลิตภัณฑ์/แคมเปญ</th>
+                    <th style="width:35%!important;">รายละเอียดผลิตภัณฑ์/แคมเปญ</th>
+                    <th style="width:10%!important;">วันที่สิ้นสุด</th>
+                    <th style="width:20%!important;">ช่องทาง</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th style="width:5%!important;">สนใจ/ไม่สนใจ</th>
+                    <th style="width:10%!important;">รหัสผลิตภัณฑ์/แคมเปญ</th>
+                    <th style="width:15%!important;">ชื่อผลิตภัณฑ์/แคมเปญ</th>
+                    <th style="width:35%!important;">รายละเอียดผลิตภัณฑ์/แคมเปญ</th>
+                    <th style="width:10%!important;">วันที่สิ้นสุด</th>
+                    <th style="width:20%!important;">ช่องทาง</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.RecommendedCampaignList)
+                {
+                    <tr>
+                        <td class="center">@item.InterestedDisplay</td>
+                        <td>@item.CampaignId</td>
+                        <td>@item.CampaignName</td>
+                        <td>@item.CampaignDesc</td>
+                        <td class="center">@item.ExpireDate.FormatDateTime(Constants.DateTimeFormat.DefaultShortDate)</td>
+                        <td class="center">@item.Channel</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

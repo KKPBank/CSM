@@ -1,0 +1,66 @@
+﻿@using CSM.Entity
+@model List<CSM.Entity.MenuEntity>
+@{
+    Layout = null;
+}
+<div id="logo">
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var item in Model)
+        {
+            string className = item.IsSelected ? string.Format("{0} selected", item.CssClass) : item.CssClass;
+            string url = MenuCode.Customer.Equals(item.MenuCode) ? Url.Action(item.ActionName, item.ControllerName, new { @skip = "1" }) : Url.Action(item.ActionName, item.ControllerName);
+            
+            <div class="@className">
+                @if (item.IsSelected)
+                {
+                    <a href="javascript:;" data-url="@url">
+                        @Html.DisplayFor(modelItem => item.MenuName)
+                    </a>
+                }
+                else
+                {
+                    <a href="@url">
+                        @Html.DisplayFor(modelItem => item.MenuName)
+                    </a>
+                }
+            </div>
+        }
+    }
+
+    <!-- System Information -->
+    <div class="pull-right">
+        @Html.Partial("_LoginPartial")
+        <div id="logout">
+            @using (Html.BeginForm("Logout", "User", FormMethod.Get, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+                <a href="javascript:;" class="btn btn-primary btn-xs"
+                   onclick="doModal('dvAlertMsg', 'Message Dialog', 'ต้องการออกจากระบบใช่หรือไม่?', 'logout()', 'Confirm');">
+                    Logout&nbsp;<i class="fa fa-arrow-circle-right"></i>
+                </a>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="pnlSubmenu" class="collapse">
+    @if (Model != null && Model.Count > 0)
+    {
+        var menu = Model.FirstOrDefault(x => x.IsSelected);
+        if (menu != null && menu.ConfigUrlList != null)
+        {
+            foreach (var item in menu.ConfigUrlList)
+            {
+                <div class="submenu">
+                    @*<i class="fa fa-list-alt"></i>*@
+                    <a href="@item.Url" target="_blank">
+                        @*<img src="@Href(@item.ImageUrl)" width="30" height="30" onerror="this.src='@Href(@CSM.Common.Utilities.Constants.NoImage30)'" />*@
+                        <span><i class="@item.FontName" style='font-size: x-large'></i></span>                        
+                        <br />@item.SystemName
+                    </a>
+                </div>
+            }
+        }
+    }
+</div>

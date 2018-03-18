@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="www.kiatnakinbank.com/services/SlmLeadService/InsertLead" elementFormDefault="qualified" targetNamespace="www.kiatnakinbank.com/services/SlmLeadService/InsertLead" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://10.3.112.46/SaleLeadService/LeadService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SLS.Service" />
+  <xs:element name="InsertLeadRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="RequestXml" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/SLS.Service" name="RequestHeader" nillable="true" type="q1:Header" />
+  <xs:element name="InsertLeadResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ResponseStatus" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/SLS.Service" name="ResponseHeader" nillable="true" type="q2:Header" />
+</xs:schema>

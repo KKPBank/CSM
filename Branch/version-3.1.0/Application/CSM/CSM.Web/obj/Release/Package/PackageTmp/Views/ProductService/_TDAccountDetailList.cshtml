@@ -1,0 +1,127 @@
+﻿@model CSM.Web.Models.TDAccountDetailViewModel
+@using CSM.Common.Resources
+@using MvcPaging;
+@helper LabelForSort(string headerText, string fieldName, string sortField, string sortOrder)
+{
+    <a href="javascript:;" onclick="sortField('@fieldName');return false;">
+        @headerText
+        @if (fieldName.ToLower().Equals(sortField.ToLower()))
+        {
+            if (sortOrder.Equals("ASC"))
+            {<i class="fa fa-sort-asc"></i>}
+            else
+            {<i class="fa fa-sort-desc"></i> }
+        }
+        else
+        {<i class="fa fa-sort"></i>}
+    </a>
+}
+
+@if (Model.TDAccountList == null || Model.TDAccountList.Count() == 0)
+{
+    string sortField = Model.SearchFilter.SortField;
+    string sortOrder = Model.SearchFilter.SortOrder;
+    <div class="table-responsive margin-top-10">
+        <table class="table table-hover datatable">
+            <thead>
+                <tr>
+                    <th style="width:6%!important;">Customer Number</th>
+                    <th style="width:10%!important;">Group Account Number</th>
+                    <th style="width:10%!important;">Account No</th>
+                    <th style="width:10%!important;">Production Type</th>
+                    <th style="width:10%!important;">Times Renew</th>
+                    <th style="width:10%!important;">Product Term</th>
+                    <th style="width:10%!important;">Effective Date</th>
+                    <th style="width:7%!important;">Maturity Date</th>
+                    <th style="width:7%!important;">Rate (%)</th>
+                    <th style="width:10%!important;">Principal Amt</th>
+                    <th style="width:10%!important;">Status</th>
+                    <th style="width:10%!important;">Issuing Branch</th>
+                    <th style="width:10%!important;">Passbook No./Original Cert</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="13" class="center">@Resource.Msg_NoRecords</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string sortField = Model.SearchFilter.SortField;
+    string sortOrder = Model.SearchFilter.SortOrder;
+
+    <div class="form-inline nopadding">
+        <div class="form-group">
+            @Html.Raw(Html.Pager(
+                new Options
+                {
+                    PageSize = Model.SearchFilter.PageSize,
+                    TotalItemCount = Model.SearchFilter.TotalRecords,
+                    CurrentPage = Model.SearchFilter.PageNo,
+                    ItemTexts = new ItemTexts
+                    {
+                        First = "<i class='fa fa-step-backward' style='font-size: 0.8em'></i>",
+                        Previous = "<i class='fa fa-caret-left'></i>",
+                        Next = "<i class='fa fa-caret-right'></i>",
+                        Last = "<i class='fa fa-step-forward' style='font-size: 0.8em'></i>"
+                    },
+                    IsShowFirstLast = true,
+                    CssClass = "pager",
+                    IsShowInputPage = true
+                },
+                new { PageSize = ViewBag.PageSizeList }))
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("PageSize", new SelectList(ViewBag.PageSizeList, "Key", "Value"), new { @class = "form-control input-xs", id = "pagesizelist" })
+        </div>
+        <div class="form-group text-nowrap margin-left-8">
+            <strong>
+                @MvcHtmlString.Create(string.Format(Resource.Lbl_Paging, @Model.SearchFilter.FirstPageIndex, @Model.SearchFilter.LastPageIndex, @Model.SearchFilter.TotalRecordsDisplay))
+            </strong>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table id="tblCustomerList" class="table table-hover datatable"  style="width:1890px!important;">
+            <thead>
+                <tr>
+                    <th class="center text-nowrap" style="width:7%!important;">@LabelForSort("Customer Number", "CustomerNumber", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("Group Account Number", "TDGroupNumber", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:8%!important;">@LabelForSort("Account No", "TDPlacementNumber", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("Production Type", "AccountTypeDescription", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("Times Renew", "RenewalCounter", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:12%!important;">@LabelForSort("Product Term", "ProductTerm", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:7%!important;">@LabelForSort("Effective Date", "EffectiveDate", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:7%!important;">@LabelForSort("Maturity Date", "MaturityDate", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("Rate (%)", "InterestRatePercentage", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("Principal Amt", "OriginalAmount", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("Status", "AccountStatus", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("Issuing Branch", "BranchNumber", sortField, sortOrder)</th>
+                    <th class="center text-nowrap" style="width:10%!important;">@LabelForSort("Passbook No./Original Cert", "ReceiptSerialNumber", sortField, sortOrder)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TDAccountList)
+                {
+                    <tr>
+                        <td class="center text-nowrap">@item.CustomerNumber </td>
+                        <td class="center text-nowrap">@item.TDGroupNumber </td>
+                        <td class="center text-nowrap">@item.TDPlacementNumber</td>
+                        <td class="center text-nowrap">@item.TDAccountTypeDescription</td>
+                        <td class="center">@item.RenewalCounter</td>
+                        <td class="center text-nowrap">@item.ProductTerm</td>
+                        <td class="center">@item.EffectiveDateDisplay</td>
+                        <td class="center">@item.MaturityDateDisplay</td>
+                        <td class="right text-nowrap">@item.InterestRatePercentage</td>
+                        <td class="right text-nowrap">@item.OriginalAmount</td>
+                        <td class="left text-nowrap">@item.TDAccountStatusDisplay</td>
+                        <td class="left text-nowrap">@item.BranchName</td>
+                        <td class="left text-nowrap">@item.ReceiptSerialNumber</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,7 @@
+ขอบคุณค่ะ ธนาคารได้รับข้อมูลท่านแล้ว จะติดต่อกลับภายในวันเวลาทำการถัดไปค่ะ ( Service Request ID;%SR_ID% ) สอบถามโทร 02-165-5555
+Email Message:
+<br>Service Request ID : %SR_ID%
+<br>Customer Name: %CUSTOMER_NAME%
+<br>เลขบัตรประชาชน/เลขนิติบุคคล : %SUBSCRIPTION_ID%
+<br>Created By : %CREATE_BY%
+<br>Created Date : %CREATE_DATE%

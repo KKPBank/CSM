@@ -1,0 +1,96 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.AcceptNewsViewModel
+<div class="modal-dialog modal-sm" style="min-width:800px;">
+    <div id="dvBrForm" class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">ข่าวสาร</h5>            
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 left-label">Subject :</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static">
+                                @Model.Topic
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 left-label">ประกาศเมื่อวันที่ :</label>
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                @Model.AnnounceDate
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 left-label">ผู้ประกาศ :</label>
+                        <div class="col-md-5">
+                            <p class="form-control-static">
+                                @Model.FullName
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 left-label">เนื้อหา :</label>
+                        <div class="col-md-9">
+                            @Html.Raw(Model.Content)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div>
+                @if (Model.AttachmentList != null && Model.AttachmentList.Count() > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%!important;">Action</th>
+                                    <th style="width:45%!important;">ชื่อเอกสาร</th>
+                                    <th style="width:45%!important;">คำอธิบายเอกสาร</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.AttachmentList)
+                                {
+                                    <tr>
+                                        <td class="center" style="width: 10% !important;">
+                                            <a href="javascript:;" class="download"></a>
+                                        </td>
+                                        <td style="width: 45% !important;">@item.Name</td>
+                                        <td style="width: 45% !important;">@item.Description</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-gray btn-sm btn-xsmall" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

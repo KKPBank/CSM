@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Branch" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CSM.Service.Messages.Branch" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="WebServiceHeader">
+    <xs:sequence>
+      <xs:element name="password" nillable="true" type="xs:string" />
+      <xs:element name="reference_no" nillable="true" type="xs:string" />
+      <xs:element name="service_name" nillable="true" type="xs:string" />
+      <xs:element name="system_code" nillable="true" type="xs:string" />
+      <xs:element name="transaction_date" nillable="true" type="xs:string" />
+      <xs:element name="user_name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="channel_id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="command" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WebServiceHeader" nillable="true" type="tns:WebServiceHeader" />
+</xs:schema>

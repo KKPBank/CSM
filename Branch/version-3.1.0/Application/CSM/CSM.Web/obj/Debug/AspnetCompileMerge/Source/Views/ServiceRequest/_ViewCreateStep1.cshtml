@@ -1,0 +1,375 @@
+﻿@using System.Collections.Concurrent
+@using CSM.Common.Utilities
+@using CSM.Common.Resources
+@model CSM.Web.Models.CreateServiceRequestViewModel
+<div class="collapse_container">
+    <div class="collapse_header"><span class="collapse_sign">[+]</span> Customer Profile Information</div>
+    <div class="collapse_body" style="display:none">
+        <table class="form">
+            <tbody>
+                <tr>
+                    <td class="text" style="width:200px">
+                        Subscription Type :
+                    </td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.CustomerId, new { @id = "hiddenCustomerId" })
+                        <span class="value">@Model.CustomerSubscriptionName</span>
+                    </td>
+                    <td class="text" style="width:170px" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                        Subscription ID :
+                    </td>
+                    <td class="input">
+                        <span class="value">@Model.CustomerCardNo</span>
+                    </td>
+                    <td class="text" style="width:170px">วันเกิด :</td>
+                    <td class="input">
+                        <span class="value">@Model.CustomerBirthDate</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">คำนำหน้า: </td>
+                    <td class="input">
+                        <span class="value">@Model.CustomerTitleTh</span>
+                    </td>
+                    <td class="text" title="ชื่อลูกค้า/Employee Name">ชื่อลูกค้า: </td>
+                    <td class="input">
+                        <span class="value" title="ชื่อลูกค้า/Employee Name">@Model.CustomerFirstNameTh</span>
+                    </td>
+                    <td class="text">นามสกุลลูกค้า: </td>
+                    <td class="input">
+                        <span class="value">@Model.CustomerLastNameTh</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">Title: </td>
+                    <td class="input">
+                        <span class="value">@Model.CustomerTitleEn</span>
+                    </td>
+                    <td class="text">First Name: </td>
+                    <td class="input">
+                        <span class="value">@Model.CustomerFirstNameEn</span>
+                    </td>
+                    <td class="text">Last Name: </td>
+                    <td class="input">
+                        <span class="value">@Model.CustomerLastNameEn</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">เบอร์โทรศัพท์ #1: </td>
+                    <td class="input" colspan="5">
+                        <span class="value w100">@Model.CustomerPhoneTypeName1</span>
+                        <span class="value">@Model.CustomerPhoneNo1</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">เบอร์โทรศัพท์ #2: </td>
+                    <td class="input" colspan="5">
+                        <span class="value w100">@Model.CustomerPhoneTypeName2</span>
+                        <span class="value">@Model.CustomerPhoneNo2</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">เบอร์โทรศัพท์ #3: </td>
+                    <td class="input" colspan="5">
+                        <span class="value w100">@Model.CustomerPhoneTypeName3</span>
+                        <span class="value">@Model.CustomerPhoneNo3</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">เบอร์แฟกซ์</td>
+                    <td class="input">
+                        <span class="value">@Model.CustomerFax</span>
+                    </td>
+                    <td class="text">อีเมล์: </td>
+                    <td class="input">
+                        <span class="value">@Model.CustomerEmail</span>
+                    </td>
+                    <td class="text">รหัสพนักงาน: </td>
+                    <td class="input">
+                        <span class="value">@Model.CustomerEmployeeCode</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="collapse_container">
+    <div class="collapse_header"><span class="collapse_sign">[+]</span> Contact Profile Information</div>
+    <div class="collapse_body" style="display:none">
+        <table class="form">
+            <tbody>
+                <tr>
+                    <td class="text" style="width:200px">
+                        เลขที่บัญชี/สัญญา :
+                    </td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.AccountId, new { @id = "hiddenAccountId" })
+                        <span class="value">@Model.AccountNo</span>
+                    </td>
+                    <td class="text" style="width:170px">
+                        สถานะบัญชี:
+                    </td>
+                    <td class="input">
+                        <span class="value">@Model.AccountStatus</span>
+                    </td>
+                    <td class="text" style="width:170px">
+                        ทะเบียนรถ:
+                    </td>
+                    <td class="input">
+                        <span class="value">@Model.AccountCarNo</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">Product Group:</td>
+                    <td class="input">
+                        <span class="value">@Model.AccountProductGroupName</span>
+                    </td>
+                    <td class="text">Product: </td>
+                    <td class="input">
+                        <span class="value">@Model.AccountProductName</span>
+                    </td>
+                    <td class="text">ชื่อสาขา: </td>
+                    <td class="input">
+                        <span class="value">@Model.AccountBranchName</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text" style="width:200px">
+                        Subscription Type :
+                    </td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.ContactId, new { @id = "hiddenContactId" })
+                        <span class="value">@Model.ContactSubscriptionName</span>
+                    </td>
+                    <td class="text" style="width:170px" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                        Subscription ID :
+                    </td>
+                    <td class="input">
+                        <span class="value">@Model.ContactCardNo</span>
+                    </td>
+                    <td class="text" style="width:170px">วันเกิด :</td>
+                    <td class="input">
+                        <span class="value">@Model.ContactBirthDate</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">คำนำหน้า: </td>
+                    <td class="input">
+                        <span class="value">@Model.ContactTitleTh</span>
+                    </td>
+                    <td class="text">ชื่อลูกค้า: </td>
+                    <td class="input">
+                        <span class="value">@Model.ContactFirstNameTh</span>
+                    </td>
+                    <td class="text">นามสกุลลูกค้า: </td>
+                    <td class="input">
+                        <span class="value">@Model.ContactLastNameTh</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">Title: </td>
+                    <td class="input">
+                        <span class="value">@Model.ContactTitleEn</span>
+                    </td>
+                    <td class="text">First Name: </td>
+                    <td class="input">
+                        <span class="value">@Model.ContactFirstNameEn</span>
+                    </td>
+                    <td class="text">Last Name: </td>
+                    <td class="input">
+                        <span class="value">@Model.ContactLastNameEn</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">เบอร์โทรศัพท์ #1: </td>
+                    <td class="input" colspan="5">
+                        <span class="value w100">@Model.ContactPhoneTypeName1</span>
+                        <span class="value">@Model.ContactPhoneNo1</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">เบอร์โทรศัพท์ #2: </td>
+                    <td class="input" colspan="5">
+                        <span class="value w100">@Model.ContactPhoneTypeName2</span>
+                        <span class="value">@Model.ContactPhoneNo2</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">เบอร์โทรศัพท์ #3: </td>
+                    <td class="input" colspan="5">
+                        <span class="value w100">@Model.ContactPhoneTypeName3</span>
+                        <span class="value">@Model.ContactPhoneNo3</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">เบอร์แฟกซ์</td>
+                    <td class="input">
+                        <span class="value">@Model.ContactFax</span>
+                    </td>
+                    <td class="text">อีเมล์: </td>
+                    <td class="input">
+                        <span class="value">@Model.ContactEmail</span>
+                    </td>
+                    <td class="text"></td>
+                    <td class="input"></td>
+                </tr>
+                <tr>
+                    <td class="text">เลขที่สัญญาที่เกี่ยวข้องกับผู้ติดต่อ:</td>
+                    <td class="input">
+                        <span class="value">@Model.ContactAccountNo</span>
+                        <div id="divAccountNoNotMatch" style="color:red;display:none;">เลขที่สัญญาที่เกี่ยวข้องกับผู้ติดต่อ ไม่ตรงกับ เลขที่บัญชี/สัญญา</div>
+                    </td>
+                    <td class="text">ความสัมพันธ์:</td>
+                    <td class="input">
+                        <span class="value">@Model.ContactRelationshipName</span>
+                    </td>
+                    <td class="text"></td>
+                    <td class="input"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="collapse_container">
+    <div class="collapse_header"><span class="collapse_sign">[+]</span> Service Request Information</div>
+    <div class="collapse_body" style="display:none">
+        <table class="form">
+            <tbody>
+                <tr>
+                    <td class="text" style="width: 200px">Campaign / Service :</td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.CampaignServiceId)
+                        @Html.HiddenFor(model => model.CampaignServiceName, new { @id = "hiddenCampaignServiceName" })
+                        <span class="value">@Model.CampaignServiceName</span>
+                    </td>
+                    <td class="text" style="width: 150px">SR Channel: </td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.ChannelId)
+                        @Html.HiddenFor(model => model.ChannelName, new { @id = "hiddenChannelName" })
+                        <span class="value">@Model.ChannelName</span>
+                    </td>
+                    <td class="text" style="width: 170px"></td>
+                    <td class="input"></td>
+                </tr>
+                <tr>
+                    <td class="text">Product Group:</td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.ProductGroupId)
+                        @Html.HiddenFor(model => model.ProductGroupName, new { @id = "hiddenProductGroupName" })
+                        <span class="value">@Model.ProductGroupName</span>
+                    </td>
+                    <td class="text">Product: </td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.ProductId)
+                        @Html.HiddenFor(model => model.ProductName, new { @id = "hiddenProductName" })
+                        <span class="value">@Model.ProductName</span>
+                    </td>
+                    <td class="text"></td>
+                    <td class="input"></td>
+                </tr>
+                <tr>
+                    <td class="text">Area :</td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.AreaId)
+                        @Html.HiddenFor(model => model.AreaName, new { @id = "hiddenAreaName" })
+                        <span class="value">@Model.AreaName</span>
+                    </td>
+                    <td class="text">Sub Area :</td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.SubAreaId)
+                        @Html.HiddenFor(model => model.SubAreaName, new { @id = "hiddenSubAreaName" })
+                        <span class="value">@Model.SubAreaName</span>
+                    </td>
+                    <td class="text"></td>
+                    <td class="input"></td>
+                </tr>
+                <tr>
+                    <td class="text">Type :</td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.TypeId)
+                        @Html.HiddenFor(model => model.TypeName, new { @id = "hiddenTypeName" })
+                        <span class="value">@Model.TypeName</span>
+                    </td>
+                    <td class="text">Media Source :</td>
+                    <td class="input">
+                        @Html.HiddenFor(model => model.MediaSourceId)
+                        @Html.HiddenFor(model => model.MediaSourceName)
+                        <span class="value">@Model.MediaSourceName</span>
+                    </td>
+                    <td class="text"></td>
+                    <td class="input"></td>
+                </tr>
+                
+                @if (!Model.IsVerify && Model.CommandButton == "NextOnStep1")
+                {
+
+                    <tr>
+                        <td class="text">Subject: </td>
+                        <td class="input" colspan="5">
+                            @Html.TextBoxFor(model => model.Subject, new { @id = "txtSubject", @class = "form-control input-sm input-sr-long", maxlength = Constants.MaxLength.MailSubject })
+                            @Html.ValidationMessageFor(model => model.Subject)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text vtop">Remark: </td>
+                        <td class="input" colspan="5">
+                            @Html.TextAreaFor(model => model.Remark, new { @id = "txtRemark", @class = "summernote" })
+                            @Html.HiddenFor(model => model.RemarkOriginal, new { @id = "RemarkOriginal" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.HiddenFor(model => model.CustomerSubscriptionName, new { @id = "hiddenCustomerSubscriptionName" })
+@Html.HiddenFor(model => model.CustomerCardNo, new { @id = "hiddenCustomerCardNo" })
+@Html.HiddenFor(model => model.CustomerBirthDate, new { @id = "hiddenCustomerBirthDate" })
+@Html.HiddenFor(model => model.CustomerTitleTh, new { @id = "hiddenCustomerTitleTh" })
+@Html.HiddenFor(model => model.CustomerFirstNameTh, new { @id = "hiddenCustomerFirstNameTh" })
+@Html.HiddenFor(model => model.CustomerLastNameTh, new { @id = "hiddenCustomerLastNameTh" })
+@Html.HiddenFor(model => model.CustomerTitleEn, new { @id = "hiddenCustomerTitleEn" })
+@Html.HiddenFor(model => model.CustomerFirstNameEn, new { @id = "hiddenCustomerFirstNameEn" })
+@Html.HiddenFor(model => model.CustomerLastNameEn, new { @id = "hiddenCustomerLastNameEn" })
+@Html.HiddenFor(model => model.CustomerPhoneTypeName1, new { @id = "hiddenCustomerPhoneTypeName1" })
+@Html.HiddenFor(model => model.CustomerPhoneTypeName2, new { @id = "hiddenCustomerPhoneTypeName2" })
+@Html.HiddenFor(model => model.CustomerPhoneTypeName3, new { @id = "hiddenCustomerPhoneTypeName3" })
+@Html.HiddenFor(model => model.CustomerPhoneNo1, new { @id = "hiddenCustomerPhoneNo1" })
+@Html.HiddenFor(model => model.CustomerPhoneNo2, new { @id = "hiddenCustomerPhoneNo2" })
+@Html.HiddenFor(model => model.CustomerPhoneNo3, new { @id = "hiddenCustomerPhoneNo3" })
+@Html.HiddenFor(model => model.CustomerFax, new { @id = "hiddenCustomerFax" })
+@Html.HiddenFor(model => model.CustomerEmail, new { @id = "hiddenCustomerEmail" })
+@Html.HiddenFor(model => model.CustomerEmployeeCode, new { @id = "hiddenCustomerEmployeeCode" })
+
+@Html.HiddenFor(model => model.AccountNo, new { @id = "hiddenAccountNo" })
+@Html.HiddenFor(model => model.AccountStatus, new { @id = "hiddenAccountStatus" })
+@Html.HiddenFor(model => model.AccountCarNo, new { @id = "hiddenAccountCarNo" })
+@Html.HiddenFor(model => model.AccountProductGroupName, new { @id = "hiddenAccountProductGroupName" })
+@Html.HiddenFor(model => model.AccountProductName, new { @id = "hiddenAccountProductName" })
+@Html.HiddenFor(model => model.AccountBranchName, new { @id = "hiddenAccountBranchName" })
+
+@Html.HiddenFor(model => model.ContactSubscriptionName, new { @id = "hiddenContactSubscriptionName" })
+@Html.HiddenFor(model => model.ContactCardNo, new { @id = "hiddenContactCardNo" })
+@Html.HiddenFor(model => model.ContactBirthDate, new { @id = "hiddenContactBirthDate" })
+@Html.HiddenFor(model => model.ContactTitleTh, new { @id = "hiddenContactTitleTh" })
+@Html.HiddenFor(model => model.ContactFirstNameTh, new { @id = "hiddenContactFirstNameTh" })
+@Html.HiddenFor(model => model.ContactLastNameTh, new { @id = "hiddenContactLastNameTh" })
+@Html.HiddenFor(model => model.ContactTitleEn, new { @id = "hiddenContactTitleEn" })
+@Html.HiddenFor(model => model.ContactFirstNameEn, new { @id = "hiddenContactFirstNameEn" })
+@Html.HiddenFor(model => model.ContactLastNameEn, new { @id = "hiddenContactLastNameEn" })
+@Html.HiddenFor(model => model.ContactPhoneTypeName1, new { @id = "hiddenContactPhoneTypeName1" })
+@Html.HiddenFor(model => model.ContactPhoneTypeName2, new { @id = "hiddenContactPhoneTypeName2" })
+@Html.HiddenFor(model => model.ContactPhoneTypeName3, new { @id = "hiddenContactPhoneTypeName3" })
+@Html.HiddenFor(model => model.ContactPhoneNo1, new { @id = "hiddenContactPhoneNo1" })
+@Html.HiddenFor(model => model.ContactPhoneNo2, new { @id = "hiddenContactPhoneNo2" })
+@Html.HiddenFor(model => model.ContactPhoneNo3, new { @id = "hiddenContactPhoneNo3" })
+@Html.HiddenFor(model => model.ContactFax, new { @id = "hiddenContactFax" })
+@Html.HiddenFor(model => model.ContactEmail, new { @id = "hiddenContactEmail" })
+
+@Html.HiddenFor(model => model.ContactAccountNo, new { @id = "hiddenContactAccountNo" })
+@Html.HiddenFor(model => model.ContactRelationshipName, new { @id = "hiddenContactRelationshipName" })
+
+<input type="hidden" id="hiddenContactRelationshipId" name="ContactRelationshipId" value="@(Model.ContactRelationshipId.HasValue?Model.ContactRelationshipId.Value.ToString():string.Empty)" />

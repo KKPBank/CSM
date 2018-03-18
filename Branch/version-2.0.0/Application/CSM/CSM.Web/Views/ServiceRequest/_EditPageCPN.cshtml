@@ -1,0 +1,1408 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.CreateServiceRequestViewModel
+
+@{ string styleCollapsBody = "", collapsSign = "+";
+    bool editMode = (Model.SrId ?? 0) != 0;
+    if (editMode)
+    {
+        collapsSign = "[-]";
+        styleCollapsBody = "";
+    }
+    else
+    {
+        collapsSign = "[+]";
+        styleCollapsBody = "display: none";
+    }
+}
+
+<div class="collapse_container">
+    <div class="collapse_header">
+        <span class="collapse_sign">@collapsSign</span> ประเภทการร้องเรียน
+    </div>
+    <div class="collapse_body" style="@styleCollapsBody">
+        @if (Model.CanEdit)
+        {
+            <div>
+                <span id="btnCPNClearMapping" class="btn btn-sm btn-primary"><i class="fa fa-file-o"></i> Clear Mapping</span>
+            </div>
+        }
+        <table class="form form-long">
+            <tbody>
+                <tr>
+                    <td class="text">Product Group by Complaint :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.TextBoxFor(m => m.CPN_ProductGroup.ProductGroupId, new { @id = "ddlCPNProductGroupId", @class = "form-control input-sm input-sr", @style = "width: 300px!important;", @readonly = "" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_ProductGroup.ProductGroupName);
+                        }
+                    </td>
+                    <td class="text" style="width: 150px">Product by Complaint :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.TextBoxFor(m => m.CPN_Product.ProductId, new { @id = "ddlCPNProductId", @class = "form-control input-sm input-sr", @style = "width: 300px!important", @readonly = "" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_Product.ProductName);
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text" style="width: 200px">Campaign by complaint :</td>
+                    <td class="input" style="width: 350px">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.TextBoxFor(m => m.CPN_Campaign.CampaignServiceId, new { @id = "ddlCPNCampaignServiceId", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_Campaign.CampaignServiceName);
+                        }
+                    </td>
+                    <td class="text"></td>
+                    <td class="input"></td>
+                </tr>
+            </tbody>
+        </table>
+        @if (Model.CanEdit)
+        {
+            @*<div>
+                <span id="btnCPNClearMapping2" class="btn btn-sm btn-primary"><i class="fa fa-file-o"></i> Clear Mapping</span>
+            </div>*@
+        }
+        @Html.HiddenFor(m => m.CPN_Mapping.ComplaintMappingId, new { @id = "hdfCPNMappingId" })
+        <table class="form form-long">
+            <tbody>
+
+                <tr>
+                    <td class="text" style="width: 200px">หัวข้อ :</td>
+                    <td class="input" style="width: 350px">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.TextBoxFor(m => m.CPN_Subject.ComplaintSubjectId, new { @id = "ddlCPNSubjectId", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_Subject.ComplaintSubjectName);
+                        }
+                    </td>
+                    <td class="text" style="width: 150px">ประเภทการร้องเรียน :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.TextBoxFor(m => m.CPN_Type.ComplaintTypeId, new { @id = "ddlCPNTypeId", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_Type.ComplaintTypeName);
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">สาเหตุการร้องเรียน :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.TextBoxFor(m => m.CPN_RootCause.RootCauseId, new { @id = "ddlCPNRootCauseId", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_RootCause.RootCauseName);
+                        }
+                    </td>
+                    <td class="text" style="width: 150px">ประเด็นการร้องเรียน :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.DropDownListFor(m => m.CPN_Issues.ComplaintIssuesId, (IEnumerable<SelectListItem>)ViewBag.CPNIssuesList
+                                          , Resource.Ddl_PleaseSelect, new { @id = "ddlCPNIssuesId", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_Issues.ComplaintIssuesName);
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">&nbsp;</td>
+                    <td class="input" colspan="3">
+                        @if (Model.CanEdit)
+                        {
+                            <label>
+                                @Html.CheckBoxFor(m => m.CPN_IsSecret, new { @id = "chkCPNSecret" })
+                                ความลับ
+                            </label>
+                        }
+                        else
+                        {
+                            <label>
+                                @Html.DisplayFor(m => m.CPN_IsSecret)
+                                ความลับ
+                            </label>
+                        }
+                        &nbsp;&nbsp;
+                        @if (Model.CanEdit)
+                        {
+                            <label>
+                                @Html.CheckBoxFor(m => m.CPN_IsCar, new { @id = "chkCPNCar" })
+                                CAR
+                            </label>
+                        }
+                        else
+                        {
+                            <label>
+                                @Html.DisplayFor(m => m.CPN_IsCar)
+                                CAR
+                            </label>
+                        }
+                        &nbsp;&nbsp;
+                        @if (Model.CanEdit)
+                        {
+                            <label>
+                                @Html.CheckBoxFor(m => m.CPN_IsHPLog, new { @id = "chkCPNHPLog" })
+                                HP Log100
+                            </label>
+                        }
+                        else
+                        {
+                            <label>
+                                @Html.DisplayFor(m => m.CPN_IsHPLog)
+                                HP Log100
+                            </label>
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="collapse_container">
+    <div class="collapse_header">
+        <span class="collapse_sign">@collapsSign</span> หน่วยงานที่ถูกร้องเรียน
+    </div>
+    <div class="collapse_body" style="@styleCollapsBody">
+        <table class="form form-long">
+            <tbody>
+                <tr>
+                    <td class="text" style="width: 200px">กลุ่มธุรกิจ :</td>
+                    <td class="input" style="width: 350px">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.DropDownListFor(m => m.CPN_BUGroup.ComplaintBUGroupId, (IEnumerable<SelectListItem>)ViewBag.CPNBUGroupList
+                                     , Resource.Ddl_PleaseSelect, new { @id = "ddlCPNBUGroupId", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_BUGroup.ComplaintBUGroupName)
+                        }
+                    </td>
+                    <td class="text" style="width: 150px">&nbsp;</td>
+                    <td class="input">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="text">สังกัด/สาย :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.TextBoxFor(m => m.CPN_BU1.BU_Code, new { @id = "txtCPNBU1Code", @class = "form-control input-sm input-sr", @style = "width: 300px!important;" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_BU1.BU_Desc);
+                        }
+                    </td>
+                    <td class="text" style="width: 150px">ฝ่าย :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.TextBoxFor(m => m.CPN_BU2.BU_Code, new { @id = "txtCPNBU2Code", @class = "form-control input-sm input-sr", @style = "width: 300px!important;" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_BU2.BU_Desc);
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">ทีม :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.TextBoxFor(m => m.CPN_BU3.BU_Code, new { @id = "txtCPNBU3Code", @class = "form-control input-sm input-sr", @style = "width: 300px!important;" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_BU3.BU_Desc);
+                        }
+                    </td>                    <td class="text" style="width: 150px">สาขา :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @*@Html.DropDownListFor(m => m.CPN_MSHBranch.Branch_Id, (IEnumerable<SelectListItem>)ViewBag.CPNMSHBranchList
+                                     , Resource.Ddl_PleaseSelect, new { @id = "ddlCPNMSHBranchId", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })*@
+                            @Html.TextBoxFor(m => m.CPN_MSHBranch.Branch_Id, new { @id = "txtCPNMSHBranchId", @class = "form-control input-sm input-sr", @style = "width: 300px!important;" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_MSHBranch.Branch_Name);
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="collapse_container">
+    <div class="collapse_header">
+        <span class="collapse_sign">@collapsSign</span> สรุปข้อร้องเรียน
+    </div>
+    <div class="collapse_body" style="@styleCollapsBody">
+        <table class="form form-long">
+            <tbody>
+                <tr>
+                    <td class="text" style="width: 200px">Summary :</td>
+                    <td class="input" style="width: 450px">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.DropDownListFor(m => m.CPN_IsSummary, new SelectList(new SelectListItem[]
+                                                                            {
+                                                                                    new SelectListItem { Value = "true", Text = "Yes" },
+                                                                                    new SelectListItem { Value = "false", Text = "No" },
+                                                                                    new SelectListItem { Value = "", Text = "N/A" }
+                                                                            },
+                                                                            "Value",
+                                                                            "Text", string.Empty)
+                                , Resource.Ddl_PleaseSelect, new { @id = "ddlCPNIsSummary", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_IsSummary);
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text" style="width: 200px">Root Cause :</td>
+                    <td class="input">
+                        <table>
+                            <tbody>
+                                <tr style="height: 36px">
+                                    <td class="input" style="width: 150px">
+                                        @if (Model.CanEdit)
+                                        {
+                                            <label>
+                                                @Html.CheckBoxFor(m => m.CPN_Cause_Customer, new { @id = "chkCPNCauseCustomer" })
+                                                Customer
+                                            </label>
+                                        }
+                                        else
+                                        {
+                                            <label>
+                                                @Html.DisplayFor(m => m.CPN_Cause_Customer)
+                                                Customer
+                                            </label>
+                                        }
+                                    </td>
+                                    <td class="input">
+                                        @if (Model.CanEdit)
+                                        {
+                                            @Html.TextBoxFor(m => m.CPN_Cause_Customer_Detail, new { @id = "txtCPNCauseCustomerDetail", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(m => m.CPN_Cause_Customer_Detail)
+                                        }
+                                    </td>
+                                </tr>
+                                <tr style="height: 36px">
+                                    <td class="input">
+                                        @if (Model.CanEdit)
+                                        {
+                                            <label>
+                                                @Html.CheckBoxFor(m => m.CPN_Cause_Staff, new { @id = "chkCPNCauseStaff" })
+                                                Staff
+                                            </label>
+                                        }
+                                        else
+                                        {
+                                            <label>
+                                                @Html.DisplayFor(m => m.CPN_Cause_Staff)
+                                                Staff
+                                            </label>
+                                        }
+                                    </td>
+                                    <td class="input">
+                                        @if (Model.CanEdit)
+                                        {
+                                            @Html.TextBoxFor(m => m.CPN_Cause_Staff_Detail, new { @id = "txtCPNCauseStaffDetail", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(m => m.CPN_Cause_Staff_Detail)
+                                        }
+                                    </td>
+                                </tr>
+                                <tr style="height: 36px">
+                                    <td class="input">
+                                        @if (Model.CanEdit)
+                                        {
+                                            <label>
+                                                @Html.CheckBoxFor(m => m.CPN_Cause_System, new { @id = "chkCPNCauseSystem" })
+                                                System
+                                            </label>
+                                        }
+                                        else
+                                        {
+                                            <label>
+                                                @Html.DisplayFor(m => m.CPN_Cause_System)
+                                                System
+                                            </label>
+                                        }
+                                    </td>
+                                    <td class="input">
+                                        @if (Model.CanEdit)
+                                        {
+                                            @Html.TextBoxFor(m => m.CPN_Cause_System_Detail, new { @id = "txtCPNCauseSystemDetail", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(m => m.CPN_Cause_System_Detail)
+                                        }
+                                    </td>
+                                </tr>
+                                <tr style="height: 36px">
+                                    <td class="input">
+                                        @if (Model.CanEdit)
+                                        {
+                                            <label>
+                                                @Html.CheckBoxFor(m => m.CPN_Cause_Process, new { @id = "chkCPNCauseProcess" })
+                                                Process
+                                            </label>
+                                        }
+                                        else
+                                        {
+                                            <label>
+                                                @Html.DisplayFor(m => m.CPN_Cause_Process)
+                                                Process
+                                            </label>
+                                        }
+                                    </td>
+                                    <td class="input">
+                                        @if (Model.CanEdit)
+                                        {
+                                            @Html.TextBoxFor(m => m.CPN_Cause_Process_Detail, new { @id = "txtCPNCauseProcessDetail", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(m => m.CPN_Cause_Process_Detail)
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">สรุปสาเหตุความเสี่ยง :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.DropDownListFor(model => model.CPN_CauseSummary.ComplaintCauseSummaryId, (IEnumerable<SelectListItem>)ViewBag.CPNCauseSummary
+                                , Resource.Ddl_PleaseSelect, new { @id = "ddlCPNCauseSummaryId", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_CauseSummary.ComplaintCauseSummaryName)
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">สรุปข้อร้องเรียนตามความเสี่ยง :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.DropDownListFor(model => model.CPN_Summary.ComplaintSummaryId, (IEnumerable<SelectListItem>)ViewBag.CPNSummary
+                                          , Resource.Ddl_PleaseSelect, new { @id = "ddlCPNSummaryId", @class = "form-control input-sm input-sr", @style = "width: 300px!important" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_Summary.ComplaintSummaryName)
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text">สรุปการแก้ไขปัญหา :</td>
+                    <td class="input">
+                        @if (Model.CanEdit)
+                        {
+                            @Html.TextAreaFor(m => m.CPN_Fixed_Detail, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => m.CPN_Fixed_Detail)
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.HiddenFor(m => m.CPN_ProductGroup.ProductGroupName, new { @id = "hdfCPNProductGroupName" })
+@Html.HiddenFor(m => m.CPN_Product.ProductName, new { @id = "hdfCPNProductName" })
+@Html.HiddenFor(m => m.CPN_Campaign.CampaignServiceName, new { @id = "hdfCPNCampaignName" })
+@Html.HiddenFor(m => m.CPN_Subject.ComplaintSubjectName, new { @id = "hdfCPNSubjectName" })
+@Html.HiddenFor(m => m.CPN_Type.ComplaintTypeName, new { @id = "hdfCPNTypeName" })
+@Html.HiddenFor(m => m.CPN_RootCause.RootCauseName, new { @id = "hdfCPNRootCauseName" })
+@Html.HiddenFor(m => m.CPN_Issues.ComplaintIssuesName, new { @id = "hdfCPNIssueName" })
+@Html.HiddenFor(m => m.CPN_BU1.BU_Code, new { @id = "hdfCPNBU1Desc" })
+@Html.HiddenFor(m => m.CPN_BU2.BU_Code, new { @id = "hdfCPNBU2Desc" })
+@Html.HiddenFor(m => m.CPN_BU3.BU_Code, new { @id = "hdfCPNBU3Desc" })
+
+<script type="text/javascript">
+
+    //var isFirstValidate = true;
+
+    $jq(function () {
+
+        $jq('.summernote').summernote({
+            height: 200,
+            codemirror: {
+                theme: 'monokai'
+            }
+        });
+
+        if ('@Model.CanEdit' === 'False') {
+            return;
+        }
+
+        initAutoCompleteProductGroup();
+        initAutoCompleteProduct();
+        initAutoCompleteCampaignService();
+
+        initAutoCompleteSubject();
+        initAutoCompleteType();
+        initAutoCompleteRootCause();
+
+        initAutoCompleteBU3();
+        initAutoCompleteBU2();
+        initAutoCompleteBU1();
+
+        initAutoCompleteHRBranch();
+
+        $jq("#btnCPNClearMapping").click(function () {
+            $jq("#ddlCPNProductGroupId").select2("val", "");
+            $jq("#ddlCPNProductId").select2("val", "");
+            $jq("#ddlCPNCampaignServiceId").select2("val", "");
+
+            $jq("#hdfCPNProductGroupName").val("");
+            $jq("#hdfCPNProductName").val("");
+            $jq("#hdfCPNCampaignName").val("");
+
+            $jq("#ddlCPNSubjectId").select2("val", "");
+            $jq("#ddlCPNTypeId").select2("val", "");
+            $jq("#ddlCPNRootCauseId").select2("val", "");
+
+            $jq("#hdfCPNSubjectName").val("");
+            $jq("#hdfCPNTypeName").val("");
+            $jq("#hdfCPNRootCauseName").val("");
+        });
+
+        $jq("#chkCPNCauseCustomer").change({ txt: $jq("#txtCPNCauseCustomerDetail") }, onCauseCheckChange);
+        $jq("#chkCPNCauseStaff").change({ txt: $jq("#txtCPNCauseStaffDetail") }, onCauseCheckChange);
+        $jq("#chkCPNCauseSystem").change({ txt: $jq("#txtCPNCauseSystemDetail") }, onCauseCheckChange);
+        $jq("#chkCPNCauseProcess").change({ txt: $jq("#txtCPNCauseProcessDetail") }, onCauseCheckChange);
+
+        showTextBoxDetail($jq("#chkCPNCauseCustomer"), $jq("#txtCPNCauseCustomerDetail"));
+        showTextBoxDetail($jq("#chkCPNCauseStaff"), $jq("#txtCPNCauseStaffDetail"));
+        showTextBoxDetail($jq("#chkCPNCauseSystem"), $jq("#txtCPNCauseSystemDetail"));
+        showTextBoxDetail($jq("#chkCPNCauseProcess"), $jq("#txtCPNCauseProcessDetail"));
+
+        $jq("#chkCPNSecret").change(function (e) {
+            $jq("#chkCPNCar").prop('checked', $jq(this).prop('checked'));
+            $jq("#chkCPNHPLog").prop('checked', $jq(this).prop('checked'));
+        });
+
+        $jq("#ddlCPNIssuesId").on('change', function (e) {
+            $jq("#hdfCPNIssueName").val($jq("#ddlCPNIssuesId option:selected").text());
+        });
+
+        if ($jq.trim(@ViewBag.ErrorMessage) != '') {
+            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+        }
+
+    });
+
+    function onCauseCheckChange(e) {
+        showTextBoxDetail($jq(this), e.data.txt);
+    }
+
+    function showTextBoxDetail(chk, txt) {
+        if (chk.prop('checked')) {
+            txt.show();
+        } else {
+            txt.val(null);
+            txt.hide();
+        }
+    }
+
+    function initAutoCompleteProductGroup() {
+        $jq("#ddlCPNProductGroupId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: "@Url.Action("AutoCompleteSearchProductGroup", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        productId: $jq("#ddlCPNProductId").val(),
+                        campaignServiceId: $jq("#ddlCPNCampaignServiceId").val(),
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.ProductGroupName,
+                                id: item.ProductGroupId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.CPN_ProductGroup.ProductGroupId", text: "@Model.CPN_ProductGroup.ProductGroupName" };
+                callback(data);
+            }
+        }).on("change", function (evt) {
+
+            //if (!isFirstValidate)
+            //    $jq("#form1").valid();
+
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetDefaultCampaign", "ServiceRequest")",
+                    method: "POST",
+                    data: {
+                        productGroupId: $jq(this).val(),
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                }).done(function (result) {
+                    if (result.IsSuccess) {
+                        $jq("#hdfCPNProductGroupName").val(result.ProductGroupName);
+                        //if (result.ProductId != null && result.ProductId != $jq("#ddlCPNProductId").val()) {
+                        //    $jq("#ddlCPNProductId").select2("data", { id: result.ProductId, text: result.ProductName });
+                        //    $jq("#hdfCPNProductName").val(result.ProductName);
+                        //}
+                        //if (result.CampaignServiceId != null && result.CampaignServiceId != $jq("#ddlCPNCampaignServiceId").val()) {
+                        //    $jq("#ddlCPNCampaignServiceId").select2("data", { id: result.CampaignServiceId, text: result.CampaignServiceName });
+                        //    $jq("#hdfCPNCampaignName").val(result.CampaignServiceName);
+                        //}
+                    } else {
+                        //doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            } else {
+                // On Clear
+                $jq("#hdfCPNProductGroupName").val('');
+                $jq("#ddlCPNProductId").val("");
+                $jq("#hdfCPNProductName").val('');
+                $jq("#ddlCPNCampaignServiceId").val("");
+                $jq("#hdfCPNCampaignName").val('');
+            }
+        });
+    }
+
+    function initAutoCompleteProduct() {
+        $jq("#ddlCPNProductId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: "@Url.Action("AutoCompleteSearchProduct", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        productGroupId: $jq("#ddlCPNProductGroupId").val(),
+                        campaignServiceId: $jq("#ddlCPNCampaignServiceId").val(),
+                        isAllStatus: false,
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.ProductName,
+                                id: item.ProductId
+                            }
+                        })
+                    };
+
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.CPN_Product.ProductId", text: "@Model.CPN_Product.ProductName" };
+
+                callback(data);
+            }
+        }).on("change", function (evt) {
+
+            //if (!isFirstValidate)
+            //    $jq("#form1").valid();
+
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetDefaultCampaign", "ServiceRequest")",
+                    method: "POST",
+                    data: {
+                        productGroupId: $jq("#ddlCPNProductGroupId").val(),
+                        productId: $jq("#ddlCPNProductId").val(),
+                        campaignServiceId: $jq("#ddlCPNCampaignServiceId").val(),
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                }).done(function (result) {
+                    if (result.IsSuccess) {
+                        $jq("#hdfCPNProductName").val(result.ProductName);
+                        if (result.ProductGroupId != null && result.ProductGroupId != $jq("#ddlCPNProductGroupId").val()) {
+                            $jq("#ddlCPNProductGroupId").select2("data", { id: result.ProductGroupId, text: result.ProductGroupName });
+                            $jq("#hdfCPNProductGroupName").val(result.ProductGroupName);
+                        }
+                        //if (result.CampaignServiceId != null && result.CampaignServiceId != $jq("#ddlCPNCampaignServiceId").val()) {
+                        //    $jq("#ddlCPNCampaignServiceId").select2("data", { id: result.CampaignServiceId, text: result.CampaignServiceName });
+                        //    $jq("#hdfCPNCampaignName").val(result.CampaignServiceName);
+                        //}
+
+                    } else {
+                        //doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            } else {
+                // On Clear
+                $jq("#hdfCPNProductName").val('');
+                $jq("#ddlCPNCampaignServiceId").val("");
+                $jq("#hdfCPNCampaignName").val("");
+            }
+        });
+    }
+
+    function initAutoCompleteCampaignService() {
+        $jq("#ddlCPNCampaignServiceId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: "@Url.Action("AutoCompleteSearchCampaignService", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        productGroupId: $jq("#ddlCPNProductGroupId").val(),
+                        productId: $jq("#ddlCPNProductId").val(),
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.CampaignServiceName,
+                                id: item.CampaignServiceId
+                            }
+                        })
+                    };
+
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.CPN_Campaign.CampaignServiceId", text: "@Model.CPN_Campaign.CampaignServiceName" };
+                callback(data);
+            }
+        }).on("change", function (evt) {
+
+            //if (!isFirstValidate)
+            //    $jq("#form1").valid();
+
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetDefaultCampaign", "ServiceRequest")",
+                    method: "POST",
+                    data: {
+                        productGroupId: $jq("#ddlCPNProductGroupId").val(),
+                        productId: $jq("#ddlCPNProductId").val(),
+                        campaignServiceId: $jq("#ddlCPNCampaignServiceId").val(),
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                }).done(function (result) {
+                    if (result.IsSuccess) {
+                        $jq("#hdfCPNCampaignName").val(result.CampaignServiceName);
+                        if (result.ProductGroupId != null && result.ProductGroupId != $jq("#ddlCPNProductGroupId").val()) {
+                            $jq("#ddlCPNProductGroupId").select2("data", { id: result.ProductGroupId, text: result.ProductGroupName });
+                            $jq("#hdfCPNProductGroupName").val(result.ProductGroupName);
+                        }
+                        if (result.ProductId != null && result.ProductId != $jq("#ddlCPNProductId").val()) {
+                            $jq("#ddlCPNProductId").select2("data", { id: result.ProductId, text: result.ProductName });
+                            $jq("#hdfCPNProductName").val(result.ProductName);
+                        }
+                    } else {
+                        //doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            } else {
+                // On Clear
+                $jq("#hdfCPNCampaignName").val('');
+            }
+        });
+    }
+
+    function initAutoCompleteSubject() {
+        $jq("#ddlCPNSubjectId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: "@Url.Action("AutoCompleteSubject", "Complaint")",
+                dataType: 'json',
+                type: "post",
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        typeId: $jq("#ddlCPNTypeId").val(),
+                        rootCauseId: $jq("#ddlCPNRootCauseId").val(),
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.ComplaintSubjectName,
+                                id: item.ComplaintSubjectId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.CPN_Subject.ComplaintSubjectId", text: "@Model.CPN_Subject.ComplaintSubjectName" };
+                callback(data);
+            }
+        }).on("change", function (evt) {
+
+            //if (!isFirstValidate)
+            //    $jq("#form1").valid();
+
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetDefaultCPNMapping", "Complaint")",
+                    method: "POST",
+                    data: {
+                        subjectId: $jq("#ddlCPNSubjectId").val(),
+                        typeId: $jq("#ddlCPNTypeId").val(),
+                        rootCauseId: $jq("#ddlCPNRootCauseId").val(),
+                        take: null,
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                }).done(function (result) {
+                    if (result.IsSuccess) {
+                        $jq("#hdfCPNMappingId").val(result.MappingId);
+                        $jq("#hdfCPNSubjectName").val(result.ComplaintSubjectName);
+                        if (result.ComplaintTypeId != null && result.ComplaintTypeId != $jq("#ddlCPNTypeId").val()) {
+                            $jq("#ddlCPNTypeId").select2("data", { id: result.ComplaintTypeId, text: result.ComplaintTypeName });
+                            $jq("#hdfCPNTypeName").val(result.ComplaintTypeName);
+                        }
+                        if (result.RootCauseId != null && result.RootCauseId != $jq("#ddlCPNRootCauseId").val()) {
+                            $jq("#ddlCPNRootCauseId").select2("data", { id: result.RootCauseId, text: result.RootCauseName });
+                            $jq("#hdfCPNRootCauseName").val(result.RootCauseName);
+                        }
+                    } else {
+                        //doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            } else {
+                // On Clear
+                $jq("#hdfCPNSubjectName").val('');
+            }
+        });
+    }
+
+    function initAutoCompleteType() {
+        $jq("#ddlCPNTypeId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: "@Url.Action("AutoCompleteType", "Complaint")",
+                dataType: 'json',
+                type: "post",
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        subjectId: $jq("#ddlCPNSubjectId").val(),
+                        rootCauseId: $jq("#ddlCPNRootCauseId").val(),
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.ComplaintTypeName,
+                                id: item.ComplaintTypeId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.CPN_Type.ComplaintTypeId", text: "@Model.CPN_Type.ComplaintTypeName" };
+                callback(data);
+            }
+        }).on("change", function (evt) {
+
+            //if (!isFirstValidate)
+            //    $jq("#form1").valid();
+
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetDefaultCPNMapping", "Complaint")",
+                    method: "POST",
+                    data: {
+                        subjectId: $jq("#ddlCPNSubjectId").val(),
+                        typeId: $jq("#ddlCPNTypeId").val(),
+                        rootCauseId: $jq("#ddlCPNRootCauseId").val(),
+                        take: null,
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                }).done(function (result) {
+                    if (result.IsSuccess) {
+                        $jq("#hdfCPNMappingId").val(result.MappingId);
+                        $jq("#hdfCPNTypeName").val(result.ComplaintTypeName);
+                        if (result.ComplaintSubjectId != null && result.ComplaintSubjectId != $jq("#ddlCPNSubjectId").val()) {
+                            $jq("#ddlCPNSubjectId").select2("data", { id: result.ComplaintSubjectId, text: result.ComplaintSubjectName });
+                            $jq("#hdfCPNSubjectName").val(result.ComplaintSubjectName);
+                        }
+                        if (result.RootCauseId != null && result.RootCauseId != $jq("#ddlCPNRootCauseId").val()) {
+                            $jq("#ddlCPNRootCauseId").select2("data", { id: result.RootCauseId, text: result.RootCauseName });
+                            $jq("#hdfCPNRootCauseName").val(result.RootCauseName);
+                        }
+                    } else {
+                        //doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            } else {
+                // On Clear
+                $jq("#hdfCPNTypeName").val('');
+            }
+        });
+    }
+
+    function initAutoCompleteRootCause() {
+        $jq("#ddlCPNRootCauseId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: "@Url.Action("AutoCompleteRootCause", "Complaint")",
+                dataType: 'json',
+                type: "post",
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        subjectId: $jq("#ddlCPNSubjectId").val(),
+                        typeId: $jq("#ddlCPNTypeId").val(),
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.RootCauseName,
+                                id: item.RootCauseId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.CPN_RootCause.RootCauseId", text: "@Model.CPN_RootCause.RootCauseName" };
+                callback(data);
+            }
+        }).on("change", function (evt) {
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetDefaultCPNMapping", "Complaint")",
+                    method: "POST",
+                    data: {
+                        subjectId: $jq("#ddlCPNSubjectId").val(),
+                        typeId: $jq("#ddlCPNTypeId").val(),
+                        rootCauseId: $jq("#ddlCPNRootCauseId").val(),
+                        take: null,
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                }).done(function (result) {
+                    if (result.IsSuccess) {
+                        $jq("#hdfCPNMappingId").val(result.MappingId);
+                        $jq("#hdfCPNRootCauseName").val(result.RootCauseName);
+                        if (result.ComplaintSubjectId != null && result.ComplaintSubjectId != $jq("#ddlCPNSubjectId").val()) {
+                            $jq("#ddlCPNSubjectId").select2("data", { id: result.ComplaintSubjectId, text: result.ComplaintSubjectName });
+                            $jq("#hdfCPNSubjectName").val(result.ComplaintSubjectName);
+                        }
+                        if (result.ComplaintTypeId != null && result.ComplaintTypeId != $jq("#ddlCPNTypeId").val()) {
+                            $jq("#ddlCPNTypeId").select2("data", { id: result.ComplaintTypeId, text: result.ComplaintTypeName });
+                            $jq("#hdfCPNTypeName").val(result.ComplaintTypeName);
+                        }
+                    } else {
+                        //doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            } else {
+                // On Clear
+                $jq("#hdfCPNRootCauseName").val('');
+            }
+        });
+    }
+
+    function initAutoCompleteBU3() {
+        $jq("#txtCPNBU3Code").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: "@Url.Action("AutoCompleteBU3", "Complaint")",
+                dataType: 'json',
+                type: "post",
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        BU1: $jq("#txtCPNBU1Code").val(),
+                        BU2: $jq("#txtCPNBU2Code").val(),
+                        isAllStatus: false,
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.BU_Desc,
+                                id: item.BU_Code
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.CPN_BU3.BU_Code", text: "@Model.CPN_BU3.BU_Desc" };
+                callback(data);
+            }
+        }).on("change", function (evt) {
+
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetDefaultBU", "Complaint")",
+                    method: "POST",
+                    data: {
+                        BU1: $jq("#txtCPNBU1Code").val(),
+                        BU2: $jq("#txtCPNBU2Code").val(),
+                        BU3: $jq("#txtCPNBU3Code").val(),
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                }).done(function (result) {
+                    if (result.IsSuccess) {
+                        defaultBU(result.data);
+                    } else {
+                        //doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            } else {
+                // On Clear
+                $jq("#hdfCPNBU3Desc").val('');
+            }
+        });
+    }
+
+    function initAutoCompleteBU2() {
+        $jq("#txtCPNBU2Code").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: "@Url.Action("AutoCompleteBU2", "Complaint")",
+                dataType: 'json',
+                type: "post",
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        BU1: $jq("#txtCPNBU1Code").val(),
+                        BU3: $jq("#txtCPNBU3Code").val(),
+                        isAllStatus: false,
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.BU_Desc,
+                                id: item.BU_Code
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.CPN_BU2.BU_Code", text: "@Model.CPN_BU2.BU_Desc" };
+                callback(data);
+            }
+        }).on("change", function (evt) {
+
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetDefaultBU", "Complaint")",
+                    method: "POST",
+                    data: {
+                        BU1: $jq("#txtCPNBU1Code").val(),
+                        BU2: $jq("#txtCPNBU2Code").val(),
+                        BU3: $jq("#txtCPNBU3Code").val(),
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                }).done(function (result) {
+                    if (result.IsSuccess) {
+                        defaultBU(result.data);
+                    } else {
+                        //doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            } else {
+                // On Clear
+                $jq("#hdfCPNBU2Desc").val('');
+            }
+        });
+    }
+
+    function initAutoCompleteBU1() {
+        $jq("#txtCPNBU1Code").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: "@Url.Action("AutoCompleteBU1", "Complaint")",
+                dataType: 'json',
+                type: "post",
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        BU2: $jq("#txtCPNBU2Code").val(),
+                        BU3: $jq("#txtCPNBU3Code").val(),
+                        isAllStatus: false,
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.BU_Desc,
+                                id: item.BU_Code
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.CPN_BU1.BU_Code", text: "@Model.CPN_BU1.BU_Desc" };
+                callback(data);
+            }
+        }).on("change", function (evt) {
+
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetDefaultBU", "Complaint")",
+                    method: "POST",
+                    data: {
+                        BU1: $jq("#txtCPNBU1Code").val(),
+                        BU2: $jq("#txtCPNBU2Code").val(),
+                        BU3: $jq("#txtCPNBU3Code").val(),
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                }).done(function (result) {
+                    if (result.IsSuccess) {
+                        defaultBU(result.data);
+                    } else {
+                        //doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            } else {
+                // On Clear
+                $jq("#hdfCPNBU1Desc").val('');
+            }
+        });
+    }
+
+    function defaultBU(result) {
+        if (result.BU1 != null && $jq("#txtCPNBU1Code").val() != result.BU1) {
+            $jq("#txtCPNBU1Code").select2("data", { id: result.BU1, text: result.BU1Desc });
+            $jq("#hdfCPNBU1Desc").val(result.BU1);
+        }
+
+        if (result.BU2 != null && $jq("#txtCPNBU2Code").val() != result.BU2) {
+            $jq("#txtCPNBU2Code").select2("data", { id: result.BU2, text: result.BU2Desc });
+            $jq("#hdfCPNBU2Desc").val(result.BU2);
+        }
+
+        if (result.BU3 != null && $jq("#txtCPNBU3Code").val() != result.BU3) {
+            $jq("#txtCPNBU3Code").select2("data", { id: result.BU3, text: result.BU3Desc });
+            $jq("#hdfCPNBU3Desc").val(result.BU3);
+        }
+    }
+
+    function initAutoCompleteHRBranch() {
+        $jq("#txtCPNMSHBranchId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                quietMillis: 150,
+                url: "@Url.Action("AutoCompleteHRBranch", "Complaint")",
+                dataType: 'json',
+                type: "post",
+                data: function (keyword) {
+                    return {
+                        __RequestVerificationToken: getAntiForgeryToken(),
+                        keyword: keyword,
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.Branch_Name,
+                                id: item.Branch_Id
+                            }
+                        })
+                    };
+
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            },
+            initSelection: function (element, callback) {
+                var data = { id: "@Model.CPN_MSHBranch.Branch_Id", text: "@Model.CPN_MSHBranch.Branch_Name" };
+                callback(data);
+            }
+        }).on("change", function (evt) {
+
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+            } else {
+                // On Clear
+            }
+        });
+    }
+</script>

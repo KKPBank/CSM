@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.kiatnakinbank.com/services/HP/HPContractService" name="HPContractService" targetNamespace="http://www.kiatnakinbank.com/services/HP/HPContractService" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema>
+      <xsd:import schemaLocation="HPContractService_schema1.xsd" namespace="http://www.kiatnakinbank.com/services/HP/HPContractService" />
+    </xsd:schema>
+  </types>
+  <message name="InquiryContractDetailByTicketId">
+    <part name="InquiryContractDetailByTicketIdRequest" element="tns:InquiryContractDetailByTicketIdRequest" />
+  </message>
+  <message name="InquiryContractByCarInformation">
+    <part name="InquiryContractByCarInformationRequest" element="tns:InquiryContractByCarInformationRequest" />
+  </message>
+  <message name="InquiryContractByCarInformationResponse">
+    <part name="InquiryContractByCarInformationResponse" element="tns:InquiryContractByCarInformationResponse" />
+  </message>
+  <message name="InquiryContractDetailByTicketIdResponse">
+    <part name="InquiryContractDetailByTicketIdReponse" element="tns:InquiryContractDetailByTicketIdReponse" />
+  </message>
+  <message name="SentTicketIdNotification">
+    <part name="SentTicketIdNotificationRequest" element="tns:SentTicketIdNotificationRequest" />
+  </message>
+  <message name="SentTicketIdNotificationResponse">
+    <part name="SentTicketIdNotificationReponse" element="tns:SentTicketIdNotificationReponse" />
+  </message>
+  <message name="InquiryContractReceiptInformation">
+    <part name="InquiryContractReceiptInformationRequest" element="tns:InquiryContractReceiptInformationRequest" />
+  </message>
+  <message name="InquiryContractReceiptInformationResponse">
+    <part name="InquiryContractReceiptInformationResponse" element="tns:InquiryContractReceiptInformationResponse" />
+  </message>
+  <message name="InquiryContractByCANo">
+    <part name="InquiryContractByCANoRequest" element="tns:InquiryContractByCANoRequest" />
+  </message>
+  <message name="InquiryContractCarByContractNo">
+    <part name="InquiryContractCarByContractNoRequest" element="tns:InquiryContractCarByContractNoRequest" />
+  </message>
+  <message name="InquiryContractCarByContractNoResponse">
+    <part name="InquiryContractCarByContractNoResponse" element="tns:InquiryContractCarByContractNoResponse" />
+  </message>
+  <message name="InquiryContractCarByCardId">
+    <part name="InquiryContractCarByCardIdRequest" element="tns:InquiryContractCarByCardIdRequest" />
+  </message>
+  <message name="InquiryContractCarByCardIdResponse">
+    <part name="InquiryContractCarByCardIdResponse" element="tns:InquiryContractCarByCardIdResponse" />
+  </message>
+  <message name="InquiryContractByCANoResponse">
+    <part name="InquiryContractByCANoResponse" element="tns:InquiryContractByCANoResponse" />
+  </message>
+  <message name="InquiryContractForBarcode">
+    <part name="InquiryContractForBarcodeRequest" element="tns:InquiryContractForBarcodeRequest" />
+  </message>
+  <message name="InquiryContractForBarcodeResponse">
+    <part name="InquiryContractForBarcodeResponse" element="tns:InquiryContractForBarcodeResponse" />
+  </message>
+  <message name="InquiryCustomerContractList">
+    <part name="InquiryCustomerContractListRequest" element="tns:InquiryCustomerContractListRequest" />
+  </message>
+  <message name="LockCarRegisterBook">
+    <part name="LockCarRegisterBookRequest" element="tns:LockCarRegisterBookRequest" />
+  </message>
+  <message name="InquiryCustomerContractListResponse">
+    <part name="InquiryCustomerContractListResponse" element="tns:InquiryCustomerContractListResponse" />
+  </message>
+  <message name="LockCarRegisterBookResponse">
+    <part name="LockCarRegisterBookResponse" element="tns:LockCarRegisterBookResponse" />
+  </message>
+  <portType name="HPContractService">
+    <operation name="InquiryContractCarByContractNo">
+      <input message="tns:InquiryContractCarByContractNo" />
+      <output message="tns:InquiryContractCarByContractNoResponse" />
+    </operation>
+    <operation name="InquiryContractByCANo">
+      <input message="tns:InquiryContractByCANo" />
+      <output message="tns:InquiryContractByCANoResponse" />
+    </operation>
+    <operation name="InquiryContractForBarcode">
+      <input message="tns:InquiryContractForBarcode" />
+      <output message="tns:InquiryContractForBarcodeResponse" />
+    </operation>
+    <operation name="InquiryContractCarByCardId">
+      <input message="tns:InquiryContractCarByCardId" />
+      <output message="tns:InquiryContractCarByCardIdResponse" />
+    </operation>
+    <operation name="InquiryContractDetailByTicketId">
+      <input message="tns:InquiryContractDetailByTicketId" />
+      <output message="tns:InquiryContractDetailByTicketIdResponse" />
+    </operation>
+    <operation name="SentTicketIdNotification">
+      <input message="tns:SentTicketIdNotification" />
+      <output message="tns:SentTicketIdNotificationResponse" />
+    </operation>
+    <operation name="InquiryContractByCarInformation">
+      <input message="tns:InquiryContractByCarInformation" />
+      <output message="tns:InquiryContractByCarInformationResponse" />
+    </operation>
+    <operation name="LockCarRegisterBook">
+      <input message="tns:LockCarRegisterBook" />
+      <output message="tns:LockCarRegisterBookResponse" />
+    </operation>
+    <operation name="InquiryCustomerContractList">
+      <input message="tns:InquiryCustomerContractList" />
+      <output message="tns:InquiryCustomerContractListResponse" />
+    </operation>
+    <operation name="InquiryContractReceiptInformation">
+      <input message="tns:InquiryContractReceiptInformation" />
+      <output message="tns:InquiryContractReceiptInformationResponse" />
+    </operation>
+  </portType>
+  <binding name="HPContractServicePortBinding" type="tns:HPContractService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="InquiryContractCarByContractNo">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="InquiryContractByCANo">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="InquiryContractForBarcode">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="InquiryContractCarByCardId">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="InquiryContractDetailByTicketId">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SentTicketIdNotification">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="InquiryContractByCarInformation">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="LockCarRegisterBook">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="InquiryCustomerContractList">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="InquiryContractReceiptInformation">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="HPContractService">
+    <port name="HPContractServicePort" binding="tns:HPContractServicePortBinding">
+      <soap:address location="http://10.202.104.111:9081/HPWS/HPContractService" />
+    </port>
+  </service>
+</definitions>

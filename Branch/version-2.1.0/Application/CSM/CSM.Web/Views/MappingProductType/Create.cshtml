@@ -1,0 +1,1082 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.MappingProductTypeViewModel
+
+@{
+    ViewBag.Title = "New Mapping Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+@section Breadcrumb {
+    @*<strong class="font-blue">Mapping Product &rsaquo;&rsaquo;</strong>*@
+    <strong class="font-blue"> @Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" }) </strong>
+    <strong class="font-blue">
+        &rsaquo;&rsaquo; @Html.ActionLink("Search Mapping Product", "Search", "MappingProductType", null, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; New Mapping Product</strong>
+}
+<form id="form1">
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+        <h5 class="form-title">New Mapping Product</h5>
+        <hr class="dotted-line" />
+        <div class="bs-example">
+
+            <div class="collapse_container">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Product Group <span class="require">*</span>:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(m => m.ProductGroupId, new { @class = "form-control input-sm", @id = "txtProductGroupName" })
+                            @Html.ValidationMessageFor(m => m.ProductGroupId)
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Product <span class="require">*</span>:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(m => m.ProductId, new { @class = "form-control input-sm", @id = "txtProductName" })
+                            @Html.ValidationMessageFor(m => m.ProductId)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Campaign :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(m => m.CampaignServiceId, new { @class = "form-control input-sm", @id = "txtCampaignName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Area <span class="require">*</span>:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(m => m.AreaId, new { @class = "form-control input-sm", @id = "txtAreaName" })
+                            @Html.ValidationMessageFor(m => m.AreaId)
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Sub Area <span class="require">*</span>:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(m => m.SubAreaId, new { @class = "form-control input-sm", @id = "txtSubAreaName" })
+                            @Html.ValidationMessageFor(m => m.SubAreaId)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Type <span class="require">*</span>:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(m => m.TypeId, new { @class = "form-control input-sm", @id = "txtTypeName" })
+                            @Html.ValidationMessageFor(m => m.TypeId)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Owner Branch :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(m => m.OwnerBranchId, new { @class = "form-control input-sm", @id = "txtOwnerBranchName" })
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Owner SR :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.TextBoxFor(m => m.OwnerSrId, new { @class = "form-control input-sm", @id = "txtOwnerSrName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Verify <span class="require">*</span>:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <select id="selectVerify" class="form-control input-sm">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Status <span class="require">*</span>:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <select id="selectStatus" class="form-control input-sm">
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Verify OTP :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DropDownListFor(m => m.IsVerifyOTP, (IEnumerable<SelectListItem>)ViewBag.VerifyOTPList, Resource.Ddl_PleaseSelect
+                                , new { @id = "ddlVerifyOTP", @class = "form-control input-sm" })
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">OTP Template :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DropDownListFor(m => m.OTPTemplate.OTPTemplateId, (IEnumerable<SelectListItem>)ViewBag.OTPTemplateList, Resource.Ddl_PleaseSelect
+                                , new { @id = "ddlOTPTemplateId", @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">SR ความลับ :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DropDownListFor(m => m.IsSRSecret, (IEnumerable<SelectListItem>)ViewBag.VerifyOTPList, Resource.Ddl_PleaseSelect
+                                , new { @id = "ddlSrSecret", @class = "form-control input-sm" })
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">Status To HP Log100 :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DropDownListFor(m => m.HpStatus.HpStatusId, (IEnumerable<SelectListItem>)ViewBag.HpStatusList, Resource.Ddl_PleaseSelect
+                                , new { @id = "ddlHpStatusId", @class = "form-control input-sm" })
+                            @Html.HiddenFor(m => m.HpStatus.HpLangIndeCode, new { @id = "hdfHPCode" })
+                            @Html.HiddenFor(m => m.HpStatus.HpSubject, new { @id = "hdfHpSubject" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">SR Page <span class="require">*</span>:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.DropDownListFor(m => m.SrPageId, Model.SrPageList, new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">สร้างโดย :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" value="@ViewBag.CreateUsername" class="form-control input-sm" disabled="disabled" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">วันที่สร้าง :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" value="@ViewBag.CreateDate" class="form-control input-sm" disabled="disabled" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">แก้ไขโดย :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" value="@ViewBag.UpdateUsername" class="form-control input-sm" disabled="disabled" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="control-label left-label">วันที่แก้ไข :</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" value="@ViewBag.UpdateDate" class="form-control input-sm" disabled="disabled" />
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="collapse_container">
+                <div class="collapse_header">
+                    <span class="collapse_sign">[-]</span> Group Question
+                </div>
+                <div class="collapse_body">
+
+                    <div class="row" style="padding: 10px 0">
+                        <button id="btnSelect" class="btn btn-sm btn-success cancel" data-toggle="modal" data-target="#questionGroupModal"><i class="fa fa-plus"></i> Select Group Question</button>
+                    </div>
+                    <div class="row">
+                        <div id="dvQuestionGroup"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-12 text-right">
+                        <span id="btnSave" type="button" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o"></i> Save</span>
+                        <span id="btnBack" class="btn btn-sm btn-default"><i class="fa fa-times"></i> Cancel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="questionGroupModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Select Group Question</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label class="control-label">กลุ่มคำถาม :</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="text" id="txtSearchGroupQuestions" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-9 col-sm-offset-3">
+                                <span id="btnSearch" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Search</span>
+                                <span id="btnClear" class="btn btn-sm btn-default"><i class="fa fa-file-o"></i> Clear</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr class="dashed-line" />
+                    <div class="clear"></div>
+
+                    <input type="hidden" id="hiddenGroupQuestionIdList" />
+                    <div class="row">
+                        <div id="dvSearchQuestionGroup"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="btnSelectGroupQuestion" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> Select</span>
+                <span class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dvTarget"></div>
+@Html.Partial("_Antiforgery")
+
+@section masterjs{
+    <script type="text/javascript">
+    var questionGroupSearchFilter;
+    var questionGroupSuccessFilter;
+
+    var tempProductId;
+
+    //enable validate hidden field
+    $jq.validator.setDefaults({ ignore: null });
+
+    $jq(document).ready(function () {
+        initializeQuestionGroupSearchFilter();
+        initializeQuestionGroupPaging();
+        initAutoComplete();
+
+        $jq("#btnSelect").click(onBtnSelectClick);
+        $jq("#btnSearch").click(onBtnSearchClick);
+        $jq("#btnClear").click(onBtnClearClick);
+        $jq("#btnSelectGroupQuestion").click(onBtnSelectGroupQuestionClick);
+        $jq("#btnSave").click(onBtnSaveClick);
+
+        $jq("#btnBack").click(onBtnBackClick);
+
+        $jq("#selectVerify").on('change', onSelectVerifyChange);
+        onSelectVerifyChange();
+
+        $jq("#ddlVerifyOTP").on('change', ddlVerifyOTP_Change);
+        ddlVerifyOTP_Change();
+
+        $jq("#txtProductName").on('change', onProductChange);
+
+        $jq("#ddlHpStatusId").on('change', function (e) {
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("GetHpStatusById", "MappingProductType")",
+                    method: "POST",
+                    data: {
+                        id: value,
+                        __RequestVerificationToken: getAntiForgeryToken()
+                    }
+                }).done(function (result) {
+                    if (result.IsSuccess) {
+                        $jq("#hdfHPCode").val(result.HpLangIndeCode);
+                        $jq("#hdfHpSubject").val(result.HpSubject);
+                    } else {
+                        doModal('dvAlertMsg', 'Error', result.ErrorMessage, '', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            } else {
+                // On Clear
+                $jq("#hdfHPCode").val("");
+                $jq("#hdfHpSubject").val("");
+            }
+        });
+    });
+
+    function ddlVerifyOTP_Change(e) {
+        $jq("#ddlOTPTemplateId").removeAttr('disabled');
+        if ($jq("#ddlVerifyOTP").val() != "true") {
+            $jq("#ddlOTPTemplateId").val('');
+            $jq("#ddlOTPTemplateId").prop("disabled", "disabled");
+        }
+    }
+
+    function onProductChange() {
+
+        if (tempProductId != $jq("#txtProductName").select2("val")) {
+            $jq("#dvQuestionGroup").html('');
+        }
+
+        tempProductId = $jq("#txtProductName").select2("val");
+    }
+
+    function onSelectVerifyChange() {
+        var selectResult = $jq("#selectVerify").val();
+        if (selectResult == "false") {
+            $jq("#btnSelect").addClass('disabled');
+            $jq("#btnSelect").prop('disabled', true);
+
+            if ($jq("#dvQuestionGroup").html().trim().length > 0) {
+                if (confirm("การเปลี่ยนค่า verify มีผลต่อรายการคำถามที่เลือกไว้ก่อนหน้า ต้องการดำเนินการหรือไม่")) {
+                    $jq("#dvQuestionGroup").html('');
+                }
+                else {
+                    $jq("#selectVerify").val("true");
+
+                    $jq("#btnSelect").removeClass('disabled');
+                    $jq("#btnSelect").prop('disabled', false);
+                }
+            }
+
+        } else if (selectResult == "true") {
+            $jq("#btnSelect").removeClass('disabled');
+            $jq("#btnSelect").prop('disabled', false);
+        }
+    }
+
+    function onBtnSelectClick(e) {
+        e.preventDefault();
+
+        var productId = $jq("#txtProductName").select2("val");
+        if (productId.length == 0) {
+            doModal('dvAlertMsg', 'Message Dialog', "กรุณาระบุ Product", '', '');
+            return false;
+        }
+
+        questionGroupSearchFilter.ProductId = $jq("#txtProductName").select2("val");
+        clearModalSearchGroupQuestion();
+    }
+
+    function clearModalSearchGroupQuestion() {
+        //clear modal
+        $jq("#txtSearchGroupQuestions").val("");
+        $jq("#hiddenGroupQuestionIdList").val("");
+
+        questionGroupSearchFilter.QuestionName = $jq("#txtSearchGroupQuestions").val();
+        loadQuestionGroupList();
+    }
+
+    function loadQuestionGroupList() {
+
+        var hiddenDeleteIdRows = $jq(".hiddenQuestionGroupId");
+        var hiddenDeleteIdArray = new Array();
+
+        if (hiddenDeleteIdRows.length > 0) {
+            for (var i = 0; i < hiddenDeleteIdRows.length; i++) {
+                hiddenDeleteIdArray[i] = $jq(hiddenDeleteIdRows[i]).val();
+            }
+
+            var hiddenDeleteIdStr = hiddenDeleteIdArray.join(",");
+            $jq("#hiddenGroupQuestionIdList").val(hiddenDeleteIdStr);
+            questionGroupSearchFilter.QuestionIdList = $jq("#hiddenGroupQuestionIdList").val();
+        }
+
+        $jq.ajax({
+            url: "@Url.Action("SearchQuestionGroupMapList", "MappingProductType")",
+            method: "POST",
+            data: questionGroupSearchFilter,
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); }
+        })
+            .done(function (result) {
+                if (isLoginForm(result)) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                }
+                if (result.Valid == null) {
+                    $jq("#dvSearchQuestionGroup").html('');
+                    questionGroupSuccessFilter = questionGroupSearchFilter;
+                    $jq("#dvSearchQuestionGroup").html(result);
+                    initializeQuestionGroupPaging();
+                } else {
+                    showServerErrors(result);
+                }
+            })
+            .fail(function () {
+                if (xhr.status === 401) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                } else {
+                    var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+    }
+
+        function onCreateDeleteRowClick(id) {
+        if (confirm("คุณต้องการยืนยันที่ลบ Question ออกจาก QuestionGroup หรือไม่?")) {
+            var rows = $jq(".hiddenQuestionGroupId");
+            var passAmountList = $jq(".pass_amount");
+            var data = new Array();
+            for (var i = 0; i < rows.length; i++) {
+                data.push({
+                    id: $jq(rows[i]).val(),
+                    QuestionGroupId: $jq(rows[i]).val(),
+                    QuestionGroupName: $jq(rows[i]).attr("question_name"),
+                    QuestionGroupNo: $jq(rows[i]).attr("question_no"),
+                    QuestionGroupPassAmount: $jq(passAmountList[i]).val().trim()
+                });
+            }
+
+            $jq.ajax({
+                url: "@Url.Action("RenderQuestionGroupList", "MappingProductType")",
+                method: "POST",
+                data: {
+                    questionGroupStr: JSON.stringify(data),
+                    deleteId: id,
+                    __RequestVerificationToken: getAntiForgeryToken()
+                },
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); }
+            })
+                .done(function (result) {
+                    if (isLoginForm(result)) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    }
+                    if (result.Valid == null) {
+                        $jq("#dvQuestionGroup").html('');
+                        $jq("#dvQuestionGroup").html(result);
+                    } else {
+                        showServerErrors(result);
+                    }
+                })
+                .fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                            doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                        }
+                    });
+            }
+        }
+
+        function onViewRowClick(id) {
+
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            var inputSrId = $jq("<input>").attr("type", "hidden").attr("name", "id").val(id);
+
+            $jq('#dvTarget').html('');
+            $jq('#dvTarget').append("<form action='@Url.Action("ViewQuestionGroup", "MappingProductType")' method='POST' class='hidden' target='_blank'></form>");
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').append($jq(inputSrId));
+            $jq('#dvTarget form').submit();
+        }
+
+        function onBtnSearchClick() {
+            questionGroupSearchFilter.QuestionName = $jq("#txtSearchGroupQuestions").val();
+            loadQuestionGroupList();
+        }
+
+        function onBtnClearClick() {
+            $jq("#txtSearchGroupQuestions").val("");
+            questionGroupSearchFilter.QuestionName = $jq("#txtSearchGroupQuestions").val();
+            loadQuestionGroupList();
+        }
+
+        function onBtnSelectGroupQuestionClick() {
+            //get data from group question
+            var questionGroupRows = $jq(".hiddenQuestionGroupId");
+            var passAmountList = $jq(".pass_amount");
+            var questionGroupData = new Array();
+
+            for (var j = 0; j < questionGroupRows.length; j++) {
+
+                questionGroupData.push({
+                    QuestionGroupId: $jq(questionGroupRows[j]).val(),
+                    QuestionGroupName: $jq(questionGroupRows[j]).attr("question_name"),
+                    QuestionGroupNo: $jq(questionGroupRows[j]).attr("question_no"),
+                    QuestionGroupPassAmount: $jq(passAmountList[j]).val().trim()
+                });
+            }
+
+            // get data from group question modal
+            var questionGroupModalRows = $jq(".chkQuestionGroupId:checked");
+
+            if (questionGroupModalRows.length === 0) {
+                var warningMsg = "@Resource.ValErr_AtLeastOneItem";
+            doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+            return false;
+        }
+
+        var questionGroupModalData = new Array();
+        for (var i = 0; i < questionGroupModalRows.length; i++) {
+            questionGroupModalData.push({
+                QuestionGroupId: $jq(questionGroupModalRows[i]).attr("question_group_id"),
+                QuestionGroupName: $jq(questionGroupModalRows[i]).attr("question_group_name"),
+                QuestionGroupNo: $jq(questionGroupModalRows[i]).attr("question_group_no")
+            });
+        }
+
+        sortTable(questionGroupData, questionGroupModalData);
+        $jq("#questionGroupModal").modal("hide");
+    }
+
+    function sortTable(questionGroupData, questionGroupModalData) {
+        //render questionGroup table
+        $jq.ajax({
+            url: "@Url.Action("RenderQuestionGroupList", "MappingProductType")",
+            method: "POST",
+            data: {
+                questionGroupStr: JSON.stringify(questionGroupData),
+                questionGroupModalStr: JSON.stringify(questionGroupModalData),
+                __RequestVerificationToken: getAntiForgeryToken()
+            },
+            beforeSend: function () { $jq("#dvLoading").show(); },
+            complete: function () { $jq("#dvLoading").hide(); }
+        })
+            .done(function (result) {
+                if (isLoginForm(result)) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                }
+                if (result.Valid == null) {
+                    $jq("#dvQuestionGroup").html('');
+                    $jq("#dvQuestionGroup").html(result);
+
+                    $jq("#dvQuestionGroup .money").autoNumeric("init");
+                } else {
+                    showServerErrors(result);
+                }
+            })
+            .fail(function () {
+                if (xhr.status === 401) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                } else {
+                    var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+    }
+
+    function onDeleteTableRow(id) {
+        if (confirm("คุณต้องการยืนยันที่ลบหรือไม่?")) {
+            $jq("#table").bootstrapTable("remove", {
+                field: 'id',
+                values: [id]
+            });
+        }
+    }
+
+    function onBtnSaveClick() {
+
+        var frm = $jq("#form1");
+        if (frm.valid()) {
+            //validate pass amount question
+            var passList = $jq(".pass_amount");
+            var questionList = $jq(".hiddenQuestionGroupId");
+
+            if (passList.length == 0 && $jq("#selectVerify").val() == "true") {
+                doModal("dvAlertMsg", "Message Dialog", "กรณีเลือก Verify เป็น Yes: กรุณาเลือก Group Question อย่างน้อย 1 รายการ", "", "");
+                return false;
+            }
+
+            if ($jq("#ddlVerifyOTP").val() == "true" && $jq("#ddlOTPTemplateId").val() == "") {
+                doModal("dvAlertMsg", "Message Dialog", "กรณีเลือก Verify OTP เป็น Yes: กรุณาเลือก OTP Template", "", "");
+                return false;
+            }
+
+            for (var j = 0; j < passList.length; j++) {
+                //check pass is null value
+                if ($jq(passList[j]).val().length === 0) {
+                    doModal("dvAlertMsg", "Message Dialog", "กรุณากรอก 'จำนวนที่ผ่าน' ทุกชุดคำถาม", "", "");
+                    return false;
+                }
+
+                //chec pass is over number
+                if (parseInt($jq(questionList[j]).attr("question_no")) < parseInt($jq(passList[j]).val())) {
+                    doModal("dvAlertMsg", "Message Dialog", "'จำนวนที่ผ่าน' ต้องไม่เกิน จำนวนคำถาม <br/> (กลุ่มคำถาม = " + $jq(questionList[j]).attr("question_name") + ")", "", "");
+                    return false;
+                }
+            }
+
+            //get row data
+            var questionGroupDataRows = $jq(".hiddenQuestionGroupId");
+            var rowPassAmounts = $jq("input.pass_amount");
+            var questionGroupData = new Array();
+
+            for (var i = 0; i < questionGroupDataRows.length; i++) {
+                questionGroupData.push({
+                    id: $jq(questionGroupDataRows[i]).val(),
+                    pass_value: $jq(rowPassAmounts[i]).val(),
+                    seq: i + 1
+                });
+            }
+
+            $jq.ajax({
+                url: "@Url.Action("Save", "MappingProductType")",
+                method: "POST",
+                data: {
+                    __RequestVerificationToken: getAntiForgeryToken(),
+                    ProductId: $jq("#txtProductName").val(),
+                    CampaignServiceId: $jq("#txtCampaignName").val(),
+                    AreaId: $jq("#txtAreaName").val(),
+                    SubAreaId: $jq("#txtSubAreaName").val(),
+                    TypeId: $jq("#txtTypeName").val(),
+                    OwnerUserId: $jq("#txtOwnerBranchName").val(),
+                    OwnerSrId: $jq("#txtOwnerSrName").val(),
+                    SrPageId: $jq("#SrPageId").val(),
+                    IsVerify: $jq("#selectVerify").val(),
+                    IsActive: $jq("#selectStatus").val(),
+                    QuestionGroupList: JSON.stringify(questionGroupData),
+                    IsVerifyOTP: $jq("#ddlVerifyOTP").val(),
+                    IsSRSecret: $jq("#ddlSrSecret").val(),
+                    OTPTemplateId: $jq("#ddlOTPTemplateId").val(),
+                    HpLangIndeCode: $jq("#hdfHPCode").val(),
+                    HPSubject: $jq("#hdfHpSubject").val()
+                }
+            })
+                .done(function (result) {
+                    if (typeof (result) == "string") {
+                        if (isLoginForm(result)) {
+                            location.replace('@FormsAuthentication.LoginUrl');
+                            return;
+                        }
+                    }
+                    if (result.is_success) {
+                        alert(result.message);
+                        window.location = "@Url.Action("Search", "MappingProductType")";
+                    }
+                    var warningMsg = result.message;
+                    doModal("dvAlertMsg", "Message Dialog", warningMsg, "", "");
+                    return false;
+                })
+                .fail(function () {
+
+                });
+        }
+    }
+
+    function onBtnBackClick(event) {
+        event.preventDefault();
+        var msg = 'ต้องการยกเลิกการบันทึกข้อมูลใช่หรือไม่?';
+        if ($jq.trim(msg) != '') {
+            doModal('dvAlertMsg', 'Message Dialog', msg, 'closeMappingProduct()', 'Confirm');
+        }
+        return false;
+    }
+
+    function closeMappingProduct() {
+        location.replace('@Url.Action("Search", "MappingProductType")');
+    }
+
+    function initializeQuestionGroupSearchFilter() {
+        questionGroupSearchFilter = {
+            QuestionName: $jq("#txtSearchGroupQuestions").val(),
+            QuestionIdList: $jq("#hiddenGroupQuestionIdList").val(),
+            ProductId: $jq("#txtProductName").select2("val"),
+            PageNo: '@Model.QuestionGroupSearchFilter.PageNo',
+            PageSize: '@Model.QuestionGroupSearchFilter.PageSize',
+            SortField: '@Model.QuestionGroupSearchFilter.SortField',
+            SortOrder: '@Model.QuestionGroupSearchFilter.SortOrder',
+            __RequestVerificationToken: getAntiForgeryToken()
+        };
+        questionGroupSuccessFilter = questionGroupSearchFilter;
+    };
+
+    function initializeQuestionGroupPaging() {
+        $jq("#dvSearchQuestionGroup .input-page").change(function (event) {
+            questionGroupSearchFilter = questionGroupSuccessFilter;
+            questionGroupSearchFilter.PageNo = $jq(this).val();
+            loadQuestionGroupList();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchQuestionGroup #pagesizelist").change(function (event) {
+            questionGroupSearchFilter = questionGroupSuccessFilter;
+            questionGroupSearchFilter.PageNo = "1";
+            questionGroupSearchFilter.PageSize = $jq(this).val();
+            loadQuestionGroupList();
+            return false;
+        });
+
+        $jq('#dvSearchQuestionGroup .pagination ul li a').on('click', function (event) {
+            questionGroupSearchFilter = questionGroupSuccessFilter;
+            questionGroupSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadQuestionGroupList();
+            return false;
+        });
+    }
+
+    function onMoveRowClick(itemSeq, type) {
+        var idStr = "#" + itemSeq;
+        var targetTr = $jq(idStr).closest("tr");
+
+        if (type == "down") {
+            $jq(targetTr).next().after($jq(targetTr));
+
+        } else if(type == "up") {
+            $jq(targetTr).prev().insertAfter($jq(targetTr));
+        }
+    }
+
+    </script>
+    <script type="text/javascript">
+
+    // [START] AutoComplete
+
+    function initAutoComplete() {
+        initAutoCompleteProductGroup();
+        initAutoCompleteProduct();
+        initAutoCompleteCampaignService();
+
+        initAutoCompleteArea();
+        initAutoCompleteSubArea();
+        initAutoCompleteType();
+        initAutoCompleteOwnerBranch();
+        initAutoCompleteOwnerSr();
+    }
+
+    function initAutoCompleteProductGroup() {
+
+        $jq("#txtProductGroupName").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchProductGroup", "AutoComplete")",
+                    dataType: 'json',
+                    type: "post",
+                    quietMillis: 150,
+                    data: function (keyword) {
+                        return {
+                            keyword: keyword,
+                            productId: $jq("#txtProductName").select2("val"),
+                            campaignServiceId: $jq("#txtCampaignName").select2("val"),
+                            isAllStatus: true
+                        };
+                    },
+                    results: function (data) {
+                        if (data.RedirectUrl != undefined) {
+                            topLocation(data.RedirectUrl);
+                            return;
+                        }
+                        return {
+                            results: $jq.map(data, function (item) {
+                                return {
+                                    text: item.ProductGroupName,
+                                    id: item.ProductGroupId
+                                }
+                            })
+                        };
+                    }
+                }
+            });
+        }
+
+        function initAutoCompleteProduct() {
+
+            $jq("#txtProductName").select2({
+                placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchProduct", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        productGroupId: $jq("#txtProductGroupName").select2("val"),
+                        campaignServiceId: $jq("#txtCampaignName").select2("val"),
+                        isAllStatus: true
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.ProductName,
+                                id: item.ProductId
+                            }
+                        })
+                    };
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteCampaignService() {
+
+        $jq("#txtCampaignName").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchCampaignService", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        productGroupId: $jq("#txtProductGroupName").select2("val"),
+                        productId: $jq("#txtProductName").select2("val"),
+                        isAllStatus: true
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.CampaignServiceName,
+                                id: item.CampaignServiceId
+                            }
+                        })
+                    };
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteArea() {
+
+        $jq("#txtAreaName").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchArea", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        subAreaId: $jq("#txtSubAreaName").select2("val"),
+                        isAllStatus: true
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.AreaName,
+                                id: item.AreaId
+                            }
+                        })
+                    };
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteSubArea() {
+
+        $jq("#txtSubAreaName").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchSubArea", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        areaId: $jq("#txtAreaName").select2("val"),
+                        isAllStatus: true
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.SubAreaName,
+                                id: item.SubAreaId
+                            }
+                        })
+                    };
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteType() {
+
+        $jq("#txtTypeName").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchType", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        isAllStatus: true
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.TypeName,
+                                id: item.TypeId
+                            }
+                        })
+                    };
+                }
+            }
+        });
+    }
+
+
+    function initAutoCompleteOwnerBranch() {
+        $jq("#txtOwnerBranchName").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchBranch", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.BranchName,
+                                id: item.BranchId
+                            }
+                        })
+                    };
+                }
+            }
+        });
+    }
+
+    function initAutoCompleteOwnerSr() {
+        $jq("#txtOwnerSrName").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteSearchUser", "AutoComplete")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        branchId: $jq("#txtOwnerBranchName").val()
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.UserDisplayName,
+                                id: item.UserId
+                            }
+                        })
+                    };
+                }
+            }
+        });
+    }
+    </script>
+    <!-- End of AutoComplete -->
+}

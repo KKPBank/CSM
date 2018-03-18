@@ -1,0 +1,449 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.SRStatusViewModel
+
+@{
+    ViewBag.Title = "Search SR Status";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu {
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Html.ActionLink(Resource.Lbl_Master, "Index", "Configuration", null, new { @class = "font-blue" })</strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; State - Status Management</strong>
+}
+
+<div class="form-horizontal sr">
+    <h5 class="form-title">Search SR Status</h5>
+    <hr class="dotted-line" />
+    <div class="bs-example">
+        <div id="divBasicSearch">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">State Name :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.SearchFilter.SRStateId, new { @class = "form-control input-sm", @id = "txtSRStateId" })
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="control-label">Status Name :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => m.SearchFilter.SRStatusId, new { @class = "form-control input-sm", @id = "txtSRStatusId" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group" style="display: none">
+                    <div class="col-sm-3">
+                        <label class="control-label">SR Page :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(m => m.SearchFilter.SRPageId, (IEnumerable<SelectListItem>)ViewBag.SRPageList,
+                             Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm", @id = "ddlSRPageId" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label class="control-label">Status :</label>
+                    </div>
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(m => m.SearchFilter.Status, new SelectList(
+                            new SelectListItem[]
+                            {
+                                new SelectListItem() { Text= Resource.Ddl_PleaseSelect, Value = "" },
+                                new SelectListItem() { Text= Resource.Ddl_Action_All, Value = "all" },
+                                new SelectListItem() { Text= "Active", Value = "A" },
+                                new SelectListItem() { Text= "Inactive", Value = "I" }
+                            }, "Value", "Text", ""), new { @class = "form-control input-sm", @id = "ddlStatus" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="dashed-line" />
+        <div>
+            <form id="frmCreateSr" action="@Url.Action("Create")" method="POST" style="display: inline">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-sm btn-success"><i class="fa fa-plus"></i> New Status</button>
+            </form>
+            <div class="pull-right">
+                <span id="btnSearch" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Search</span>
+                <span id="btnReset" class="btn btn-sm btn-default"><i class="fa fa-file-o"></i> Clear</span>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <hr class="dashed-line" />
+        <div class="clear"></div>
+        <style type="text/css">
+            .bootstrap-table .table > thead > tr > th {
+                padding: 3px;
+                vertical-align: middle !important;
+                background-color: #b3c8e7;
+            }
+
+            .table > thead > tr > th .th-inner {
+                padding: 5px;
+                line-height: 14px;
+                text-align: center;
+            }
+        </style>
+
+        <div id="dvSearchResult" class="table-responsive margin-top-10"></div>
+    </div>
+</div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+
+        var searchFilter;
+        var successFilter;
+
+        $jq(function () {
+
+            initializeSearchFilter();
+            initializePaging();
+            initializeDatePicker();
+
+            initAutoCompleteState();
+            initAutoCompleteStatus();
+
+            clearForm();
+
+            //$jq("#btnNewSr").click(onBtnNewSrClick);
+            $jq("#btnSearch").click(onBtnSearchClick);
+            $jq("#btnReset").click(onBtnResetClick);
+
+            $jq("ddlSRStateId").focus();
+        });
+
+        function initializeSearchFilter() {
+            searchFilter = {
+                SRStateId: $jq("txtSRStateId").val(),
+                SRStatusId: $jq("txtSRStatusId").val(),
+                SRPageId: $jq("ddlSRPageId").val(),
+                Status: $jq("ddlStatus").val(),
+
+                PageNo: '@Model.SearchFilter.PageNo',
+                PageSize: '@Model.SearchFilter.PageSize',
+                SortField: '@Model.SearchFilter.SortField',
+                SortOrder: '@Model.SearchFilter.SortOrder'
+            };
+            successFilter = searchFilter;
+        };
+
+        function initializePaging() {
+            $jq("#dvSearchResult .input-page").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = $jq(this).val();
+                loadData();
+                return false;
+            }).keypress(function (event) {
+                return validateDigit(event);
+            });
+
+            $jq("#dvSearchResult #pagesizelist").change(function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = "1";
+                searchFilter.PageSize = $jq(this).val();
+                loadData();
+                return false;
+            });
+
+            $jq('#dvSearchResult .pagination ul li a').on('click', function (event) {
+                searchFilter = successFilter;
+                searchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+                loadData();
+                return false;
+            });
+        }
+
+        function sortField(selectedSortField) {
+            if (selectedSortField == searchFilter.SortField)
+                searchFilter.SortOrder = (searchFilter.SortOrder == 'ASC') ? 'DESC' : 'ASC';
+            else
+                searchFilter.SortOrder = 'ASC';
+
+            searchFilter.SortField = selectedSortField;
+            searchFilter.PageNo = 1;
+            loadData();
+        }
+
+        function initializeDatePicker() {
+
+            var dateFormat = 'dd/mm/yyyy';
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker1').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker2').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker3').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+
+            // DateTime Picker From Date
+            $jq('#datetimepicker4').datepicker({
+                format: dateFormat,
+                endDate: "0d",
+                orientation: 'auto top',
+                showOnFocus: "false",
+                language: 'th'
+            }).on('changeDate', function (ev) {
+                $jq(this).datepicker('hide');
+            });
+        }
+
+        function clearForm() {
+            $jq("#txtSRStateId").select2("val", "");
+            $jq("#txtSRStatusId").select2("val", "");
+            $jq("#ddlSRPageId").val("");
+            $jq("#ddlStatus").val("");
+        }
+
+        function onBtnSearchClick(e) {
+            e.preventDefault();
+            searchFilter.SRStateId = $jq("#txtSRStateId").val();
+            searchFilter.SRStatusId = $jq("#txtSRStatusId").val();
+            searchFilter.SRPageId = $jq("#ddlSRPageId").val();
+            searchFilter.Status = $jq("#ddlStatus").val();
+
+            searchFilter.PageNo = 1;
+            loadData();
+            return false;
+        }
+
+        function validSearchFilter() {
+            if (searchFilter.SRStateId == ""
+                && searchFilter.SRStatusId == ""
+                && searchFilter.SRPageId == ""
+                && searchFilter.Status == "") {
+                var warningMsg = 'กรุณากรอกข้อมูลอย่างน้อย 1 เงื่อนไข';
+                doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+                return false;
+            }
+            return true;
+        }
+
+        function loadData() {
+
+            if (!validSearchFilter()) {
+                return false;
+            }
+            $jq.ajax({
+                url: '@Url.Action("Search", "Status")',
+                type: "POST",
+                data: searchFilter,
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq("#dvSearchResult").html('');
+                        successFilter = searchFilter;
+                        $jq("#dvSearchResult").html(result);
+                        initializePaging();
+                    } else {
+                        showServerErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                }
+            });
+
+            return false;
+        };
+
+        function onBtnResetClick(e) {
+            e.preventDefault();
+            clearForm();
+            $jq("#dvSearchResult").html('');
+            return false;
+        }
+
+        function initEdit(id) {
+
+            var inputToken = $jq("<input>").attr("type", "hidden").attr("name", "__RequestVerificationToken").val(getAntiForgeryToken());
+            var inputSrId = $jq("<input>").attr("type", "hidden").attr("name", "id").val(id);
+
+            $jq('#dvTarget').html('');
+            $jq('#dvTarget').append("<form action='@Url.Action("Edit", "Status")' method='POST' class='hidden' target='_blank'>");
+            $jq('#dvTarget form').append($jq(inputToken));
+            $jq('#dvTarget form').append($jq(inputSrId));
+            $jq('#dvTarget form').submit();
+        }
+
+
+    function initAutoCompleteState() {
+
+        $jq("#txtSRStateId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteState", "Status")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        statusId: $jq("#txtSRStatusId").val(),
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.SRStateName,
+                                id: item.SRStateId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        }).on("change", function (evt) {
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("AutoCompleteStatus", "Status")",
+                    method: "POST",
+                    data: {
+                        keyword: '',
+                        stateId: $jq(this).val(),
+                        isAllStatus: false
+                    }
+                }).done(function (result) {
+                    if (result.length == 1) {
+                        $jq("#txtSRStatusId").select2("data", { id: result[0].SRStatusId, text: result[0].SRStatusName });
+                    } else {
+                        $jq("#txtSRStatusId").select2('val', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+            }
+        });
+    }
+
+    function initAutoCompleteStatus() {
+
+        $jq("#txtSRStatusId").select2({
+            placeholder: '@Resource.Ddl_AutoComplete',
+            minimumInputLength: '@CSM.Common.Utilities.Constants.MinLenght.AutoComplete',
+            language: "th",
+            allowClear: true,
+            ajax: {
+                url: "@Url.Action("AutoCompleteStatus", "Status")",
+                dataType: 'json',
+                type: "post",
+                quietMillis: 150,
+                data: function (keyword) {
+                    return {
+                        keyword: keyword,
+                        stateId: $jq("#txtSRStateId").val(),
+                        isAllStatus: false
+                    };
+                },
+                results: function (data) {
+                    if (data.RedirectUrl != undefined) {
+                        topLocation(data.RedirectUrl);
+                        return;
+                    }
+                    return {
+                        results: $jq.map(data, function (item) {
+                            return {
+                                text: item.SRStatusName,
+                                id: item.SRStatusId
+                            }
+                        })
+                    };
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            }
+        }).on("change", function (evt) {
+            var value = $jq(this).val().trim();
+            if (value.length != 0) {
+                // On Selected
+                $jq.ajax({
+                    url: "@Url.Action("AutoCompleteState", "Status")",
+                    method: "POST",
+                    data: {
+                        keyword: '',
+                        statusId: $jq(this).val(),
+                        isAllStatus: false
+                    }
+                }).done(function (result) {
+                    if (result.length == 1) {
+                        $jq("#txtSRStateId").select2("data", { id: result[0].SRStateId, text: result[0].SRStateName });
+                    } else {
+                        $jq("#txtSRStateId").select2('val', '');
+                    }
+                }).fail(function () {
+                    if (xhr.status === 401) {
+                        location.replace('@FormsAuthentication.LoginUrl');
+                        return;
+                    } else {
+                        var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                        doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                    }
+                });
+
+            }
+        });
+    }
+    </script>
+}

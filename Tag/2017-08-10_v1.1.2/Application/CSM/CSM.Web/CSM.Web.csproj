@@ -1,0 +1,856 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4A3D4B78-9A9D-4F42-93AF-6AC16924874D}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSM.Web</RootNamespace>
+    <AssemblyName>CSM.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <NuGetPackageImportStamp>cab52f39</NuGetPackageImportStamp>
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ActivityController.cs" />
+    <Compile Include="Controllers\AreaController.cs" />
+    <Compile Include="Controllers\AttachmentController.cs" />
+    <Compile Include="Controllers\AuditLogController.cs" />
+    <Compile Include="Controllers\AutoCompleteController.cs" />
+    <Compile Include="Controllers\BranchController.cs" />
+    <Compile Include="Controllers\CampaignController.cs" />
+    <Compile Include="Controllers\Common\BaseController.cs" />
+    <Compile Include="Controllers\CommPoolController.cs" />
+    <Compile Include="Controllers\ConfigurationController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\CustomerLogController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
+    <Compile Include="Controllers\ExistingLeadController.cs" />
+    <Compile Include="Controllers\ExistingProductController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IVRController.cs" />
+    <Compile Include="Controllers\JobController.cs" />
+    <Compile Include="Controllers\MappingProductTypeController.cs" />
+    <Compile Include="Controllers\MenuNavigatorController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\QuestionController.cs" />
+    <Compile Include="Controllers\QuestionGroupController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ServiceRequestController.cs" />
+    <Compile Include="Controllers\SlaController.cs" />
+    <Compile Include="Controllers\SRController.cs" />
+    <Compile Include="Controllers\SubAreaController.cs" />
+    <Compile Include="Controllers\TypeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserMonitoringController.cs" />
+    <Compile Include="Filters\CheckUserRoleAttribute.cs" />
+    <Compile Include="Filters\CheckUserSessionAttribute.cs" />
+    <Compile Include="Filters\HandleAntiForgeryError.cs" />
+    <Compile Include="Filters\LogActionFilter.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AcceptNewsViewModel.cs" />
+    <Compile Include="Models\ActivityViewModel.cs" />
+    <Compile Include="Models\AreaViewModel.cs" />
+    <Compile Include="Models\AttachViewModel.cs" />
+    <Compile Include="Models\AuditLogViewModel.cs" />
+    <Compile Include="Models\BatchMonitoringViewModel.cs" />
+    <Compile Include="Models\BranchViewModel.cs" />
+    <Compile Include="Models\CampaignViewModel.cs" />
+    <Compile Include="Models\ConfigurationViewModel.cs" />
+    <Compile Include="Models\ContactViewModel.cs" />
+    <Compile Include="Models\CustomerInfoViewModel.cs" />
+    <Compile Include="Models\CustomerLogViewModel.cs" />
+    <Compile Include="Models\CustomerViewModel.cs" />
+    <Compile Include="Models\DocumentViewModel.cs" />
+    <Compile Include="Models\ExistingLeadViewModel.cs" />
+    <Compile Include="Models\ExistingProductViewModel.cs" />
+    <Compile Include="Models\ExportJobsViewModel.cs" />
+    <Compile Include="Models\ExportNcbViewModel.cs" />
+    <Compile Include="Models\ExportSRViewModel.cs" />
+    <Compile Include="Models\ExportVerifyDetailViewModel.cs" />
+    <Compile Include="Models\ExportVerifyViewModel.cs" />
+    <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\JobViewModel.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\MappingProductTypeViewModel.cs" />
+    <Compile Include="Models\NewsViewModel.cs" />
+    <Compile Include="Models\NoteViewModel.cs" />
+    <Compile Include="Models\PoolViewModel.cs" />
+    <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\QuestionGroupViewModels.cs" />
+    <Compile Include="Models\QuestionViewModel.cs" />
+    <Compile Include="Models\ServiceRequestModels.cs" />
+    <Compile Include="Models\SlaViewModel.cs" />
+    <Compile Include="Models\SrViewModel.cs" />
+    <Compile Include="Models\SubAreaViewModel.cs" />
+    <Compile Include="Models\TypeViewModel.cs" />
+    <Compile Include="Models\UserIdentity.cs" />
+    <Compile Include="Models\UserMonitoringModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\CSMFileService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\CSMMailService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\CSMSRService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\CustomerTabs.xml" />
+    <Content Include="Config\Profile.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\bootstrap-datepicker.css" />
+    <Content Include="Content\bootstrap-datepicker.min.css" />
+    <Content Include="Content\bootstrap-datepicker.standalone.css" />
+    <Content Include="Content\bootstrap-datepicker.standalone.min.css" />
+    <Content Include="Content\bootstrap-datepicker3.css" />
+    <Content Include="Content\bootstrap-datepicker3.min.css" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.css" />
+    <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\login.css" />
+    <Content Include="Content\select2-bootstrap\select2-bootstrap.css" />
+    <Content Include="Content\select2-bootstrap\select2-spinner.gif" />
+    <Content Include="Content\select2-bootstrap\select2.css" />
+    <Content Include="Content\select2-bootstrap\select2.png" />
+    <Content Include="Content\select2-bootstrap\select2x2.png" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\sr.css" />
+    <Content Include="Content\structure.css" />
+    <Content Include="Content\summernote.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\entypo.svg" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\accept.png" />
+    <Content Include="Images\accept_green.png" />
+    <Content Include="Images\activity.gif" />
+    <Content Include="Images\add.gif" />
+    <Content Include="Images\add.png" />
+    <Content Include="Images\add2.gif" />
+    <Content Include="Images\add_disable.gif" />
+    <Content Include="Images\add_disable2.gif" />
+    <Content Include="Images\ajax-loader.gif" />
+    <Content Include="Images\animated-overlay.gif" />
+    <Content Include="Images\arrow_right.gif" />
+    <Content Include="Images\bg.jpg" />
+    <Content Include="Images\bGenerate.gif" />
+    <Content Include="Images\bGenerate_bak.gif" />
+    <Content Include="Images\bProp.gif" />
+    <Content Include="Images\bProp_bak.gif" />
+    <Content Include="Images\branch.gif" />
+    <Content Include="Images\btn_add_en.png" />
+    <Content Include="Images\btn_add_en_bak.gif" />
+    <Content Include="Images\calendar.gif" />
+    <Content Include="Images\cancel_round.png" />
+    <Content Include="Images\closepopup.gif" />
+    <Content Include="Images\contract.png" />
+    <Content Include="Images\cross.png" />
+    <Content Include="Images\delete_active.gif" />
+    <Content Include="Images\delete_disable.gif" />
+    <Content Include="Images\disk.png" />
+    <Content Include="Images\download.png" />
+    <Content Include="Images\download_bak.png" />
+    <Content Include="Images\download_file.png" />
+    <Content Include="Images\edit_active.gif" />
+    <Content Include="Images\edit_disable.gif" />
+    <Content Include="Images\edit_disable_bak.gif" />
+    <Content Include="Images\excel.png" />
+    <Content Include="Images\grid-vista-hd.gif" />
+    <Content Include="Images\hAssetAddr.gif" />
+    <Content Include="Images\hAssetDetail.gif" />
+    <Content Include="Images\help.gif" />
+    <Content Include="Images\help.jpg" />
+    <Content Include="Images\help.png" />
+    <Content Include="Images\help_bak.gif" />
+    <Content Include="Images\hIEfix.png" />
+    <Content Include="Images\history.png" />
+    <Content Include="Images\house.png" />
+    <Content Include="Images\iUser.gif" />
+    <Content Include="Images\key_add.png" />
+    <Content Include="Images\kkb_logo.png" />
+    <Content Include="Images\lock-20.png" />
+    <Content Include="Images\login_bg.png" />
+    <Content Include="Images\logout.gif" />
+    <Content Include="Images\logo_bg.gif" />
+    <Content Include="Images\logo_left.gif" />
+    <Content Include="Images\logo_left_bak.gif" />
+    <Content Include="Images\logo_right.gif" />
+    <Content Include="Images\next.png" />
+    <Content Include="Images\no_image_30.png" />
+    <Content Include="Images\no_image_50.png" />
+    <Content Include="Images\p1.jpg" />
+    <Content Include="Images\p2.jpg" />
+    <Content Include="Images\p3.jpg" />
+    <Content Include="Images\p4.jpg" />
+    <Content Include="Images\p5.jpg" />
+    <Content Include="Images\page_alert.gif" />
+    <Content Include="Images\page_error.png" />
+    <Content Include="Images\page_first.gif" />
+    <Content Include="Images\page_last.gif" />
+    <Content Include="Images\page_last_disabled.gif" />
+    <Content Include="Images\page_next.gif" />
+    <Content Include="Images\page_next_disabled.gif" />
+    <Content Include="Images\page_prev.gif" />
+    <Content Include="Images\page_tick.gif" />
+    <Content Include="Images\pdf.gif" />
+    <Content Include="Images\previous.png" />
+    <Content Include="Images\price.png" />
+    <Content Include="Images\radio_check.png" />
+    <Content Include="Images\radio_uncheck.png" />
+    <Content Include="Images\refresh.png" />
+    <Content Include="Images\slide_btn_left.jpg" />
+    <Content Include="Images\slide_btn_left.png" />
+    <Content Include="Images\sort.png" />
+    <Content Include="Images\sort_asc.png" />
+    <Content Include="Images\sort_desc.png" />
+    <Content Include="Images\sprite.png" />
+    <Content Include="Images\time.gif" />
+    <Content Include="Images\topic_bg.gif" />
+    <Content Include="Images\topic_bg_left.gif" />
+    <Content Include="Images\topic_bg_right.gif" />
+    <Content Include="Images\u39.png" />
+    <Content Include="Images\u40.png" />
+    <Content Include="Images\u42.png" />
+    <Content Include="Images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Images\ui-icons_222222_256x240.png" />
+    <Content Include="Images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Images\ui-icons_454545_256x240.png" />
+    <Content Include="Images\ui-icons_888888_256x240.png" />
+    <Content Include="Images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Images\upload.png" />
+    <Content Include="Images\upload_bak.png" />
+    <Content Include="Images\user.gif" />
+    <Content Include="Images\view.gif" />
+    <Content Include="Images\view_disable.gif" />
+    <Content Include="Images\wait_progress.gif" />
+    <Content Include="Images\wait_progress_bak.gif" />
+    <Content Include="Images\warning.png" />
+    <Content Include="Images\warning1.png" />
+    <Content Include="Images\xlsx-disable.gif" />
+    <Content Include="Images\xlsx.gif" />
+    <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\autoNumeric.min.js" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstraptable\bootstrap-table-th-TH.min.js" />
+    <Content Include="Scripts\bootstraptable\bootstrap-table.min.css" />
+    <Content Include="Scripts\bootstraptable\bootstrap-table.min.js" />
+    <Content Include="Scripts\datepicker_th\bootstrap-datepicker-thai.js" />
+    <Content Include="Scripts\datepicker_th\bootstrap-datepicker.js" />
+    <Content Include="Scripts\datepicker_th\bootstrap-datepicker.th.js" />
+    <Content Include="Scripts\html5shiv.js" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.SchedTask.ExportAFSTaskResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.SchedTask.ExportNCBTaskResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.SchedTask.ImportAFSTaskResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.SchedTask.ImportBDWTaskResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.SchedTask.ImportCISTaskResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.SchedTask.ImportHpTaskResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.SchedTask.JobTaskResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Entity.CreateSRResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Entity.GetSRResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Entity.SearchSRResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Entity.UpdateSRResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.SchedTask.CreateSrFromReplyEmailTaskResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.SchedTask.ReSubmitActivityToCARSystemTaskResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.SchedTask.ReSubmitActivityToCBSHPSystemTaskResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.Sr.CreateSRResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.Sr.GetSRResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.Sr.SearchSRResponse.datasource" />
+    <Content Include="Properties\DataSources\CSM.Service.Messages.Sr.UpdateSRResponse.datasource" />
+    <None Include="Properties\PublishProfiles\CSM.pubxml" />
+    <Content Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
+    <Content Include="Scripts\jquery.form.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.th.min.js" />
+    <Content Include="Scripts\login.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\modernizr.min.js" />
+    <Content Include="Scripts\multiselect.min.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Select2-locales\select2_locale_th.js" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\sr.js" />
+    <Content Include="Scripts\summernote.min.js" />
+    <Content Include="Scripts\_references.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Templates\ConfigUrl\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\entypo.eot" />
+    <Content Include="fonts\entypo.ttf" />
+    <Content Include="fonts\entypo.woff" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Log.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <Content Include="Scripts\tableHeadFixer.js" />
+    <None Include="Service References\CSMFileService\CSMFileService.disco" />
+    <None Include="Service References\CSMFileService\configuration91.svcinfo" />
+    <None Include="Service References\CSMFileService\configuration.svcinfo" />
+    <None Include="Service References\CSMFileService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\CSMMailService\CSMMailService.disco" />
+    <None Include="Service References\CSMMailService\configuration91.svcinfo" />
+    <None Include="Service References\CSMMailService\configuration.svcinfo" />
+    <None Include="Service References\CSMMailService\CSMMailService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMMailService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\CSMSRService\CSMSRService.disco" />
+    <None Include="Service References\CSMSRService\configuration91.svcinfo" />
+    <None Include="Service References\CSMSRService\configuration.svcinfo" />
+    <None Include="Service References\CSMSRService\CSMSRService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMSRService\CSMSRService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMSRService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Templates\Mail\MailSubjectTemplate.xml" />
+    <Content Include="Templates\Mail\NotifyCreateSrFromReplyEmailFailed.html" />
+    <Content Include="Templates\Mail\NotifyCreateSrFromReplyEmailSuccess.html" />
+    <Content Include="Templates\Mail\NotifyExportActivityFailed.html" />
+    <Content Include="Templates\Mail\NotifyExportActivitySuccess.html" />
+    <Content Include="Templates\Mail\NotifyFailExportActvity.html" />
+    <Content Include="Templates\Mail\NotifyImportAssetFailed.html" />
+    <Content Include="Templates\Mail\NotifyImportAssetSuccess.html" />
+    <Content Include="Templates\Mail\NotifyImportCISFailed.html" />
+    <Content Include="Templates\Mail\NotifyImportCISSuccess.html" />
+    <Content Include="Templates\Mail\NotifyImportContactFailed.html" />
+    <Content Include="Templates\Mail\NotifyImportContactSuccess.html" />
+    <Content Include="Templates\Mail\NotifyImportHPFailed.html" />
+    <Content Include="Templates\Mail\NotifyImportHPSuccess.html" />
+    <Content Include="Templates\Mail\NotifyReSubmitActivityToCARSystemFailed.html" />
+    <Content Include="Templates\Mail\NotifyReSubmitActivityToCARSystemSuccess.html" />
+    <Content Include="Templates\Mail\NotifyReSubmitActivityToCBSHPSystemFailed.html" />
+    <Content Include="Templates\Mail\NotifyReSubmitActivityToCBSHPSystemSuccess.html" />
+    <Content Include="Templates\Mail\NotifySyncEmailFailed.html" />
+    <Content Include="Templates\Mail\NotifySyncEmailSuccess.html" />
+    <Content Include="Templates\Xml\WebService\InsertLeadRequest.xml" />
+    <Content Include="Templates\Xml\WebService\SearchLeadRequest.xml" />
+    <Content Include="Templates\Xml\WebService\StatusResponse.xml" />
+    <Content Include="Views\Attachment\_AttachEdit.cshtml" />
+    <Content Include="Views\AuditLog\Search.cshtml" />
+    <Content Include="Views\Branch\_BranchList.cshtml" />
+    <Content Include="Views\Branch\_BranchSearch.cshtml" />
+    <Content Include="Views\CommPool\Edit.cshtml" />
+    <Content Include="Views\CommPool\Search.cshtml" />
+    <Content Include="Views\CommPool\_PoolBranchList.cshtml" />
+    <Content Include="Views\CommPool\_PoolList.cshtml" />
+    <Content Include="Views\Contact\Edit.cshtml" />
+    <Content Include="Views\Contact\Search.cshtml" />
+    <Content Include="Views\Contact\_ContactList.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\_AcceptNews.cshtml" />
+    <Content Include="Views\Home\_NewsReadList.cshtml" />
+    <Content Include="Views\Home\_NewsUnReadList.cshtml" />
+    <Content Include="Views\Job\Edit.cshtml" />
+    <Content Include="Views\Job\_JobList.cshtml" />
+    <Content Include="Views\MenuNavigator\MainMenu.cshtml" />
+    <Content Include="Views\News\Edit.cshtml" />
+    <Content Include="Views\News\Search.cshtml" />
+    <Content Include="Views\News\_NewsAttachmentList.cshtml" />
+    <Content Include="Views\News\_NewsBranchList.cshtml" />
+    <Content Include="Views\News\_NewsList.cshtml" />
+    <Content Include="Views\Report\List.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Customer\Search.cshtml" />
+    <Content Include="Views\Customer\_CustomerList.cshtml" />
+    <Content Include="Views\AuditLog\_AuditLogList.cshtml" />
+    <Content Include="Views\Customer\_CustomerInfo.cshtml" />
+    <Content Include="Views\Customer\_NoteList.cshtml" />
+    <Content Include="Views\Customer\AdminNote.cshtml" />
+    <Content Include="Views\Customer\_EditNote.cshtml" />
+    <Content Include="Views\Customer\SearchNote.cshtml" />
+    <Content Include="Views\Customer\_AdminNoteList.cshtml" />
+    <Content Include="Views\Configuration\Search.cshtml" />
+    <Content Include="Views\Configuration\_ConfigurationList.cshtml" />
+    <Content Include="Views\Configuration\Edit.cshtml" />
+    <Content Include="Views\Configuration\Index.cshtml" />
+    <Content Include="Views\Customer\Edit.cshtml" />
+    <Content Include="Views\Customer\CustomerNote.cshtml" />
+    <Content Include="Views\Customer\_CustomerNoteList.cshtml" />
+    <Content Include="Views\Customer\_ViewNote.cshtml" />
+    <Content Include="Views\User\AccessDenied.cshtml" />
+    <Content Include="Views\Document\List.cshtml" />
+    <Content Include="Views\Document\_CustomerAttachmentList.cshtml" />
+    <Content Include="Views\Document\_EditAttachment.cshtml" />
+    <Content Include="Views\Document\_ViewAttachment.cshtml" />
+    <Content Include="Views\Campaign\List.cshtml" />
+    <Content Include="Views\Campaign\_CampaignList.cshtml" />
+    <Content Include="Views\ExistingProduct\List.cshtml" />
+    <Content Include="Views\ExistingProduct\_ExistingProductList.cshtml" />
+    <Content Include="Views\Campaign\_RecommendedCampaignList.cshtml" />
+    <Content Include="Views\MenuNavigator\CustomerTab.cshtml" />
+    <Content Include="Views\Contact\List.cshtml" />
+    <Content Include="Views\Contact\_CustomerContactList.cshtml" />
+    <Content Include="Views\Campaign\_CampaignEdit.cshtml" />
+    <Content Include="Views\Report\ExportJobs.cshtml" />
+    <Content Include="Views\Job\Search.cshtml" />
+    <Content Include="Views\Contact\_EditCustomerContact.cshtml" />
+    <Content Include="Templates\Reports\rpt_comm_pool.xlsx" />
+    <Content Include="Views\Product\Search.cshtml" />
+    <Content Include="Views\Product\_ProductList.cshtml" />
+    <Content Include="Views\Contact\_ContactRelationshipList.cshtml" />
+    <Content Include="Views\Contact\_EditContactRelationship.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\SR\List.cshtml" />
+    <Content Include="Views\SR\_CustomerSrList.cshtml" />
+    <Content Include="Views\Home\_GroupServiceRequestList.cshtml" />
+    <Content Include="Views\Home\_IndividualServiceRequestList.cshtml" />
+    <Content Include="Views\ExistingLead\_ExistingLeadList.cshtml" />
+    <Content Include="Views\ExistingLead\List.cshtml" />
+    <Content Include="Views\CustomerLog\List.cshtml" />
+    <Content Include="Views\CustomerLog\_CustomerLogList.cshtml" />
+    <Content Include="Templates\Reports\rpt_sr.xlsx" />
+    <Content Include="Views\Report\ExportSR.cshtml" />
+    <Content Include="Views\Area\Create.cshtml" />
+    <Content Include="Views\Area\Edit.cshtml" />
+    <Content Include="Views\Area\Search.cshtml" />
+    <Content Include="Views\Area\_AreaList.cshtml" />
+    <Content Include="Views\Shared\_Antiforgery.cshtml" />
+    <Content Include="Views\Sla\Create.cshtml" />
+    <Content Include="Views\Sla\Edit.cshtml" />
+    <Content Include="Views\Sla\Search.cshtml" />
+    <Content Include="Views\Sla\_SlaList.cshtml" />
+    <Content Include="Views\ServiceRequest\Create.cshtml" />
+    <Content Include="Views\ServiceRequest\Index.cshtml" />
+    <Content Include="Views\ServiceRequest\SearchAccount.cshtml" />
+    <Content Include="Views\ServiceRequest\SearchContact.cshtml" />
+    <Content Include="Views\ServiceRequest\SearchCustomer.cshtml" />
+    <Content Include="Views\ServiceRequest\_SearchCustomerList.cshtml" />
+    <Content Include="Views\ServiceRequest\_SearchServiceRequestList.cshtml" />
+    <Content Include="Views\MappingProductType\Create.cshtml" />
+    <Content Include="Views\MappingProductType\Edit.cshtml" />
+    <Content Include="Views\MappingProductType\Search.cshtml" />
+    <Content Include="Views\MappingProductType\_MappingProductList.cshtml" />
+    <Content Include="Views\Report\ExportVerify.cshtml" />
+    <Content Include="Views\QuestionGroup\Create.cshtml" />
+    <Content Include="Views\QuestionGroup\Edit.cshtml" />
+    <Content Include="Views\QuestionGroup\Index.cshtml" />
+    <Content Include="Views\QuestionGroup\_QuestionGroupList.cshtml" />
+    <Content Include="Views\Question\Create.cshtml" />
+    <Content Include="Views\Question\Edit.cshtml" />
+    <Content Include="Views\Question\Index.cshtml" />
+    <Content Include="Views\Question\_QuestionList.cshtml" />
+    <Content Include="Views\Type\Create.cshtml" />
+    <Content Include="Views\Type\Edit.cshtml" />
+    <Content Include="Views\Type\Index.cshtml" />
+    <Content Include="Views\Type\_TypeList.cshtml" />
+    <Content Include="Templates\Reports\rpt_verify_detail.xlsx" />
+    <Content Include="Templates\Reports\rpt_verify.xlsx" />
+    <Content Include="Views\Report\ExportVerifyDetail.cshtml" />
+    <Content Include="Views\Report\ExportNcb.cshtml" />
+    <Content Include="Templates\Reports\rpt_ncb.xlsx" />
+    <Content Include="Views\ServiceRequest\_ViewCreateStep1.cshtml" />
+    <Content Include="Views\ServiceRequest\CreateStep2.cshtml" />
+    <Content Include="Views\ServiceRequest\CreateStep3.cshtml" />
+    <Content Include="Views\ServiceRequest\_ViewCreateStep2.cshtml" />
+    <Content Include="Views\ServiceRequest\_EditPageDefault.cshtml" />
+    <Content Include="Views\ServiceRequest\_EditPageAFS.cshtml" />
+    <Content Include="Views\ServiceRequest\_EditPageNCB.cshtml" />
+    <Content Include="Views\ServiceRequest\Edit.cshtml" />
+    <Content Include="Views\Area\_SubAreaList.cshtml" />
+    <Content Include="Views\Area\_SelectSubAreaList.cshtml" />
+    <Content Include="Views\Area\_RenderSubAreaList.cshtml" />
+    <Content Include="Views\Area\_SubAreaEditList.cshtml" />
+    <Content Include="Views\Area\_SelectSubAreaEditList.cshtml" />
+    <Content Include="Views\Contact\_ContactDuplicateList.cshtml" />
+    <Content Include="Views\QuestionGroup\_QuestionList.cshtml" />
+    <Content Include="Views\QuestionGroup\_RenderQuestionList.cshtml" />
+    <Content Include="Views\QuestionGroup\_QuestionInQuestionGroupList.cshtml" />
+    <Content Include="Views\MappingProductType\_QuestionGroupList.cshtml" />
+    <Content Include="Views\MappingProductType\_QuestionGroupCreateList.cshtml" />
+    <Content Include="Views\ExistingProduct\_DetailProduct.cshtml" />
+    <Content Include="Views\ServiceRequest\SearchAccountAddress.cshtml" />
+    <Content Include="Views\ServiceRequest\_AccountRelationSection.cshtml" />
+    <Content Include="Views\ServiceRequest\_LookupAccountAddressList.cshtml" />
+    <Content Include="Views\ServiceRequest\_LookupContractList.cshtml" />
+    <Content Include="Views\ServiceRequest\_LookupCustomerContactList.cshtml" />
+    <Content Include="Views\ServiceRequest\_LookupCustomerList.cshtml" />
+    <Content Include="Views\UserMonitoring\Search.cshtml" />
+    <Content Include="Views\Activity\List.cshtml" />
+    <Content Include="Views\Activity\_ActivityList.cshtml" />
+    <Content Include="Views\ServiceRequest\CreateActivity.cshtml" />
+    <Content Include="Views\ServiceRequest\_SearchTabDocumentList.cshtml" />
+    <Content Include="Views\ServiceRequest\_SearchTabLoggingList.cshtml" />
+    <Content Include="Views\ServiceRequest\_SearchTabActivityList.cshtml" />
+    <Content Include="Views\ServiceRequest\_SearchTabExistingList.cshtml" />
+    <Content Include="Views\UserMonitoring\_SearchGroupAssign.cshtml" />
+    <Content Include="Views\UserMonitoring\_SearchUserAssign.cshtml" />
+    <Content Include="Views\UserMonitoring\_SearchServiceRequest.cshtml" />
+    <Content Include="Views\MappingProductType\_QuestionGroupEditList.cshtml" />
+    <Content Include="Views\News\_NewsPreview.cshtml" />
+    <Content Include="Views\MappingProductType\ViewQuestionGroup.cshtml" />
+    <Content Include="Views\Configuration\_IconList.cshtml" />
+    <Content Include="Views\Job\_RemarkCloseJob.cshtml" />
+    <Content Include="Scripts\bootstrap-datepicker.min.js.map">
+      <DependentUpon>bootstrap-datepicker.min.js</DependentUpon>
+    </Content>
+    <Content Include="Views\Shared\_ViewCallInfo.cshtml" />
+    <Content Include="Views\AuditLog\BatchMonitoring.cshtml" />
+    <None Include="Service References\CSMFileService\CSMFileService.wsdl" />
+    <None Include="Service References\CSMFileService\CSMFileService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMFileService\CSMFileService1.wsdl" />
+    <None Include="Service References\CSMFileService\CSMFileService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMFileService\CSMFileService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMFileService\CSMFileService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMFileService\CSMFileService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMMailService\CSMMailService.wsdl" />
+    <None Include="Service References\CSMMailService\CSMMailService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMMailService\CSMMailService1.wsdl" />
+    <None Include="Service References\CSMMailService\CSMMailService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMMailService\CSMMailService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMMailService\CSMMailService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMSRService\CSMSRService.wsdl" />
+    <None Include="Service References\CSMSRService\CSMSRService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMSRService\CSMSRService1.wsdl" />
+    <None Include="Service References\CSMSRService\CSMSRService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMSRService\CSMSRService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMSRService\CSMSRService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CSMSRService\CSMSRService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\AuditLog\_BatchProcessList.cshtml" />
+    <Content Include="Views\ServiceRequest\_LookupCustomerDuplicateList.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CSM.Business\CSM.Business.csproj">
+      <Project>{1183e990-581d-4cd7-9f89-e275d1f66bbf}</Project>
+      <Name>CSM.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CSM.Common\CSM.Common.csproj">
+      <Project>{ceb384cc-d77a-4fa9-a22f-03fcc9fdab5a}</Project>
+      <Name>CSM.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CSM.Entity\CSM.Entity.csproj">
+      <Project>{ee39efc2-7f0a-4b19-bba0-fac715db83e1}</Project>
+      <Name>CSM.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CSM.Service\CSM.Service.csproj">
+      <Project>{a2d8f87b-929d-428c-b7d8-c0c2ec4b2445}</Project>
+      <Name>CSM.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvcPaging\MvcPaging.csproj">
+      <Project>{17f3e57e-072c-4977-93d8-2fcf739769da}</Project>
+      <Name>MvcPaging</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\CSMFileService\" />
+    <WCFMetadataStorage Include="Service References\CSMMailService\" />
+    <WCFMetadataStorage Include="Service References\CSMSRService\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>5306</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:5306/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

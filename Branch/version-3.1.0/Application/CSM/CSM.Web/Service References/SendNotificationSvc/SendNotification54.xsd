@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="www.kiatnakinbank.com/services/RegisterService/OTPResult" elementFormDefault="qualified" targetNamespace="www.kiatnakinbank.com/services/RegisterService/OTPResult" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WS_ININ_SendNotification" />
+  <xs:import schemaLocation="http://10.3.100.167:8090/WS_ININ_SendNotification/SendNotification.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KK.Service" />
+  <xs:element name="Params">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CALL_ID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="CLIENT_IP" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="IDENTIFICATION_TYPE" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ID_CARD" nillable="true" type="xs:string" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WS_ININ_SendNotification" minOccurs="0" name="MESSAGE_DETAIL" nillable="true" type="q1:MESSAGE_DETAIL" />
+        <xs:element minOccurs="0" name="METHOD" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="TEMPLATE_ID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="TXN_ID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="USER_ACTION" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KK.Service" name="header" nillable="true" type="q2:Header" />
+</xs:schema>

@@ -1,0 +1,177 @@
+﻿@using CSM.Entity
+@using CSM.Common.Resources
+@model CSM.Web.Models.CampaignViewModel
+@{
+    ViewBag.Title = Resource.Lbl_CustomerInformation;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = MenuCode.Customer })
+}
+
+@section Breadcrumb {
+    <strong class="font-blue">@Resource.Lbl_Customer &rsaquo;&rsaquo;</strong>
+    <strong class="font-blue">
+        @Html.ActionLink(Resource.Lbl_SearchCustomer, "Search", "Customer", new { @skip = "1" }, new { @class = "font-blue" })
+    </strong>
+    <strong class="font-green-jungle">&rsaquo;&rsaquo; @Resource.Lbl_CustomerInformation </strong>
+}
+
+@if (Model != null)
+{
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title">@Resource.Lbl_CustomerInformation</h5>
+        @Html.HiddenFor(model => model.CustomerInfo.CustomerId, new { @id = "hddCustomerId" })
+        @if (Model.CustomerInfo != null)
+        {
+            Html.RenderPartial("~/Views/Customer/_CustomerInfo.cshtml", Model.CustomerInfo);
+        }
+        <div class="clearfix"></div>
+
+        @Html.Action("CustomerTab", "MenuNavigator", new { selectedTab = CustomerTabCode.Campaign, customerId = @Model.CustomerInfo.CustomerId })
+
+        <div class="tab-content">
+            <div id="tabCampaign" class="tab-pane fade in active">
+                <div class="margin-top-15">
+                    <h5 class="form-title pull-left">Product/Campaign แนะนำ</h5>
+                    <div class="pull-right" id="dvServiceMsg"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+                <div id="dvSearchResult">
+                    @{ Html.RenderPartial("~/Views/Campaign/_CampaignList.cshtml", Model); }
+                </div>
+                <div class="clear margin-top-15"></div>
+                <div class="pull-left">
+                    <h5 class="form-title">Product/Campaign ที่เคยมีการนำเสนอไปแล้ว</h5>
+                </div>
+                <div class="pull-left" style="margin-left:20px!important">
+                    <button id="btnSearch" type="button" class="btn btn-green btn-sm btn-xsmall">
+                        <i class="fa fa-refresh"></i>&nbsp;Refresh
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+                <div id="dvRecCampSearchResult" class="hidden">
+                    @{ Html.RenderPartial("~/Views/Campaign/_RecommendedCampaignList.cshtml", Model); }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+}
+<!-- Campaign Modal -->
+<div id="campaignModal" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" data-url='@Url.Action("InitEdit", "Campaign")'>
+    @using (Html.BeginForm("Edit", "Campaign", FormMethod.Post, new { @class = "form-horizontal", @id = "form2" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div id='dataContainer'>
+        </div>
+    }
+</div>
+<div id="dvTarget"></div>
+@section masterjs
+{
+    <script type="text/javascript">
+        $jq(document).ready(function () {
+            loadData();
+
+            $jq("#btnSearch").click(function (e) {
+                e.preventDefault();
+                clearServerErrors();
+                loadRecCampaign();
+                return false;
+            });
+
+            var errorMsg = '@ViewBag.Message';
+            if ($jq.trim(errorMsg) != '') {
+                doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+            }
+        });
+
+        function loadData() {
+            var paramData = { customerId: $jq('#hddCustomerId').val() };
+
+            $jq.ajax({
+                url: '@Url.Action("CampaignList", "Campaign")',
+                type: "POST",
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq('#dvServiceMsg').html('');
+                        $jq("#dvSearchResult").html('');
+                        $jq("#dvSearchResult").html(result);
+                    } else {
+                        showServiceErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function loadRecCampaign() {
+            var paramData = { customerId: $jq('#hddCustomerId').val() };
+
+            $jq.ajax({
+                url: '@Url.Action("RecommendedCampaignList", "Campaign")',
+                type: "POST",
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    if (result.Valid == null) {
+                        $jq('#dvServiceMsg').html('');
+                        $jq("#dvRecCampSearchResult").html('').removeClass('hidden');
+                        $jq("#dvRecCampSearchResult").html(result);
+                    } else {
+                        showServiceErrors(result);
+                    }
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+
+        function initAddCampaign(campaignId, campaignName, contractNoRefer) {
+            var url = $jq('#campaignModal').data('url');
+            var paramData = {
+                customerId: $jq('#hddCustomerId').val(),
+                campaignId: campaignId,
+                campaignName: campaignName,
+                contractNoRefer: contractNoRefer
+            };
+
+            $jq.ajax({
+                type: 'POST',
+                url: url,
+                data: addAntiForgeryToken(paramData),
+                beforeSend: function () { $jq("#dvLoading").show(); },
+                complete: function () { $jq("#dvLoading").hide(); },
+                success: function (result) {
+                    $jq('#dataContainer').html(result);
+                    $jq('#campaignModal').modal('show');
+                },
+                error: function (xhr) {
+                    var handleMsg = '@CSM.Common.Resources.Resource.Error_System';
+                    ajaxErrorHandling(xhr, handleMsg, '@FormsAuthentication.LoginUrl', '@Url.Action("AccessDenied", "User")');
+                }
+            });
+
+            return false;
+        }
+    </script>
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+		default-lazy-init="true">
+
+	<bean id="configuration" class="com.motiftech.icollection.manager.Configuration" init-method="init">
+		<property name="props" ref="ruleProperties" />
+	</bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="protocol" value="${mail.transport.protocol}"/>
+		<property name="host" value="${mail.host}"/>
+		<property name="port" value="${mail.port}"/>
+		<property name="username" value="${mail.username}"/>
+		<property name="password" value="${mail.password}"/>
+		<property name="defaultEncoding" value="${defaultEncoding}"/>
+	</bean>
+	
+	<bean id="fileUtil" class="com.utils.FileUtil">
+		<property name="baseDir"  value="${template.path}" />
+	</bean> 
+	
+	<bean id="emailUtil" class="com.utils.EmailUtil">
+		<property name="mailSender" ref="mailSender"/>
+		<property name="templateFileUtil" ref="templateFileUtil"/>
+		<property name="defaultFrom" value="${mail.default.from}"/>
+	</bean>
+
+	<bean id="templateFileUtil" class="com.utils.TemplateFileUtil">
+		<property name="baseDir" value="${template.path}"/>
+		<property name="encoding" value="${defaultEncoding}"/>
+	</bean>
+
+	
+</beans>

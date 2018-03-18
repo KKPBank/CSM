@@ -1,0 +1,112 @@
+﻿@using CSM.Common.Resources
+@model CSM.Web.Models.ConfigurationViewModel
+@{
+    ViewBag.Title = Resource.Lbl_Master;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section MainMenu
+{
+    @Html.Action("MainMenu", "MenuNavigator", new { selectedMenu = CSM.Entity.MenuCode.Master })
+}
+
+@section Breadcrumb {
+    <strong class="font-green-jungle">Master</strong>
+}
+
+@using (Html.BeginForm("Index", "Configuration", FormMethod.Post, new { @class = "form-horizontal", @id = "form1" }))
+{
+    @Html.AntiForgeryToken()
+    <div id="dvForm" class="form-box">
+        <h5 class="form-title"><i class="fa fa-cogs"></i>&nbsp;@Resource.Lbl_Master</h5>
+        <div class="table-responsive margin-bottom-15">
+            <table class="table table-condensed table-fixed table-clickable">
+                <tbody>
+                    @if (ViewBag.MasterList == null || ViewBag.MasterList.Count == 0)
+                    {
+                        <tr>
+                            <td class="center">@Resource.Msg_NoRecords</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in (List<CSM.Entity.MenuEntity>)ViewBag.MasterList)
+                        {
+                            <tr>
+                                <td>
+
+                                    <a href="@Url.Action(item.ActionName, item.ControllerName)">@item.MenuName</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    @*<tr>
+                        <td>
+                            <a href='@Url.Action("SearchNote", "Customer")'>Customer's Note</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Search", "CommPool")'>Communication Pool Configuration</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Search", "Product")'>SR Status</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Search", "Contact")'>Contact Relation</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("Search", "Configuration")">Configuration URL</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Search", "News")'>News &amp; Announcement</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Search", "AuditLog")'> Batch Monitoring & Audit Log</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Search", "Area")'> Master Area</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Search", "Sla")'> Master Sla </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Index", "QuestionGroup")'>Master Question </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Index", "Question")'>Master QuestionGroup  </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Index", "Type")'>Master Type </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href='@Url.Action("Search", "MappingProductType")'>Master MappingType </a>
+                        </td>
+                    </tr>*@
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

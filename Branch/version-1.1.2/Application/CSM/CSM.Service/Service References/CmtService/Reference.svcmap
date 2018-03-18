@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="dbea521e-a7b3-4949-8022-fb5b40c7261f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://10.3.112.46/CMTService/CmtService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CmtService1.wsdl" MetadataType="Wsdl" ID="9d880666-527e-442d-bd68-60cd49f40662" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?wsdl" />
+    <MetadataFile FileName="CmtService11.xsd" MetadataType="Schema" ID="4ef6fb77-224c-41b5-a579-deefc2d8d3d5" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd5" />
+    <MetadataFile FileName="CmtService111.xsd" MetadataType="Schema" ID="48254d95-0d0d-45e1-a2a9-9c2c9c303594" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd4" />
+    <MetadataFile FileName="CmtService112.xsd" MetadataType="Schema" ID="f1fa6eb7-270c-43ff-a9d8-370970241164" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd3" />
+    <MetadataFile FileName="CmtService113.xsd" MetadataType="Schema" ID="af18734d-fc92-4b87-92d8-b2dc6285f152" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd2" />
+    <MetadataFile FileName="CmtService114.xsd" MetadataType="Schema" ID="32484fb3-da83-4ba2-9940-064ac0ea1209" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd1" />
+    <MetadataFile FileName="CmtService115.xsd" MetadataType="Schema" ID="4ce47c28-9b51-48c7-befe-b8f0fd1d6218" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd0" />
+    <MetadataFile FileName="CmtService116.xsd" MetadataType="Schema" ID="35252bd4-97ae-4b44-a182-4b9e23b151dd" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd6" />
+    <MetadataFile FileName="CmtService117.xsd" MetadataType="Schema" ID="3fc1fdef-8c5a-4979-93ba-cf2b215b42d5" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd9" />
+    <MetadataFile FileName="CmtService118.xsd" MetadataType="Schema" ID="5d927791-9288-41b2-b620-7227c6bd121c" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd8" />
+    <MetadataFile FileName="CmtService119.xsd" MetadataType="Schema" ID="a0d38f46-c020-422a-a692-1b06ccaa915a" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd10" />
+    <MetadataFile FileName="CmtService1.disco" MetadataType="Disco" ID="3ab4a735-f9a9-4027-a30a-65dad86924c2" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?disco" />
+    <MetadataFile FileName="CmtService1110.xsd" MetadataType="Schema" ID="08d504ec-fbbc-41d9-b7c5-06625b1dba5e" SourceId="1" SourceUrl="http://10.3.112.46/CMTService/CmtService.svc?xsd=xsd7" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,519 @@
+﻿@model CSM.Web.Models.LookupCustomerViewModel
+@using CSM.Common.Resources
+@{
+    Layout = null;
+}
+<div class="form-horizontal">
+    <div id="divBasicSearch">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <p class="form-control-static">ชื่อลูกค้า :</p>
+                    </div>
+                    <div class="col-sm-6 nopadding">
+                        @*<input type="text" class="form-control input-sm searchCustomerInput" id="txtSearchCustomerFirstName" />*@
+                        @Html.TextBoxFor(model => model.CustomerSearchFilter.FirstName, new
+                   {
+                       @class = "form-control input-sm searchCustomerInput",
+                       @id = "txtSearchCustomerFirstName",
+                       @style = "text-transform: uppercase",
+                   })
+                        @Html.ValidationMessageFor(model => model.CustomerSearchFilter.FirstName)
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="form-control-static">
+                            @Html.CheckBoxFor(model => model.CustomerSearchFilter.ExactFirstName, new { @id = "chkExactFirstName" })
+                            Exact
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <p class="form-control-static">นามสกุลลูกค้า :</p>
+                    </div>
+                    <div class="col-sm-6 nopadding">
+                        @*<input type="text" class="form-control input-sm searchCustomerInput" id="txtSearchCustomerLastName" />*@
+                        @Html.TextBoxFor(model => model.CustomerSearchFilter.LastName, new
+                   {
+                       @class = "form-control input-sm searchCustomerInput",
+                       @id = "txtSearchCustomerLastName",
+                       @style = "text-transform: uppercase",
+                   })
+                        @Html.ValidationMessageFor(model => model.CustomerSearchFilter.LastName)
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="form-control-static">
+                            @Html.CheckBoxFor(model => model.CustomerSearchFilter.ExactLastName, new { @id = "chkExactLastName" })
+                            Exact
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            เบอร์โทรศัพท์/อีเมล์
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @*<input type="text" class="form-control input-sm searchCustomerInput" id="txtSearchCustomerPhoneNo" />*@
+                        @Html.TextBoxFor(model => model.CustomerSearchFilter.PhoneNo, new
+                        {
+                            @class = "form-control input-sm searchCustomerInput",
+                            @id = "txtSearchCustomerPhoneNo"
+                        })
+                        @Html.ValidationMessageFor(model => model.CustomerSearchFilter.PhoneNo)
+                    </div>
+                    <div class="col-md-2">
+                        <p class="form-control-static">
+                            @Html.CheckBoxFor(model => model.CustomerSearchFilter.ExactPhoneNo, new { @id = "chkExactPhoneNo" })
+                            Exact
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static" title="เลขที่บัตรประชาชน/นิติบุุคคล/Passport/Employee No.">
+                            ID Number
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @*<input type="text" class="form-control input-sm searchCustomerInput" id="txtSearchCustomerCardNo" />*@
+                        @Html.TextBoxFor(model => model.CustomerSearchFilter.CardNo, new
+                        {
+                            @class = "form-control input-sm searchCustomerInput",
+                            @id = "txtSearchCustomerCardNo"
+                        })
+                        @Html.ValidationMessageFor(model => model.CustomerSearchFilter.CardNo)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            Product
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.DropDownListFor(model => model.CustomerSearchFilter.Product, Model.CustomerProductList,
+                                      Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm  input-medium searchCustomerInput", id = "ddlSearchCustomerProduct" })
+                        @Html.ValidationMessageFor(model => model.CustomerSearchFilter.Product)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            เลขที่บัญชี/สัญญา/เลขที่กรมธรรม์
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.TextBoxFor(model => model.CustomerSearchFilter.AccountNo, new
+                        {
+                            @class = "form-control input-sm input-medium searchCustomerInput",
+                            @id = "txtSearchCustomerAccountNo",
+                            @maxlength = 100,
+                            @disabled = true
+                        })
+                        @Html.ValidationMessageFor(model => model.CustomerSearchFilter.AccountNo)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static">
+                            ประเภทลูกค้า
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.DropDownListFor(model => model.CustomerSearchFilter.CustomerType, Model.CustomerTypeList,
+                                      Resource.Ddl_PleaseSelect, new { @class = "form-control input-sm  input-medium searchCustomerInput", id = "ddlSearchCustomerType" })
+                        @Html.ValidationMessageFor(model => model.CustomerSearchFilter.CustomerType)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static ">
+                            ทะเบียนรถยนต์
+                            <font color="red">Partial Search %xxxxx</font>
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.TextBoxFor(model => model.CustomerSearchFilter.Registration, new
+                        {
+                            @class = "form-control input-sm input-medium searchCustomerInput",
+                            @id = "txtSearchCustomerCarNo",
+                            @maxlength = 50
+                        })
+                        @Html.ValidationMessageFor(model => model.CustomerSearchFilter.Registration)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static ">
+                            ชื่อผู้ค้ำ
+                            <font color="red">Partial Search xxxxx%</font>
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.TextBoxFor(model => model.CustomerSearchFilter.CustomerDeptFirstName, new
+                        {
+                            @class = "form-control input-sm input-medium searchCustomerInput",
+                            @id = "txtSearchDeptFirstName",
+                            @maxlength = 50
+                        })
+                        @Html.ValidationMessageFor(model => model.CustomerSearchFilter.CustomerDeptFirstName)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <p class="form-control-static ">
+                            นามสกุลผู้ค้ำ
+                            <font color="red">Partial Search xxxxx%</font>
+                        </p>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        @Html.TextBoxFor(model => model.CustomerSearchFilter.CustomerDeptLastName, new
+                        {
+                            @class = "form-control input-sm input-medium searchCustomerInput",
+                            @id = "txtSearchDeptLastName",
+                            @maxlength = 50
+                        })
+                        @Html.ValidationMessageFor(model => model.CustomerSearchFilter.CustomerDeptLastName)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <span id="btnNewCustomer" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> New Customer</span>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <span class="btn btn-sm btn-primary" id="btnSearchCustomerSearch"><i class="fa fa-search"></i> Search</span>
+                    <span class="btn btn-sm btn-default" id="btnSearchCustomerClear"><i class="fa fa-file-o"></i> Clear</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive" id="divSearchCustomer" style="display: none">
+    <div id="dvSearchCustomerTable"></div>
+</div>
+
+<script type="text/javascript">
+    var customerSearchFilter;
+    var customerSuccessFilter;
+
+    $jq(function () {
+        initializeSearchFilter();
+        initializePaging();
+        onBtnSearchCustomerClearClick();
+
+
+        $jq("#btnSearchCustomerSearch").click(onBtnSearchCustomerSearchClick);
+        $jq("#btnSearchCustomerClear").click(onBtnSearchCustomerClearClick);
+
+        $jq(".searchCustomerInput").keypress(onSearchCustomerKeyPressEnter);
+
+        //Show Create Customer Modal
+        $jq("#btnNewCustomer").click(onBtnNewCustomer);
+
+        $jq("#ddlSearchCustomerProduct").change(function (event) {
+            if ($jq(this).val() != '-1' && $jq(this).val() != '') {
+                $jq("#txtSearchCustomerAccountNo").prop("disabled", false);
+            }
+            else {
+                $jq("#txtSearchCustomerAccountNo").prop("disabled", true);
+                $jq("#txtSearchCustomerAccountNo").val('');
+            }
+            return false;
+        });
+
+
+    });
+
+    function onBtnNewCustomer() {
+        clearCreateCustomerModal();
+
+        $jq("#modalCreateCustomer").modal("show");
+    }
+
+    function clearCreateCustomerModal() {
+        clearServerErrors();
+
+        $jq("#ddlSubscriptType").val("");
+        $jq("#txtCardNo").val("");
+        onDdlCustomerSubscriptType();
+
+        $jq('#customerBirthDatetimepicker').datepicker("setDate", (new Date()).toDateString());
+        $jq("#txtBirthDate").val("");
+        $jq('#customerBirthDatetimepicker').datepicker("update");
+        $jq("#ddlTitleThai").val("");
+        $jq("#txtFirstNameThai").val("");
+        $jq("#txtLastNameThai").val("");
+        $jq("#ddlTitleEnglish").val("");
+        $jq("#txtFirstNameEnglish").val("");
+        $jq("#txtLastNameEnglish").val("");
+        $jq("#ddlPhoneType1").val("");
+        $jq("#txtPhoneNo1").val("");
+        $jq("#txtPhoneNo1").attr("readonly", "readonly");
+        $jq("#NotValidatePhone1").attr("checked", false);
+        $jq("#ddlPhoneType2").val("");
+        $jq("#txtPhoneNo2").val("");
+        $jq("#txtPhoneNo2").attr("disabled", true);
+        $jq("#ddlPhoneType3").val("");
+        $jq("#txtPhoneNo3").val("");
+        $jq("#txtPhoneNo3").attr("disabled", true);
+        $jq("#txtFax").val("");
+        $jq("#txtEmail").val("");
+
+        $jq("#btnModalCustomerSave").show();
+        $jq("#btnModalCustomerComfirm").hide();
+    }
+
+    function onSearchCustomerKeyPressEnter(e) { if (e.which == 13) onBtnSearchCustomerSearchClick(); }
+
+    var isFirstLoadTableSearchCustomer = true;
+
+    function onBtnSearchCustomerSearchClick()
+    {
+        if ($jq("#txtSearchCustomerFirstName").val().trim().length == 0
+                && $jq("#txtSearchCustomerLastName").val().trim().length == 0
+                && $jq("#txtSearchCustomerCardNo").val().trim().length == 0
+                && $jq("#txtSearchCustomerAccountNo").val().trim().length == 0
+                && $jq("#txtSearchCustomerPhoneNo").val().trim().length == 0
+                && $jq("#ddlSearchCustomerType").val().trim().length == 0
+                && $jq("#txtSearchCustomerCarNo").val().trim().length == 0
+                && $jq("#ddlSearchCustomerProduct").val().trim().length == 0
+                && $jq("#txtSearchDeptFirstName").val().trim().length == 0
+                && $jq("#txtSearchDeptLastName").val().trim().length == 0)
+        {
+            doModal('dvAlertMsg', 'Message Dialog', 'โปรดเลือกอย่างน้อย 1 ตัวเลือก', '', '');
+            return;
+        }
+
+        if (isFirstLoadTableSearchCustomer)
+        {
+            $jq("#tableSearchCustomer").bootstrapTable();
+            $jq("#tableSearchCustomer").on('load-success.bs.table', onTableSearchCustomerLoadSuccess);
+            $jq("#tableSearchCustomer").on('load-error.bs.table', onTableSearchCustomerLoadError);
+
+            isFirstLoadTableSearchCustomer = false;
+        }
+
+        $jq("#divSearchCustomer").show();
+        loadCustomerTable();
+    }
+
+    //data table
+    function loadCustomerTable(skipGetSearchFilter) {
+        clearServerErrors();
+        if (!skipGetSearchFilter) {
+            //get criteria
+            getSearchFilterCriteria();
+        }
+
+        if (customerSearchFilter.FirstName === "" && customerSearchFilter.LastName === "" && customerSearchFilter.CardNo === ""
+            && customerSearchFilter.AccountNo === "" && customerSearchFilter.PhoneNo === "" && customerSearchFilter.CustomerType === ""
+            && customerSearchFilter.Registration === "" && customerSearchFilter.Product === ""
+            && customerSearchFilter.CustomerDeptFirstName === "" && customerSearchFilter.CustomerDeptLastName === ""
+        ) {
+            var warningMsg = '@Resource.Msg_EnteredAtLeastOneCriteria';
+            doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+            return false;
+        }
+
+        //กรณีเลือก Product แล้วจะต้องระบุเลขที่สัญญาด้วย
+        if (customerSearchFilter.Product != "" && customerSearchFilter.AccountNo === "") {
+            var warningMsg = '@Resource.Msg_PleaseInputAccountNo';
+            doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+            return false;
+        }
+
+        //กรณีเลือก Customer Type แล้ว ให้บังคับให้เลือกเงื่อนไข อื่นๆ เพิ่มด้วย
+        if (customerSearchFilter.FirstName === "" && customerSearchFilter.LastName === "" && customerSearchFilter.CardNo === ""
+            && customerSearchFilter.AccountNo === "" && customerSearchFilter.PhoneNo === "" && customerSearchFilter.CustomerType != ""
+            && customerSearchFilter.Registration === ""
+            && customerSearchFilter.CustomerDeptFirstName === "" && customerSearchFilter.CustomerDeptLastName === ""
+        ) {
+            var warningMsg = '@Resource.Msg_EnteredCriteriaWithCustType';
+            doModal('dvAlertMsg', 'Message Dialog', warningMsg, '', '');
+            return false;
+        }
+
+        $jq.ajax({
+                url: "@Url.Action("SearchCustomer", "ServiceRequest")",
+                method: "POST",
+                data: customerSearchFilter,
+                beforeSend: function() { $jq("#dvLoading").show(); },
+                complete: function() { $jq("#dvLoading").hide(); }
+            })
+            .done(function(result) {
+                if (result.Valid == null) {
+                    $jq("#dvSearchCustomerTable").html('');
+                    customerSuccessFilter = customerSearchFilter;
+                    $jq("#dvSearchCustomerTable").html(result);
+                    initializePaging();
+                } else if (result.Valid == true) {
+                    customerSuccessFilter = customerSearchFilter;
+                    $jq("#modalShowHPCustomerBody").html(result.ResultView);
+                    $jq("#modalShowHPCustomer").modal("show");
+                } else {
+                    showServerErrors2(result);
+                }
+            })
+            .fail(function() {
+                if (xhr.status === 401) {
+                    location.replace('@FormsAuthentication.LoginUrl');
+                    return;
+                } else {
+                    var errorMsg = String.format('<strong>Error:</strong>&nbsp;{0}', '@CSM.Common.Resources.Resource.Error_System');
+                    doModal('dvAlertMsg', 'Message Dialog', errorMsg, '', '');
+                }
+            });
+    }
+
+    function getSearchFilterCriteria() {
+        customerSearchFilter.FirstName = $jq("#txtSearchCustomerFirstName").val().toUpperCase().trim();
+        customerSearchFilter.LastName = $jq("#txtSearchCustomerLastName").val().toUpperCase().trim();
+        customerSearchFilter.CardNo = $jq("#txtSearchCustomerCardNo").val().trim();
+        customerSearchFilter.AccountNo = $jq("#txtSearchCustomerAccountNo").val().trim();
+        customerSearchFilter.PhoneNo = $jq("#txtSearchCustomerPhoneNo").val().trim();
+        customerSearchFilter.CustomerType = $jq("#ddlSearchCustomerType").val();
+        customerSearchFilter.Registration = $jq("#txtSearchCustomerCarNo").val().trim();
+        customerSearchFilter.Product = $jq("#ddlSearchCustomerProduct").val().trim();
+        customerSearchFilter.CustomerDeptFirstName = $jq("#txtSearchDeptFirstName").val().trim();
+        customerSearchFilter.CustomerDeptLastName = $jq("#txtSearchDeptLastName").val().trim();
+        customerSearchFilter.ExactFirstName = $jq("#chkExactFirstName").is(":checked");
+        customerSearchFilter.ExactLastName = $jq("#chkExactLastName").is(":checked");
+        customerSearchFilter.ExactPhoneNo = $jq("#chkExactPhoneNo").is(":checked");
+        //customerSearchFilter.PageNo = 1;
+    }
+
+    function initializeSearchFilter() {
+        customerSearchFilter = {
+            FirstName: $jq("#txtSearchCustomerFirstName").val(),
+            LastName: $jq("#txtSearchCustomerLastName").val(),
+            CardNo: $jq("#txtSearchCustomerCardNo").val(),
+            AccountNo: $jq("#txtSearchCustomerAccountNo").val(),
+            PhoneNo: $jq("#txtSearchCustomerPhoneNo").val(),
+            CustomerType: $jq("#ddlSearchCustomerType").val(),
+            Registration: $jq("#txtSearchCustomerCarNo").val(),
+            Product: $jq("#ddlSearchCustomerProduct").val(),
+            CustomerDeptFirstName: $jq("#txtSearchDeptFirstName").val(),
+            CustomerDeptLastName: $jq("#txtSearchDeptLastName").val(),
+            ExactFirstName: $jq("#chkExactFirstName").is(":checked"),
+            ExactLastName: $jq("#chkExactLastName").is(":checked"),
+            ExactPhoneNo: $jq("#chkExactPhoneNo").is(":checked"),
+            PageNo: '@Model.CustomerSearchFilter.PageNo',
+            PageSize: '@Model.CustomerSearchFilter.PageSize',
+            SortField: '@Model.CustomerSearchFilter.SortField',
+            SortOrder: '@Model.CustomerSearchFilter.SortOrder',
+            __RequestVerificationToken: getAntiForgeryToken()
+        };
+        customerSuccessFilter = customerSearchFilter;
+    };
+
+    function initializePaging() {
+        $jq("#dvSearchCustomerTable .input-page").change(function (event) {
+            customerSearchFilter = customerSuccessFilter;
+            customerSearchFilter.PageNo = $jq(this).val();
+            loadCustomerTable();
+            return false;
+        }).keypress(function (event) {
+            return validateDigit(event);
+        });
+
+        $jq("#dvSearchCustomerTable #pagesizelist").change(function (event) {
+            customerSearchFilter = customerSuccessFilter;
+            customerSearchFilter.PageNo = "1";
+            customerSearchFilter.PageSize = $jq(this).val();
+            loadCustomerTable();
+            return false;
+        });
+
+        $jq('#dvSearchCustomerTable .pagination ul li a').on('click', function (event) {
+            customerSearchFilter = customerSuccessFilter;
+            customerSearchFilter.PageNo = getUrlParameter($jq(this).attr("href"), "page");
+            loadCustomerTable();
+            return false;
+        });
+    }
+
+    function onTableSearchCustomerLoadSuccess(e, result)
+    {
+        if (result.IsError)
+        {
+            doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+        }
+    }
+
+    function onTableSearchCustomerLoadError(e) {
+        doModal('dvAlertMsg', 'Message Dialog', '@CSM.Common.Resources.Resource.Error_System', '', '');
+    }
+
+    function onBtnSearchCustomerClearClick() {
+        $jq("#txtSearchCustomerFirstName").val("");
+        $jq("#txtSearchCustomerLastName").val("");
+        $jq("#txtSearchCustomerCardNo").val("");
+        $jq("#txtSearchCustomerAccountNo").val("");
+        $jq("#txtSearchCustomerAccountNo").attr("disabled", true);
+        $jq("#txtSearchCustomerPhoneNo").val("");
+        $jq("#txtSearchCustomerCarNo").val("");
+        $jq("#ddlSearchCustomerType").val("");
+        $jq("#ddlSearchCustomerProduct").val("");
+        $jq("#txtSearchDeptFirstName").val("");
+        $jq("#txtSearchDeptLastName").val("");
+
+        $jq("#chkExactFirstName").attr("checked", false),
+        $jq("#chkExactLastName").attr("checked", false),
+        $jq("#chkExactPhoneNo").attr("checked", false),
+
+        $jq("#divSearchCustomer").hide();
+        $jq("#txtSearchCustomerFirstName").focus();
+        $jq("#dvSearchCustomerTable").html('');
+        clearServerErrors();
+    }
+
+    function inquiryCustomerInformationByHP(cardNo) {
+        clearServerErrors();
+        customerSearchFilter.CardNo = cardNo;
+        customerSearchFilter.Registration = "";
+        customerSearchFilter.CustomerDeptFirstName = "";
+        customerSearchFilter.CustomerDeptLastName = "";
+        customerSearchFilter.Product = "";
+        customerSearchFilter.PageNo = 1;
+        loadCustomerTable(true);
+        $jq("#modalShowHPCustomerBody").html('');
+        $jq("#modalShowHPCustomer").modal("hide");
+        return false;
+    }
+</script>
